@@ -1,0 +1,119 @@
+{{!-- Content Column --}}
+<div class="col-md-10 col-md-offset-2 left-border main-content-container">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Ember Widgets</h1>
+      <p class="elevated">A component library built with the <a
+        target="_BLANK" href="http://emberjs.com/">Ember.js</a>
+      framework. Includes easy to extend components such as select,
+      popover, modal, carousel, and accordion. This library is built on
+      bootstrap 3.0 CSS and represents our ideas about component best
+      practices.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <h3>Features</h3>
+      <ul class="styled">
+        <li>{{#linkTo 'emberWidgets.accordion'}}Accordion{{/linkTo}}</li>
+        <li>{{#linkTo 'emberWidgets.carousel'}}Carousel{{/linkTo}}</li>
+        <li>{{#linkTo 'emberWidgets.modal'}}Modal{{/linkTo}}</li>
+        <li>{{#linkTo 'emberWidgets.popover'}}Popover{{/linkTo}}</li>
+        <li>{{#linkTo 'emberWidgets.select'}}Select &amp; Multi-Select{{/linkTo}}</li>
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <h3>Dependencies</h3>
+      <ul class="styled">
+        <li><a target="_BLANK" href="http://emberjs.com/">Ember.js</a></li>
+        <li><a target="_BLANK" href="http://emberjs.com/list-view/">List-View</a></li>
+        <li><a target="_BLANK" href="http://getbootstrap.com/">Bootstrap (V3)</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <hr>
+      <h1>Widgets</h1>
+      <p class="elevated">The examples below demonstrate how you can extend and customize the widgets.</p>
+      <div class="row ember-widgets-examples">
+        {{#linkTo 'emberWidgets.accordion'}}
+          <div class="col-md-4">
+            <h4>Accordion</h4>
+            <img class="preview-box" src="/gh_pages/img/preview_widgets_accordion.png" />
+          </div>
+        {{/linkTo}}
+        {{#linkTo 'emberWidgets.carousel'}}
+          <div class="col-md-4">
+            <h4>Carousel</h4>
+            <img class="preview-box" src="/gh_pages/img/preview_widgets_carousel.png" />
+          </div>
+        {{/linkTo}}
+        {{#linkTo 'emberWidgets.modal'}}
+          <div class="col-md-4">
+            <h4>Modal</h4>
+            <img class="preview-box" src="/gh_pages/img/preview_widgets_modal.png" />
+          </div>
+        {{/linkTo}}
+        {{#linkTo 'emberWidgets.popover'}}
+          <div class="col-md-4">
+            <h4>Popover</h4>
+            <img class="preview-box" src="/gh_pages/img/preview_widgets_popover.png" />
+          </div>
+        {{/linkTo}}
+        {{#linkTo 'emberWidgets.select'}}
+          <div class="col-md-4">
+            <h4>Select &amp; Multi-Select</h4>
+            <img class="preview-box" src="/gh_pages/img/preview_widgets_select.png" />
+          </div>
+        {{/linkTo}}
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <hr>
+      <h1>Getting Started</h1>
+      <p>You will need <a target="_BLANK" href="http://nodejs.org/">node</a> installed as a development dependency.</p>
+      <p><a href="https://github.com/Addepar/ember-widgets/">Clone it from Github</a> or <a href="https://github.com/addepar/ember-widgets/zipball/master">download the ZIP repo<a><p>
+      <div class="highlight">
+<pre><code>$ npm install -g grunt-cli
+$ npm install
+$ grunt
+$ node examples.js</code></pre>
+      <p>Go to your browser and navigate to localhost:8000/gh_pages</p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <hr>
+      <h1>Changelog</h1>
+      <ul class="styled">
+        <li>v0.1 - October 21, 2013. Branch: <a target="_BLANK" href="https://github.com/Addepar/ember-widgets/tree/master">master →</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <hr>
+      <h1>Contributing</h1>
+      <p>You can contribute to this project in one of two ways:
+      <ul class="styled">
+        <li>Browse the ember-widgets <a target="_BLANK" href="https://github.com/Addepar/ember-widgets/issues?state=open">issues</a> and report bugs</li>
+        <li>Clone the ember-widgets repo, make some changes according to our development guidelines and issue a pull-request with your changes.</li>
+      </ul>
+      <p>We keep the ember-widgets.js code to the minimum necessary, giving users as much control as possible.</p>
+    </div>
+    <div class="col-md-6">
+      <hr>
+      <h1>Acknowledgements</h1>
+      <p><a target="_BLANK" href="https://github.com/Addepar/ember-widgets/graphs/contributors">List of Contributors on Github</a></p>
+      <p>With lots of help from the Ember.js team</p>
+      <p><a target="_BLANK" href="https://twitter.com/ebryn">ebryn</a>, <a target="_BLANK" href="https://twitter.com/tomdale">tomdale</a>, <a target="_BLANK" href="https://twitter.com/wycats">wycats</a></p>
+      <p>The original idea for lazy rendering was inspired by Erik Bryn.</p>
+    </div>
+  </div>
+</div>

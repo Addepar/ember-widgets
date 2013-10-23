@@ -1,0 +1,64 @@
+<div class="col-md-10 col-md-offset-2 left-border main-content-container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Popover <small> Ember.Widgets.Popover</small></h2>
+      <p class="elevated">Add small overlays of content to any element
+for displaying additional information. We created the popover link as a
+component which can either hold a content string specified in the handlebar
+helper or point to a custom view class for more sophisticated look and
+feel.</p>
+    </div>
+
+    <div class="col-md-6">
+      <h3>Simple Popover</h3>
+      <div class="example-container">
+        {{#popover-link-component tagName="button" class="btn btn-primary"
+          title="Hello" content="Hello World!"}}
+          Show Popover Top
+        {{/popover-link-component}}
+      </div>
+
+      <h4 class="bumper-30">Application.hbs</h4>
+      <div class="highlight">
+<pre class="prettyprint lang-html">&#123;&#123;#popover-link-component tagName=&quot;button&quot;
+  class=&quot;btn btn-primary&quot; title=&quot;Hello&quot;
+  content=&quot;Hello World&quot;&#125;&#125;
+  Show Popover Button-Left
+&#123;&#123;/popover-link-component&#125;&#125;</pre>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <h3>Popover with contentViewClass</h3>
+      <div class="example-container">
+        {{#popover-link-component tagName="button" class="btn btn-primary"
+          placement="bottom-left"
+          contentBinding="model"
+          contentViewClass="App.CustomPopoverContentView"}}
+          Show Popover Button-Left
+        {{/popover-link-component}}
+      </div>
+
+      <h4 class="bumper-30">Application.hbs</h4>
+      <div class="highlight">
+<pre class="prettyprint lang-html">&#123;&#123;#popover-link-component tagName=&quot;button&quot;
+  class=&quot;btn btn-primary&quot; placement=&quot;bottom-left&quot;
+  contentViewClass=&quot;App.CustomPopoverContentView&quot;&#125;&#125;
+  Show Popover Button-Left
+&#123;&#123;/popover-link-component&#125;&#125;</pre>
+      </div>
+
+      <h4 class="bumper-30">Custom-popover-content.hbs</h4>
+      <div class="highlight">
+<pre class="prettyprint lang-html">Isn't this one fine day &#123;&#123;content.name&#125;&#125;?</pre>
+      </div>
+
+      <h4 class="bumper-30">Custom_popover_content_view.coffee</h4>
+      <div class="highlight">
+<pre class="prettyprint lang-coffee">App.CustomPopoverContentView = Ember.View.extend
+  templateName: 'custom-popover-content'</pre>
+      </div>
+    </div>
+
+  </div>
+</div>

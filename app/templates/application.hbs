@@ -1,0 +1,66 @@
+{{!-- addepar-navbar --}}
+<nav class="navbar navbar-transparent addepar-navbar" role="navigation">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="#">
+      <img id="logo_dark" class="logo" src="img/addepar_logo_light.png" /><span class="navbar-title">Open Source</span>
+    </a>
+  </div>
+
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">Ember Widgets</a></li>
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>
+
+{{outlet}}
+
+{{!-- Footer --}}
+<div class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3 col-md-offset-6">
+        <ul class="list-unstyled">
+          <li><h6>Ember Widgets</h6></li>
+          <li>{{#linkTo 'emberWidgets.overview'}}Overview &amp; Getting Started{{/linkTo}}</li>
+          <li>{{#linkTo 'emberWidgets.documentation'}}API &amp; Documentation{{/linkTo}}</li>
+          <li class="bumper-30">{{#linkTo 'emberWidgets.accordion'}}Accordion{{/linkTo}}</li>
+          <li>{{#linkTo 'emberWidgets.carousel'}}Carousel{{/linkTo}}</li>
+          <li>{{#linkTo 'emberWidgets.modal'}}Modal{{/linkTo}}</li>
+          <li>{{#linkTo 'emberWidgets.popover'}}Popover{{/linkTo}}</li>
+          <li>{{#linkTo 'emberWidgets.select'}}Select{{/linkTo}}</li>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <ul class="list-unstyled">
+          <li><h6>Open Source</h6></li>
+          <li>{{#linkTo 'emberWidgets.overview'}}Home{{/linkTo}}</li>
+          <li>{{#linkTo 'license'}}License{{/linkTo}}</li>
+          <li>
+            <address>
+              <br><br>
+              <a target="_BLANK" href="http://goo.gl/maps/446ui"><strong>Addepar HQ</strong><br>
+              1215 Terra Bella Ave<br>
+              Mountain View, CA 94043</a><br><br>
+
+              <a target="_BLANK" href="http://goo.gl/maps/xEiCM"><strong>Addepar NY</strong><br>
+              335 Madison Ave Suite 880<br>
+              New York, NY 10017</a><br>
+            </address>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 center-align">
+        <p>&copy; 2013 Addepar, Inc.</p>
+      </div>
+    </div>
+  </div>
+</div>

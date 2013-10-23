@@ -1,0 +1,24 @@
+<div class="ember-select-container ember-select-multi dropdown-toggle">
+  <ul class="ember-select-choices">
+    {{! TODO(Louis):get help from peter to get a placeholder or a zero value }}
+    {{each selections itemViewClass="view.selectionItemView"}}
+    <li class="ember-select-search-field">
+      {{view searchView}}
+    </li>
+  </ul>
+</div>
+<div class="dropdown-menu">
+  {{view listView
+    tagName="ul"
+    classNames="grey-box-scroll-bar ember-select-results"
+    heightBinding="dropdownHeight"
+    rowHeightBinding="rowHeight"
+    contentBinding="groupedContent"
+    itemViewClassBinding="itemView"
+  }}
+  {{#if hasNoResults}}
+    <span class="ember-select-no-results">
+      No results match "{{query}}"
+    </span>
+  {{/if}}
+</div>

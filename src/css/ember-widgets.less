@@ -1,0 +1,55 @@
+// Dependencies Variables
+// ------------------------
+@FontAwesomePath: "../font";
+
+// Mixins
+// -------------------------
+@import "./mixins.less";
+
+//
+// Important BG and Color Variables
+// -----------------------------------------------------------------------------
+// TODO(Louis): This gets overriden by the defaults.less file in
+// portal-firm-styles, need to restructure less
+@body-bg-color: #f7f7f7;
+
+//
+// Typography Variables
+// -----------------------------------------------------------------------------
+
+/* Type */
+@univers:               'Univers-Next';
+@univers-condensed:     'Univers-Next-Condensed';
+@univers-tabular:       'Univers-Tabular';
+@backup-fonts:          'Helvetica Neue', 'Helvetica', Arial, sans-serif;
+
+/* Colors */
+@highlightColor:        #27AAE1;
+@headingsFontWeight:    normal;
+
+/* Highlights / Hover */
+
+@dropdownHoverBackground: @highlightColor; //#227ECB
+
+// Tooltips and popovers
+// -------------------------
+@tooltipColor:            #fff;
+@tooltipBackground:       #000;
+@tooltipArrowWidth:       5px;
+@tooltipArrowColor:       @tooltipBackground;
+
+@popoverBackground:       #fff;
+@popoverArrowWidth:       10px;
+@popoverArrowColor:       #fff;
+@popoverTitleBackground:  darken(@popoverBackground, 3%);
+
+// Special enhancement for popovers
+@popoverArrowOuterWidth:  @popoverArrowWidth + 1;
+@popoverArrowOuterColor:  rgba(0,0,0,.25);
+
+//
+// Widgets
+// -----------------------------------------------------------------------------
+
+@import "./select.less";
+@import "./popover.less";

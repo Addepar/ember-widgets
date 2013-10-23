@@ -1,0 +1,9 @@
+node_modules/
+gh_pages/
+build/
+dist/
+dependencies/compiled/*.*
+test/runner.html
+.DS_Store
+*.swo
+*.swp

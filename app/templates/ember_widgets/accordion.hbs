@@ -1,0 +1,40 @@
+<div class="col-md-10 col-md-offset-2 left-border main-content-container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Accordion <small> Ember.Widgets.Accordion</small></h2>
+      <p class="elevated">Displays collapsible content panels for presenting information in a limited amount of space. Click headers to expand/collapse content that is broken into logical sections, much like tabs.</p>
+
+      <div class="example-container">
+        {{#accordion-component}}
+          {{#accordion-item isActive=true title="Collapsible Group Item #1"}}
+            Anim pariatur cliche reprehenderit...
+          {{/accordion-item}}
+          {{#accordion-item title="Collapsible Group Item #2"}}
+            Anim pariatur cliche reprehenderit...
+          {{/accordion-item}}
+          {{#accordion-item title="Collapsible Group Item #3"}}
+            Anim pariatur cliche reprehenderit...
+          {{/accordion-item}}
+        {{/accordion-component}}
+      </div>
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h4>Application.hbs</h4>
+      <div class="highlight">
+<pre class="prettyprint lang-html">&#123;&#123;#accordion-component&#125;&#125;
+  &#123;&#123;#accordion-item isActive=true title=&quot;Collapsible Group Item #1&quot;&#125;&#125;
+    Anim pariatur cliche reprehenderit...
+  &#123;&#123;/accordion-item&#125;&#125;
+  &#123;&#123;#accordion-item title=&quot;Collapsible Group Item #2&quot;&#125;&#125;
+    Anim pariatur cliche reprehenderit...
+  &#123;&#123;/accordion-item&#125;&#125;
+  &#123;&#123;#accordion-item title=&quot;Collapsible Group Item #3&quot;&#125;&#125;
+    Anim pariatur cliche reprehenderit...
+  &#123;&#123;/accordion-item&#125;&#125;
+&#123;&#123;/accordion-component&#125;&#125;</pre>
+      </div>
+    </div>
+
+  </div>
+</div>
