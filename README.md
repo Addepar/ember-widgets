@@ -1,4 +1,4 @@
-Addepar Component Library / Addepar-Bootstrap
+Ember Widgets by Addepar
 =============================================
 
 ### Getting started
