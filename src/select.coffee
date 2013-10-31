@@ -133,7 +133,7 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
     return [] unless content
     filteredContent = @get('content').filter (item) => @matcher(query, item)
     return filteredContent unless @get('sortLabels')
-    _.sortBy filteredContent, (item) => get(item, @get('optionLabelPath'))
+    _.sortBy filteredContent, (item) => get(item, @get('optionLabelPath'))?.toLowerCase()
   .property 'content.@each', 'query', 'optionLabelPath', 'sortLabels'
 
   # the list of content that is grouped by the content in the optionGroupPath
