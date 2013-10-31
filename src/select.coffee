@@ -10,7 +10,7 @@ set = (object, key, value) ->
 # The view for each item in the select.
 Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
   tagName: 'li'
-  defaultTemplate: Ember.Handlebars.compile("{{view.label}}")
+  templateName: 'select_item'
   layoutName: 'select_item_layout'
   classNames: 'ember-select-result-item'
   classNameBindings: ['content.isGroupOption:ember-select-group',
@@ -175,9 +175,12 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
     @setDefaultSelection()
 
   # It matches the item label with the query. This can be overrideen for better
-  matcher: (query, item) ->
+  matcher: (searchText, item) ->
+    return yes unless searchText
     label = get(item, @get('optionLabelPath'))
-    not label or not Ember.isEmpty label.match(RegExp(query, 'gi'))
+    escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
+    regex = new RegExp(escapedSearchText, 'i')
+    regex.test(label)
 
   toggleDropdown: (event) ->
     @toggleProperty 'showDropdown'
