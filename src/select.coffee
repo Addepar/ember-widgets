@@ -79,7 +79,7 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
   isButton:     yes
 
   # Change the icon when necessary
-  dropdownToggleIcon: 'icon-caret-down'
+  dropdownToggleIcon: 'fa fa-caret-down'
 
   # The list of options
   content:    []
