@@ -91,14 +91,11 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
         document.execCommand command, true, arg
         @endEditing()
 
-  click: (event) ->
+  keyUp: (event) ->
     @queryCommandState()
 
-  keyPress: (event) ->
+  mouseUp: (event) ->
     @queryCommandState()
-
-  keyDown: ->
-    debugger
 
   queryCommandState: ->
     @set 'isBold',     document.queryCommandState('bold')
@@ -165,8 +162,12 @@ Ember.Widgets.DomHelper = Ember.Mixin.create
       $(endParent).remove()
 
   insertHTMLAtRange: (range, html) ->
+    insertElementAtRange(range, @createElementsFromString(html)[0])
+
+  insertElementAtRange: (range, node) ->
     @deleteRange(range)
-    range.insertNode(@createElementsFromString(html)[0])
+    range.insertNode(node)
+    node
 
   getCurrentRange: ->
     if window.getSelection().rangeCount > 0 then window.getSelection().getRangeAt(0) else null
@@ -184,10 +185,10 @@ Ember.Widgets.DomHelper = Ember.Mixin.create
 
   getNonEmptySideNode: (range, left=true, deep)->
     node = range[if left then 'startContainer' else 'endContainer']
-    while ((sideNode = node[if left then 'previousSibling' else 'nextSibling']) is null  or
-           sideNode.nodeValue?.length == 0) and
+    while ((sideNode = node[if left then 'previousSibling' else 'nextSibling']) is null or
+           sideNode.nodeValue?.trim().length == 0) and
     !$(node).hasClass(@EDITOR_CLASS)
-      if sideNode?.nodeValue.length == 0
+      if sideNode?.nodeValue?.trim().length == 0
         # Ignore this sideNode because it's empty. Go to the next/previous sibling
         node = node[if left then 'previousSibling' else 'nextSibling']
       else
@@ -200,46 +201,109 @@ Ember.Widgets.DomHelper = Ember.Mixin.create
         sideNode = sideNode.children[index]
     return sideNode
 
+Ember.Widgets.NonEditablePill = Ember.Controller.extend Ember.Widgets.DomHelper,
+  name: null
+  textEditor: null
+  params: Ember.computed -> {}
+
+  initialize: (params) ->
+    @params = params
+
+  actions:
+    modalConfirm: ->
+      @get('params')['factor-id'] = @textEditor.getNewFactorId()
+      @get('textEditor').insertFactor this
+    modalCancel: -> Ember.K
+
+  result: -> Ember.K
+
+  configure: ->
+    @send 'modalConfirm'  # No configuration by default
+
+  render: ->
+    span = @createElementsFromString("<span></span>")
+    span.addClass("non-editable")
+    span.attr("data-type": "" + @constructor)
+    span.attr("title": @get('name'))
+    # include all params as data-attributes
+    for key, value of @get('params')
+      span.attr("data-" + key, value)
+    span.text(@result())
+    return span[0]
+
+Ember.Widgets.NonEditableTextPill = Ember.Widgets.NonEditablePill.extend
+  name: "Custom Text"
+  text: Ember.computed.alias 'params.text'
+
+  result: ->
+    @get('params.text')
+
+  configure: ->
+    modal = Ember.Widgets.ModalComponent.popup
+      content: this
+      targetObject: this
+      confirm: "modalConfirm"
+      cancel: "modalCancel"
+      contentViewClass: Ember.View.extend
+        templateName: 'non_editable_text_pill_configuration'
+      headerText: @get('name')
+      confirmText: "Insert"
+
+Ember.Widgets.TodaysDate = Ember.Widgets.NonEditablePill.extend
+  name: "Today's Date"
+
+  result: -> Date()
 
 Ember.Widgets.TextEditorWithNonEditableComponent =
 Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
   factorId: 0
-  htmlTemplate: '<span class="non-editable factor" data-factor-id="{{factorId}}"></span>'
   INVISIBLE_CHAR: '\uFEFF'
-  DEFAULT_FACTOR_TEXT: 'Non Editable '
   mouseDownTarget: null
+
+  pillOptions : Ember.computed ->
+    factors = [Ember.Widgets.TodaysDate.create(), Ember.Widgets.NonEditableTextPill.create()]
+    factors.setEach 'textEditor', this
+    factors
+  selectedPillOption: null
+
+  selectedPillOptionDidChange: Ember.observer ->
+    selectedPillOption = @get('selectedPillOption')
+    return unless selectedPillOption
+    selectedPillOption.configure()
+    @set 'selectedPillOption', null
+  , 'selectedPillOption'
+
+  initialize: (serializedContents) ->
+    $('.' + @EDITOR_CLASS).html(serializedContents)
+
+  serialize: ->
+    return $('.'+ @EDITOR_CLASS).html()
+
+  updateNonEditables: ->
+    # TODO
+    return
 
   getCurrentCaretContainer: (range) ->
     return $(range?.startContainer.parentElement).closest('.non-editable-caret')
 
-  getFactorValue: (factorId) ->
-    if factorId then @DEFAULT_FACTOR_TEXT + factorId else @DEFAULT_FACTOR_TEXT
+  getNewFactorId: ->
+    @incrementProperty 'factorId'
 
-  insertFactor: ->
-    factorId = @incrementProperty 'factorId'
-    html = @get 'htmlTemplate'
-    html = html.replace("{{factorId}}", factorId.toString())
-
+  insertFactor: (pill) ->
     # Ensure that we insert the factor in the text editor (move the range inside the editor if
     # not already)
     range = @getCurrentRange()
     range = if range && @inEditor(range) then range else @selectElement(@getLastElementInEditor())
 
-    @insertHTMLAtRange(range, html)
-
-    $factors = @$(".factor[data-factor-id='#{factorId}']")
-    # $factor.find('i').hide()
-    $factors.text(@getFactorValue(factorId))
-    $factor = $factors[0]
-
-    caretContainer = @insertCaretContainer($factor, false)
+    factor = @insertElementAtRange(range, pill.render())
+    caretContainer = @insertCaretContainer(factor, false)
 
     # Set cursor to the end of the caret container just created
     @selectElement(caretContainer)
     # Remove other caret containers, excluding the one we just selected
     @removeCaretContainers()
     # select the caret container again (which has probably been moved)
-    @selectElement($factor.nextSibling)
+    @selectElement(factor.nextSibling)
 
   isNonEditable: (node) ->
     not Ember.isEmpty($(node).closest('.non-editable'))
@@ -297,10 +361,6 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
       child = caretContainer.childNodes[0]
       if child && child.nodeValue?.charAt(0) == @INVISIBLE_CHAR
         child = child.deleteData(0, 1)
-        if caretContainer.parentElement.children.length == 1 && caretContainer.parentElement.childNodes.length == 1
-          # this means that the caretContainer was the only thing there, so we insert a br to
-          # keep the new line
-          $(caretContainer.parentElement).html('<br>')
       # via http://stackoverflow.com/questions/170004/how-to-remove-only-the-parent-element-and-not-its-child-elements-in-javascript
       contents = $(caretContainer).contents()
       $(caretContainer).replaceWith(contents)
@@ -415,6 +475,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
     @moveSelection()
 
   mouseUp: (event) ->
+    @_super()
     return unless @isTargetInEditor(event)
     @moveSelection()  # expand selection if only part of a non-editable was selected
     currentRange = @getCurrentRange()

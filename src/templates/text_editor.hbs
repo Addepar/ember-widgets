@@ -44,9 +44,13 @@
   </div>
 
   <div class="btn-group">
-    <a class="btn add-factor-btn" unselectable="on" {{action "insertFactor" on="mouseDown"}}>
-      <i class="fa-plus-circle"></i> Non Editable
-    </a>
+    {{select-component
+      contentBinding="pillOptions"
+      prompt="Insert non-editable"
+      optionLabelPath="name"
+      optionValuePath="name"
+      selectionBinding="selectedPillOption"
+    }}
   </div>
 </div>
 
