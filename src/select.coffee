@@ -111,11 +111,15 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
   .property 'selection', 'optionLabelPath'
 
   searchView: Ember.TextField.extend
-    attributeBindings: ['tabindex', 'autofocus']
     placeholder: 'Search'
     valueBinding: 'parentView.query'
-    tabindex: 1
-    autofocus: yes
+    # we want to focus on search input when dropdown is opened. We need to put
+    # this in a run loop to wait for the event that triggers the showDropdown
+    # to finishes before trying to focus the input. Otherwise, focus when be
+    # "stolen" from us.
+    showDropdownDidChange: Ember.observer ->
+      Ember.run.next this, -> @$().focus() if @get('state') is 'inDOM'
+    , 'parentView.showDropdown'
 
   # This is a hack. Ember.ListView doesn't handle case when total height
   # is less than height properly
