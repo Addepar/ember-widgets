@@ -61,7 +61,7 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
     $(range.endContainer).parents().has(range.startContainer).first().closest('.' + @EDITOR_CLASS).length > 0
 
   isTargetInEditor: (event) ->
-    not Ember.isEmpty($(event.target).closest('.text-editor'))
+    not Ember.isEmpty($(event.target).closest('.' + @EDITOR_CLASS))
 
   # Return the last child node of the editor. Does not handle multiple text editors
   getLastElementInEditor: ->
@@ -204,14 +204,12 @@ Ember.Widgets.DomHelper = Ember.Mixin.create
 Ember.Widgets.NonEditablePill = Ember.Controller.extend Ember.Widgets.DomHelper,
   name: null
   textEditor: null
-  params: Ember.computed -> {}
-
-  initialize: (params) ->
-    @params = params
+  params: {}
 
   actions:
     modalConfirm: ->
-      @get('params')['factor-id'] = @textEditor.getNewFactorId()
+      @params['factor-id'] = @textEditor.getNewFactorId()
+      @params['type'] = "" + @constructor
       @get('textEditor').insertFactor this
     modalCancel: -> Ember.K
 
@@ -223,7 +221,6 @@ Ember.Widgets.NonEditablePill = Ember.Controller.extend Ember.Widgets.DomHelper,
   render: ->
     span = @createElementsFromString("<span></span>")
     span.addClass("non-editable")
-    span.attr("data-type": "" + @constructor)
     span.attr("title": @get('name'))
     # include all params as data-attributes
     for key, value of @get('params')
@@ -260,10 +257,13 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
   INVISIBLE_CHAR: '\uFEFF'
   mouseDownTarget: null
 
-  pillOptions : Ember.computed ->
-    factors = [Ember.Widgets.TodaysDate.create(), Ember.Widgets.NonEditableTextPill.create()]
-    factors.setEach 'textEditor', this
-    factors
+  pillOptions: [Ember.Widgets.TodaysDate, Ember.Widgets.NonEditableTextPill]
+
+  _pillOptions : Ember.computed ->
+    @getWithDefault('pillOptions', []).map (option) =>
+      option.create textEditor: this
+  .property('pillOptions')
+
   selectedPillOption: null
 
   selectedPillOptionDidChange: Ember.observer ->
@@ -279,9 +279,17 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
   serialize: ->
     return $('.'+ @EDITOR_CLASS).html()
 
-  updateNonEditables: ->
-    # TODO
-    return
+  updateNonEditablePillContent: ->
+    deserializePill = (pillElement) =>
+      data = $(pillElement).data()
+      params = {}
+      for key, value of data
+        params[key] = value
+      return Ember.get(data.type).create({'textEditor': this, 'params': params})
+    pillElements = $('.non-editable')
+    for pillElement in pillElements
+      pill = deserializePill(pillElement)
+      @insertFactor(pill)
 
   getCurrentCaretContainer: (range) ->
     return $(range?.startContainer.parentElement).closest('.non-editable-caret')
@@ -292,18 +300,23 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
   insertFactor: (pill) ->
     # Ensure that we insert the factor in the text editor (move the range inside the editor if
     # not already)
-    range = @getCurrentRange()
-    range = if range && @inEditor(range) then range else @selectElement(@getLastElementInEditor())
+    pillElement = $('.non-editable[data-factor-id=' + pill.params.factorId + ']')
+    if pillElement.length == 1
+      pillElement.text(pill.result())
+      # TODO: support updating data params
+    else
+      range = @getCurrentRange()
+      range = if range && @inEditor(range) then range else @selectElement(@getLastElementInEditor())
 
-    factor = @insertElementAtRange(range, pill.render())
-    caretContainer = @insertCaretContainer(factor, false)
+      factor = @insertElementAtRange(range, pill.render())
+      caretContainer = @insertCaretContainer(factor, false)
 
-    # Set cursor to the end of the caret container just created
-    @selectElement(caretContainer)
-    # Remove other caret containers, excluding the one we just selected
-    @removeCaretContainers()
-    # select the caret container again (which has probably been moved)
-    @selectElement(factor.nextSibling)
+      # Set cursor to the end of the caret container just created
+      @selectElement(caretContainer)
+      # Remove other caret containers, excluding the one we just selected
+      @removeCaretContainers()
+      # select the caret container again (which has probably been moved)
+      @selectElement(factor.nextSibling)
 
   isNonEditable: (node) ->
     not Ember.isEmpty($(node).closest('.non-editable'))
@@ -469,6 +482,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
   keyUp: (event) ->
     @_super()
     @moveSelection()
+    @updateNonEditablePillContent()
 
   mouseDown: (event) ->
     @mouseDownTarget = event.target  # Save mousedown target for use in mouseup handler
@@ -483,3 +497,5 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
       # This prevents the user from putting the cursor within a non-editable that was previously selected
       @selectElement(event.target, "none")
       event.preventDefault()
+    @updateNonEditablePillContent()
+
