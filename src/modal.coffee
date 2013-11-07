@@ -63,7 +63,9 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     return if event.target isnt event.currentTarget
     @hide() unless @get('enforceModality')
 
-  hide: ->
+  hide: -> Ember.Widgets.ModalComponent.hideModal()
+
+  _hide: ->
     @set 'isShowing', no
     # bootstrap modal removes this class from the body when the modal cloases
     # to transfer scroll behavior back to the app
@@ -73,7 +75,9 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     # remove backdrop and destroy modal only after transition is completed
     @$().one $.support.transition.end, =>
       @_backdrop.remove() if @_backdrop
-      @destroy()
+      # We need to wrap this in a run-loop otherwise ember-testing will complain
+      # about auto run being disabled when we are in testing mode.
+      Ember.run this, @destroy
 
   _appendBackdrop: ->
     parentLayer = @$().parent()
@@ -85,11 +89,18 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
 
 Ember.Widgets.ModalComponent.reopenClass
   rootElement: '.ember-application'
-  hideAll: ->
+  poppedModal: null
+
+  hideModal: ->
+    if Addepar.Components.ModalComponent.poppedModal
+      Addepar.Components.ModalComponent.poppedModal._hide()
+      Addepar.Components.ModalComponent.poppedModal = null
 
   popup: (options = {}) ->
     rootElement = options.rootElement or @rootElement
-    modal = this.create options
+    @hideModal()
+    Addepar.Components.ModalComponent.poppedModal = this.create options
+    modal = Addepar.Components.ModalComponent.poppedModal
     modal.container = modal.get('targetObject.container')
     modal.appendTo rootElement
     modal

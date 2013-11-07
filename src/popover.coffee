@@ -43,7 +43,10 @@ Ember.Widgets.BodyEventListener,
 
   hide: ->
     @set('isShowing', no)
-    @$().one $.support.transition.end, => @destroy()
+    @$().one $.support.transition.end, =>
+      # We need to wrap this in a run-loop otherwise ember-testing will complain
+      # about auto run being disabled when we are in testing mode.
+      Ember.run this, @destroy
 
   snapToPosition: ->
     return unless @get('state') is 'inDOM'
