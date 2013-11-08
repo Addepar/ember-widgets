@@ -58,14 +58,17 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     # bootstrap modal adds this class to the body when the modal opens to
     # transfer scroll behavior to the modal
     $(document.body).addClass('modal-open')
+    @_setupDocumentHandlers()
+
+  willDestroyElement: ->
+    @_super()
+    @_removeDocumentHandlers()
 
   click: (event) ->
     return if event.target isnt event.currentTarget
     @hide() unless @get('enforceModality')
 
-  hide: -> Ember.Widgets.ModalComponent.hideModal()
-
-  _hide: ->
+  hide: ->
     @set 'isShowing', no
     # bootstrap modal removes this class from the body when the modal cloases
     # to transfer scroll behavior back to the app
@@ -87,20 +90,27 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     # show backdrop in next run loop so that it can fade in
     Ember.run.next this, -> @_backdrop.addClass('in')
 
+  _setupDocumentHandlers: ->
+    @_super()
+    unless @_hideHandler
+      @_hideHandler = => @hide()
+      $(document).on 'modal:hide', @_hideHandler
+
+  _removeDocumentHandlers: ->
+    @_super()
+    $(document).off 'modal:hide', @_hideHandler
+    @_hideHandler = null
+
 Ember.Widgets.ModalComponent.reopenClass
   rootElement: '.ember-application'
   poppedModal: null
 
-  hideModal: ->
-    if Addepar.Components.ModalComponent.poppedModal
-      Addepar.Components.ModalComponent.poppedModal._hide()
-      Addepar.Components.ModalComponent.poppedModal = null
+  hideAll: -> $(document).trigger('modal:hide')
 
   popup: (options = {}) ->
+    @hideAll()
     rootElement = options.rootElement or @rootElement
-    @hideModal()
-    Addepar.Components.ModalComponent.poppedModal = this.create options
-    modal = Addepar.Components.ModalComponent.poppedModal
+    modal = this.create options
     modal.container = modal.get('targetObject.container')
     modal.appendTo rootElement
     modal

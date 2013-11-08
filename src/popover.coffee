@@ -117,26 +117,31 @@ Ember.Widgets.BodyEventListener,
 
   _setupDocumentHandlers: ->
     @_super()
+    unless @_hideHandler
+      @_hideHandler = => @hide()
+      $(document).on 'popover:hide', @_hideHandler
     unless @_resizeHandler
       @_resizeHandler = @get('debounceSnapToPosition')
-      $('html').on 'resize', @_resizeHandler
+      $(document).on 'resize', @_resizeHandler
     unless @_scrollHandler
       @_scrollHandler = @get('debounceSnapToPosition')
-      $('html').on 'scroll', @_scrollHandler
+      $(document).on 'scroll', @_scrollHandler
 
   _removeDocumentHandlers: ->
     @_super()
-    # remove resize callbacks
-    $('html').off 'resize', @_resizeHandler
+    $(document).off 'popover:hide', @_hideHandler
+    @_hideHandler = null
+    $(document).off 'resize', @_resizeHandler
     @_resizeHandler = null
-    $('html').off 'scroll', @_scrollHandler
+    $(document).off 'scroll', @_scrollHandler
     @_scrollHandler = null
 
 Ember.Widgets.PopoverComponent.reopenClass
   rootElement: '.ember-application'
-  hideAll: ->
+  hideAll: -> $(document).trigger('popover:hide')
 
   popup: (options) ->
+    @hideAll()
     rootElement = options.rootElement or @rootElement
     popover = this.create options
     popover.appendTo rootElement
