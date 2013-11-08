@@ -40,7 +40,7 @@ module.exports = (grunt) ->
 
     neuter:
       options:
-        includeSourceURL: no
+        includeSourceURL: env is 'dev'
       "dist/ember-widgets.js":  "build/src/ember_widgets.js"
       "gh_pages/app.js":        "build/app/app.js"
 

@@ -1,4 +1,4 @@
-<div class="ember-texteditor-toolbar">
+<div {{bindAttr class=":ember-text-editor-toolbar isToolbarVisible:visible:hide"}}>
   {{view Ember.Select
     contentBinding="fontNames"
     placeholder="Select a Font"
@@ -13,7 +13,7 @@
     valueBinding="selectedFontSize"
   }}
 
-  <div class="btn-group" data-toggle="buttons">
+  <div class="btn-group">
     <label {{bindAttr class=":btn isBold:active"}}
       {{action "bold" on="mouseDown"}}>
       <i class="fa fa-bold"></i>
@@ -28,7 +28,7 @@
     </label>
   </div>
 
-  <div class="btn-group" data-toggle="buttons">
+  <div class="btn-group">
     <label {{bindAttr class=":btn isJustifyLeft:active"}}
       {{action "justifyLeft" on="mouseDown"}}>
       <i class="fa fa-align-left"></i>
@@ -54,7 +54,6 @@
   </div>
 </div>
 
-{{!-- Empty text editor --}}
 <div class="text-editor" contenteditable="true">
   <div>&nbsp;</div>
 </div>
