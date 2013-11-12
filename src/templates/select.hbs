@@ -1,6 +1,5 @@
 <div class="ember-select-container dropdown-toggle" {{action toggleDropdown}}>
-  <a {{bindAttr class=":ember-select-choice isButton:btn
-      isButton:btn-default"}}>
+  <a {{bindAttr class=":ember-select-choice buttonClass"}}>
     {{#if selection}}
       {{view selectedItemView contentBinding="selection"}}
       <i {{bindAttr class="view.dropdownToggleIcon"}}></i>

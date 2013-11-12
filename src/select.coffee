@@ -75,11 +75,12 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
   sortLabels:   yes
   # If isSelect is true, we will not show the search box
   isSelect:     no
-  # If is button is true, the select will look like a button
-  isButton:     yes
 
   # Change the icon when necessary
   dropdownToggleIcon: 'fa fa-caret-down'
+
+  # Change the button class when necessary
+  buttonClass: 'btn btn-default'
 
   # The list of options
   content:    []
