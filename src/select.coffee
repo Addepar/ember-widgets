@@ -46,6 +46,7 @@ Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
   click: ->
     return if @get('content.isGroupOption')
     @set 'controller.selection', @get('content')
+    @get('controller').userDidSelect @get 'content'
     @get('controller').hideDropdown()
 
   mouseEnter: ->
@@ -256,6 +257,7 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
   enterPressed: (event) ->
     item = @get 'highlighted'
     @set 'selection', item if item
+    @userDidSelect(item) if item
     # in case dropdown doesn't close
     @hideDropdown()
     # TODO(Peter): HACK the web app somehow reloads when enter is pressed.
@@ -300,5 +302,10 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
       $listView.scrollTop newIndex * @get('rowHeight')
     else if newIndex >= endIndex
       $listView.scrollTop (newIndex - numRows + 1.5) * @get('rowHeight')
+
+  #TODO Refactor other parts to use this method to set selection
+  userDidSelect: (selection) ->
+    @sendAction 'userSelected', selection
+    
 
 Ember.Handlebars.helper('select-component', Ember.Widgets.SelectComponent)
