@@ -16,6 +16,9 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   content:      ""
   contentViewClass: null
 
+  confirm: Ember.K
+  cancel: Ember.K
+
   defaultContentViewClass: Ember.View.extend
     template: Ember.Handlebars.compile("<p>{{content}}</p>")
 
@@ -29,11 +32,25 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
 
   actions:
     sendCancel: ->
-      @sendAction 'cancel'
+      # Important: we do not want to send cancel after modal is closed.
+      # It turns out that this happens sometimes which leads to undesire
+      # behaviors
+      return unless @get('isShowing')
+      cancel = @get 'cancel'
+      # TODO: this is for backward compatibility only. If cancel is a function
+      # we will invoke the callback
+      if typeof(cancel) is 'function' then cancel() else @sendAction 'cancel'
       @hide()
 
     sendConfirm: ->
-      @sendAction 'confirm'
+      # Important: we do not want to send confirm after modal is closed.
+      # It turns out that this happens sometimes which leads to undesire
+      # behaviors
+      return unless @get('isShowing')
+      confirm = @get 'confirm'
+      # TODO: this is for backward compatibility only. If confirm is a function
+      # we will invoke the callback
+      if typeof(confirm) is 'function' then confirm() else @sendAction 'confirm'
       @hide()
 
   didInsertElement: ->
@@ -49,6 +66,11 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     # bootstrap modal adds this class to the body when the modal opens to
     # transfer scroll behavior to the modal
     $(document.body).addClass('modal-open')
+    @_setupDocumentHandlers()
+
+  willDestroyElement: ->
+    @_super()
+    @_removeDocumentHandlers()
 
   click: (event) ->
     return if event.target isnt event.currentTarget
@@ -64,7 +86,9 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     # remove backdrop and destroy modal only after transition is completed
     @$().one $.support.transition.end, =>
       @_backdrop.remove() if @_backdrop
-      @destroy()
+      # We need to wrap this in a run-loop otherwise ember-testing will complain
+      # about auto run being disabled when we are in testing mode.
+      Ember.run this, @destroy
 
   _appendBackdrop: ->
     parentLayer = @$().parent()
@@ -74,11 +98,25 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     # show backdrop in next run loop so that it can fade in
     Ember.run.next this, -> @_backdrop.addClass('in')
 
+  _setupDocumentHandlers: ->
+    @_super()
+    unless @_hideHandler
+      @_hideHandler = => @hide()
+      $(document).on 'modal:hide', @_hideHandler
+
+  _removeDocumentHandlers: ->
+    @_super()
+    $(document).off 'modal:hide', @_hideHandler
+    @_hideHandler = null
+
 Ember.Widgets.ModalComponent.reopenClass
   rootElement: '.ember-application'
-  hideAll: ->
+  poppedModal: null
+
+  hideAll: -> $(document).trigger('modal:hide')
 
   popup: (options = {}) ->
+    @hideAll()
     rootElement = options.rootElement or @rootElement
     modal = this.create options
     modal.container = modal.get('targetObject.container')

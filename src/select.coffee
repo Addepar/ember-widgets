@@ -46,6 +46,7 @@ Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
   click: ->
     return if @get('content.isGroupOption')
     @set 'controller.selection', @get('content')
+    @get('controller').userDidSelect @get 'content'
     @get('controller').hideDropdown()
 
   mouseEnter: ->
@@ -75,11 +76,12 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
   sortLabels:   yes
   # If isSelect is true, we will not show the search box
   isSelect:     no
-  # If is button is true, the select will look like a button
-  isButton:     yes
 
   # Change the icon when necessary
   dropdownToggleIcon: 'fa fa-caret-down'
+
+  # Change the button class when necessary
+  buttonClass: 'btn btn-default'
 
   # The list of options
   content:    []
@@ -111,11 +113,15 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
   .property 'selection', 'optionLabelPath'
 
   searchView: Ember.TextField.extend
-    attributeBindings: ['tabindex', 'autofocus']
     placeholder: 'Search'
     valueBinding: 'parentView.query'
-    tabindex: 1
-    autofocus: yes
+    # we want to focus on search input when dropdown is opened. We need to put
+    # this in a run loop to wait for the event that triggers the showDropdown
+    # to finishes before trying to focus the input. Otherwise, focus when be
+    # "stolen" from us.
+    showDropdownDidChange: Ember.observer ->
+      Ember.run.next this, -> @$().focus() if @get('state') is 'inDOM'
+    , 'parentView.showDropdown'
 
   # This is a hack. Ember.ListView doesn't handle case when total height
   # is less than height properly
@@ -251,6 +257,7 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
   enterPressed: (event) ->
     item = @get 'highlighted'
     @set 'selection', item if item
+    @userDidSelect(item) if item
     # in case dropdown doesn't close
     @hideDropdown()
     # TODO(Peter): HACK the web app somehow reloads when enter is pressed.
@@ -295,5 +302,10 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
       $listView.scrollTop newIndex * @get('rowHeight')
     else if newIndex >= endIndex
       $listView.scrollTop (newIndex - numRows + 1.5) * @get('rowHeight')
+
+  #TODO Refactor other parts to use this method to set selection
+  userDidSelect: (selection) ->
+    @sendAction 'userSelected', selection
+    
 
 Ember.Handlebars.helper('select-component', Ember.Widgets.SelectComponent)
