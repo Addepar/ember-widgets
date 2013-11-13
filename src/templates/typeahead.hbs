@@ -1,11 +1,11 @@
 <div>
-  {{view searchView}}
+  {{view searchView class="form-control"}}
 </div>
 {{#unless hasNoResults}}
   <div class="dropdown-menu">
     {{view listView
       tagName="ul"
-      classNames="ember-select-results"
+      classNames="ember-typeahead-results"
       heightBinding="dropdownHeight"
       rowHeightBinding="rowHeight"
       contentBinding="groupedContent"

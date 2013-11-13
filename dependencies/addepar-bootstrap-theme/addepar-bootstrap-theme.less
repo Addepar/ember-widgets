@@ -1,18 +1,188 @@
 //
-// Addepar Bootstrap(V3) Theme - v0.1
+// Addepar Bootstrap(V3) Theme - v0.1.4
 // -----------------------------------------------------------------------------
+
+/* Variables
+-------------------------------------------------- */
+
+@univers:               'Univers-Next';
+@univers-condensded:    'Univers-Condensed';
+@univers-tabular:       'Univers-Tabular';
+@backup-fonts:          'Helvetica Neue', 'Helvetica', Arial, sans-serif;
+@sansFontFamily:        @univers, @backup-fonts;
+
+/* Colors */
+
+// Headers
+@85-percent-black:    #262626;
+// Sub-headers
+@75-percent-black:    #404040;
+// Copy
+@55-percent-black:    #737373;
+@highlight-blue:      #0097e3; //#162851 #0A3250 00aeef 0075B0 27aae1
+
+
+/* Body and structure
+-------------------------------------------------- */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: @sansFontFamily;
+}
+
+/* Typography
+-------------------------------------------------- */
+
+/*
+  From Fonts.com:
+
+  Univers Next
+  font-family: 'UniversNW01-130BUlLt';
+  font-family: 'UniversNW01-230BThin';
+  font-family: 'Univers Next W01 Light';
+  font-family: 'UniversNextW01-Regular';
+  font-family: 'Univers Next W01 Medium';
+  font-family: 'Univers Next W01 Bold';
+
+  Univers (Tabular numbers)
+  font-family: 'Univers LT W01 45 Light';
+  font-family: 'Univers LT W01 55 Roman';
+  font-family: 'Univers LT W01 65 Bold';
+*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: @sansFontFamily;
+  color: #45494D;
+  line-height: 1.5;
+}
+
+h1 {
+  font: normal 24px/1.5 @sansFontFamily;
+  margin-bottom: 15px;
+
+  small {
+    font: normal 18px/1.5 @sansFontFamily;
+  }
+}
+
+h2 {
+  font: normal 20px/1.5 @sansFontFamily;
+  color: @75-percent-black;
+
+  small {
+    font-size: 14px;
+  }
+}
+
+h3 {
+  font: 300 18px/1.5 @sansFontFamily;
+}
+
+h4 {
+  font: 500 15px/1.5 @sansFontFamily;
+}
+
+h5 {
+  font: bold 13px/1.5 @sansFontFamily;
+  text-transform: uppercase;
+  // letter-spacing: 2px;
+}
+
+p,
+.styled li {
+  // Don't know yet
+  font: normal 14px/1.62 @sansFontFamily;
+  // font: 300 14px/1.62 @sansFontFamily;
+  color: @55-percent-black;
+  margin-bottom: 10px;
+
+  &.elevated {
+    font: 300 16px/1.62 @sansFontFamily;
+    margin-bottom: 25px;
+  }
+
+  &.reduced {
+    font: normal 11px/1.4 @sansFontFamily;
+  }
+}
+
+.styled li {
+  margin-bottom: 0;
+}
+
+.styled-spacious li {
+  margin-bottom: 20px;
+}
+
+a {
+  color: @highlight-blue;
+  // color: #333;
+
+  &:hover,
+  &:active {
+    color: @highlight-blue;
+    color: lighten(@highlight-blue, 10%);
+    text-decoration: none;
+  }
+}
+
+hr.soften {
+  height: 1px;
+  margin: 70px 0;
+  background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
+  background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
+  background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
+  background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
+  border: 0;
+}
+
+select,
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input {
+  margin: 0;
+  padding: 0 5px;
+  border: 1px solid #ddd;
+  .border-radius(0);
+  .box-shadow(none);
+}
+
+strong {
+  font-weight: 500;
+}
+
 
 /* Addepar Buttons
 -------------------------------------------------- */
 .btn {
-  .border-radius(3px);
+  // .border-radius(3px);
+  .border-radius(0);
   padding: 8px 16px;
   background-color: transparent;
-  font-size: 13px;
+  // Note: This might be too small - 13px?
+  font-size: 12px;
   font-weight: 500;
-  // text-transform: uppercase;
-  // letter-spacing: 1px;
   .user-select(none);
+  .transition(background-color ease-out 0.3s);
+  .transition(border-color ease-out 0.3s);
 }
 
 .btn-lg {
@@ -20,13 +190,16 @@
   font-size: 18px;
   line-height: 1.33;
   .border-radius(2px);
+  .border-radius(0);
 }
 
-.btn-sm, .btn-xs {
+.btn-sm,
+.btn-xs {
   padding: 5px 10px;
   font-size: 12px;
   line-height: 1.5;
   .border-radius(2px);
+  .border-radius(0);
 }
 
 .btn-xs {
@@ -76,6 +249,8 @@
   // background-repeat: repeat-x;
   // border-color: #e0e0e0;
   border-color: #ccc;
+  border-color: #ddd;
+  .transition(background-color ease-out 0.3s);
   // filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#fff6f6f6', GradientType=0);
 }
 
@@ -83,6 +258,12 @@
 .btn-default.active {
   background-color: #f6f6f6;
   border-color: #e0e0e0;
+}
+
+
+.btn-default:hover {
+  background-color: #ebebeb;
+  border-color: #adadad;
 }
 
 .btn-primary {
@@ -172,20 +353,46 @@
   border-color: #2aabd2;
 }
 
+// TODO(Louis): Figure out if we need this....
+.btn,
+.btn-group > .btn,
+.btn-group > .dropdown-menu,
+.btn-group > .popover {
+  // background-color: #f3f3f3;
+  // background-image: none !important;
+  // filter: none !important;
+  // .user-select(none);
+
+  &:focus {
+    // border-color: #C6C6C6;
+    // border-color: #DCDCDC;
+  }
+}
+
+// In bootstrap the z-index is set to 2 and this cause issues in IE9
+.btn-group > .btn:hover,
+.btn-group > .btn:focus,
+.btn-group > .btn:active,
+.btn-group > .btn.active {
+  // z-index: auto;
+}
+
 /* Addepar Thumbnails
 -------------------------------------------------- */
 .thumbnail,
 .img-thumbnail {
   -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075);
-          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075);
 }
 
 /* Addepar Dropdowns
 -------------------------------------------------- */
 .dropdown-menu {
-  border: 1px solid #dfdfdf;
-  font-size: 13px;
+  border: 1px solid #ddd;
+  padding: 6px 0 6px 0;
+  font-size: 12px;
   .box-shadow(0 0 3px rgba(0, 0, 0, 0.1));
+  // .box-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
   .border-radius(0);
 }
 
@@ -212,7 +419,7 @@
   .border-radius(0);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#fff8f8f8', GradientType=0);
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 5px rgba(0, 0, 0, 0.075);
-          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 5px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 5px rgba(0, 0, 0, 0.075);
 }
 
 .navbar .navbar-nav > .active > a {
@@ -259,7 +466,7 @@
 .alert {
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.05);
-          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.05);
   .border-radius(2px);
 }
 
@@ -468,19 +675,229 @@
 
 .modal-title {
   font-size: 13px;
+  font-weight: 500;
   color: #333;
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
 
+.modal-body {
+  padding: 0 20px;
+}
+
 .modal-footer {
+  margin-top: 0;
   border-top: 1px solid transparent;
   text-align: left;
 }
 
 /* Addepar Antiscroll
--------------------------------------------------- */
+-------------------------------------- ------------ */
 
 .antiscroll-scrollbar {
   .border-radius(0);
+}
+
+.antiscroll-scrollbar {
+  background: gray;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Addepar Scrollbars
+-------------------------------------------------- */
+
+::-webkit-scrollbar {
+  width: 7px;
+  margin-right: 2px;
+}
+
+::-webkit-scrollbar-track {
+   background: transparent;
+   border: none;
+   .box-shadow(none);
+}
+
+::-webkit-scrollbar-thumb {
+  background: gray;
+  background: rgba(0, 0, 0, 0.2);
+  .border-radius(0);
+  .box-shadow(0 0 1px #fff);
+}
+
+/* Addepar Popovers
+-------------------------------------------------- */
+
+// Do not limit the popovers to have width 276px
+.popover {
+  max-width: none;
+  border: 1px solid #ddd;
+  // Need to be above modals
+  z-index: 1050;
+  .box-shadow(none) !important;
+}
+
+.popover.bottom.no-arrow .arrow,
+.popover.top.no-arrow .arrow {
+  visibility: hidden;
+}
+
+.popover.bottom.no-arrow,
+.popover.top.no-arrow {
+  margin-top: 0;
+}
+
+.popover.top-right {
+  margin-left: 10px;
+  margin-top: -4px;
+}
+
+.popover.top-right .arrow {
+  top: 18px;
+  left: -11px;
+  margin-top: -11px;
+  border-left-width: 0;
+  border-right-color: #999;
+  border-right-color: rgba(0, 0, 0, 0.25);
+}
+
+.popover.top-right .arrow:after {
+  left: 1px;
+  bottom: -10px;
+  border-left-width: 0;
+  border-right-color: #FFF;
+}
+
+.popover.top-left {
+  margin-left: -10px;
+  margin-top: -4px;
+}
+
+.popover.top-left .arrow {
+  top: 18px;
+  right: -11px;
+  margin-top: -11px;
+  border-right-width: 0;
+  border-left-color: #999;
+  border-left-color: rgba(0, 0, 0, 0.25);
+}
+
+.popover.top-left .arrow:after {
+  right: 1px;
+  border-right-width: 0;
+  border-left-color: #FFF;
+  bottom: -10px;
+}
+
+.popover.bottom.no-arrow .arrow, .popover.top.no-arrow .arrow {
+  visibility: hidden;
+}
+
+.popover.bottom.no-arrow, .popover.top.no-arrow {
+  margin-top: 0;
+}
+
+.popover.bottom-right {
+  font-size: 12px;
+  margin-top: 0;
+}
+
+.popover.bottom-right .arrow {
+  left: 85%;
+  margin-left: -@popoverArrowOuterWidth;
+  border-top-width: 0;
+  border-bottom-color: #999; // IE8 fallback
+  border-bottom-color: @popoverArrowOuterColor;
+  top: -@popoverArrowOuterWidth;
+  &:after {
+    top: 1px;
+    margin-left: -@popoverArrowWidth;
+    border-top-width: 0;
+    border-bottom-color: @popoverArrowColor;
+  }
+}
+
+.popover.bottom-left {
+  font-size: 12px;
+  margin-top: 0;
+}
+
+.popover.bottom-left .arrow {
+  left: 15%;
+  margin-left: -@popoverArrowOuterWidth;
+  border-top-width: 0;
+  border-bottom-color: #999; // IE8 fallback
+  border-bottom-color: @popoverArrowOuterColor;
+  top: -@popoverArrowOuterWidth;
+  &:after {
+    top: 1px;
+    margin-left: -@popoverArrowWidth;
+    border-top-width: 0;
+    border-bottom-color: @popoverArrowColor;
+  }
+}
+
+.popover-title {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Addepar Forms
+-------------------------------------------------- */
+
+.sub-form-group {
+  margin-top: 5px;
+}
+
+.form-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: #999;
+}
+
+.checkbox-label {
+  // Should appear like the other form elements
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-control {
+  // Align with buttons. This might be sketch
+  &.input-default {
+    height: 35px;
+  }
+
+  &.input-xs {
+    height: 22px;
+    padding: 0 5px;
+    line-height: 20px;
+    font-size: 12px;
+    color: #333;
+  }
+}
+
+/* Addepar Tooltips
+-------------------------------------------------- */
+.tooltip-inner {
+  text-transform: capitalize;
+  white-space: nowrap;
+  .border-radius(0);
+  padding: 5px 11px;
+}
+
+/* Addepar Bootstrap Overrides
+-------------------------------------------------- */
+
+// Tabs
+.nav-tabs > li > a {
+  .border-radius(0);
+}
+
+/* Utility Classes
+-------------------------------------------------- */
+
+// Useful for buttons
+.block {
+  display: block;
 }

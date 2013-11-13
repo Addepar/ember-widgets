@@ -23,9 +23,9 @@
   position: relative;
   display: inline-block;
   outline: none;
-
   font-size: 12px;
 }
+
 
 .ember-select-choice i {
   position: absolute;
@@ -36,6 +36,11 @@
 .ember-select-choice.btn i {
   top: 11px;
   right: 15px;
+}
+
+.ember-select-choice.btn-xs i {
+  top: 6px;
+  right: 7px;
 }
 
 .ember-select-choice.btn-large i {
@@ -113,7 +118,6 @@
     background-color: #fff;
     border: 1px solid #d9d9d9;
     border-top: 1px solid #c0c0c0;
-    .border-radius(1px);
     margin: 0;
     padding: 0;
     cursor: text;
@@ -123,6 +127,7 @@
     position: relative;
     min-height: 28px;
     min-width: 160px;
+    .border-radius(0);
     .box-sizing();
 
     &:hover {
@@ -169,7 +174,7 @@
       -moz-background-clip   : padding;
       -webkit-background-clip: padding-box;
       background-clip        : padding-box;
-      .border-radius(3px);
+      .border-radius(0);
 
       .ember-select-search-choice-close {
         display: block;
@@ -233,7 +238,8 @@
 
 /* Ember Select Results
 -------------------------------------------------- */
-.ember-select-results {
+.ember-select-results,
+.ember-typeahead-results {
   margin: 4px 0 4px 0;
   padding: 0;
   position: relative;
