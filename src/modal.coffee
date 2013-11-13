@@ -32,6 +32,10 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
 
   actions:
     sendCancel: ->
+      # Important: we do not want to send cancel after modal is closed.
+      # It turns out that this happens sometimes which leads to undesire
+      # behaviors
+      return unless @get('isShowing')
       cancel = @get 'cancel'
       # TODO: this is for backward compatibility only. If cancel is a function
       # we will invoke the callback
@@ -39,6 +43,10 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
       @hide()
 
     sendConfirm: ->
+      # Important: we do not want to send confirm after modal is closed.
+      # It turns out that this happens sometimes which leads to undesire
+      # behaviors
+      return unless @get('isShowing')
       confirm = @get 'confirm'
       # TODO: this is for backward compatibility only. If confirm is a function
       # we will invoke the callback
