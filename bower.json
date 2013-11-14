@@ -22,12 +22,19 @@
     "VERSION"
   ],
   "dependencies": {
+    "font-awesome": "4.0.1",
     "lodash": "~1.1.1",
     "qunit": "~1.12.0"
   },
   "exportsOverride": {
     "lodash": {
       ".": "lodash.js"
+    },
+    "font-awesome": {
+      "css": "css/*",
+      "less": "less/*",
+      "scss": "scss/*",
+      "fonts": "fonts/*"
     }
   }
 }

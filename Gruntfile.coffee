@@ -82,8 +82,8 @@ module.exports = (grunt) ->
           {src: ['app/index.html'], dest: 'gh_pages/index.html'},
           {expand: true, flatten: true, cwd: 'dependencies/', src: ['**/*.js'], dest: 'gh_pages/lib'},
           {expand: true, flatten: true, cwd: 'dependencies/', src: ['**/*.css'], dest: 'gh_pages/css'},
-          {expand: true, cwd: 'dependencies/font-awesome/fonts/', src: ['**'], dest: 'gh_pages/font'},
-          {expand: true, cwd: 'app/assets/font/', src: ['**'], dest: 'gh_pages/font'},
+          {expand: true, cwd: 'dependencies/font-awesome/fonts/', src: ['**'], dest: 'gh_pages/fonts'},
+          {expand: true, cwd: 'app/assets/font/', src: ['**'], dest: 'gh_pages/fonts'},
           {expand: true, cwd: 'app/assets/img/', src: ['**'],  dest: 'gh_pages/img'}
         ]
 

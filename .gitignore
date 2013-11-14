@@ -8,7 +8,8 @@ test/runner.html
 *.swp
 
 # Bower dependencies
-dependencies/qunit
+dependencies/font-awesome
 dependencies/lodash
+dependencies/qunit
 
 tests/*.js
