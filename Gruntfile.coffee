@@ -12,6 +12,18 @@ module.exports = (grunt) ->
     uglify:
       "dist/ember-widgets.min.js": "dist/ember-widgets.js"
 
+    # https://github.com/yatskevich/grunt-bower-task
+    bower:
+      install:
+        options:
+          targetDir: 'dependencies'
+          layout: 'byComponent'
+          install: true
+          verbose: true
+          cleanTargetDir: false
+          cleanBowerDir: true
+          bowerOptions: {}
+
     coffee:
       srcs:
         options:
@@ -29,6 +41,12 @@ module.exports = (grunt) ->
         src: [ "**/*.coffee" ]
         dest: "build/app/"
         ext: ".js"
+      tests:
+        expand: true
+        cwd: "tests/"
+        src: ["*.coffee" ]
+        dest: "tests/"
+        ext: ".js"
 
     emberTemplates:
       options:
@@ -40,7 +58,7 @@ module.exports = (grunt) ->
 
     neuter:
       options:
-        includeSourceURL: env is 'dev'
+        includeSourceURL: env is "dev"
       "dist/ember-widgets.js":  "build/src/ember_widgets.js"
       "gh_pages/app.js":        "build/app/app.js"
 
@@ -56,9 +74,7 @@ module.exports = (grunt) ->
         files:
           "gh_pages/css/app.css": "app/assets/css/app.less"
 
-    ###
-      Copy build/app/assets/css into gh_pages/asset and other assets from app
-    ###
+    # Copy build/app/assets/css into gh_pages/asset and other assets from app
     copy:
       gh_pages:
         files: [
@@ -66,8 +82,8 @@ module.exports = (grunt) ->
           {src: ['app/index.html'], dest: 'gh_pages/index.html'},
           {expand: true, flatten: true, cwd: 'dependencies/', src: ['**/*.js'], dest: 'gh_pages/lib'},
           {expand: true, flatten: true, cwd: 'dependencies/', src: ['**/*.css'], dest: 'gh_pages/css'},
-          {expand: true, cwd: 'dependencies/font-awesome/fonts/', src: ['**'], dest: 'gh_pages/font'},
-          {expand: true, cwd: 'app/assets/font/', src: ['**'], dest: 'gh_pages/font'},
+          {expand: true, cwd: 'dependencies/font-awesome/fonts/', src: ['**'], dest: 'gh_pages/fonts'},
+          {expand: true, cwd: 'app/assets/font/', src: ['**'], dest: 'gh_pages/fonts'},
           {expand: true, cwd: 'app/assets/img/', src: ['**'],  dest: 'gh_pages/img'}
         ]
 
@@ -105,13 +121,16 @@ module.exports = (grunt) ->
       copy:
         files: [ "app/index.html" ]
         tasks: [ "copy" ]
+      bower:
+        files: [ 'bower.json']
+        tasks: [ 'bower']
 
     ###
       Runs all .html files found in the test/ directory through PhantomJS.
       Prints the report in your terminal.
     ###
     qunit:
-      all: [ "test/**/*.html" ]
+      all: [ "tests/**/*.html" ]
 
     ###
       Reads the projects .jshintrc file and applies coding
@@ -130,8 +149,9 @@ module.exports = (grunt) ->
       below.
     ###
     build_test_runner_file:
-      all: [ "test/**/*_test.js" ]
+      all: [ "tests/**/*_test.js" ]
 
+  grunt.loadNpmTasks "grunt-bower-task"
   grunt.loadNpmTasks "grunt-contrib-uglify"
   grunt.loadNpmTasks "grunt-contrib-jshint"
   grunt.loadNpmTasks "grunt-contrib-qunit"
@@ -150,14 +170,15 @@ module.exports = (grunt) ->
     its coniguration above in the grunt.initConfig above.
   ###
   grunt.registerMultiTask "build_test_runner_file", "Creates a test runner file.", ->
-    tmpl = grunt.file.read("test/support/runner.html.tmpl")
+    tmpl = grunt.file.read("tests/support/runner.html.tmpl")
     renderingContext = data:
-      files: @filesSrc.map (fileSrc) -> fileSrc.replace "test/", ""
-    grunt.file.write "test/runner.html", grunt.template.process(tmpl, renderingContext)
+      files: @filesSrc.map (fileSrc) -> fileSrc.replace "tests/", ""
+    grunt.file.write "tests/runner.html", grunt.template.process(tmpl, renderingContext)
 
   grunt.registerTask "build_srcs", [ "coffee:srcs", "emberTemplates", "neuter" ]
   grunt.registerTask "build_app", [ "coffee:app", "emberTemplates", "neuter" ]
+  grunt.registerTask "build_tests", [ "coffee:tests", "emberTemplates", "neuter" ]
   if env is "dev"
-    grunt.registerTask "default", [ "build_srcs", "build_app", "less", "copy", "uglify", "watch" ]
+    grunt.registerTask "default", [ "clean", "bower", "build_srcs", "build_app", "build_tests", "less", "copy", "uglify", "watch" ]
   else
-    grunt.registerTask "default", [ "less", "build_srcs", "uglify"]
+    grunt.registerTask "default", [ "bower", "less", "build_srcs", "uglify"]
