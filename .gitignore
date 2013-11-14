@@ -6,3 +6,9 @@ test/runner.html
 .DS_Store
 *.swo
 *.swp
+
+# Bower dependencies
+dependencies/qunit
+dependencies/lodash
+
+tests/*.js

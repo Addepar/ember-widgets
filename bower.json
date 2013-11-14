@@ -1,21 +1,33 @@
 {
   "name": "ember-widgets",
   "version": "0.0.1",
-  "main": ["./dist/ember-widgets.js", "./dist/ember-widgets.css"],
+  "main": [
+    "./dist/ember-widgets.js",
+    "./dist/ember-widgets.css"
+  ],
   "ignore": [
-      ".gitignore",
-      ".jshintrc",
-      "app",
-      "build",
-      "dependencies",
-      "gh_pages",
-      "node_modules",
-      "src",
-      "test",
-      "CHANGELOG",
-      "example.js",
-      "Gruntfile.coffee",
-      "package.json",
-      "VERSION"
-  ]
+    ".gitignore",
+    ".jshintrc",
+    "app",
+    "build",
+    "dependencies",
+    "gh_pages",
+    "node_modules",
+    "src",
+    "test",
+    "CHANGELOG",
+    "example.js",
+    "Gruntfile.coffee",
+    "package.json",
+    "VERSION"
+  ],
+  "dependencies": {
+    "lodash": "~1.1.1",
+    "qunit": "~1.12.0"
+  },
+  "exportsOverride": {
+    "lodash": {
+      ".": "lodash.js"
+    }
+  }
 }
