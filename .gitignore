@@ -12,6 +12,7 @@ dependencies/bootstrap
 dependencies/font-awesome
 dependencies/holder
 dependencies/jquery
+dependencies/jquery-browser
 dependencies/lodash
 dependencies/qunit
 dependencies/rangy
