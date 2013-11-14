@@ -24,6 +24,7 @@
   "dependencies": {
     "font-awesome": "4.0.1",
     "holder": "holderjs#1.9",
+    "jquery": "1.9.1",
     "lodash": "~1.1.1",
     "qunit": "~1.12.0",
     "rangy": "~1.2.3"
@@ -40,6 +41,9 @@
     },
     "rangy": {
       ".": ["rangy-core.js", "rangy-selectionsaverestore.js"]
+    },
+    "jquery": {
+      ".": ["jquery.js"]
     }
   }
 }

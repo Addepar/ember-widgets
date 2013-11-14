@@ -10,6 +10,7 @@ test/runner.html
 # Bower dependencies
 dependencies/font-awesome
 dependencies/holder
+dependencies/jquery
 dependencies/lodash
 dependencies/qunit
 dependencies/rangy
