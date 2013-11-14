@@ -23,7 +23,9 @@
   ],
   "dependencies": {
     "bootstrap": "3.0.0",
+    "ember": "1.1.0",
     "font-awesome": "4.0.1",
+    "handlebars": "1.0.0",
     "holder": "holderjs#1.9",
     "jquery": "1.9.1",
     "jquery-browser": "jquery.browser#~0.0.4",
@@ -36,6 +38,9 @@
       "less": "less/*",
       "fonts": "dist/fonts/*",
       "js": "dist/js/*.js"
+    },
+    "ember": {
+      ".": "ember.js"
     },
     "lodash": {
       ".": "lodash.js"

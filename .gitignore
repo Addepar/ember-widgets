@@ -9,7 +9,9 @@ test/runner.html
 
 # Bower dependencies
 dependencies/bootstrap
+dependencies/ember
 dependencies/font-awesome
+dependencies/handlebars
 dependencies/holder
 dependencies/jquery
 dependencies/jquery-browser
