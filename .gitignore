@@ -8,6 +8,7 @@ test/runner.html
 *.swp
 
 # Bower dependencies
+dependencies/bootstrap
 dependencies/font-awesome
 dependencies/holder
 dependencies/jquery

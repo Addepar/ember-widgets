@@ -22,6 +22,7 @@
     "VERSION"
   ],
   "dependencies": {
+    "bootstrap": "3.0.0",
     "font-awesome": "4.0.1",
     "holder": "holderjs#1.9",
     "jquery": "1.9.1",
@@ -30,6 +31,11 @@
     "rangy": "~1.2.3"
   },
   "exportsOverride": {
+    "bootstrap": {
+      "less": "less/*",
+      "fonts": "dist/fonts/*",
+      "js": "dist/js/*.js"
+    },
     "lodash": {
       ".": "lodash.js"
     },
