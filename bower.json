@@ -24,7 +24,8 @@
   "dependencies": {
     "font-awesome": "4.0.1",
     "lodash": "~1.1.1",
-    "qunit": "~1.12.0"
+    "qunit": "~1.12.0",
+    "rangy": "~1.2.3"
   },
   "exportsOverride": {
     "lodash": {
@@ -35,6 +36,9 @@
       "less": "less/*",
       "scss": "scss/*",
       "fonts": "fonts/*"
+    },
+    "rangy": {
+      ".": ["rangy-core.js", "rangy-selectionsaverestore.js"]
     }
   }
 }

@@ -11,5 +11,6 @@ test/runner.html
 dependencies/font-awesome
 dependencies/lodash
 dependencies/qunit
+dependencies/rangy
 
 tests/*.js
