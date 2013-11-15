@@ -60,12 +60,9 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
   isTargetInEditor: (event) ->
     not Ember.isEmpty($(event.target).closest('.' + @EDITOR_CLASS))
 
-  # Return the last child node of the editor. Does not handle multiple text editors
+  # Return the last child node of the editor
   getLastElementInEditor: ->
     editor = @$('.' + @EDITOR_CLASS)[0]
-    unless editor.childElementCount > 0
-      # Insert div in text editor if none exists
-      @insertHTMLAtRange(@selectElement(editor), "<div>&nbsp;</div>")
     return editor.children[editor.children.length - 1]
 
   onSelectedFontNameDidChange: Ember.observer ->
@@ -79,10 +76,10 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
   init: ->
     @_super()
     document.execCommand 'styleWithCSS', true, true
+
+    # Defines commands in @get('commands'), such as fontName and fontSize
     @get('commands').forEach (command) =>
       @set command, (arg) ->
-        return unless event
-        event.preventDefault()
         document.execCommand command, true, arg
 
   keyUp: (event) ->
@@ -134,21 +131,6 @@ Ember.Widgets.DomHelper = Ember.Mixin.create
       selection.removeAllRanges()
       selection.addRange(range)
       return range
-    else if(document.selection) # IE 8 and lower
-      # Create a range (a range is a like the selection but invisible)
-      range = document.body.createTextRange()
-      # Select the entire contents of the element with the range
-      range.moveToElementText(element)
-      if collapseMode != "none"
-        # collapse the range to the end point. false means collapse to end rather than the start
-        range.collapse(if collapseMode == "beginning" then true else false)
-      # Select the range (make it the visible selection)
-      range.select()
-      return range
-
-  # Convert camel case to dash-separated for use as data-attributes
-  deCamelCase: (text) ->
-    text.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()
 
   # Wrapper around range.deleteContents that also deletes empty containers in the range
   deleteRange: (range) ->
@@ -160,9 +142,11 @@ Ember.Widgets.DomHelper = Ember.Mixin.create
     if @isEmpty(endParent)
       $(endParent).remove()
 
+  # Converts html string to node then inserts at range
   insertHTMLAtRange: (range, html) ->
-    insertElementAtRange(range, @createElementsFromString(html)[0])
+    @insertElementAtRange(range, @createElementsFromString(html)[0])
 
+  # Inserts node at range
   insertElementAtRange: (range, node) ->
     @deleteRange(range)
     range.insertNode(node)
@@ -182,12 +166,14 @@ Ember.Widgets.DomHelper = Ember.Mixin.create
   createElementsFromString: (string) ->
     $("<div/>").html(string).contents()
 
-  getNonEmptySideNode: (range, left=true, deep)->
+  # get the node that is beside the current range on either the left or the right. Empty nodes,
+  # or nodes containing only whitespace are ignored
+  getNonEmptySideNode: (range, left=true, deep) ->
+    nodeIsEmpty = (node) ->
+      return node.nodeValue?.trim().length == 0 or $(node).hasClass('rangySelectionBoundary')
     node = range[if left then 'startContainer' else 'endContainer']
     while ((sideNode = node[if left then 'previousSibling' else 'nextSibling']) is null or
-           sideNode.nodeValue?.trim().length == 0 or
-           $(sideNode).hasClass('rangySelectionBoundary')) and
-    !$(node).hasClass(@EDITOR_CLASS)  # not the editor div
+    nodeIsEmpty(sideNode)) and !$(node).hasClass(@EDITOR_CLASS)  # not the editor div
       if sideNode?.nodeValue?.trim().length == 0 or $(sideNode).hasClass('rangySelectionBoundary')
         # Ignore this sideNode because it's empty. Go to the next/previous sibling
         node = node[if left then 'previousSibling' else 'nextSibling']
@@ -243,7 +229,7 @@ Ember.Widgets.BaseNonEditablePill = Ember.Controller.extend Ember.Widgets.DomHel
     span.attr('title': @get('name'))
     # include all params as data-attributes
     for key, value of @get('params')
-      span.attr('data-' + @deCamelCase(key), value)
+      span.attr('data-' + key.dasherize(), value)
     @set 'pillElement', span
     @updateContent(span)
     return span[0]
@@ -311,16 +297,16 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
     return div.html()
 
   updateNonEditablePillContent: ->
-    deserializePill = (pillElement) =>
+    pillElements = @$('.non-editable[data-pill-id]')
+    for pillElement in pillElements
+      # Deserialize the pillElement into a pill object
       data = $(pillElement).data()
       return unless data.type
       params = {}
       for key, value of data
         params[key] = value
-      return Ember.get(data.type).create({'textEditor': this, 'params': params})
-    pillElements = @$('.non-editable[data-pill-id]')
-    for pillElement in pillElements
-      pill = deserializePill(pillElement)
+      pill = Ember.get(data.type).create({'textEditor': this, 'params': params})
+
       $(pillElement).text(pill.result())
 
   getCurrentCaretContainer: (range) ->
@@ -337,7 +323,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
       lastSelection = @get('lastSelection')
       if lastSelection
         rangy.restoreSelection(lastSelection)
-      if not (range = @getCurrentRange())
+      if not (range = @getCurrentRange()) or not @inEditor(range)
         @selectElement(@getLastElementInEditor())
       range = @getCurrentRange()
 
@@ -355,6 +341,9 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
   isNonEditable: (node) ->
     not Ember.isEmpty($(node).closest('.non-editable'))
 
+  # Get the non editable node, if any, to the left of the current range
+  # Node: https://developer.mozilla.org/en-US/docs/Web/API/Node
+  # Range: https://developer.mozilla.org/en-US/docs/Web/API/range
   getNonEditableOnLeft: (deep=false) ->
     return unless (currentRange = @getCurrentRange()) and leftNode = @getNonEmptySideNode(currentRange, true, deep)
 
@@ -365,6 +354,9 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
       # i.e. we are in a non-editable caret container
       return leftNode
 
+  # Get the non editable node, if any, to the right of the current range
+  # Node: https://developer.mozilla.org/en-US/docs/Web/API/Node
+  # Range: https://developer.mozilla.org/en-US/docs/Web/API/range
   getNonEditableOnRight: (deep=false) ->
     return unless (currentRange = @getCurrentRange()) and rightNode = @getNonEmptySideNode(currentRange, false, deep)
 
@@ -387,6 +379,11 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
         return node
       node = node.parentElement
 
+  # Inserts a "caret container" next to the target node
+  # Used to allow users to type next to a non-editable element (i.e. the non editable pill).
+  # Otherwise when the user tries to type text preceding or following a non-editable element, the
+  # text will appear in the non-editable element. The caret container gives us a place to
+  # temporarily put the cursor.
   insertCaretContainer: (target, before) ->
     caretContainer = @createElementsFromString('<span class="non-editable-caret">' + @INVISIBLE_CHAR + '</span>')[0]
     if (before)
@@ -420,7 +417,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
       container = range.startContainer
       offset = range.startOffset
 
-      if container.nodeType == 3
+      if container.nodeType == 3  # i.e. TEXT_NODE (see https://developer.mozilla.org/en-US/docs/Web/API/Node.nodeType)
         len = container.nodeValue.length
         if (offset > 0 && offset < len) || (if left then offset == len else offset == 0)
           return
@@ -463,6 +460,29 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
 
   keyDown: (event) ->
     return unless @isTargetInEditor(event)
+
+    handleLeftNodeCase = =>
+      if leftNode
+        if keyCode == @KEY_CODES.LEFT and isCollapsed
+          @selectElement(leftNode, "none")
+          event.preventDefault()
+        else if keyCode == @KEY_CODES.BACKSPACE
+          @selectElement(leftNode, "none")
+      else if leftNodeDeep and keyCode == @KEY_CODES.BACKSPACE
+        # This happens when the last node on the previous line is a non-editable
+        @insertCaretContainer(leftNodeDeep, false)
+
+    handleRightNodeCase = =>
+      if rightNode
+        if keyCode == @KEY_CODES.DELETE
+          @selectElement(rightNode, "none")
+        else if keyCode == @KEY_CODES.RIGHT and isCollapsed
+          @selectElement(rightNode, "none")
+          event.preventDefault()
+      else if rightNodeDeep and keyCode == @KEY_CODES.DELETE and not rightNode
+        # This happens when the first node on the next line is a non-editable
+        @insertCaretContainer(rightNodeDeep, true)
+
     @removeSelection()
     isCharacter = (keyCode) ->
       return keyCode >= 48 && keyCode <= 90 or   # [0-9a-z]
@@ -497,25 +517,8 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
         # We already performed the delete action
         return event.preventDefault()
 
-    if leftNode
-      if keyCode == @KEY_CODES.LEFT and isCollapsed
-        @selectElement(leftNode, "none")
-        event.preventDefault()
-      else if keyCode == @KEY_CODES.BACKSPACE
-        @selectElement(leftNode, "none")
-    else if leftNodeDeep and keyCode == @KEY_CODES.BACKSPACE
-      # This happens when the last node on the previous line is a non-editable
-      @insertCaretContainer(leftNodeDeep, false)
-
-    if rightNode
-      if keyCode == @KEY_CODES.DELETE
-        @selectElement(rightNode, "none")
-      else if keyCode == @KEY_CODES.RIGHT and isCollapsed
-        @selectElement(rightNode, "none")
-        event.preventDefault()
-    else if rightNodeDeep and keyCode == @KEY_CODES.DELETE and not rightNode
-      # This happens when the first node on the next line is a non-editable
-      @insertCaretContainer(rightNodeDeep, true)
+    handleLeftNodeCase()
+    handleRightNodeCase()
 
   keyUp: (event) ->
     return unless @isTargetInEditor(event)

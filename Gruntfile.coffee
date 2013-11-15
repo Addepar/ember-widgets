@@ -104,6 +104,9 @@ module.exports = (grunt) ->
       src:
         files: [ "src/**/*.coffee"]
         tasks: [ "coffee:srcs", "neuter" ]
+      test:
+        files: [ "tests/*.coffee"]
+        tasks: [ "coffee:tests", "neuter" ]
       src_handlebars:
         files: [ "src/**/*.hbs" ]
         tasks: [ "emberTemplates", "neuter" ]
