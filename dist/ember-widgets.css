@@ -421,3 +421,97 @@
   font-weight: 600;
   color: #555;
 }
+[class^="icon-"],
+[class*=" icon-"] {
+  background-image: none;
+}
+.icon-white {
+  background-image: none;
+}
+i[class^="icon-"] {
+  opacity: 1;
+}
+.ember-chosen {
+  position: relative;
+  display: inline-block;
+  outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+.ember-chosen .dropdown-menu .list-view {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.ember-chosen .dropdown-menu .list-view .list-item-view {
+  position: absolute;
+  display: block;
+  white-space: nowrap;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 27px;
+  padding: 0 3px 0 20px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.ember-chosen .dropdown-menu .list-view .list-item-view.select2-result-unselectable {
+  font-weight: bold;
+  padding-left: 8px;
+}
+.ember-chosen .dropdown-menu .list-view .list-item-view.hover {
+  cursor: pointer;
+  background-color: #4c88e5;
+  color: #fff;
+}
+.ember-chosen.right-aligned .dropdown-menu {
+  left: auto;
+  right: 0;
+}
+.select2-results {
+  margin: 0;
+}
+.sample-editor {
+  margin-top: 50px;
+  line-height: 1.2;
+}
+.ember-text-editor-toolbar {
+  background-color: #f1f1f1;
+  padding: 5px;
+}
+.ember-text-editor-toolbar i[class^="icon-"] {
+  line-height: 1;
+}
+.ember-text-editor-toolbar .btn-group + .btn-group {
+  margin-left: 0;
+}
+.ember-text-editor-toolbar .font,
+.ember-text-editor-toolbar .font-size {
+  display: inline-block;
+  vertical-align: top;
+  line-height: 20px;
+}
+.ember-text-editor-toolbar .select2-choice {
+  height: 20px;
+}
+.text-editor {
+  border: 1px solid #f1f1f1;
+  padding: 10px;
+  min-height: 300px;
+  font-family: Arial;
+}
+.text-editor:focus {
+  outline: none;
+}
+span.non-editable {
+  display: inline-block;
+  cursor: pointer;
+  border: 1px solid #9fa4aa;
+  background-color: #f1f4f6;
+  border-radius: 5px;
+  list-style-type: none;
+}
