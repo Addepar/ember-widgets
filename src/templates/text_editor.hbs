@@ -44,6 +44,25 @@
   </div>
 
   <div class="btn-group">
+    <label class="btn"
+      {{action "insertOrderedList" on="mouseDown"}}>
+      <i class="fa fa-list-ol"></i>
+    </label>
+    <label class="btn"
+      {{action "insertUnorderedList" on="mouseDown"}}>
+      <i class="fa fa-list-ul"></i>
+    </label>
+    <label class="btn"
+      {{action "indent" on="mouseDown"}}>
+      <i class="fa fa-indent"></i>
+    </label>
+    <label class="btn"
+      {{action "outdent" on="mouseDown"}}>
+      <i class="fa fa-outdent"></i>
+    </label>
+  </div>
+
+  <div class="btn-group">
     {{select-component
       class="insert-non-editable-btn"
       contentBinding="_pillOptions"
