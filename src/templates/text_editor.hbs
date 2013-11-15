@@ -1,0 +1,79 @@
+<div {{bindAttr class=":ember-text-editor-toolbar isToolbarVisible:visible:hide"}}>
+  {{view Ember.Select
+    contentBinding="fontNames"
+    placeholder="Select a Font"
+    selectionBinding="selectedFontName"
+  }}
+
+  {{view Ember.Select
+    contentBinding="fontSizes"
+    placeholder="Select Font Size"
+    optionLabelPath="content.name"
+    optionValuePath="content.size"
+    valueBinding="selectedFontSize"
+  }}
+
+  <div class="btn-group">
+    <label {{bindAttr class=":btn isBold:active"}}
+      {{action "bold" on="mouseDown"}}>
+      <i class="fa fa-bold"></i>
+    </label>
+    <label {{bindAttr class=":btn isItalic:active"}}
+      {{action "italic" on="mouseDown"}}>
+      <i class="fa fa-italic"></i>
+    </label>
+    <label {{bindAttr class=":btn isUnderline:active"}}
+      {{action "underline" on="mouseDown"}}>
+      <i class="fa fa-underline"></i>
+    </label>
+  </div>
+
+  <div class="btn-group">
+    <label {{bindAttr class=":btn isJustifyLeft:active"}}
+      {{action "justifyLeft" on="mouseDown"}}>
+      <i class="fa fa-align-left"></i>
+    </label>
+    <label {{bindAttr class=":btn isJustifyCenter:active"}}
+      {{action "justifyCenter" on="mouseDown"}}>
+      <i class="fa fa-align-center"></i>
+    </label>
+    <label {{bindAttr class=":btn isJustifyRight:active"}}
+      {{action "justifyRight" on="mouseDown"}}>
+      <i class="fa fa-align-right"></i>
+    </label>
+  </div>
+
+  <div class="btn-group">
+    <label class="btn"
+      {{action "insertOrderedList" on="mouseDown"}}>
+      <i class="fa fa-list-ol"></i>
+    </label>
+    <label class="btn"
+      {{action "insertUnorderedList" on="mouseDown"}}>
+      <i class="fa fa-list-ul"></i>
+    </label>
+    <label class="btn"
+      {{action "indent" on="mouseDown"}}>
+      <i class="fa fa-indent"></i>
+    </label>
+    <label class="btn"
+      {{action "outdent" on="mouseDown"}}>
+      <i class="fa fa-outdent"></i>
+    </label>
+  </div>
+
+  <div class="btn-group">
+    {{select-component
+      class="insert-non-editable-btn"
+      contentBinding="_pillOptions"
+      prompt="Insert non-editable"
+      optionLabelPath="name"
+      optionValuePath="name"
+      selectionBinding="selectedPillOption"
+    }}
+  </div>
+</div>
+
+<div class="text-editor" contenteditable="true">
+  <div>&nbsp;</div>
+</div>
