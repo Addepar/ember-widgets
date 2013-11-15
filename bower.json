@@ -1,21 +1,61 @@
 {
   "name": "ember-widgets",
   "version": "0.0.1",
-  "main": ["./dist/ember-widgets.js", "./dist/ember-widgets.css"],
+  "main": [
+    "./dist/ember-widgets.js",
+    "./dist/ember-widgets.css"
+  ],
   "ignore": [
-      ".gitignore",
-      ".jshintrc",
-      "app",
-      "build",
-      "dependencies",
-      "gh_pages",
-      "node_modules",
-      "src",
-      "test",
-      "CHANGELOG",
-      "example.js",
-      "Gruntfile.coffee",
-      "package.json",
-      "VERSION"
-  ]
+    ".gitignore",
+    ".jshintrc",
+    "app",
+    "build",
+    "dependencies",
+    "gh_pages",
+    "node_modules",
+    "src",
+    "test",
+    "CHANGELOG",
+    "example.js",
+    "Gruntfile.coffee",
+    "package.json",
+    "VERSION"
+  ],
+  "dependencies": {
+    "bootstrap": "3.0.0",
+    "ember": "1.1.0",
+    "font-awesome": "4.0.1",
+    "handlebars": "1.0.0",
+    "holder": "holderjs#1.9",
+    "jquery": "1.9.1",
+    "jquery-browser": "jquery.browser#~0.0.4",
+    "lodash": "~1.1.1",
+    "qunit": "~1.12.0",
+    "rangy": "~1.2.3"
+  },
+  "exportsOverride": {
+    "bootstrap": {
+      "less": "less/*",
+      "fonts": "dist/fonts/*",
+      "js": "dist/js/*.js"
+    },
+    "ember": {
+      ".": "ember.js"
+    },
+    "lodash": {
+      ".": "lodash.js"
+    },
+    "font-awesome": {
+      "css": "css/*",
+      "less": "less/*",
+      "scss": "scss/*",
+      "fonts": "fonts/*"
+    },
+    "rangy": {
+      ".": ["rangy-core.js", "rangy-selectionsaverestore.js"]
+    },
+    "jquery": {
+      ".": ["jquery.js"]
+    }
+  }
 }
