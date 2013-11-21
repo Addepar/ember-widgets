@@ -514,3 +514,24 @@ non-editable {
   border-radius: 5px;
   list-style-type: none;
 }
+.color-picker-cell {
+  width: 25px;
+  height: 25px;
+}
+.color-row {
+  *zoom: 1;
+  padding-top: 10px;
+}
+.color-row:before,
+.color-row:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.color-row:after {
+  clear: both;
+}
+.color-row .color-picker-cell {
+  float: left;
+  margin-right: 5px;
+}

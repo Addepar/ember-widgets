@@ -26,6 +26,7 @@ App.Router.map ->
     @route 'popover'
     @route 'select'
     @route 'textEditor'
+    @route 'colorPicker'
 
 App.IndexRoute = Ember.Route.extend
   beforeModel: -> @transitionTo('emberWidgets.overview')
