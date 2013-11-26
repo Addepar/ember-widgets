@@ -153,6 +153,7 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
     # Font names with spaces need to have the start and end quotes removed
     @set 'selectedFontName', idocument.queryCommandValue('fontName').replace(/^'/, '').replace(/'$/, '')
     @set 'selectedFontSize', idocument.queryCommandValue('fontSize')
+    @set 'selectedForeColor', idocument.queryCommandValue('foreColor')
 
 Ember.Widgets.DomHelper = Ember.Mixin.create
   KEY_CODES: {
