@@ -54,6 +54,24 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
     {size:'6', name: '24'},
     {size:'7', name: '36'}
   ]
+  iframeHeadContents: """
+    <style>
+      .non-editable {
+        display: inline-block;
+        cursor: pointer;
+        background-color: #F1F52E;
+        border-radius: 10px;
+        list-style-type: none;
+      }
+      .text-editor {
+        border: 1px solid #f1f1f1;
+        padding: 10px;
+        min-height: 100px;
+        font-family: Arial;
+      }
+    </style>
+    """
+  iframeBodyContents: """<div class="text-editor" contenteditable="true"></div>"""
 
   getEditor: ->
     @$('iframe.text-editor-frame').contents().find('.text-editor')
@@ -99,29 +117,9 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
 
   didInsertElement: ->
     @_super()
-    headContents = """
-    <style>
-      .non-editable {
-        display: inline-block;
-        cursor: pointer;
-        background-color: #F1F52E;
-        border-radius: 10px;
-        list-style-type: none;
-      }
-      .text-editor {
-        border: 1px solid #f1f1f1;
-        padding: 10px;
-        min-height: 100px;
-        font-family: Arial;
-      }
-    </style>
-    """
-    bodyContents = """
-      <div class="text-editor" contenteditable="true">
-      </div>"""
     iframe = @$('iframe.text-editor-frame').contents()
-    iframe.find('body').append(bodyContents)
-    iframe.find('head').append(headContents)
+    iframe.find('body').append(@iframeBodyContents)
+    iframe.find('head').append(@iframeHeadContents)
     @getDocument().execCommand 'styleWithCSS', true, true
 
     iframe = @$('iframe.text-editor-frame')[0]
