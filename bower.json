@@ -52,7 +52,7 @@
       "fonts": "fonts/*"
     },
     "jquery": {
-      ".": []
+      ".": ["jquery.js"]
     },
     "rangy": {
       ".": ["rangy-core.js", "rangy-selectionsaverestore.js"]
