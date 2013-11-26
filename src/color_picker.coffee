@@ -38,10 +38,5 @@ Ember.Widgets.ColorPickerCell = Ember.View.extend Ember.Widgets.StyleBindingsMix
   styleBindings:  'color:background-color'
   color: null
 
-Ember.Widgets.ColorPickerSelectionCell = Ember.Widgets.ColorPickerCell.extend
   click: (event) ->
     this.get('controller').send 'setColor', @get('color')
-
-Ember.Widgets.ColorPickerSelectedCell = Ember.Widgets.ColorPickerCell.extend
-  click: (event) ->
-    this.get('controller').send 'showPalette', event
