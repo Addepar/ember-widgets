@@ -2,6 +2,7 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
   templateName: 'text_editor'
   selectedFontName: 'Arial'
   selectedFontSize: '2'
+  selectedForeColor: 'rgb(0, 0, 0)'
   isToolbarVisible: true
 
   EDITOR_CLASS: 'text-editor'
@@ -12,6 +13,7 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
     'underline',
     'fontName',
     'fontSize',
+    'foreColor',
     'indent',
     'outdent'
     'insertOrderedList',
@@ -53,6 +55,13 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
     {size:'7', name: '36'}
   ]
 
+  getEditor: ->
+    @$('iframe.text-editor-frame').contents().find('.text-editor')
+
+  getDocument: ->
+    iframe = @$('iframe.text-editor-frame')[0]
+    iframe.contentDocument || iframe.contentWindow.document
+
   # Returns true if the entire range is in the text editor
   inEditor: (range) ->
     @$(range.endContainer).parents().has(range.startContainer).first().closest('.' + @EDITOR_CLASS).length > 0
@@ -61,8 +70,11 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
     not Ember.isEmpty($(event.target).closest('.' + @EDITOR_CLASS))
 
   # Return the last child node of the editor
-  getLastElementInEditor: ->
-    editor = @$('.' + @EDITOR_CLASS)[0]
+  getOrCreateLastElementInEditor: ->
+    editor = @getEditor()[0]
+    unless editor.childElementCount > 0
+      # Insert div in text editor if none exists
+      @insertHTMLAtRange(@selectElement(editor), "<div>&nbsp;</div>")
     return editor.children[editor.children.length - 1]
 
   onSelectedFontNameDidChange: Ember.observer ->
@@ -73,14 +85,56 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
     @fontSize @get('selectedFontSize')
   , 'selectedFontSize'
 
+  onSelectedForeColorDidChange: Ember.observer ->
+    @foreColor @get('selectedForeColor')
+  , 'selectedForeColor'
+
   init: ->
     @_super()
-    document.execCommand 'styleWithCSS', true, true
 
     # Defines commands in @get('commands'), such as fontName and fontSize
     @get('commands').forEach (command) =>
       @set command, (arg) ->
-        document.execCommand command, true, arg
+        @getDocument().execCommand command, true, arg
+
+  didInsertElement: ->
+    @_super()
+    headContents = """
+    <style>
+      .non-editable {
+        display: inline-block;
+        cursor: pointer;
+        background-color: #F1F52E;
+        border-radius: 10px;
+        list-style-type: none;
+      }
+      .text-editor {
+        border: 1px solid #f1f1f1;
+        padding: 10px;
+        min-height: 100px;
+        font-family: Arial;
+      }
+    </style>
+    """
+    bodyContents = """
+      <div class="text-editor" contenteditable="true">
+      </div>"""
+    iframe = @$('iframe.text-editor-frame').contents()
+    iframe.find('body').append(bodyContents)
+    iframe.find('head').append(headContents)
+    @getDocument().execCommand 'styleWithCSS', true, true
+
+    iframe = @$('iframe.text-editor-frame')[0]
+    iframe.contentWindow.onkeyup = (event) =>
+      @keyUp(event)
+    iframe.contentWindow.onkeydown = (event) =>
+      @keyDown(event)
+    iframe.contentWindow.onmouseup = (event) =>
+      @mouseUp(event)
+    iframe.contentWindow.onmousedown = (event) =>
+      @mouseDown(event)
+    iframe.contentWindow.onclick = (event) =>
+      @click(event)
 
   keyUp: (event) ->
     @queryCommandState()
@@ -89,17 +143,18 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
     @queryCommandState()
 
   queryCommandState: ->
-    @set 'isBold',     document.queryCommandState('bold')
-    @set 'isItalic',   document.queryCommandState('italic')
-    @set 'isUnderline',document.queryCommandState('underline')
+    idocument = @getDocument()
+    @set 'isBold',     idocument.queryCommandState('bold')
+    @set 'isItalic',   idocument.queryCommandState('italic')
+    @set 'isUnderline',idocument.queryCommandState('underline')
 
-    @set 'isJustifyLeft', document.queryCommandState('justifyLeft')
-    @set 'isJustifyCenter',   document.queryCommandState('justifyCenter')
-    @set 'isJustifyRight',document.queryCommandState('justifyRight')
+    @set 'isJustifyLeft', idocument.queryCommandState('justifyLeft')
+    @set 'isJustifyCenter',   idocument.queryCommandState('justifyCenter')
+    @set 'isJustifyRight',idocument.queryCommandState('justifyRight')
 
     # Font names with spaces need to have the start and end quotes removed
-    @set 'selectedFontName', document.queryCommandValue('fontName').replace(/^'/, '').replace(/'$/, '')
-    @set 'selectedFontSize', document.queryCommandValue('fontSize')
+    @set 'selectedFontName', idocument.queryCommandValue('fontName').replace(/^'/, '').replace(/'$/, '')
+    @set 'selectedFontSize', idocument.queryCommandValue('fontSize')
 
 Ember.Widgets.DomHelper = Ember.Mixin.create
   KEY_CODES: {
@@ -153,7 +208,9 @@ Ember.Widgets.DomHelper = Ember.Mixin.create
     node
 
   getCurrentRange: ->
-    if window.getSelection().rangeCount > 0 then window.getSelection().getRangeAt(0) else null
+    iframe = @$('iframe.text-editor-frame')[0]
+    idocument = iframe.contentDocument || iframe.contentWindow.document
+    if idocument.getSelection().rangeCount > 0 then idocument.getSelection().getRangeAt(0) else null
 
   # Returns true if the element has no child elements and has either 0 child nodes or one child
   # node with nothing in it. Different from jQuery's .is(':empty'), which thinks some empty nodes
@@ -170,11 +227,11 @@ Ember.Widgets.DomHelper = Ember.Mixin.create
   # or nodes containing only whitespace are ignored
   getNonEmptySideNode: (range, left=true, deep) ->
     nodeIsEmpty = (node) ->
-      return node.nodeValue?.trim().length == 0 or $(node).hasClass('rangySelectionBoundary')
+      return node?.nodeValue?.trim().length == 0
     node = range[if left then 'startContainer' else 'endContainer']
     while ((sideNode = node[if left then 'previousSibling' else 'nextSibling']) is null or
     nodeIsEmpty(sideNode)) and !$(node).hasClass(@EDITOR_CLASS)  # not the editor div
-      if sideNode?.nodeValue?.trim().length == 0 or $(sideNode).hasClass('rangySelectionBoundary')
+      if nodeIsEmpty(sideNode)
         # Ignore this sideNode because it's empty. Go to the next/previous sibling
         node = node[if left then 'previousSibling' else 'nextSibling']
       else
@@ -262,7 +319,6 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
   pillId:           0
   INVISIBLE_CHAR:   '\uFEFF'
   mouseDownTarget:  null
-  lastSelection:    null
 
   pillOptions: [Ember.Widgets.TodaysDate, Ember.Widgets.NonEditableTextPill]
 
@@ -280,24 +336,14 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
     @set 'selectedPillOption', null
   , 'selectedPillOption'
 
-  saveSelection: ->
-    @removeSelection()
-    @set 'lastSelection', rangy.saveSelection()
-
-  removeSelection: ->
-    lastSelection = @get 'lastSelection'
-    rangy.removeMarkers(lastSelection) if lastSelection
-    @set 'lastSelection', null
-
   serialize: ->
-    raw_html = @$('.'+ @EDITOR_CLASS).html()
+    raw_html = @getEditor().html()
     div = $('<div/>').html(raw_html)
     $('.non-editable-caret', div).remove()
-    $('.rangySelectionBoundary', div).remove()
     return div.html()
 
   updateNonEditablePillContent: ->
-    pillElements = @$('.non-editable[data-pill-id]')
+    pillElements = @getEditor().find('.non-editable[data-pill-id]')
     for pillElement in pillElements
       # Deserialize the pillElement into a pill object
       data = $(pillElement).data()
@@ -320,11 +366,8 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
     # not already)
     range = @getCurrentRange()
     if not range or not @inEditor(range)
-      lastSelection = @get('lastSelection')
-      if lastSelection
-        rangy.restoreSelection(lastSelection)
       if not (range = @getCurrentRange()) or not @inEditor(range)
-        @selectElement(@getLastElementInEditor())
+        @selectElement(@getOrCreateLastElementInEditor())
       range = @getCurrentRange()
 
     factor = @insertElementAtRange(range, pill.render())
@@ -336,7 +379,6 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
     @removeCaretContainers()
     # select the caret container again (which has probably been moved)
     @selectElement(factor.nextSibling)
-    @saveSelection()
 
   isNonEditable: (node) ->
     not Ember.isEmpty($(node).closest('.non-editable'))
@@ -395,7 +437,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
   removeCaretContainer: (caretContainer) ->
     if (child = caretContainer.childNodes[0]) && child.nodeValue.charAt(0) == @INVISIBLE_CHAR
       child = child.deleteData(0, 1)
-    savedSelection = rangy.saveSelection()
+    savedSelection = rangy.saveSelection(@$('iframe.text-editor-frame')[0].contentWindow)
     contents = $(caretContainer).contents()
     $(caretContainer).replaceWith(contents)
     rangy.restoreSelection(savedSelection)
@@ -403,7 +445,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
   removeCaretContainers: ->
     range = @getCurrentRange()
     currentCaretContainer = @getCurrentCaretContainer(range)
-    while (caretContainer = @$('.non-editable-caret').not(currentCaretContainer)[0])
+    while (caretContainer = @getEditor().find('.non-editable-caret').not(currentCaretContainer)[0])
       child = caretContainer.childNodes[0]
       if child && child.nodeValue?.charAt(0) == @INVISIBLE_CHAR
         child = child.deleteData(0, 1)
@@ -483,7 +525,6 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
         # This happens when the first node on the next line is a non-editable
         @insertCaretContainer(rightNodeDeep, true)
 
-    @removeSelection()
     isCharacter = (keyCode) ->
       return keyCode >= 48 && keyCode <= 90 or   # [0-9a-z]
              keyCode >= 96 && keyCode <= 111 or  # num pad characters
@@ -523,13 +564,11 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
   keyUp: (event) ->
     return unless @isTargetInEditor(event)
     @moveSelection()
-    @saveSelection()
     @_super()
 
   mouseDown: (event) ->
     return unless @isTargetInEditor(event)
     @mouseDownTarget = event.target  # Save mousedown target for use in mouseup handler
-    @removeSelection()
     @moveSelection()
 
   mouseUp: (event) ->
@@ -540,5 +579,6 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
       # This prevents the user from putting the cursor within a non-editable that was previously selected
       @selectElement(event.target, "none")
       event.preventDefault()
-    @saveSelection()
     @_super()
+
+  click: (event) -> Ember.K

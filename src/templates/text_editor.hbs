@@ -13,6 +13,10 @@
     valueBinding="selectedFontSize"
   }}
 
+  {{view Ember.Widgets.ColorPicker
+    selectedColorBinding="selectedForeColor"
+  }}
+
   <div class="btn-group">
     <label {{bindAttr class=":btn isBold:active"}}
       {{action "bold" on="mouseDown"}}>
@@ -74,6 +78,5 @@
   </div>
 </div>
 
-<div class="text-editor" contenteditable="true">
-  <div>&nbsp;</div>
-</div>
+<iframe class="text-editor-frame" src="about:blank">
+</iframe>

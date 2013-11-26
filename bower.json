@@ -51,11 +51,11 @@
       "scss": "scss/*",
       "fonts": "fonts/*"
     },
-    "rangy": {
-      ".": ["rangy-core.js", "rangy-selectionsaverestore.js"]
-    },
     "jquery": {
       ".": []
+    },
+    "rangy": {
+      ".": ["rangy-core.js", "rangy-selectionsaverestore.js"]
     }
   }
 }

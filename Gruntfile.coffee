@@ -127,6 +127,9 @@ module.exports = (grunt) ->
       bower:
         files: [ 'bower.json']
         tasks: [ 'bower']
+      uglify:
+        files: [ 'dist/ember-widgets.js' ]
+        tasks: [ 'uglify' ]
 
     ###
       Runs all .html files found in the test/ directory through PhantomJS.

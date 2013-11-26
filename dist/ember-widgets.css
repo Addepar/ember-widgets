@@ -475,6 +475,10 @@ i[class^="icon-"] {
 .select2-results {
   margin: 0;
 }
+iframe.text-editor-frame {
+  width: 800px;
+  min-height: 2000px;
+}
 .sample-editor {
   margin-top: 50px;
   line-height: 1.2;
@@ -501,17 +505,17 @@ i[class^="icon-"] {
 .text-editor {
   border: 1px solid #f1f1f1;
   padding: 10px;
-  min-height: 300px;
+  min-height: 100px;
   font-family: Arial;
 }
 .text-editor:focus {
   outline: none;
 }
-non-editable {
+.non-editable {
   display: inline-block;
   cursor: pointer;
-  background-color: #f1f4f6;
-  border-radius: 5px;
+  background-color: #F1F52E;
+  border-radius: 10px;
   list-style-type: none;
 }
 .color-picker-cell {
