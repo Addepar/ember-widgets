@@ -61,7 +61,7 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         box-sizing: border-box;
-        padding: 10px 10px 0 10px;
+        padding: 0;
         font-family: "Helvetica Neue";
       }
       .text-editor:focus {
