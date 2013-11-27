@@ -9,7 +9,7 @@
     <span class="caret"></span>
     <span class="sr-only">Toggle Dropdown</span>
   </button>
-  <div class="dropdown-menu ember-color-picker-dropdown" role="menu">
+  <div {{bindAttr class=":dropdown-menu dropdownClass"}} role="menu">
     {{#each row in colorRows}}
       <div class="color-row clearfix">
         {{#each color in row}}

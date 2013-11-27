@@ -6,6 +6,7 @@ Ember.Widgets.ColorPicker = Ember.Component.extend
 
   # Change the button class when necessary
   buttonClass: 'btn btn-default'
+  dropdownClass: 'ember-color-picker-dropdown'
 
   colorRows:
     [
