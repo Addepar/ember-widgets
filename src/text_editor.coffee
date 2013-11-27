@@ -1,6 +1,6 @@
 Ember.Widgets.TextEditorComponent = Ember.Component.extend
   templateName: 'text_editor'
-  selectedFontName: 'Arial'
+  selectedFontName: 'Helvetica Neue'
   selectedFontSize: '2'
   selectedForeColor: 'rgb(0, 0, 0)'
   isToolbarVisible: true
@@ -34,7 +34,7 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
     'Georgia',
     'Helvetica Neue',
     'Helvetica',
-    'Sans Serif',
+    'Sans-Serif',
     'Serif',
     'Syncopate',
     'Times New Roman',
@@ -62,7 +62,7 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
         -moz-box-sizing: border-box;
         box-sizing: border-box;
         padding: 10px 10px 0 10px;
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-family: "Helvetica Neue";
       }
       .text-editor:focus {
         outline: none;
@@ -78,6 +78,12 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
     </style>
     """
   iframeBodyContents: """<div class="text-editor" contenteditable="true"></div>"""
+
+  fontChooserItemViewClass: Ember.Widgets.SelectOptionView.extend
+    templateName: 'font_chooser_item'
+    style: Ember.computed ->
+      "font-family:#{@get('label')};"
+    .property 'label'
 
   getEditor: ->
     @$('iframe.text-editor-frame').contents().find('.text-editor')

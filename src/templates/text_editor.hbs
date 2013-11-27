@@ -1,9 +1,12 @@
 <div {{bindAttr class=":ember-text-editor-toolbar isToolbarVisible::hide"}}>
-  {{view Ember.Select
+  {{select-component
     contentBinding="fontNames"
     placeholder="Select a Font"
     selectionBinding="selectedFontName"
-    class="form-control addepar-select addepar-select-sm ember-text-editor-font-family-select"
+    class="ember-text-editor-font-family-select"
+    isSelect="true"
+    buttonClass="btn btn-default btn-sm"
+    itemViewClassBinding="fontChooserItemViewClass"
   }}
 
   {{view Ember.Select
@@ -64,12 +67,12 @@
 
   <div class="btn-group">
     <button type="button" class="btn btn-default btn-sm"
-      {{action "indent" on="mouseDown"}}>
-      <i class="fa fa-indent"></i>
-    </button>
-    <button type="button" class="btn btn-default btn-sm"
       {{action "outdent" on="mouseDown"}}>
       <i class="fa fa-outdent"></i>
+    </button>
+    <button type="button" class="btn btn-default btn-sm"
+      {{action "indent" on="mouseDown"}}>
+      <i class="fa fa-indent"></i>
     </button>
   </div>
 
