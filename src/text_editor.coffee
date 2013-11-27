@@ -32,12 +32,13 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
     'Corsiva',
     'Courier New',
     'Georgia',
+    'Helvetica Neue',
+    'Helvetica',
     'Sans Serif',
     'Serif',
     'Syncopate',
     'Times New Roman',
     'Trebuchet MS',
-    'Univers-Next',
     'Verdana'
   ]
 
@@ -61,6 +62,7 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
         -moz-box-sizing: border-box;
         box-sizing: border-box;
         padding: 10px 10px 0 10px;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
       }
       .text-editor:focus {
         outline: none;
