@@ -9,12 +9,13 @@
     itemViewClassBinding="fontChooserItemViewClass"
   }}
 
-  {{view Ember.Select
+  {{select-component
     contentBinding="fontSizes"
     placeholder="Select Font Size"
-    optionLabelPath="content.name"
-    optionValuePath="content.size"
+    optionLabelPath="name"
+    optionValuePath="size"
     valueBinding="selectedFontSize"
+    sortLabels=false
     class="form-control addepar-select addepar-select-sm ember-text-editor-font-size-select"
   }}
 
