@@ -1,12 +1,22 @@
-.color-picker-cell {
-  width: 25px;
-  height: 25px;
+//
+// Ember.Widgets.ColorPicker
+// -----------------------------------------------------------------------------
+
+.color-picker {
+  display: inline-block
 }
+
 .color-row {
-  .clearfix;
   padding-top: 10px;
+  .clearfix();
+
   .color-picker-cell {
     float: left;
     margin-right: 5px;
   }
+}
+
+.color-picker-cell {
+  width: 25px;
+  height: 25px;
 }

@@ -28,20 +28,16 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
     'Arial',
     'Calibri',
     'Cambria',
-    'Comic Sans MS',
     'Consolas',
     'Corsiva',
     'Courier New',
-    'Droid Sans',
-    'Droid Serif',
     'Georgia',
-    'Impact',
     'Sans Serif',
     'Serif',
     'Syncopate',
     'Times New Roman',
     'Trebuchet MS',
-    'Ubuntu',
+    'Univers-Next',
     'Verdana'
   ]
 
@@ -56,18 +52,26 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
   ]
   iframeHeadContents: """
     <style>
-      .non-editable {
-        display: inline-block;
-        cursor: pointer;
-        background-color: #F1F52E;
-        border-radius: 10px;
-        list-style-type: none;
+      body {
+        margin: 0;
       }
       .text-editor {
-        border: 1px solid #f1f1f1;
-        padding: 10px;
-        min-height: 100px;
-        font-family: Arial;
+        min-height: 100%;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 5px 5px 0 5px;
+      }
+      .text-editor:focus {
+        outline: none;
+      }
+      .non-editable {
+        display: inline-block;
+        background-color: #ccc;
+        padding: 0 5px;
+        border-radius: 3px;
+        list-style-type: none;
+        cursor: pointer;
       }
     </style>
     """
