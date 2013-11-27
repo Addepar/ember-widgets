@@ -1,15 +1,19 @@
-<div class="dropdown">
-  <a id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html">
-    {{view Ember.Widgets.ColorPickerSelectedCell
-      colorBinding='selectedColor'
-      classNames='selected-cell color-picker-cell'
+<div class="btn-group">
+  <button type="button" class="btn btn-default ember-widget-color-button">
+    {{view Ember.Widgets.ColorPickerCell
+      colorBinding ='selectedColor'
+      classNames='color-picker-cell'
     }}
-  </a>
-  <div class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+  </button>
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    <span class="caret"></span>
+    <span class="sr-only">Toggle Dropdown</span>
+  </button>
+  <div class="dropdown-menu ember-color-picker-dropdown" role="menu">
     {{#each row in colorRows}}
-      <div class="color-row">
+      <div class="color-row clearfix">
         {{#each color in row}}
-          {{view Ember.Widgets.ColorPickerSelectionCell
+          {{view Ember.Widgets.ColorPickerCell
             colorBinding ='color'
             classNames='color-picker-cell'
            }}

@@ -6,17 +6,26 @@
   display: inline-block
 }
 
-.color-row {
-  padding-top: 10px;
-  .clearfix();
+.ember-widget-color-button {
+  padding: 0;
 
   .color-picker-cell {
-    float: left;
-    margin-right: 5px;
+    width: 25px;
+    // This should be dependent on the button size
+    height: 33px;
   }
 }
 
-.color-picker-cell {
-  width: 25px;
-  height: 25px;
+.ember-color-picker-dropdown {
+  min-width: 300px;
+  padding: 10px 5px 5px 10px;
+}
+
+.color-row {
+  .color-picker-cell {
+    float: left;
+    margin: 0 5px 5px 0;
+    height: 30px;
+    width: 30px;
+  }
 }

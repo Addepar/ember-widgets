@@ -443,9 +443,6 @@
 .ember-text-editor-font-size-select {
   width: 50px;
 }
-.ember-text-editor-color-select {
-  width: 50px;
-}
 /* iFrame */
 .text-editor-frame {
   display: block;
@@ -462,24 +459,20 @@
 .color-picker {
   display: inline-block;
 }
-.color-row {
-  padding-top: 10px;
-  *zoom: 1;
+.ember-widget-color-button {
+  padding: 0;
 }
-.color-row:before,
-.color-row:after {
-  display: table;
-  content: "";
-  line-height: 0;
+.ember-widget-color-button .color-picker-cell {
+  width: 25px;
+  height: 33px;
 }
-.color-row:after {
-  clear: both;
+.ember-color-picker-dropdown {
+  min-width: 300px;
+  padding: 10px 5px 5px 10px;
 }
 .color-row .color-picker-cell {
   float: left;
-  margin-right: 5px;
-}
-.color-picker-cell {
-  width: 25px;
-  height: 25px;
+  margin: 0 5px 5px 0;
+  height: 30px;
+  width: 30px;
 }
