@@ -119,7 +119,7 @@ Ember.Widgets.ModalComponent.reopenClass
     @hideAll()
     rootElement = options.rootElement or @rootElement
     modal = this.create options
-    modal.container = modal.get('targetObject.container')
+    modal.set 'container', modal.get('targetObject.container')
     modal.appendTo rootElement
     modal
 

@@ -49,8 +49,8 @@ Ember.Widgets.BodyEventListener,
       Ember.run this, @destroy
 
   snapToPosition: ->
-    return unless @get('state') is 'inDOM'
     $target      = $(@get('targetElement'))
+    return unless @get('state') is 'inDOM' and $target?
     actualWidth  = @$()[0].offsetWidth
     actualHeight = @$()[0].offsetHeight
     pos = $target.offset()
@@ -144,6 +144,7 @@ Ember.Widgets.PopoverComponent.reopenClass
     @hideAll()
     rootElement = options.rootElement or @rootElement
     popover = this.create options
+    popover.set 'container', popover.get('targetObject.container')
     popover.appendTo rootElement
     popover
 
