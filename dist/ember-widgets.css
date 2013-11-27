@@ -437,7 +437,8 @@
   vertical-align: top;
   line-height: 20px;
 }
-.ember-text-editor-toolbar .insert-non-editable-btn .btn-sm {
+.ember-text-editor-toolbar .insert-non-editable-btn .btn-sm,
+.ember-text-editor-toolbar .ember-text-editor-font-family-select .btn-sm {
   margin-top: -1px;
 }
 .ember-text-editor-font-family-select .btn {
