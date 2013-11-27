@@ -437,6 +437,9 @@
   vertical-align: top;
   line-height: 20px;
 }
+.ember-text-editor-toolbar .insert-non-editable-btn .btn-sm {
+  margin-top: -1px;
+}
 .ember-text-editor-font-family-select {
   width: 150px;
 }
@@ -464,7 +467,7 @@
 }
 .ember-widget-color-button .color-picker-cell {
   width: 25px;
-  height: 33px;
+  height: 28px;
 }
 .ember-color-picker-dropdown {
   min-width: 300px;
@@ -475,4 +478,5 @@
   margin: 0 5px 5px 0;
   height: 30px;
   width: 30px;
+  cursor: pointer;
 }

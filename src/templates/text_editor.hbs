@@ -3,7 +3,7 @@
     contentBinding="fontNames"
     placeholder="Select a Font"
     selectionBinding="selectedFontName"
-    class="form-control addepar-select ember-text-editor-font-family-select"
+    class="form-control addepar-select addepar-select-sm ember-text-editor-font-family-select"
   }}
 
   {{view Ember.Select
@@ -12,12 +12,13 @@
     optionLabelPath="content.name"
     optionValuePath="content.size"
     valueBinding="selectedFontSize"
-    class="form-control addepar-select ember-text-editor-font-size-select"
+    class="form-control addepar-select addepar-select-sm ember-text-editor-font-size-select"
   }}
 
   {{view Ember.Widgets.ColorPicker
     selectedColorBinding="selectedForeColor"
     class="ember-text-editor-color-select"
+    buttonClass="btn btn-default btn-sm"
   }}
 
   <div class="btn-group">

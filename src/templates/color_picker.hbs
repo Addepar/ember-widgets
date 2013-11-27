@@ -1,11 +1,11 @@
 <div class="btn-group">
-  <button type="button" class="btn btn-default ember-widget-color-button">
+  <button type="button" {{bindAttr class=":ember-widget-color-button buttonClass"}}>
     {{view Ember.Widgets.ColorPickerCell
       colorBinding ='selectedColor'
       classNames='color-picker-cell'
     }}
   </button>
-  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+  <button type="button" {{bindAttr class=":dropdown-toggle buttonClass"}} data-toggle="dropdown">
     <span class="caret"></span>
     <span class="sr-only">Toggle Dropdown</span>
   </button>

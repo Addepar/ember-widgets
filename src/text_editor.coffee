@@ -60,7 +60,7 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         box-sizing: border-box;
-        padding: 5px 5px 0 5px;
+        padding: 10px 10px 0 10px;
       }
       .text-editor:focus {
         outline: none;

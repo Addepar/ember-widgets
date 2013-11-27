@@ -4,6 +4,9 @@ Ember.Widgets.ColorPicker = Ember.Component.extend
   selectedColor: 'rgb(40, 90, 200)'
   colorPickerPlacement: 'right'
 
+  # Change the button class when necessary
+  buttonClass: 'btn btn-default'
+
   colorRows:
     [
       [ 'rgb(0, 0, 0)',

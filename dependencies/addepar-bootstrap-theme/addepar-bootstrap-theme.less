@@ -912,4 +912,24 @@ strong {
   background: #fff;
   .border-radius(0);
   .box-shadow(none);
+
+  &.addepar-select-sm {
+    height: 30px;
+  }
+}
+
+.addepar-select:after {
+  content: ' ';
+  display: block;
+  position: absolute;
+  top: 20px;
+  right: 9px;
+  width: 10px;
+  height: 10px;
+  background: rgba(0, 0, 0, 0) url('/universal/images-v6/dialog/select-arrow-dark.png') center center no-repeat;
+  cursor: pointer;
+}
+
+.form-control:focus {
+  .box-shadow(none);
 }
