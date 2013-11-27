@@ -437,8 +437,9 @@
   vertical-align: top;
   line-height: 20px;
 }
-.ember-text-editor-toolbar .insert-non-editable-btn .btn-sm,
-.ember-text-editor-toolbar .ember-text-editor-font-family-select .btn-sm {
+.ember-text-editor-toolbar .ember-text-editor-font-family-select .btn-sm,
+.ember-text-editor-toolbar .ember-text-editor-font-size-select .btn-sm,
+.ember-text-editor-toolbar .insert-non-editable-btn .btn-sm {
   margin-top: -1px;
 }
 .ember-text-editor-font-family-select .btn {
@@ -447,6 +448,9 @@
 }
 .ember-text-editor-font-size-select {
   width: 50px;
+}
+.ember-text-editor-font-size-select.ember-select .dropdown-menu {
+  min-width: 48px;
 }
 /* iFrame */
 .text-editor-frame {

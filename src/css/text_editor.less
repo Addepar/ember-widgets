@@ -16,8 +16,9 @@
   }
 
   // TODO(Louis): Fix the line-height issue in the ember-select for btn-sm
-  .insert-non-editable-btn,
-  .ember-text-editor-font-family-select {
+  .ember-text-editor-font-family-select,
+  .ember-text-editor-font-size-select,
+  .insert-non-editable-btn {
     .btn-sm {
       margin-top: -1px;
     }
@@ -31,6 +32,10 @@
 
 .ember-text-editor-font-size-select {
   width: 50px;
+
+  &.ember-select .dropdown-menu {
+    min-width: 48px;
+  }
 }
 
 /* iFrame */
