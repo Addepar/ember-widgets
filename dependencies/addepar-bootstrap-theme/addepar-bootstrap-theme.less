@@ -1,12 +1,12 @@
 //
-// Addepar Bootstrap(V3) Theme - v0.1.4
+// Addepar Bootstrap(V3) Theme - v0.1.7
 // -----------------------------------------------------------------------------
 
 /* Variables
 -------------------------------------------------- */
 
 @univers:               'Univers-Next';
-@univers-condensded:    'Univers-Condensed';
+@univers-condensed:     'Univers-Condensed';
 @univers-tabular:       'Univers-Tabular';
 @backup-fonts:          'Helvetica Neue', 'Helvetica', Arial, sans-serif;
 @sansFontFamily:        @univers, @backup-fonts;
@@ -93,6 +93,10 @@ h5 {
   // letter-spacing: 2px;
 }
 
+h6 {
+  font: bold 12px/1.5 @sansFontFamily;
+}
+
 p,
 .styled li {
   // Don't know yet
@@ -141,30 +145,6 @@ hr.soften {
   border: 0;
 }
 
-select,
-textarea,
-input[type="text"],
-input[type="password"],
-input[type="datetime"],
-input[type="datetime-local"],
-input[type="date"],
-input[type="month"],
-input[type="time"],
-input[type="week"],
-input[type="number"],
-input[type="email"],
-input[type="url"],
-input[type="search"],
-input[type="tel"],
-input[type="color"],
-.uneditable-input {
-  margin: 0;
-  padding: 0 5px;
-  border: 1px solid #ddd;
-  .border-radius(0);
-  .box-shadow(none);
-}
-
 strong {
   font-weight: 500;
 }
@@ -206,6 +186,10 @@ strong {
   padding: 1px 5px;
 }
 
+.btn-expand {
+  width: 100%;
+}
+
 .btn-default,
 .btn-primary,
 .btn-success,
@@ -235,6 +219,7 @@ strong {
 
 .btn:active,
 .btn.active {
+  background-image: none;
   .box-shadow(none);
 }
 
@@ -844,22 +829,80 @@ strong {
 /* Addepar Forms
 -------------------------------------------------- */
 
-.sub-form-group {
-  margin-top: 5px;
+/* Input fields */
+
+select,
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input {
+  margin: 0;
+  padding: 0 5px;
+  border: 1px solid #ddd;
+  .border-radius(0);
+  .box-shadow(none);
+
+  &:focus {
+    border-color: #66AFE9;
+  }
 }
 
-.form-label {
-  font-size: 11px;
-  font-weight: 500;
-  color: #999;
+/* Checkboxes */
+
+.radio input[type="radio"],
+.radio-inline input[type="radio"],
+.checkbox input[type="checkbox"],
+.checkbox-inline input[type="checkbox"] {
+  margin-top: 2px;
 }
 
-.checkbox-label {
-  // Should appear like the other form elements
-  font-size: 12px;
-  font-weight: 500;
-  color: #333;
+// input[type="checkbox"] {
+//   background: none !important;
+//   margin-top: 0;
+//   -webkit-appearance: none;
+//   -moz-appearance: none;
+//   appearance: none;
+//   border: none;
+// }
+
+// input[type="checkbox"]::after {
+//   top: 0;
+//   left: 0;
+//   content: url(../../img/checkbox.png);
+//   opacity: 0.5;
+// }
+
+// input[type="checkbox"]:checked::after {
+//   content: url(../../img/checkmark.png);
+//   top: 0;
+//   left: 0;
+//   opacity: 0.8;
+// }
+
+// input[type="checkbox"]:hover {
+//   border: none !important;
+//   .box-shadow(none);
+// }
+
+/* Radio Buttons */
+
+input[type="radio"] {
+  margin-top: 2px;
 }
+
+/* Grouping */
 
 .form-control {
   // Align with buttons. This might be sketch
@@ -874,10 +917,83 @@ strong {
     font-size: 12px;
     color: #333;
   }
+
+  &:focus {
+    .box-shadow(none);
+  }
+}
+
+.sub-form-group {
+
+  margin-top: 5px;
+}
+
+.input-group-addon {
+  .border-radius(0);
+}
+
+.input-group-xs {
+  line-height: 20px;
+}
+
+.input-group-addon.input-xs {
+  // height: 22px;
+  // min-height: 22px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+/* Labels */
+
+.form-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: #999;
+}
+
+.checkbox-label {
+  // Should appear like the other form elements
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Sortable Lists */
+
+.sortable-list {
+  margin: 0;
+
+  > li {
+    list-style: none;
+    display: block;
+    margin: 3px 0;
+    padding: 5px 10px;
+    background-color: #f1f1f1;
+
+    > .remove {
+      cursor: pointer;
+      font-weight: 600;
+    }
+  }
+}
+
+.add-sortable-row {
+  padding: 5px 9px;
+  cursor: pointer;
+}
+
+/* Help Blocks */
+
+.help-block {
+  margin-top: 0;
+  margin-bottom: 7px;
+  color: #737373;
+  font-size: 10px;
 }
 
 /* Addepar Tooltips
 -------------------------------------------------- */
+
 .tooltip-inner {
   text-transform: capitalize;
   white-space: nowrap;
@@ -901,35 +1017,10 @@ strong {
   display: block;
 }
 
-
-// TODO Cleanup
-
-.addepar-select {
-  border: 1px solid #ddd;
-  box-shadow: none;
-  background-image: none;
-  -webkit-appearance: none;
-  background: #fff;
-  .border-radius(0);
-  .box-shadow(none);
-
-  &.addepar-select-sm {
-    height: 30px;
-  }
-}
-
-.addepar-select:after {
-  content: ' ';
-  display: block;
-  position: absolute;
-  top: 20px;
-  right: 9px;
-  width: 10px;
-  height: 10px;
-  background: rgba(0, 0, 0, 0) url('') center center no-repeat;
-  cursor: pointer;
-}
-
-.form-control:focus {
-  .box-shadow(none);
+// Taken out of dropdown-menu
+.divider {
+  height: 1px;
+  margin: 9px 0;
+  overflow: hidden;
+  background-color: #E5E5E5;
 }
