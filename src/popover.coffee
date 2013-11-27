@@ -50,7 +50,7 @@ Ember.Widgets.BodyEventListener,
 
   snapToPosition: ->
     $target      = $(@get('targetElement'))
-    return unless @get('state') is 'inDOM' and $target?
+    return if @get('state') isnt 'inDOM' or Ember.isEmpty($target)
     actualWidth  = @$()[0].offsetWidth
     actualHeight = @$()[0].offsetHeight
     pos = $target.offset()
