@@ -340,6 +340,15 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
 
   selectedPillOption: null
 
+  getPillFromElement: (pillElement) ->
+    # Deserialize the pillElement into a pill object
+    data = $(pillElement).data()
+    return unless data.type
+    params = {}
+    for key, value of data
+      params[key] = value
+    Ember.get(data.type).create({'textEditor': this, 'params': params})
+
   selectedPillOptionDidChange: Ember.observer ->
     selectedPillOption = @get('selectedPillOption')
     return unless selectedPillOption
@@ -357,14 +366,8 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
   updateNonEditablePillContent: ->
     pillElements = @getEditor().find('.non-editable[data-pill-id]')
     for pillElement in pillElements
-      # Deserialize the pillElement into a pill object
-      data = $(pillElement).data()
-      return unless data.type
-      params = {}
-      for key, value of data
-        params[key] = value
-      pill = Ember.get(data.type).create({'textEditor': this, 'params': params})
-
+      pill = @getPillFromElement(pillElement)
+      return unless pill
       $(pillElement).text(pill.result())
 
   getCurrentCaretContainer: (range) ->
