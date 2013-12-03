@@ -48,12 +48,51 @@ Ember.Widgets.BodyEventListener,
       # about auto run being disabled when we are in testing mode.
       Ember.run this, @destroy
 
+  ###
+  Calculate the offset of the given iframe relative to the top window.
+  - Walks up the iframe chain, checking the offset of each one till it reaches top
+  - Only works with friendly iframes.
+  - Takes into account scrolling, but comes up with a result relative to
+  top iframe, regardless of being visibile withing intervening frames.
+
+  @param window win    the iframe we're interested in (e.g. window)
+  @param object pos   an object containing the offset so far:
+  { left: [x], top: [y] }
+  (optional - initializes with 0,0 if undefined)
+  @return pos object above
+
+  via http://stackoverflow.com/a/9676655
+  ###
+  computeFrameOffset: (win, pos={top: 0, left: 0}) ->
+    # find our <iframe> tag within our parent window
+    frames = win.parent.document.getElementsByTagName("iframe")
+    found = false
+
+    for frame in frames
+      if frame.contentWindow is win
+        found = true
+        break
+
+    # add the offset & recur up the frame chain
+    if found
+      rect = frame.getBoundingClientRect()
+      pos.left += rect.left
+      pos.top += rect.top
+      @computeFrameOffset win.parent, pos if win isnt top
+    pos
+
+  getOffset: ($target) ->
+    pos = $target.offset()
+    doc = $target[0].ownerDocument
+    win = doc.defaultView
+    @computeFrameOffset(win, pos)
+
   snapToPosition: ->
     $target      = $(@get('targetElement'))
     return if @get('state') isnt 'inDOM' or Ember.isEmpty($target)
     actualWidth  = @$()[0].offsetWidth
     actualHeight = @$()[0].offsetHeight
-    pos = $target.offset()
+    pos = @getOffset($target)
     pos.width  = $target[0].offsetWidth
     pos.height = $target[0].offsetHeight
 
