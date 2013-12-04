@@ -359,7 +359,6 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
   serialize: ->
     raw_html = @getEditor().html()
     div = $('<div/>').html(raw_html)
-    $('.non-editable-caret', div).remove()
     $('.non-editable', div).empty()
     return div.html()
 
