@@ -102,7 +102,11 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
   # Return the last child node of the editor
   getOrCreateLastElementInEditor: ->
     editor = @getEditor()[0]
-    unless editor.childElementCount > 0
+    if editor is undefined
+      iframe = @$('iframe.text-editor-frame').contents()
+      iframe.find('body').append(@iframeBodyContents)
+      editor = @getEditor()[0]
+    if editor.childElementCount == 0
       # Insert div in text editor if none exists
       @insertHTMLAtRange(@selectElement(editor), "<div>&nbsp;</div>")
     return editor.children[editor.children.length - 1]
@@ -177,7 +181,8 @@ Ember.Widgets.DomHelper = Ember.Mixin.create
     RIGHT: 39,
     SPACEBAR: 32,
     TAB: 9,
-    UP: 38
+    UP: 38,
+    ESCAPE: 27
   }
 
   # Set the selected range to the given element, with the option to collapse the selection to the
@@ -255,6 +260,21 @@ Ember.Widgets.DomHelper = Ember.Mixin.create
         sideNode = sideNode.children[index]
     return sideNode
 
+  getCharactersPrecedingCaret: ->
+    range = @getCurrentRange()
+    return "" if range is null
+    range.collapse(true)
+    range.setStart(range.startContainer, 0)
+    precedingChars = range.toString()
+    return precedingChars
+
+  deleteCharactersPrecedingCaret: (length) ->
+    range = @getCurrentRange()
+    return "" if range is null
+    range.collapse(true)
+    range.setStart(range.startContainer, range.endOffset - length)
+    @deleteRange(range)
+
 # Base class for NonEditablePill that can be inserted into the TextEditorWithNonEditableComponent
 Ember.Widgets.BaseNonEditablePill = Ember.Controller.extend Ember.Widgets.DomHelper,
 
@@ -330,6 +350,9 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
   pillId:           0
   INVISIBLE_CHAR:   '\uFEFF'
   mouseDownTarget:  null
+  INSERT_PILL_CHAR: '='
+  pillHideSearchBox: false
+  showConfigPopover: false
 
   pillOptions: [Ember.Widgets.TodaysDate, Ember.Widgets.NonEditableTextPill]
 
@@ -376,6 +399,12 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
     @incrementProperty 'pillId'
 
   insertPill: (pill) ->
+    precedingCharacters = @getCharactersPrecedingCaret(this.getEditor()[0])
+    showPillConfig = precedingCharacters.match RegExp("=\\w*$")
+    if showPillConfig
+      # Inserting via key, so we need to replace the characters before
+      @deleteCharactersPrecedingCaret(showPillConfig[0].length)
+      console.log('inserting')
     # Ensure that we insert the factor in the text editor (move the range inside the editor if
     # not already)
     range = @getCurrentRange()
@@ -545,6 +574,18 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
              keyCode >= 186 && keyCode <= 222    # punctuation
 
     keyCode = event.keyCode
+
+    if @showConfigPopover
+      insertSelect = @getInsertSelectController()
+      if keyCode == @KEY_CODES.DOWN
+        return insertSelect.downArrowPressed(event)
+      else if keyCode == @KEY_CODES.UP
+        return insertSelect.upArrowPressed(event)
+      else if keyCode in [@KEY_CODES.ENTER, @KEY_CODES.TAB] and insertSelect.get('filteredContent').length > 0
+        return insertSelect.enterPressed(event)
+      else if keyCode == @KEY_CODES.ESCAPE
+        return insertSelect.escapePressed(event)
+
     @moveSelection()
     range = @getCurrentRange()
     isCollapsed = range.collapsed
@@ -578,7 +619,9 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
   keyUp: (event) ->
     return unless @isTargetInEditor(event)
     @moveSelection()
-    @_super()
+    unless event.keyCode == @KEY_CODES.ESCAPE
+      @handlePillConfig()
+      @_super()
 
   mouseDown: (event) ->
     return unless @isTargetInEditor(event)
@@ -594,5 +637,29 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
       @selectElement(event.target, "none")
       event.preventDefault()
     @_super()
+
+  getInsertSelectController: ->
+    insertSelectId = @$('.insert-non-editable-btn')[0].id
+    insertSelect = Ember.View.views[insertSelectId]
+
+  showPillConfig: (query) ->
+    @set 'showConfigPopover', true
+    @set 'pillHideSearchBox', true
+    @set 'query', query
+
+  hidePillConfig: ->
+    @set 'showConfigPopover', false
+    @set 'pillHideSearchBox', false
+    @set 'query', null
+
+  handlePillConfig: ->
+    precedingCharacters = @getCharactersPrecedingCaret(this.getEditor()[0])
+    regexp = new RegExp @INSERT_PILL_CHAR + '[A-Za-z0-9_\+\-]*$|' + @INSERT_PILL_CHAR  + '[^\\x00-\\xff]*$', 'gi'
+    showPillConfig = precedingCharacters.match regexp
+    if showPillConfig
+      query = showPillConfig[0].split(" ").reverse()[0].slice(1)
+      @showPillConfig(query)
+    else
+      @hidePillConfig()
 
   click: (event) -> Ember.K
