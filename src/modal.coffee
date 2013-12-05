@@ -39,7 +39,7 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
       cancel = @get 'cancel'
       # TODO: this is for backward compatibility only. If cancel is a function
       # we will invoke the callback
-      if typeof(cancel) is 'function' then cancel() else @sendAction 'cancel'
+      if typeof(cancel) is 'function' then @cancel() else @sendAction 'cancel'
       @hide()
 
     sendConfirm: ->
@@ -50,7 +50,7 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
       confirm = @get 'confirm'
       # TODO: this is for backward compatibility only. If confirm is a function
       # we will invoke the callback
-      if typeof(confirm) is 'function' then confirm() else @sendAction 'confirm'
+      if typeof(confirm) is 'function' then @confirm() else @sendAction 'confirm'
       @hide()
 
   didInsertElement: ->
