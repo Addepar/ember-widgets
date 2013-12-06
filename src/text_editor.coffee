@@ -400,7 +400,8 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
 
   insertPill: (pill) ->
     precedingCharacters = @getCharactersPrecedingCaret(this.getEditor()[0])
-    showPillConfig = precedingCharacters.match RegExp("=\\w*$")
+    regexp = new RegExp @INSERT_PILL_CHAR + '[A-Za-z0-9_\+\-]*$|' + @INSERT_PILL_CHAR  + '[^\\x00-\\xff]*$', 'gi'
+    showPillConfig = precedingCharacters.match regexp
     if showPillConfig
       # Inserting via key, so we need to replace the characters before
       @deleteCharactersPrecedingCaret(showPillConfig[0].length)
