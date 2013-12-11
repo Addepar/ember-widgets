@@ -638,6 +638,8 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
       event.preventDefault()
     @_super()
 
+  click: (event) -> Ember.K
+
   getInsertSelectController: ->
     @get('pillChooser')
 
@@ -660,5 +662,3 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
       @showPillConfig(query)
     else
       @hidePillConfig()
-
-  click: (event) -> Ember.K
