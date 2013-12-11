@@ -405,7 +405,6 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
     if showPillConfig
       # Inserting via key, so we need to replace the characters before
       @deleteCharactersPrecedingCaret(showPillConfig[0].length)
-      console.log('inserting')
     # Ensure that we insert the factor in the text editor (move the range inside the editor if
     # not already)
     range = @getCurrentRange()
@@ -640,8 +639,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
     @_super()
 
   getInsertSelectController: ->
-    insertSelectId = @$('.insert-non-editable-btn')[0].id
-    insertSelect = Ember.View.views[insertSelectId]
+    @get('pillChooser')
 
   showPillConfig: (query) ->
     @set 'showConfigPopover', true
