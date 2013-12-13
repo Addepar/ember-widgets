@@ -16,6 +16,9 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   content:      ""
   contentViewClass: null
 
+  # set isDisabled to "disabled" to disable confirm
+  isConfirmDisabled: ""
+
   confirm: Ember.K
   cancel: Ember.K
 
