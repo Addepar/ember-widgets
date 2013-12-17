@@ -171,7 +171,7 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
     else # getter
       valuePath = @get 'optionValuePath'
       selection = @get 'selection'
-      if valuePath then get(selection, valuePath) else selections
+      if valuePath then get(selection, valuePath) else selection
   .property 'selection'
 
   didInsertElement: ->
