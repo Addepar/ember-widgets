@@ -51,12 +51,12 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
     {size:'6', name: '24'},
     {size:'7', name: '36'}
   ]
-  iframeHeadContents: """
-    <style>
+  iframeHeadContents: Ember.computed ->
+    """<style>
       body {
         margin: 0;
       }
-      .text-editor {
+      .""" + @EDITOR_CLASS + """ {
         min-height: 100%;
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
@@ -64,7 +64,7 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
         padding: 0;
         font-family: "Helvetica Neue";
       }
-      .text-editor:focus {
+      .""" + @EDITOR_CLASS + """:focus {
         outline: none;
       }
       .non-editable {
@@ -75,9 +75,11 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
         list-style-type: none;
         cursor: pointer;
       }
-    </style>
-    """
-  iframeBodyContents: """<div class="text-editor" contenteditable="true"></div>"""
+    </style>"""
+  .property 'EDITOR_CLASS'
+  iframeBodyContents: Ember.computed ->
+    '<div class="' + @EDITOR_CLASS + '" contenteditable="true"></div>'
+  .property 'EDITOR_CLASS'
 
   fontChooserItemViewClass: Ember.Widgets.SelectOptionView.extend
     templateName: 'font_chooser_item'
@@ -86,7 +88,7 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
     .property 'label'
 
   getEditor: ->
-    @$('iframe.text-editor-frame').contents().find('.text-editor')
+    @$('iframe.text-editor-frame').contents().find('.' + @EDITOR_CLASS)
 
   getDocument: ->
     iframe = @$('iframe.text-editor-frame')[0]
@@ -104,9 +106,9 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
     editor = @getEditor()[0]
     if editor is undefined
       iframe = @$('iframe.text-editor-frame').contents()
-      iframe.find('body').append(@iframeBodyContents)
+      iframe.find('body').append(@get('iframeBodyContents'))
       editor = @getEditor()[0]
-    if editor.childElementCount == 0
+    if editor.childElementCount is 0
       # Insert div in text editor if none exists
       @insertHTMLAtRange(@selectElement(editor), "<div>&nbsp;</div>")
     return editor.children[editor.children.length - 1]
@@ -134,8 +136,8 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
   didInsertElement: ->
     @_super()
     iframe = @$('iframe.text-editor-frame').contents()
-    iframe.find('body').append(@iframeBodyContents)
-    iframe.find('head').append(@iframeHeadContents)
+    iframe.find('body').append(@get('iframeBodyContents'))
+    iframe.find('head').append(@get('iframeHeadContents'))
     @getDocument().execCommand 'styleWithCSS', true, true
 
     iframe = @$('iframe.text-editor-frame')[0]
@@ -351,6 +353,9 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
   INVISIBLE_CHAR:   '\uFEFF'
   mouseDownTarget:  null
   INSERT_PILL_CHAR: '='
+  insertPillRegex: Ember.computed ->
+    new RegExp @INSERT_PILL_CHAR + '[A-Za-z0-9_\+\-]*$', 'gi'
+  .property ('INSERT_PILL_CHAR')
   pillHideSearchBox: false
   showConfigPopover: false
 
@@ -400,8 +405,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
 
   insertPill: (pill) ->
     precedingCharacters = @getCharactersPrecedingCaret(this.getEditor()[0])
-    regexp = new RegExp @INSERT_PILL_CHAR + '[A-Za-z0-9_\+\-]*$|' + @INSERT_PILL_CHAR  + '[^\\x00-\\xff]*$', 'gi'
-    showPillConfig = precedingCharacters.match regexp
+    showPillConfig = precedingCharacters.match @get('insertPillRegex')
     if showPillConfig
       # Inserting via key, so we need to replace the characters before
       @deleteCharactersPrecedingCaret(showPillConfig[0].length)
@@ -655,8 +659,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
 
   handlePillConfig: ->
     precedingCharacters = @getCharactersPrecedingCaret(this.getEditor()[0])
-    regexp = new RegExp @INSERT_PILL_CHAR + '[A-Za-z0-9_\+\-]*$|' + @INSERT_PILL_CHAR  + '[^\\x00-\\xff]*$', 'gi'
-    showPillConfig = precedingCharacters.match regexp
+    showPillConfig = precedingCharacters.match @get('insertPillRegex')
     if showPillConfig
       query = showPillConfig[0].split(" ").reverse()[0].slice(1)
       @showPillConfig(query)
