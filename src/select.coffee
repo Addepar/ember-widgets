@@ -173,7 +173,7 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
     else # getter
       valuePath = @get 'optionValuePath'
       selection = @get 'selection'
-      if valuePath then get(selection, valuePath) else selections
+      if valuePath then get(selection, valuePath) else selection
   .property 'selection'
 
   didInsertElement: ->
@@ -306,6 +306,6 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
   #TODO Refactor other parts to use this method to set selection
   userDidSelect: (selection) ->
     @sendAction 'userSelected', selection
-    
+
 
 Ember.Handlebars.helper('select-component', Ember.Widgets.SelectComponent)
