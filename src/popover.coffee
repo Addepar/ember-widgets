@@ -43,10 +43,9 @@ Ember.Widgets.BodyEventListener,
 
   hide: ->
     @set('isShowing', no)
-    @$().one $.support.transition.end, =>
-      # We need to wrap this in a run-loop otherwise ember-testing will complain
-      # about auto run being disabled when we are in testing mode.
-      Ember.run this, @destroy
+    # We need to wrap this in a run-loop otherwise ember-testing will complain
+    # about auto run being disabled when we are in testing mode.
+    @$().one $.support.transition.end, => Ember.run this, @destroy
 
   ###
   Calculate the offset of the given iframe relative to the top window.
@@ -101,52 +100,66 @@ Ember.Widgets.BodyEventListener,
         @set 'top',   pos.top + pos.height
         @set 'left',  pos.left + pos.width / 2 - actualWidth / 2
         break
-      when 'top'
-        @set 'top',   pos.top - actualHeight
-        @set 'left',  pos.left + pos.width / 2 - actualWidth / 2
-        break
-      when 'top-right'
-        @set 'top',   pos.top
-        @set 'left',  pos.left + pos.width
-        break
-      when 'top-left'
-        @set 'top',   pos.top
-        @set 'left',  pos.left - actualWidth
+      when 'bottom-left'
+        @set 'top',   pos.top + pos.height
+        @set 'left',  pos.left
         break
       when 'bottom-right'
         @set 'top', pos.top + pos.height
         @set 'left', pos.left + pos.width - actualWidth
         break
-      when 'bottom-left'
-        @set 'top',   pos.top + pos.height
+      when 'top'
+        @set 'top',   pos.top - actualHeight
+        @set 'left',  pos.left + pos.width / 2 - actualWidth / 2
+        break
+      when 'top-left'
+        @set 'top',   pos.top - actualHeight
         @set 'left',  pos.left
+        break
+      when 'top-right'
+        @set 'top',   pos.top - actualHeight
+        @set 'left', pos.left + pos.width - actualWidth
         break
       when 'left'
         @set 'top',   pos.top + pos.height / 2 - actualHeight / 2
+        @set 'left',  pos.left - actualWidth
+        break
+      when 'left-top'
+        @set 'top',   pos.top + actualHeight
+        @set 'left',  pos.left - actualWidth
+        break
+      when 'left-bottom'
+        @set 'top',   pos.top + pos.height - actualHeight
         @set 'left',  pos.left - actualWidth
         break
       when 'right'
         @set 'top',   pos.top + pos.height / 2 - actualHeight / 2
         @set 'left',  pos.left + pos.width
         break
+      when 'right-top'
+        @set 'top',   pos.top + actualHeight
+        @set 'left',  pos.left + pos.width
+        break
+      when 'right-bottom'
+        @set 'top',   pos.top + pos.height - actualHeight
+        @set 'left',  pos.left + pos.width
+        break
     @correctHorizontalIfOffScreen()
 
   correctHorizontalIfOffScreen: ->
     bodyWidth = $('body').width()
+    bodyHeight = $('body').height()
     actualWidth  = @$()[0].offsetWidth
+    actualHeight = @$()[0].offsetHeight
 
-    # if our popover is outside of the body (either on left or on right)
-    # we need to get rid of the arrow at top/bottom of the popover
-    hideArrow = no
     if @get('left') + actualWidth > bodyWidth
       @set 'left', bodyWidth - actualWidth
-      hideArrow = yes
-
     if @get('left') < 0
       @set 'left', 0
-      hideArrow = yes
-
-    if hideArrow then @$().addClass('no-arrow') else @$().removeClass('no-arrow')
+    if @get('top') + actualHeight > bodyHeight
+      @set 'top', bodyHeight - actualHeight
+    if @get('top') < 0
+      @set 'top', 0
 
   # We need to put this in a computed because this is attached to the
   # resize and scroll events before snapToPosition is defined. We
