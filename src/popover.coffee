@@ -19,6 +19,8 @@ Ember.Widgets.BodyEventListener,
   isShowing:  no
   inserted: no
   content: ""
+  marginTop: 10
+  marginLeft: 10
 
   _resizeHandler: null
   _scrollHandler: null
@@ -43,9 +45,10 @@ Ember.Widgets.BodyEventListener,
 
   hide: ->
     @set('isShowing', no)
-    # We need to wrap this in a run-loop otherwise ember-testing will complain
-    # about auto run being disabled when we are in testing mode.
-    @$().one $.support.transition.end, => Ember.run this, @destroy
+    @$().one $.support.transition.end, =>
+      # We need to wrap this in a run-loop otherwise ember-testing will complain
+      # about auto run being disabled when we are in testing mode.
+      Ember.run this, @destroy
 
   ###
   Calculate the offset of the given iframe relative to the top window.
@@ -100,66 +103,62 @@ Ember.Widgets.BodyEventListener,
         @set 'top',   pos.top + pos.height
         @set 'left',  pos.left + pos.width / 2 - actualWidth / 2
         break
-      when 'bottom-left'
-        @set 'top',   pos.top + pos.height
-        @set 'left',  pos.left
+      when 'top'
+        @set 'top',   pos.top - actualHeight
+        @set 'left',  pos.left + pos.width / 2 - actualWidth / 2
+        break
+      when 'top-right'
+        @set 'top',   pos.top
+        @set 'left',  pos.left + pos.width
+        break
+      when 'top-left'
+        @set 'top',   pos.top
+        @set 'left',  pos.left - actualWidth
         break
       when 'bottom-right'
         @set 'top', pos.top + pos.height
         @set 'left', pos.left + pos.width - actualWidth
         break
-      when 'top'
-        @set 'top',   pos.top - actualHeight
-        @set 'left',  pos.left + pos.width / 2 - actualWidth / 2
-        break
-      when 'top-left'
-        @set 'top',   pos.top - actualHeight
+      when 'bottom-left'
+        @set 'top',   pos.top + pos.height
         @set 'left',  pos.left
         break
-      when 'top-right'
-        @set 'top',   pos.top - actualHeight
-        @set 'left', pos.left + pos.width - actualWidth
-        break
       when 'left'
-        @set 'top',   pos.top + pos.height / 2 - actualHeight / 2
-        @set 'left',  pos.left - actualWidth
-        break
-      when 'left-top'
-        @set 'top',   pos.top + actualHeight
-        @set 'left',  pos.left - actualWidth
-        break
-      when 'left-bottom'
-        @set 'top',   pos.top + pos.height - actualHeight
+        @set 'top',   pos.top - @get('marginTop')
         @set 'left',  pos.left - actualWidth
         break
       when 'right'
-        @set 'top',   pos.top + pos.height / 2 - actualHeight / 2
+        @set 'top',   pos.top - @get('marginTop')
         @set 'left',  pos.left + pos.width
         break
-      when 'right-top'
-        @set 'top',   pos.top + actualHeight
-        @set 'left',  pos.left + pos.width
-        break
-      when 'right-bottom'
-        @set 'top',   pos.top + pos.height - actualHeight
-        @set 'left',  pos.left + pos.width
-        break
-    @correctHorizontalIfOffScreen()
+    @correctIfOffscreen()
+    @positionArrow()
 
-  correctHorizontalIfOffScreen: ->
+  positionArrow: ->
+    $target = $(@get('targetElement'))
+    pos = @getOffset($target)
+    pos.width  = $target[0].offsetWidth
+    pos.height = $target[0].offsetHeight
+    switch @get('placement')
+      when 'left', 'right'
+        @set 'arrowStyle', "margin-top:#{pos.top - @get('top') + 11}px;"
+      when 'top', 'bottom'
+        @set 'arrowStyle', "margin-left:#{pos.left - @get('left') + 11}px;"
+
+  correctIfOffscreen: ->
     bodyWidth = $('body').width()
     bodyHeight = $('body').height()
     actualWidth  = @$()[0].offsetWidth
-    actualHeight = @$()[0].offsetHeight
+    actualHeight  = @$()[0].offsetHeight
 
     if @get('left') + actualWidth > bodyWidth
-      @set 'left', bodyWidth - actualWidth
+      @set 'left', bodyWidth - actualWidth - margin
     if @get('left') < 0
-      @set 'left', 0
+      @set 'left', @get('marginLeft')
     if @get('top') + actualHeight > bodyHeight
-      @set 'top', bodyHeight - actualHeight
+      @set 'top', bodyHeight - actualHeight - margin
     if @get('top') < 0
-      @set 'top', 0
+      @set 'top', @get('marginTop')
 
   # We need to put this in a computed because this is attached to the
   # resize and scroll events before snapToPosition is defined. We

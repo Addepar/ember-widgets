@@ -327,6 +327,9 @@
 }
 /* Popover Arrow
 -------------------------------------------------- */
+.popover.right .arrow {
+  top: auto !important;
+}
 .popover.top-right {
   margin-left: 10px;
   margin-top: -4px;
