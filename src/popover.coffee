@@ -152,11 +152,11 @@ Ember.Widgets.BodyEventListener,
     actualHeight  = @$()[0].offsetHeight
 
     if @get('left') + actualWidth > bodyWidth
-      @set 'left', bodyWidth - actualWidth - margin
+      @set 'left', bodyWidth - actualWidth - @get('marginLeft')
     if @get('left') < 0
       @set 'left', @get('marginLeft')
     if @get('top') + actualHeight > bodyHeight
-      @set 'top', bodyHeight - actualHeight - margin
+      @set 'top', bodyHeight - actualHeight - @get('marginTop')
     if @get('top') < 0
       @set 'top', @get('marginTop')
 
