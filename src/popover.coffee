@@ -139,11 +139,14 @@ Ember.Widgets.BodyEventListener,
     pos = @getOffset($target)
     pos.width  = $target[0].offsetWidth
     pos.height = $target[0].offsetHeight
+    arrowSize = 22
     switch @get('placement')
       when 'left', 'right'
-        @set 'arrowStyle', "margin-top:#{pos.top - @get('top') + 11}px;"
+        top = pos.top + pos.height / 2 - @get('top') - arrowSize / 2
+        @set 'arrowStyle', "margin-top:#{top}px;"
       when 'top', 'bottom'
-        @set 'arrowStyle', "margin-left:#{pos.left - @get('left') + 11}px;"
+        left = pos.left + pos.width / 2 - @get('left') - arrowSize / 2
+        @set 'arrowStyle', "margin-left:#{left}px;"
 
   correctIfOffscreen: ->
     bodyWidth = $('body').width()
