@@ -186,5 +186,7 @@ module.exports = (grunt) ->
   grunt.registerTask "build_tests", [ "coffee:tests", "emberTemplates", "neuter" ]
   if env is "dev"
     grunt.registerTask "default", [ "clean", "bower", "build_srcs", "build_app", "build_tests", "less", "copy", "uglify", "watch" ]
+    # build: same as default but no bower
+    grunt.registerTask "build", [ "clean", "build_srcs", "build_app", "build_tests", "less", "copy", "uglify", "watch" ]
   else
     grunt.registerTask "default", [ "bower", "less", "build_srcs", "uglify"]
