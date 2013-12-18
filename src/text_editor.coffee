@@ -349,26 +349,32 @@ Ember.Widgets.TodaysDate = Ember.Widgets.BaseNonEditablePill.extend
 
 Ember.Widgets.TextEditorWithNonEditableComponent =
 Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
-  pillId:           0
+  ##############################################################################
+  # Interface
+  ##############################################################################
+  pillOptions: [Ember.Widgets.TodaysDate, Ember.Widgets.NonEditableTextPill]
+  getInsertSelectController: -> @get('pillChooser')
   INVISIBLE_CHAR:   '\uFEFF'
-  mouseDownTarget:  null
   INSERT_PILL_CHAR: '='
   insertPillRegex: Ember.computed ->
     new RegExp @INSERT_PILL_CHAR + '[A-Za-z0-9_\+\-]*$', 'gi'
   .property ('INSERT_PILL_CHAR')
+
+  ##############################################################################
+  # Properties
+  ##############################################################################
+  pillId:           0
+  mouseDownTarget:  null
   pillHideSearchBox: false
   showConfigPopover: false
-
-  pillOptions: [Ember.Widgets.TodaysDate, Ember.Widgets.NonEditableTextPill]
+  selectedPillOption: null
 
   _pillOptions : Ember.computed ->
     @getWithDefault('pillOptions', []).map (option) =>
       option.create textEditor: this
   .property('pillOptions')
 
-  selectedPillOption: null
-
-  getPillFromElement: (pillElement) ->
+  _getPillFromElement: (pillElement) ->
     # Deserialize the pillElement into a pill object
     data = $(pillElement).data()
     return unless data.type
@@ -393,11 +399,11 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
   updateNonEditablePillContent: ->
     pillElements = @getEditor().find('.non-editable[data-pill-id]')
     for pillElement in pillElements
-      pill = @getPillFromElement(pillElement)
+      pill = @_getPillFromElement(pillElement)
       return unless pill
       $(pillElement).text(pill.result())
 
-  getCurrentCaretContainer: (range) ->
+  _getCurrentCaretContainer: (range) ->
     return $(range?.startContainer.parentElement).closest('.non-editable-caret')
 
   getNewPillId: ->
@@ -405,10 +411,10 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
 
   insertPill: (pill) ->
     precedingCharacters = @getCharactersPrecedingCaret(this.getEditor()[0])
-    showPillConfig = precedingCharacters.match @get('insertPillRegex')
-    if showPillConfig
+    matches = precedingCharacters.match @get('insertPillRegex')
+    if matches
       # Inserting via key, so we need to replace the characters before
-      @deleteCharactersPrecedingCaret(showPillConfig[0].length)
+      @deleteCharactersPrecedingCaret(matches[0].length)
     # Ensure that we insert the factor in the text editor (move the range inside the editor if
     # not already)
     range = @getCurrentRange()
@@ -418,27 +424,27 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
       range = @getCurrentRange()
 
     factor = @insertElementAtRange(range, pill.render())
-    caretContainer = @insertCaretContainer(factor, false)
+    caretContainer = @_insertCaretContainer(factor, false)
 
     # Set cursor to the end of the caret container just created
     @selectElement(caretContainer)
     # Remove other caret containers, excluding the one we just selected
-    @removeCaretContainers()
+    @_removeCaretContainers()
     # select the caret container again (which has probably been moved)
     @selectElement(factor.nextSibling)
 
-  isNonEditable: (node) ->
+  _isNonEditable: (node) ->
     not Ember.isEmpty($(node).closest('.non-editable'))
 
   # Get the non editable node, if any, to the left of the current range
   # Node: https://developer.mozilla.org/en-US/docs/Web/API/Node
   # Range: https://developer.mozilla.org/en-US/docs/Web/API/range
-  getNonEditableOnLeft: (deep=false) ->
+  _getNonEditableOnLeft: (deep=false) ->
     return unless (currentRange = @getCurrentRange()) and leftNode = @getNonEmptySideNode(currentRange, true, deep)
 
-    if currentRange.startOffset == 0 && @isNonEditable(leftNode)
+    if currentRange.startOffset == 0 && @_isNonEditable(leftNode)
       return leftNode
-    else if currentRange.startOffset == 1 && @isNonEditable(leftNode) and
+    else if currentRange.startOffset == 1 && @_isNonEditable(leftNode) and
     currentRange.startContainer.nodeValue?.charAt(0) == @INVISIBLE_CHAR
       # i.e. we are in a non-editable caret container
       return leftNode
@@ -446,23 +452,23 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
   # Get the non editable node, if any, to the right of the current range
   # Node: https://developer.mozilla.org/en-US/docs/Web/API/Node
   # Range: https://developer.mozilla.org/en-US/docs/Web/API/range
-  getNonEditableOnRight: (deep=false) ->
+  _getNonEditableOnRight: (deep=false) ->
     return unless (currentRange = @getCurrentRange()) and rightNode = @getNonEmptySideNode(currentRange, false, deep)
 
     endContainer = currentRange.endContainer
-    if currentRange.endOffset == endContainer.length && @isNonEditable(rightNode)
+    if currentRange.endOffset == endContainer.length && @_isNonEditable(rightNode)
       return rightNode
     else if currentRange.endOffset == endContainer.length - 1 and
     endContainer.nodeValue.charAt(endContainer.nodeValue.length - 1) == @INVISIBLE_CHAR and
-    @isNonEditable(rightNode)
+    @_isNonEditable(rightNode)
       return rightNode
 
-  isRangeWithinNonEditable: (range) ->
+  _isRangeWithinNonEditable: (range) ->
     $startNode = $(range.startContainer.parentNode)
     $endNode = $(range.endContainer.parentNode)
     $startNode.hasClass('non-editable') && $endNode.hasClass('non-editable') && $startNode[0] == $endNode[0]
 
-  getNonEditableParent: (node) ->
+  _getNonEditableParent: (node) ->
     while node
       if $(node).hasClass('non-editable')
         return node
@@ -473,7 +479,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
   # Otherwise when the user tries to type text preceding or following a non-editable element, the
   # text will appear in the non-editable element. The caret container gives us a place to
   # temporarily put the cursor.
-  insertCaretContainer: (target, before) ->
+  _insertCaretContainer: (target, before) ->
     caretContainer = @createElementsFromString('<span class="non-editable-caret">' + @INVISIBLE_CHAR + '</span>')[0]
     if (before)
       $(caretContainer).insertBefore(target)
@@ -481,7 +487,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
       $(caretContainer).insertAfter(target)
     return caretContainer
 
-  removeCaretContainer: (caretContainer) ->
+  _removeCaretContainer: (caretContainer) ->
     if (child = caretContainer.childNodes[0]) && child.nodeValue.charAt(0) == @INVISIBLE_CHAR
       child = child.deleteData(0, 1)
     savedSelection = rangy.saveSelection(@$('iframe.text-editor-frame')[0].contentWindow)
@@ -489,9 +495,9 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
     $(caretContainer).replaceWith(contents)
     rangy.restoreSelection(savedSelection)
 
-  removeCaretContainers: ->
+  _removeCaretContainers: ->
     range = @getCurrentRange()
-    currentCaretContainer = @getCurrentCaretContainer(range)
+    currentCaretContainer = @_getCurrentCaretContainer(range)
     while (caretContainer = @getEditor().find('.non-editable-caret').not(currentCaretContainer)[0])
       child = caretContainer.childNodes[0]
       if child && child.nodeValue?.charAt(0) == @INVISIBLE_CHAR
@@ -501,7 +507,10 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
       $(caretContainer).replaceWith(contents)
       caretContainer.childNodes[caretContainer.childNodes.length-1]
 
-  moveSelection: ->
+  _moveSelection: ->
+    # Move the cursor (selection) to a non editable caret if a pill has just
+    # been inserted, remove non editable carets as needed, and expand selection
+    # to the entire pill if selected.
     hasSideContent = (range, element, left) ->
       container = range.startContainer
       offset = range.startOffset
@@ -512,20 +521,20 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
           return
       return element
 
-    @removeCaretContainers()
+    @_removeCaretContainers()
     return unless currentRange = @getCurrentRange()
 
     isCollapsed = currentRange.collapsed
-    nonEditableStart = @getNonEditableParent(currentRange.startContainer)
-    nonEditableEnd = @getNonEditableParent(currentRange.endContainer)
-    parentCaret = @getCurrentCaretContainer(currentRange)
+    nonEditableStart = @_getNonEditableParent(currentRange.startContainer)
+    nonEditableEnd = @_getNonEditableParent(currentRange.endContainer)
+    parentCaret = @_getCurrentCaretContainer(currentRange)
 
     if nonEditableStart || nonEditableEnd
       if currentRange.collapsed
         if (element = hasSideContent(currentRange, nonEditableStart || nonEditableEnd, true))
-          caretContainer = @insertCaretContainer(element, true)
+          caretContainer = @_insertCaretContainer(element, true)
         else if (element = hasSideContent(currentRange, nonEditableStart || nonEditableEnd, false))
-          caretContainer = @insertCaretContainer(element, false)
+          caretContainer = @_insertCaretContainer(element, false)
 
         if caretContainer
           # place cursor at end of caret unless the caret is the first child
@@ -543,9 +552,30 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
       selection = window.getSelection()
       selection.removeAllRanges()
       selection.addRange(currentRange)
-    else if parentCaret?.length > 0 and !@isNonEditable(@getNonEmptySideNode(currentRange, true)) and
-    !@isNonEditable(@getNonEmptySideNode(currentRange, false))
-        @removeCaretContainer(parentCaret[0])
+    else if parentCaret?.length > 0 and !@_isNonEditable(@getNonEmptySideNode(currentRange, true)) and
+    !@_isNonEditable(@getNonEmptySideNode(currentRange, false))
+        @_removeCaretContainer(parentCaret[0])
+
+  _showPillConfig: (query) ->
+    @set 'showConfigPopover', true
+    @set 'pillHideSearchBox', true
+    @set 'query', query
+
+  _hidePillConfig: ->
+    @set 'showConfigPopover', false
+    @set 'pillHideSearchBox', false
+    @set 'query', null
+
+  _handlePillConfig: ->
+    # Show or hide the pill config component depending on the characters
+    # preceding the cursor
+    precedingCharacters = @getCharactersPrecedingCaret(this.getEditor()[0])
+    matches = precedingCharacters.match @get('insertPillRegex')
+    if matches
+      query = matches[0].split(" ").reverse()[0].slice(1)
+      @_showPillConfig(query)
+    else
+      @_hidePillConfig()
 
   keyDown: (event) ->
     return unless @isTargetInEditor(event)
@@ -559,7 +589,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
           @selectElement(leftNode, "none")
       else if leftNodeDeep and keyCode == @KEY_CODES.BACKSPACE
         # This happens when the last node on the previous line is a non-editable
-        @insertCaretContainer(leftNodeDeep, false)
+        @_insertCaretContainer(leftNodeDeep, false)
 
     handleRightNodeCase = =>
       if rightNode
@@ -570,7 +600,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
           event.preventDefault()
       else if rightNodeDeep and keyCode == @KEY_CODES.DELETE and not rightNode
         # This happens when the first node on the next line is a non-editable
-        @insertCaretContainer(rightNodeDeep, true)
+        @_insertCaretContainer(rightNodeDeep, true)
 
     isCharacter = (keyCode) ->
       return keyCode >= 48 && keyCode <= 90 or   # [0-9a-z]
@@ -590,24 +620,24 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
       else if keyCode == @KEY_CODES.ESCAPE
         return insertSelect.escapePressed(event)
 
-    @moveSelection()
+    @_moveSelection()
     range = @getCurrentRange()
     isCollapsed = range.collapsed
 
     startElement = range.startContainer
     endElement = range.endContainer
-    nonEditableParent = @isNonEditable(startElement) || @isNonEditable(endElement)
-    leftNode = @getNonEditableOnLeft()
-    rightNode = @getNonEditableOnRight()
-    leftNodeDeep = @getNonEditableOnLeft(true)
-    rightNodeDeep = @getNonEditableOnRight(true)
+    nonEditableParent = @_isNonEditable(startElement) || @_isNonEditable(endElement)
+    leftNode = @_getNonEditableOnLeft()
+    rightNode = @_getNonEditableOnRight()
+    leftNodeDeep = @_getNonEditableOnLeft(true)
+    rightNodeDeep = @_getNonEditableOnRight(true)
 
     if (event.metaKey || event.ctrlKey) && keyCode not in [@KEY_CODES.DELETE, @KEY_CODES.BACKSPACE]
       return
 
     if isCharacter(keyCode) or keyCode == @KEY_CODES.BACKSPACE or keyCode == @KEY_CODES.DELETE
       if (leftNode || rightNode) and !isCollapsed
-        caret = @insertCaretContainer(leftNode || rightNode, if leftNode then false else true)
+        caret = @_insertCaretContainer(leftNode || rightNode, if leftNode then false else true)
         @deleteRange(range)
         @selectElement(caret)
       else if nonEditableParent
@@ -622,46 +652,24 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
 
   keyUp: (event) ->
     return unless @isTargetInEditor(event)
-    @moveSelection()
+    @_moveSelection()
     unless event.keyCode == @KEY_CODES.ESCAPE
-      @handlePillConfig()
+      @_handlePillConfig()
       @_super()
 
   mouseDown: (event) ->
     return unless @isTargetInEditor(event)
     @mouseDownTarget = event.target  # Save mousedown target for use in mouseup handler
-    @moveSelection()
+    @_moveSelection()
 
   mouseUp: (event) ->
     return unless @isTargetInEditor(event)
-    @moveSelection()  # expand selection if only part of a non-editable was selected
+    @_moveSelection()  # expand selection if only part of a non-editable was selected
     currentRange = @getCurrentRange()
-    if @isNonEditable(event.target) and event.target == @mouseDownTarget and @isRangeWithinNonEditable(currentRange)
+    if @_isNonEditable(event.target) and event.target == @mouseDownTarget and @_isRangeWithinNonEditable(currentRange)
       # This prevents the user from putting the cursor within a non-editable that was previously selected
       @selectElement(event.target, "none")
       event.preventDefault()
     @_super()
 
   click: (event) -> Ember.K
-
-  getInsertSelectController: ->
-    @get('pillChooser')
-
-  showPillConfig: (query) ->
-    @set 'showConfigPopover', true
-    @set 'pillHideSearchBox', true
-    @set 'query', query
-
-  hidePillConfig: ->
-    @set 'showConfigPopover', false
-    @set 'pillHideSearchBox', false
-    @set 'query', null
-
-  handlePillConfig: ->
-    precedingCharacters = @getCharactersPrecedingCaret(this.getEditor()[0])
-    showPillConfig = precedingCharacters.match @get('insertPillRegex')
-    if showPillConfig
-      query = showPillConfig[0].split(" ").reverse()[0].slice(1)
-      @showPillConfig(query)
-    else
-      @hidePillConfig()
