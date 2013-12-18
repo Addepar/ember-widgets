@@ -19,6 +19,8 @@ Ember.Widgets.BodyEventListener,
   isShowing:  no
   inserted: no
   content: ""
+  marginTop: 10
+  marginLeft: 10
 
   _resizeHandler: null
   _scrollHandler: null
@@ -122,31 +124,44 @@ Ember.Widgets.BodyEventListener,
         @set 'left',  pos.left
         break
       when 'left'
-        @set 'top',   pos.top + pos.height / 2 - actualHeight / 2
+        @set 'top',   pos.top - @get('marginTop')
         @set 'left',  pos.left - actualWidth
         break
       when 'right'
-        @set 'top',   pos.top + pos.height / 2 - actualHeight / 2
+        @set 'top',   pos.top - @get('marginTop')
         @set 'left',  pos.left + pos.width
         break
-    @correctHorizontalIfOffScreen()
+    @correctIfOffscreen()
+    @positionArrow()
 
-  correctHorizontalIfOffScreen: ->
+  positionArrow: ->
+    $target = $(@get('targetElement'))
+    pos = @getOffset($target)
+    pos.width  = $target[0].offsetWidth
+    pos.height = $target[0].offsetHeight
+    arrowSize = 22
+    switch @get('placement')
+      when 'left', 'right'
+        top = pos.top + pos.height / 2 - @get('top') - arrowSize / 2
+        @set 'arrowStyle', "margin-top:#{top}px;"
+      when 'top', 'bottom'
+        left = pos.left + pos.width / 2 - @get('left') - arrowSize / 2
+        @set 'arrowStyle', "margin-left:#{left}px;"
+
+  correctIfOffscreen: ->
     bodyWidth = $('body').width()
+    bodyHeight = $('body').height()
     actualWidth  = @$()[0].offsetWidth
+    actualHeight  = @$()[0].offsetHeight
 
-    # if our popover is outside of the body (either on left or on right)
-    # we need to get rid of the arrow at top/bottom of the popover
-    hideArrow = no
     if @get('left') + actualWidth > bodyWidth
-      @set 'left', bodyWidth - actualWidth
-      hideArrow = yes
-
+      @set 'left', bodyWidth - actualWidth - @get('marginLeft')
     if @get('left') < 0
-      @set 'left', 0
-      hideArrow = yes
-
-    if hideArrow then @$().addClass('no-arrow') else @$().removeClass('no-arrow')
+      @set 'left', @get('marginLeft')
+    if @get('top') + actualHeight > bodyHeight
+      @set 'top', bodyHeight - actualHeight - @get('marginTop')
+    if @get('top') < 0
+      @set 'top', @get('marginTop')
 
   # We need to put this in a computed because this is attached to the
   # resize and scroll events before snapToPosition is defined. We
