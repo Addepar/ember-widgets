@@ -93,6 +93,9 @@
 
   {{select-component
     class="insert-non-editable-btn"
+    isSelectBinding="pillHideSearchBox"
+    queryBinding="query"
+    showDropdownBinding="showConfigPopover"
     contentBinding="_pillOptions"
     prompt="Insert Non-Editable"
     optionLabelPath="name"
@@ -100,6 +103,7 @@
     selectionBinding="selectedPillOption"
     buttonClass='btn btn-default btn-sm'
     isSelect="true"
+    viewName="pillChooser"
   }}
 </div>
 
