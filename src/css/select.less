@@ -23,9 +23,7 @@
   position: relative;
   display: inline-block;
   outline: none;
-  font-size: 12px;
 }
-
 
 .ember-select-choice i {
   position: absolute;
@@ -120,25 +118,15 @@
 -------------------------------------------------- */
 .ember-select-multi {
   .ember-select-choices {
-    background-color: #fff;
-    border: 1px solid #d9d9d9;
-    border-top: 1px solid #c0c0c0;
-    margin: 0;
-    padding: 0;
-    cursor: text;
-    overflow: hidden;
-    height: auto !important;
-    height: 1%;
-    position: relative;
     min-height: 28px;
     min-width: 160px;
-    .border-radius(0);
-    .box-sizing();
-
-    &:hover {
-      border: 1px solid #b9b9b9;
-      border-top: 1px solid #a0a0a0;
-    }
+    height: auto !important;
+    height: 1%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+    cursor: text;
 
     li {
       float: left;
@@ -147,7 +135,7 @@
 
     .ember-select-search-field {
       width: 25px;
-      margin: 3px 0;
+      // margin: 3px 0;
       padding: 0;
       white-space: nowrap;
 
@@ -175,7 +163,7 @@
     border: 1px solid #DAE4F6;
     line-height: 27px;
     padding: 0 19px 0 5px;
-    margin: 3px 0 0 3px;
+    margin: 2px 0 0 2px;
     cursor: default;
     .border-radius(0);
 
@@ -201,6 +189,22 @@
         color: #222;
         cursor: pointer;
       }
+    }
+  }
+
+  /* Small Version */
+
+  .ember-select-choices.input-sm {
+    .ember-select-search-field input {
+      margin: 0;
+    }
+
+    .ember-select-search-choice {
+      line-height: 22px;
+    }
+
+    .ember-select-search-choice-close {
+      top: 2px;
     }
   }
 

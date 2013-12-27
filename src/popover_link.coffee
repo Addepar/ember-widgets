@@ -11,7 +11,7 @@ Ember.Widgets.PopoverLinkComponent = Ember.Component.extend
 
   click: (event) ->
     Ember.Widgets.PopoverComponent.popup
-      targetElement: event.target
+      targetElement: @get('element')
       targetObject: @get('targetObject')
       container: @get('container')
       placement: @get('placement')
