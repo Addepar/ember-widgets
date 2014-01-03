@@ -11,12 +11,14 @@ Ember.Widgets.PopoverLinkComponent = Ember.Component.extend
 
   click: (event) ->
     Ember.Widgets.PopoverComponent.popup
+      parentController: this
       targetElement: @get('element')
-      targetObject: @get('targetObject')
       container: @get('container')
       placement: @get('placement')
       title:  @get('title')
       content: @get('content')
       contentViewClass: @get('_contentViewClass')
+      # forward actions to popover link component
+      sendAction: -> @get('parentController').sendAction.apply arguments
 
 Ember.Handlebars.helper('popover-link-component', Ember.Widgets.PopoverLinkComponent)
