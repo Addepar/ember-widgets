@@ -1,15 +1,18 @@
 Ember.Widgets.PopoverLinkComponent = Ember.Component.extend
   classNames: ['popover-link']
+  classNameBindings: ['disabled']
   placement:  'top'
   content:    null
   title:      null
   contentViewClass: null
+  disabled:   no
 
   _contentViewClass: Ember.computed ->
     Ember.get(@get('contentViewClass')) if @get('contentViewClass')
   .property 'contentViewClass'
 
   click: (event) ->
+    return if @get('disabled')
     Ember.Widgets.PopoverComponent.popup
       parentController: this
       targetElement: @get('element')
