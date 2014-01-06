@@ -206,13 +206,13 @@ Ember.Widgets.DomHelper = Ember.Mixin.create
       return range
 
   # Wrapper around range.deleteContents that also deletes empty containers in the range
-  deleteRange: (range) ->
+  deleteRange: (range, shouldDeleteContainer) ->
     startParent = range.startContainer.parentNode
     endParent = range.endContainer.parentNode
     range.deleteContents()
-    if @isEmpty(startParent)
+    if @isEmpty(startParent) and shouldDeleteContainer
       $(startParent).remove()
-    if @isEmpty(endParent)
+    if @isEmpty(endParent) and shouldDeleteContainer
       $(endParent).remove()
 
   # Converts html string to node then inserts at range
@@ -270,12 +270,12 @@ Ember.Widgets.DomHelper = Ember.Mixin.create
     precedingChars = range.toString()
     return precedingChars
 
-  deleteCharactersPrecedingCaret: (length) ->
+  deleteCharactersPrecedingCaret: (length, shouldDeleteContainer=true) ->
     range = @getCurrentRange()
     return "" if range is null
     range.collapse(true)
     range.setStart(range.startContainer, range.endOffset - length)
-    @deleteRange(range)
+    @deleteRange(range, shouldDeleteContainer)
 
 # Base class for NonEditablePill that can be inserted into the TextEditorWithNonEditableComponent
 Ember.Widgets.BaseNonEditablePill = Ember.Controller.extend Ember.Widgets.DomHelper,
@@ -414,7 +414,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
     matches = precedingCharacters.match @get('insertPillRegex')
     if matches
       # Inserting via key, so we need to replace the characters before
-      @deleteCharactersPrecedingCaret(matches[0].length)
+      @deleteCharactersPrecedingCaret(matches[0].length, false)
     # Ensure that we insert the factor in the text editor (move the range inside the editor if
     # not already)
     range = @getCurrentRange()
