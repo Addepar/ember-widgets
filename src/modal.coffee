@@ -2,18 +2,19 @@ Ember.Widgets.ModalComponent =
 Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   layoutName: 'modal'
   classNames: ['modal']
-  classNameBindings: ['isShowing:in', 'fade']
+  classNameBindings: ['isShowing:in', 'hasCloseButton::has-no-close-button','fade']
   modalPaneBackdrop: '<div class="modal-backdrop"></div>'
   bodyElementSelector: '.modal-backdrop'
 
-  enforceModality: no
-  backdrop:     yes
-  isShowing:    no
-  fade:         yes
-  headerText:   "Modal Header"
-  confirmText:  "Confirm"
-  cancelText:   "Cancel"
-  content:      ""
+  enforceModality:  no
+  backdrop:         yes
+  isShowing:        no
+  hasCloseButton:   yes
+  fade:             yes
+  headerText:       "Modal Header"
+  confirmText:      "Confirm"
+  cancelText:       "Cancel"
+  content:          ""
   contentViewClass: null
 
   confirm: Ember.K
