@@ -16,6 +16,7 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   cancelText:       "Cancel"
   content:          ""
   contentViewClass: null
+  isValid: true
 
   confirm: Ember.K
   cancel: Ember.K

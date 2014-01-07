@@ -9,7 +9,7 @@
     </div>
     <div class="modal-footer">
       {{#if confirmText}}
-        <button type="button" class="btn btn-primary" {{action sendConfirm}}>
+        <button type="button" {{bindAttr class=":btn :btn-primary isValid::disabled"}}  {{action sendConfirm}}>
           {{confirmText}}
         </button>
       {{/if}}
