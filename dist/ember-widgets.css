@@ -448,7 +448,6 @@
   margin-top: -1px;
 }
 .ember-text-editor-font-family-select .btn {
-  text-align: left;
   width: 150px;
 }
 .ember-text-editor-font-size-select {
@@ -478,7 +477,7 @@
 }
 .ember-widget-color-button .color-picker-cell {
   width: 25px;
-  height: 28px;
+  height: 26px;
 }
 .ember-color-picker-dropdown {
   min-width: 300px;
