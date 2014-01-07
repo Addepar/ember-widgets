@@ -450,7 +450,7 @@
 .ember-text-editor-font-family-select .btn {
   width: 150px;
 }
-.ember-text-editor-font-size-select {
+.ember-text-editor-font-size-select .ember-select-choice.btn {
   width: 50px;
 }
 .ember-text-editor-font-size-select.ember-select .dropdown-menu {
