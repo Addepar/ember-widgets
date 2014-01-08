@@ -25,6 +25,8 @@
     "grunt-jsdoc": "*",
     "grunt-neuter": "~0.4.0",
     "grunt-shell": "*",
+    "karma": "0.10.2",
+    "karma-qunit": "*",
     "node-static": "*",
     "lockdown": "0.0.5"
   }
