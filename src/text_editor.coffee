@@ -342,7 +342,7 @@ Ember.Widgets.NonEditableTextPill = Ember.Widgets.BaseNonEditablePill.extend
       headerText: @get('name')
       confirmText: "Insert"
 
-Ember.Widgets.TodaysDate = Ember.Widgets.BaseNonEditablePill.extend
+Ember.Widgets.TodaysDatePill = Ember.Widgets.BaseNonEditablePill.extend
   name: "Today's Date"
 
   result: -> Date()
@@ -352,7 +352,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
   ##############################################################################
   # Interface
   ##############################################################################
-  pillOptions: [Ember.Widgets.TodaysDate, Ember.Widgets.NonEditableTextPill]
+  pillOptions: [Ember.Widgets.TodaysDatePill, Ember.Widgets.NonEditableTextPill]
   getInsertSelectController: -> @get('pillChooser')
   INVISIBLE_CHAR:   '\uFEFF'
   INSERT_PILL_CHAR: '='

@@ -27,6 +27,7 @@
     "grunt-shell": "*",
     "karma": "0.10.2",
     "karma-qunit": "*",
+    "karma-ember-preprocessor": "*",
     "node-static": "*",
     "lockdown": "0.0.5"
   }

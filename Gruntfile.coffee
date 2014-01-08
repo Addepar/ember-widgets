@@ -44,7 +44,7 @@ module.exports = (grunt) ->
       tests:
         expand: true
         cwd: "tests/"
-        src: ["*.coffee" ]
+        src: ["**/*.coffee" ]
         dest: "tests/"
         ext: ".js"
 
@@ -105,7 +105,7 @@ module.exports = (grunt) ->
         files: [ "src/**/*.coffee"]
         tasks: [ "coffee:srcs", "neuter" ]
       test:
-        files: [ "tests/*.coffee"]
+        files: [ "tests/**/*.coffee"]
         tasks: [ "coffee:tests", "neuter" ]
       src_handlebars:
         files: [ "src/**/*.hbs" ]

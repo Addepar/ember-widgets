@@ -13,26 +13,29 @@ module.exports = function(config) {
       'dependencies/handlebars/handlebars.js',
       'dependencies/lodash/lodash.js',
       'dependencies/ember/ember.js',
+      'dependencies/list-view.js',
       'dependencies/rangy/rangy-core.js',
       'dependencies/rangy/rangy-selectionsaverestore.js',
       'dist/ember-widgets.js',
-      'gh_pages/app.js',
-      'tests/*.js',
+      'tests/unit/*.js',
+      'tests/integration/*.js',
     ],
     // list of files to exclude
-    exclude: [],
+    exclude: ['build/src/ember_widgets.js'],
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
     reporters: ['progress'],
     port: 9876,
     colors: true,
-    logLevel: config.LOG_DEBUG,
+    logLevel: config.LOG_INFO,
     autoWatch: true,
     // browsers: ['PhantomJS', 'Chrome'],
     browsers: ['PhantomJS'],
     captureTimeout: 60000,
-    // Continuous Integration mode
-    // if true, it capture browsers, run tests and exit
-    singleRun: false
+    singleRun: false,  // Continuous Integration mode
+    plugins: ['karma-qunit', 'karma-ember-preprocessor', 'karma-phantomjs-launcher'],
+    preprocessors:{
+      "**/*.hbs": "ember"
+    }
   });
 };

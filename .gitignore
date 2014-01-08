@@ -19,4 +19,4 @@ dependencies/lodash
 dependencies/qunit
 dependencies/rangy
 
-tests/*.js
+tests/**/*.js
