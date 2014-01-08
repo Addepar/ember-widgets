@@ -28,6 +28,7 @@
     "karma": "0.10.2",
     "karma-qunit": "*",
     "karma-ember-preprocessor": "*",
+    "karma-spec-reporter": "0.0.6",
     "node-static": "*",
     "lockdown": "0.0.5"
   }

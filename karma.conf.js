@@ -16,7 +16,7 @@ module.exports = function(config) {
       'dependencies/list-view.js',
       'dependencies/rangy/rangy-core.js',
       'dependencies/rangy/rangy-selectionsaverestore.js',
-      'dist/ember-widgets.js',
+      'gh_pages/app.js',
       'tests/unit/*.js',
       'tests/integration/*.js',
     ],
@@ -24,7 +24,7 @@ module.exports = function(config) {
     exclude: ['build/src/ember_widgets.js'],
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-    reporters: ['progress'],
+    reporters: ['spec'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
@@ -33,7 +33,7 @@ module.exports = function(config) {
     browsers: ['PhantomJS'],
     captureTimeout: 60000,
     singleRun: false,  // Continuous Integration mode
-    plugins: ['karma-qunit', 'karma-ember-preprocessor', 'karma-phantomjs-launcher'],
+    plugins: ['karma-qunit', 'karma-ember-preprocessor', 'karma-phantomjs-launcher', 'karma-spec-reporter'],
     preprocessors:{
       "**/*.hbs": "ember"
     }
