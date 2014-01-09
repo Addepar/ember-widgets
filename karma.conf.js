@@ -31,9 +31,9 @@ module.exports = function(config) {
     logLevel: config.LOG_ERROR,
     autoWatch: true,
     // browsers: ['PhantomJS', 'Chrome'],
-    browsers: ['PhantomJS'],
+    browsers: ['Chrome'],
     captureTimeout: 60000,
-    singleRun: false,  // Continuous Integration mode
+    singleRun: true,  // Continuous Integration mode
     plugins: [
       'karma-qunit',
       'karma-ember-preprocessor',

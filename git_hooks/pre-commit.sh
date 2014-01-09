@@ -5,6 +5,19 @@
 git stash -q --keep-index  # stash unstaged changes before running tests
 
 ######################################################################
+# Build
+######################################################################
+grunt precommit
+EXIT_CODE=$?
+if [[ ${EXIT_CODE} -ne 0 ]]; then
+    echo "Failed build"
+    exit 1
+else
+  echo "Built"
+fi
+
+
+######################################################################
 # Unit Tests: Run unit tests/specs before committing
 ######################################################################
 grunt karma:continuous
@@ -15,7 +28,7 @@ if [[ ${EXIT_CODE} -ne 0 ]]; then
     echo "Commit aborted."
     exit 1
 else
-  echo "Karma Unit Tests completed successfully\n"
+  echo "Karma Unit Tests completed successfully"
 fi
 
 exit 0

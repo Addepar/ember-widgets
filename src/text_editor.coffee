@@ -169,7 +169,8 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
     @set 'isJustifyRight',idocument.queryCommandState('justifyRight')
 
     # Font names with spaces need to have the start and end quotes removed
-    @set 'selectedFontName', idocument.queryCommandValue('fontName').replace(/^'/, '').replace(/'$/, '')
+    fontName = idocument.queryCommandValue('fontName') || ''
+    @set 'selectedFontName', fontName.replace(/^'/, '').replace(/'$/, '')
     @set 'selectedFontSize', idocument.queryCommandValue('fontSize')
     @set 'selectedForeColor', idocument.queryCommandValue('foreColor')
 

@@ -9,6 +9,11 @@ insertNonEditableButton = -> find '.insert-non-editable-btn'
 insertNonEditable = ->
   selectInChosen(insertNonEditableButton(), "Today's Date")
 
+insertNonEditableWithText = (text="foobar") ->
+  selectInChosen(insertNonEditableButton(), "Custom Text").then ->
+    fillIn(find('.modal input'), text).then ->
+      click find("button:contains('Insert')")
+
 selectedRange = ->
   iframe = @$('iframe.text-editor-frame')[0]
   idocument = iframe.contentDocument || iframe.contentWindow.document
@@ -17,11 +22,27 @@ selectedRange = ->
 getTextEditor = ->
   find('iframe.text-editor-frame').contents().find('.text-editor')
 
+placeCursorInTextEditor = ->
+  range = document.createRange()
+  # Select the entire contents of the element with the range
+  element = getTextEditor().find('.non-editable-caret')[0]
+  range.selectNodeContents(element)
+  range.collapse(true)
+  selection = window.getSelection()
+  selection.removeAllRanges()
+  selection.addRange(range)
+  return range
+
+typeKeyInTextEditor = (keyCode) ->
+  keyEvent('.text-editor', $('iframe.text-editor-frame').contents(), 'keydown', keyCode).then ->
+  keyEvent('.text-editor', $('iframe.text-editor-frame').contents(), 'keypress', keyCode).then ->
+  keyEvent('.text-editor', $('iframe.text-editor-frame').contents(), 'keyup', keyCode)
+
 test 'Text editor appears', ->
   ok isPresent('.text-editor-frame'), 'Text editor frame not found'
   ok getTextEditor().length > 0, 'Text editor not found'
 
-test "Insert non-editable pill in text editor", ->
+test "Insert non-editable date pill in text editor", ->
   expect 3
   insertNonEditable().then ->
     textEditor = getTextEditor()
@@ -30,20 +51,49 @@ test "Insert non-editable pill in text editor", ->
     equal pill.attr('data-type'), "Ember.Widgets.TodaysDatePill"
     notEqual pill.attr('data-pill-id'), null
 
+test "Insert custom text pill in text editor", ->
+  expect 4
+  insertNonEditableWithText('foobar').then ->
+    textEditor = getTextEditor()
+    pill = find('span.non-editable', textEditor)
+    equal pill.attr('title'), "Custom Text"
+    equal pill.attr('data-type'), "Ember.Widgets.NonEditableTextPill"
+    equal pill.text(), 'foobar'
+    notEqual pill.attr('data-pill-id'), null, 'Pill id is not set'
+
 test "Left arrow selects non-editable pill", ->
   expect 3
 
   # Given a text editor with a non-editable pill inserted
-  insertNonEditable().then ->
-    textEditor = find '.text-editor'
+  insertNonEditable()
+  # When the left arrow is pressed immediately after
+  .then ->
+    typeKeyInTextEditor(37)
+  # Then the non-editable is selected
+  .then ->
+    range = selectedRange()
+    pill = getTextEditor().find('.non-editable')
+    equal range.startOffset, 0, 'Range start is not at beginning of pill, is instead at ' + range.startOffset
+    equal range.endOffset, pill.text().length, 'Range end is not at end of pill, is instead at ' + range.endOffset
+    equal range.startContainer.parentElement, pill[0]
 
-    # When the left arrow is pressed immediately after
-    keyEvent('.text-editor', $('iframe.text-editor-frame').contents(), 'keydown', 37).then ->
-    keyEvent('.text-editor', $('iframe.text-editor-frame').contents(), 'keypress', 37).then ->
-    keyEvent('.text-editor', $('iframe.text-editor-frame').contents(), 'keyup', 37).then ->
-      # Then the non-editable is selected
-      range = selectedRange()
-      pill = getTextEditor().find('.non-editable')
-      equal range.startOffset, 0, 'Range start is not at beginning of pill, is instead at ' + range.startOffset
-      equal range.endOffset, pill.text().length, 'Range end is not at end of pill, is instead at ' + range.endOffset
-      equal range.startContainer.parentElement, pill[0]
+test "Arrow behavior between factors", ->
+  expect 4
+
+  # Given a text editor with the following content
+  text_editor_content = """
+      <div><span class="non-editable-caret">﻿</span><span class="non-editable factor" data-pill-id="1">Factor 1</span>regular text<span class="non-editable factor" data-pill-id="2">Factor 2</span></div>
+  """
+  $textEditor = getTextEditor()
+  $textEditor[0].innerHTML = text_editor_content
+  # When the cursor is placed in the text editor
+  currentRange = placeCursorInTextEditor()
+  ok(currentRange.startOffset is 0 and currentRange.endOffset is 0, "cursor is placed in beginning of text editor content")
+  # And the right arrow is pressed
+  typeKeyInTextEditor(39)
+  # Then the first pill is selected
+  .then ->
+    range = selectedRange()
+    equal range.startContainer.parentElement, find('span.non-editable[data-pill-id="1"]', $textEditor)[0]
+    equal range.startOffset, 0
+    equal range.endOffset, 8
