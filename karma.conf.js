@@ -17,6 +17,7 @@ module.exports = function(config) {
       'dependencies/rangy/rangy-core.js',
       'dependencies/rangy/rangy-selectionsaverestore.js',
       'gh_pages/app.js',
+      'tests/*.js',  // order matters!
       'tests/unit/*.js',
       'tests/integration/*.js',
     ],
@@ -27,13 +28,19 @@ module.exports = function(config) {
     reporters: ['spec'],
     port: 9876,
     colors: true,
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_ERROR,
     autoWatch: true,
     // browsers: ['PhantomJS', 'Chrome'],
     browsers: ['PhantomJS'],
     captureTimeout: 60000,
     singleRun: false,  // Continuous Integration mode
-    plugins: ['karma-qunit', 'karma-ember-preprocessor', 'karma-phantomjs-launcher', 'karma-spec-reporter'],
+    plugins: [
+      'karma-qunit',
+      'karma-ember-preprocessor',
+      'karma-phantomjs-launcher',
+      'karma-chrome-launcher',
+      'karma-spec-reporter'
+    ],
     preprocessors:{
       "**/*.hbs": "ember"
     }

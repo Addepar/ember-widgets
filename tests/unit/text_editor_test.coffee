@@ -1,3 +1,5 @@
+module "Text editor unit tests"
+
 test 'Todays Date Pill has content', ->
   todaysDatePill = Ember.Widgets.TodaysDatePill.create()
   ok(todaysDatePill.result().length > 0, 'TodaysDatePill has no content')

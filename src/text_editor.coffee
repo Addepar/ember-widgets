@@ -431,6 +431,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
     # Remove other caret containers, excluding the one we just selected
     @_removeCaretContainers()
     # select the caret container again (which has probably been moved)
+    @getEditor().focus()
     @selectElement(factor.nextSibling)
 
   _isNonEditable: (node) ->

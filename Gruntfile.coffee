@@ -9,6 +9,12 @@ module.exports = (grunt) ->
     clean:
       target: ['build', 'dist' , 'gh_pages']
 
+    karma:
+      continuous:  # continuous integration mode: run tests once in PhantomJS
+        configFile: 'karma.conf.js'
+        browsers: ['PhantomJS']
+        singleRun: true
+
     uglify:
       "dist/ember-widgets.min.js": "dist/ember-widgets.js"
 
@@ -168,7 +174,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks "grunt-contrib-less"
   grunt.loadNpmTasks "grunt-contrib-copy"
   grunt.loadNpmTasks "grunt-contrib-clean"
-
+  grunt.loadNpmTasks "grunt-karma"
   ###
     A task to build the test runner html file that get place in
     /test so it will be picked up by the qunit task. Will
