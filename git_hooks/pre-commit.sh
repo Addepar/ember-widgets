@@ -2,20 +2,7 @@
 #
 # Pre-commit hooks
 
-git stash -q --keep-index  # stash unstaged changes before running tests
-
-######################################################################
-# Build
-######################################################################
-grunt precommit
-EXIT_CODE=$?
-if [[ ${EXIT_CODE} -ne 0 ]]; then
-    echo "Failed build"
-    exit 1
-else
-  echo "Built"
-fi
-
+# git stash -q --keep-index  # stash unstaged changes before running tests
 
 ######################################################################
 # Unit Tests: Run unit tests/specs before committing
@@ -33,4 +20,4 @@ fi
 
 exit 0
 
-git stash pop -q  # restore changes
+# git stash pop -q  # restore changes

@@ -193,7 +193,6 @@ module.exports = (grunt) ->
   grunt.registerTask "build_srcs", [ "coffee:srcs", "emberTemplates", "neuter" ]
   grunt.registerTask "build_app", [ "coffee:app", "emberTemplates", "neuter" ]
   grunt.registerTask "build_tests", [ "coffee:tests", "emberTemplates", "neuter" ]
-  grunt.registerTask "precommit", [ "build_srcs", "build_app", "build_tests", "less", "copy", "uglify"]
   if env is "dev"
     grunt.registerTask "default", [ "clean", "bower", "build_srcs", "build_app", "build_tests", "less", "copy", "uglify", "watch" ]
     # build: same as default but no bower
