@@ -175,7 +175,7 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
     @set 'selectedForeColor', idocument.queryCommandValue('foreColor')
 
 Ember.Widgets.DomHelper = Ember.Mixin.create
-  KEY_CODES: 
+  KEY_CODES:
     BACKSPACE: 8,
     DELETE: 46,
     DOWN: 40,
@@ -220,8 +220,8 @@ Ember.Widgets.DomHelper = Ember.Mixin.create
     @insertElementAtRange(range, @createElementsFromString(html)[0])
 
   # Inserts node at range
-  insertElementAtRange: (range, node) ->
-    @deleteRange(range)
+  insertElementAtRange: (range, node, startContainer=false) ->
+    @deleteRange(range, startContainer)
     range.insertNode(node)
     node
 
@@ -423,7 +423,9 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
         @selectElement(@getOrCreateLastElementInEditor())
       range = @getCurrentRange()
 
-    factor = @insertElementAtRange(range, pill.render())
+    existingNonEditable = this._getNonEditableParent(range.startContainer) || this._getNonEditableParent(range.endContainer)
+    existingNonEditable?.remove()
+    factor = @insertElementAtRange(range, pill.render(), true)
     caretContainer = @_insertCaretContainer(factor, false)
 
     # Set cursor to the end of the caret container just created
