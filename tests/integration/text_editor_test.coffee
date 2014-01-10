@@ -4,6 +4,18 @@ module "Text editor integration tests",
     Ember.run(App, App.advanceReadiness)
     visit('/ember-widgets/textEditor')
 
+KEY_CODES =
+  BACKSPACE: 8,
+  DELETE: 46,
+  DOWN: 40,
+  ENTER: 13,
+  LEFT: 37,
+  RIGHT: 39,
+  SPACEBAR: 32,
+  TAB: 9,
+  UP: 38,
+  ESCAPE: 27
+
 insertNonEditableButton = -> find '.insert-non-editable-btn'
 
 insertNonEditable = ->
@@ -68,7 +80,7 @@ test "Left arrow selects non-editable pill", ->
   insertNonEditable()
   # When the left arrow is pressed immediately after
   .then ->
-    typeKeyInTextEditor(37)
+    typeKeyInTextEditor(KEY_CODES.LEFT)
   # Then the non-editable is selected
   .then ->
     range = selectedRange()
@@ -90,7 +102,7 @@ test "Arrow behavior between factors", ->
   currentRange = placeCursorInTextEditor()
   ok(currentRange.startOffset is 0 and currentRange.endOffset is 0, "cursor is placed in beginning of text editor content")
   # And the right arrow is pressed
-  typeKeyInTextEditor(39)
+  typeKeyInTextEditor(KEY_CODES.RIGHT)
   # Then the first pill is selected
   .then ->
     range = selectedRange()

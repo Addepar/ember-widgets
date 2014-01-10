@@ -175,7 +175,7 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
     @set 'selectedForeColor', idocument.queryCommandValue('foreColor')
 
 Ember.Widgets.DomHelper = Ember.Mixin.create
-  KEY_CODES: {
+  KEY_CODES: 
     BACKSPACE: 8,
     DELETE: 46,
     DOWN: 40,
@@ -186,7 +186,6 @@ Ember.Widgets.DomHelper = Ember.Mixin.create
     TAB: 9,
     UP: 38,
     ESCAPE: 27
-  }
 
   # Set the selected range to the given element, with the option to collapse the selection to the
   # beginning or end
