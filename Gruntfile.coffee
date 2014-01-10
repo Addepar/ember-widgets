@@ -9,6 +9,15 @@ module.exports = (grunt) ->
     clean:
       target: ['build', 'dist' , 'gh_pages']
 
+    karma:
+      continuous:  # continuous integration mode: run tests once in PhantomJS
+        configFile: 'karma.conf.js'
+        browsers: ['Chrome']
+        singleRun: true
+      unit:
+        configFile: 'karma.conf.js'
+        singleRun: false
+
     uglify:
       "dist/ember-widgets.min.js": "dist/ember-widgets.js"
 
@@ -44,7 +53,7 @@ module.exports = (grunt) ->
       tests:
         expand: true
         cwd: "tests/"
-        src: ["*.coffee" ]
+        src: ["**/*.coffee" ]
         dest: "tests/"
         ext: ".js"
 
@@ -105,7 +114,7 @@ module.exports = (grunt) ->
         files: [ "src/**/*.coffee"]
         tasks: [ "coffee:srcs", "neuter" ]
       test:
-        files: [ "tests/*.coffee"]
+        files: [ "tests/**/*.coffee"]
         tasks: [ "coffee:tests", "neuter" ]
       src_handlebars:
         files: [ "src/**/*.hbs" ]
@@ -168,7 +177,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks "grunt-contrib-less"
   grunt.loadNpmTasks "grunt-contrib-copy"
   grunt.loadNpmTasks "grunt-contrib-clean"
-
+  grunt.loadNpmTasks "grunt-karma"
   ###
     A task to build the test runner html file that get place in
     /test so it will be picked up by the qunit task. Will

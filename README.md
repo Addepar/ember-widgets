@@ -3,4 +3,6 @@ Ember Widgets by Addepar
 
 ### Getting started
 
-  * Coming soon.
+  * Install node packages: `npm install`
+  * See an example: `node example.js`
+  * Install pre commit hooks to run tests in PhantomJS: `./bin/create-hook-symlinks`

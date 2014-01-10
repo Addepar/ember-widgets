@@ -169,12 +169,13 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
     @set 'isJustifyRight',idocument.queryCommandState('justifyRight')
 
     # Font names with spaces need to have the start and end quotes removed
-    @set 'selectedFontName', idocument.queryCommandValue('fontName').replace(/^'/, '').replace(/'$/, '')
+    fontName = idocument.queryCommandValue('fontName') || ''
+    @set 'selectedFontName', fontName.replace(/^'/, '').replace(/'$/, '')
     @set 'selectedFontSize', idocument.queryCommandValue('fontSize')
     @set 'selectedForeColor', idocument.queryCommandValue('foreColor')
 
 Ember.Widgets.DomHelper = Ember.Mixin.create
-  KEY_CODES: {
+  KEY_CODES: 
     BACKSPACE: 8,
     DELETE: 46,
     DOWN: 40,
@@ -185,7 +186,6 @@ Ember.Widgets.DomHelper = Ember.Mixin.create
     TAB: 9,
     UP: 38,
     ESCAPE: 27
-  }
 
   # Set the selected range to the given element, with the option to collapse the selection to the
   # beginning or end
@@ -342,7 +342,7 @@ Ember.Widgets.NonEditableTextPill = Ember.Widgets.BaseNonEditablePill.extend
       headerText: @get('name')
       confirmText: "Insert"
 
-Ember.Widgets.TodaysDate = Ember.Widgets.BaseNonEditablePill.extend
+Ember.Widgets.TodaysDatePill = Ember.Widgets.BaseNonEditablePill.extend
   name: "Today's Date"
 
   result: -> Date()
@@ -352,7 +352,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
   ##############################################################################
   # Interface
   ##############################################################################
-  pillOptions: [Ember.Widgets.TodaysDate, Ember.Widgets.NonEditableTextPill]
+  pillOptions: [Ember.Widgets.TodaysDatePill, Ember.Widgets.NonEditableTextPill]
   getInsertSelectController: -> @get('pillChooser')
   INVISIBLE_CHAR:   '\uFEFF'
   INSERT_PILL_CHAR: '='
@@ -431,6 +431,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
     # Remove other caret containers, excluding the one we just selected
     @_removeCaretContainers()
     # select the caret container again (which has probably been moved)
+    @getEditor().focus()
     @selectElement(factor.nextSibling)
 
   _isNonEditable: (node) ->
