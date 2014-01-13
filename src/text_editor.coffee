@@ -6,7 +6,7 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
   isToolbarVisible: true
 
   EDITOR_CLASS: 'text-editor'
-  PLACEHOLDER_TEXT: 'Double-click to edit'
+  PLACEHOLDER_TEXT: 'Click to edit'
 
   commands: [
     'bold',
