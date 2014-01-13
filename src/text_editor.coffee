@@ -141,6 +141,11 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
       @set command, (arg) ->
         @getDocument().execCommand command, true, arg
 
+    # Custom styling which takes class as an argument
+    @set 'styleWithClass', (styleClass) ->
+      doc = @getDocument()
+      @getDocument().execCommand("insertHTML", false, "<span class='" + styleClass + "'>" + doc.getSelection()+"</span>")
+
   didInsertElement: ->
     @_super()
     iframe = @$('iframe.text-editor-frame').contents()
