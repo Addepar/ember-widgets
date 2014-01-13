@@ -6,6 +6,7 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
   isToolbarVisible: true
 
   EDITOR_CLASS: 'text-editor'
+  PLACEHOLDER_TEXT: 'Double-click to edit'
 
   commands: [
     'bold',
@@ -51,6 +52,7 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
     {size:'6', name: '24'},
     {size:'7', name: '36'}
   ]
+
   iframeHeadContents: Ember.computed ->
     """<style>
       body {
@@ -75,11 +77,17 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
         list-style-type: none;
         cursor: pointer;
       }
+      [contentEditable=true]:empty:not(:focus):before {
+        content: attr(data-ph);
+        color: grey;
+        font-style: italic;
+      }
     </style>"""
   .property 'EDITOR_CLASS'
+
   iframeBodyContents: Ember.computed ->
-    '<div class="' + @EDITOR_CLASS + '" contenteditable="true"></div>'
-  .property 'EDITOR_CLASS'
+    '<div class="' + @EDITOR_CLASS + '" contenteditable="true" data-ph="' + @PLACEHOLDER_TEXT + '"></div>'
+  .property 'EDITOR_CLASS', 'PLACEHOLDER_TEXT'
 
   fontChooserItemViewClass: Ember.Widgets.SelectOptionView.extend
     templateName: 'font_chooser_item'
