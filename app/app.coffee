@@ -10,7 +10,7 @@ require 'build/app/templates'
 require 'build/app/data/ember_widgets/countries'
 
 window.App = Ember.Application.create
-  LOG_TRANSITIONS: true
+  LOG_TRANSITIONS: false
 
 require 'build/app/views/mixins'
 require 'build/app/views/ember_widgets'

@@ -219,7 +219,7 @@ Ember.Widgets.DomHelper = Ember.Mixin.create
       return range
 
   # Wrapper around range.deleteContents that also deletes empty containers in the range
-  deleteRange: (range, shouldDeleteContainer) ->
+  deleteRange: (range, shouldDeleteContainer=true) ->
     startParent = range.startContainer.parentNode
     endParent = range.endContainer.parentNode
     range.deleteContents()
@@ -233,8 +233,8 @@ Ember.Widgets.DomHelper = Ember.Mixin.create
     @insertElementAtRange(range, @createElementsFromString(html)[0])
 
   # Inserts node at range
-  insertElementAtRange: (range, node, startContainer=false) ->
-    @deleteRange(range, startContainer)
+  insertElementAtRange: (range, node, shouldDeleteContainer=false) ->
+    @deleteRange(range, shouldDeleteContainer)
     range.insertNode(node)
     node
 

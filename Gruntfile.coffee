@@ -10,9 +10,8 @@ module.exports = (grunt) ->
       target: ['build', 'dist' , 'gh_pages']
 
     karma:
-      continuous:  # continuous integration mode: run tests once in PhantomJS
+      continuous:  # continuous integration mode: run tests once
         configFile: 'karma.conf.js'
-        browsers: ['Chrome']
         singleRun: true
       unit:
         configFile: 'karma.conf.js'
