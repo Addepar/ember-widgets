@@ -17,6 +17,9 @@ module.exports = function(config) {
       'dependencies/rangy/rangy-core.js',
       'dependencies/rangy/rangy-selectionsaverestore.js',
       'gh_pages/app.js',
+
+      'http://fast.fonts.net/cssapi/cc61a2f8-3c32-45ef-9be7-fc0cc1fab22b.css',
+      'gh_pages/css/app.css',
       'tests/*.js',  // order matters!
       'tests/unit/*.js',
       'tests/integration/*.js',

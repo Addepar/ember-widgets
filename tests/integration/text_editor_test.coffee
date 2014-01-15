@@ -57,6 +57,28 @@ selectIdInTextEditor = (eid, startOffset=0, endOffset=0) ->
   selection.addRange(range)
   return range
 
+selectMatchingTextInTextEditor = (text) ->
+  innerSelect = (node, pat) ->
+    pat = pat.toLowerCase()
+    if node.nodeType is 3
+      pos = node.data.toLowerCase().indexOf(pat)
+      if pos >= 0
+        range = document.createRange()
+        range.setStart(node, pos)
+        range.setEnd(node, pos + pat.length)
+        selection = window.getSelection()
+        selection.removeAllRanges()
+        selection.addRange(range)
+        return range
+    else if node.nodeType is 1 and node.childNodes and not /(script|style)/i.test(node.tagName)
+      i = 0
+      while i < node.childNodes.length
+        childNode = node.childNodes[i++]
+        range = innerSelect(childNode, pat)
+        return range if range isnt null
+    return null
+  innerSelect(getTextEditor()[0], text)
+
 typeKeyInTextEditor = (keyCode) ->
   keyEvent('.text-editor', $('iframe.text-editor-frame').contents(), 'keydown', keyCode).then ->
   keyEvent('.text-editor', $('iframe.text-editor-frame').contents(), 'keypress', keyCode).then ->
@@ -202,3 +224,24 @@ test "Select first pill and delete", ->
     equal(textEditor.innerHTML.trim(), """
       <span class="non-editable-caret">﻿</span><span class="non-editable" data-pill-id="2">Pill 2</span>
     """.trim(), "Pill is entirely deleted from text editor")
+
+
+test "Bolding text preserves selection", ->
+  expect 2
+
+  # Given a text editor with some text
+  text_editor_content = "hello world goodbye"
+  $textEditor = getTextEditor()
+  $textEditor[0].innerHTML = text_editor_content
+  # When the word "world" is selected
+  currentRange = selectMatchingTextInTextEditor("world")
+  click(getTextEditor())
+  .then ->
+    # And then bold is clicked
+    click($('button .fa-bold').parent())
+  .then ->
+    # Then the word "world" is bolded
+    equal($textEditor[0].innerHTML.trim(), 'hello <span style="font-weight: bold;">world</span> goodbye', "The word 'world' was not bolded")
+    currentRange = selectedRange()
+    # And it is still selected
+    equal( currentRange.endOffset - currentRange.startOffset, 5, "The word 'world' is no longer selected")
