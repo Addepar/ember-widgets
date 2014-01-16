@@ -499,6 +499,8 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
     return caretContainer
 
   _removeCaretContainer: (caretContainer) ->
+    if caretContainer.parentElement.innerHTML == '<span class="non-editable-caret">' + @INVISIBLE_CHAR + '</span>'
+      return $(caretContainer.parentElement).html('<br>')  # chrome specific
     if (child = caretContainer.childNodes[0]) && child.nodeValue.charAt(0) == @INVISIBLE_CHAR
       child = child.deleteData(0, 1)
     savedSelection = rangy.saveSelection(@$('iframe.text-editor-frame')[0].contentWindow)
@@ -510,6 +512,9 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
     range = @getCurrentRange()
     currentCaretContainer = @_getCurrentCaretContainer(range)
     while (caretContainer = @getEditor().find('.non-editable-caret').not(currentCaretContainer)[0])
+      if caretContainer.parentElement.innerHTML == '<span class="non-editable-caret">' + @INVISIBLE_CHAR + '</span>'
+        $(caretContainer.parentElement).html('<br>')  # chrome specific
+        continue
       child = caretContainer.childNodes[0]
       if child && child.nodeValue?.charAt(0) == @INVISIBLE_CHAR
         child = child.deleteData(0, 1)
@@ -565,7 +570,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
       selection.addRange(currentRange)
     else if parentCaret?.length > 0 and !@_isNonEditable(@getNonEmptySideNode(currentRange, true)) and
     !@_isNonEditable(@getNonEmptySideNode(currentRange, false))
-        @_removeCaretContainer(parentCaret[0])
+      @_removeCaretContainer(parentCaret[0])
 
   _showPillConfig: (query) ->
     @set 'showConfigPopover', true

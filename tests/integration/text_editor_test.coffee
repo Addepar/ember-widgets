@@ -57,6 +57,17 @@ selectIdInTextEditor = (eid, startOffset=0, endOffset=0) ->
   selection.addRange(range)
   return range
 
+placeCursorAfterElementInTextEditor = (eid, startOffset=0, endOffset=0) ->
+  range = document.createRange()
+  # Select the entire contents of the element with the range
+  element = getTextEditor().find('#' + eid)[0].childNodes[0]
+  range.selectNodeContents(element)
+  range.collapse(false)
+  selection = window.getSelection()
+  selection.removeAllRanges()
+  selection.addRange(range)
+  return range
+
 selectMatchingTextInTextEditor = (text) ->
   innerSelect = (node, pat) ->
     pat = pat.toLowerCase()
@@ -83,6 +94,10 @@ typeKeyInTextEditor = (keyCode) ->
   keyEvent('.text-editor', $('iframe.text-editor-frame').contents(), 'keydown', keyCode).then ->
   keyEvent('.text-editor', $('iframe.text-editor-frame').contents(), 'keypress', keyCode).then ->
   keyEvent('.text-editor', $('iframe.text-editor-frame').contents(), 'keyup', keyCode)
+
+
+keyDownInTextEditor = (keyCode) ->
+  keyEvent('.text-editor', $('iframe.text-editor-frame').contents(), 'keydown', keyCode)
 
 
 test 'Text editor appears', ->
@@ -133,7 +148,7 @@ test "Arrow behavior between pills", ->
 
   # Given a text editor with the following content
   text_editor_content = """
-      <div><span class="non-editable-caret">﻿</span><span class="non-editable factor" data-pill-id="1">Factor 1</span>regular text<span class="non-editable factor" data-pill-id="2">Factor 2</span></div>
+      <div><span class="non-editable-caret">﻿</span><span class="non-editable" data-pill-id="1">Factor 1</span>regular text<span class="non-editable" data-pill-id="2">Factor 2</span></div>
   """
   $textEditor = getTextEditor()
   $textEditor[0].innerHTML = text_editor_content
@@ -155,7 +170,7 @@ test "Arrow behavior between pills on first line", ->
 
   # Given a text editor with the following content
   text_editor_content = """
-      <span class="non-editable-caret">﻿</span><span class="non-editable factor" data-pill-id="1">Factor 1</span>regular text<span class="non-editable factor" data-pill-id="2">Factor 2</span>
+      <span class="non-editable-caret">﻿</span><span class="non-editable" data-pill-id="1">Factor 1</span>regular text<span class="non-editable" data-pill-id="2">Factor 2</span>
   """
   $textEditor = getTextEditor()
   $textEditor[0].innerHTML = text_editor_content
@@ -245,3 +260,41 @@ test "Bolding text preserves selection", ->
     currentRange = selectedRange()
     # And it is still selected
     equal( currentRange.endOffset - currentRange.startOffset, 5, "The word 'world' is no longer selected")
+
+
+test "Backspace with factors on many lines", ->
+  expect 2
+
+  # Given a text editor with some text
+  text_editor_content = '<div><span class="non-editable" data-pill-id="2">and me</span></div><div><span class="non-editable" id="to-select" data-pill-id="4">Put cursor here and delete me--&gt;</span></div><div>hello</div>'
+  $textEditor = getTextEditor()
+  $textEditor[0].innerHTML = text_editor_content
+  # When the word "world" is selected
+  currentRange = placeCursorAfterElementInTextEditor("to-select")
+  click(getTextEditor())
+  .then ->
+    # And then the backspace key is pressed
+    keyDownInTextEditor(KEY_CODES.BACKSPACE)
+  .then ->
+    # Then a non editable caret is inserted after the pill about to be deleted
+    equal($textEditor[0].innerHTML.trim(), '<div><span class="non-editable" data-pill-id="2">and me</span></div><div><span class="non-editable" id="to-select" data-pill-id="4">Put cursor here and delete me--&gt;</span><span class="non-editable-caret">﻿</span></div><div>hello</div>', "The html content is incorrect")
+    currentRange = selectedRange()
+    # And the pill is selected
+    equal(currentRange.endOffset - currentRange.startOffset, 32, "The pill is not selected")
+    # At this point, the browser would finish the backspace event, though we can't test it
+
+
+test "Non editable caret on it's own line is replaced with a break", ->
+  # This test only applies to chrome...
+  expect 1
+
+  # Given a text editor with some text
+  text_editor_content = '<div><span class="non-editable" data-pill-id="1">A pill</span></div><div><span class="non-editable-caret">﻿</span></div><div>hello</div>'
+  $textEditor = getTextEditor()
+  $textEditor[0].innerHTML = text_editor_content
+  # When the the text editor is clicked
+  currentRange = placeCursorInTextEditor()
+  click(getTextEditor())
+  .then ->
+    # Then the caret is replaced with a break
+    equal($textEditor[0].innerHTML.trim(), '<div><span class="non-editable" data-pill-id="1">A pill</span></div><div><br></div><div>hello</div>', "The html content is incorrect")
