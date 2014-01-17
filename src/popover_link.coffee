@@ -22,6 +22,6 @@ Ember.Widgets.PopoverLinkComponent = Ember.Component.extend
       title:  Ember.computed.alias 'controller.title'
       contentViewClass: @get('_contentViewClass')
     popover = popoverView.create()
-    popover.appendTo rootElement
+    popover.appendTo @get('rootElement')
 
 Ember.Handlebars.helper('popover-link-component', Ember.Widgets.PopoverLinkComponent)
