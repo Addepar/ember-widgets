@@ -16,57 +16,105 @@ KEY_CODES =
   UP: 38,
   ESCAPE: 27
 
-insertNonEditableButton = -> find '.insert-non-editable-btn'
+last_event = null
 
-insertNonEditable = ->
-  selectInChosen(insertNonEditableButton(), "Today's Date")
+###############################################################################
+# Object Helpers
+###############################################################################
 
-insertNonEditableWithText = (text="foobar") ->
-  selectInChosen(insertNonEditableButton(), "Custom Text").then ->
-    fillIn(find('.modal input'), text).then ->
-      click find("button:contains('Insert')")
-
-selectedRange = ->
-  iframe = @$('iframe.text-editor-frame')[0]
-  idocument = iframe.contentDocument || iframe.contentWindow.document
-  if idocument.getSelection().rangeCount > 0 then idocument.getSelection().getRangeAt(0) else null
-
+getInsertNonEditableButton = -> find '.insert-non-editable-btn'
 getTextEditor = ->
   find('iframe.text-editor-frame').contents().find('.text-editor')
 
+###############################################################################
+# Selection / Range Helpers
+###############################################################################
+
+getInnerDocument = ->
+  iframe = @$('iframe.text-editor-frame')[0]
+  iframe.contentDocument || iframe.contentWindow.document
+getSelection = ->
+  getInnerDocument().getSelection()  # TODO: check browser compatibility
+getCurrentRange = ->
+  currentSelection = getSelection()
+  if currentSelection.rangeCount > 0 then currentSelection.getRangeAt(0) else null
+createNewRange = -> document.createRange()  # TODO: browser compatability
+activateRange = (range) ->
+  selection = window.getSelection()
+  selection.removeAllRanges()
+  selection.addRange(range)
+  return range
+
+###############################################################################
+# Event Helpers
+###############################################################################
+
+newKeyEvent = (app, selector, context, type, keyCode) ->
+  # Same as Ember's key event but saves the event for us to access later
+  $el = undefined
+  if typeof keyCode is "undefined"
+    keyCode = type
+    type = context
+    context = null
+  $el = findWithAssert(app, selector, context)
+  event = Ember.$.Event(type,
+    keyCode: keyCode
+  )
+  Ember.run $el, "trigger", event
+  last_event = event  # Store event for access later
+  return wait(app)
+
+###############################################################################
+# Actions
+###############################################################################
+
+insertNonEditableDatePill = ->
+  selectInChosen(getInsertNonEditableButton(), "Today's Date")
+insertNonEditableTextPill = (text="foobar") ->
+  selectInChosen(getInsertNonEditableButton(), "Custom Text").then ->
+    fillIn(find('.modal input'), text).then ->
+      click find("button:contains('Insert')")
+
+placeCursorAtEndOfTextEditor = ->
+  range = createNewRange()
+  editor = getTextEditor()[0]
+  range.selectNodeContents(editor)
+  range.collapse false  # collapse to end of range
+  activateRange(range)
+
 placeCursorInTextEditor = ->
-  range = document.createRange()
+  range = createNewRange()
   # Select the entire contents of the element with the range
   element = getTextEditor().find('.non-editable-caret')[0]
   range.selectNodeContents(element)
   range.collapse(true)
-  selection = window.getSelection()
-  selection.removeAllRanges()
-  selection.addRange(range)
-  return range
+  activateRange(range)
 
-selectIdInTextEditor = (eid, startOffset=0, endOffset=0) ->
-  range = document.createRange()
-  # Select the entire contents of the element with the range
+selectNodeInTextEditor = (node, startOffset=0, endOffset=-1) ->
+  range = createNewRange()
+  if node.nodeType == 1  # element node
+    node_length = node.childNodes.length
+  else if node.nodeType == 3  # text node
+    nodeLength = node.length
+  else  # no support for other kinds of nodes, just collapse to beginning
+    endOffset = 0
+  endOffset = if endOffset >= 0 then endOffset else node.length
+  range.selectNodeContents(node)
+  range.setStart(node, startOffset)
+  range.setEnd(node, endOffset)
+  activateRange(range)
+
+selectIdInTextEditor = (eid, startOffset, endOffset) ->
   element = getTextEditor().find('#' + eid)[0].childNodes[0]
-  range.selectNodeContents(element)
-  range.setStart(element, startOffset)
-  range.setEnd(element, element.length - endOffset)
-  selection = window.getSelection()
-  selection.removeAllRanges()
-  selection.addRange(range)
-  return range
+  selectNodeInTextEditor(element)
 
 placeCursorAfterElementInTextEditor = (eid, startOffset=0, endOffset=0) ->
-  range = document.createRange()
+  range = createNewRange()
   # Select the entire contents of the element with the range
   element = getTextEditor().find('#' + eid)[0].childNodes[0]
   range.selectNodeContents(element)
   range.collapse(false)
-  selection = window.getSelection()
-  selection.removeAllRanges()
-  selection.addRange(range)
-  return range
+  activateRange(range)
 
 selectMatchingTextInTextEditor = (text) ->
   innerSelect = (node, pat) ->
@@ -74,13 +122,10 @@ selectMatchingTextInTextEditor = (text) ->
     if node.nodeType is 3
       pos = node.data.toLowerCase().indexOf(pat)
       if pos >= 0
-        range = document.createRange()
+        range = createNewRange()
         range.setStart(node, pos)
         range.setEnd(node, pos + pat.length)
-        selection = window.getSelection()
-        selection.removeAllRanges()
-        selection.addRange(range)
-        return range
+        return activateRange(range)
     else if node.nodeType is 1 and node.childNodes and not /(script|style)/i.test(node.tagName)
       i = 0
       while i < node.childNodes.length
@@ -90,34 +135,54 @@ selectMatchingTextInTextEditor = (text) ->
     return null
   innerSelect(getTextEditor()[0], text)
 
+sendKeyEventToTextEditor = (eventType, keyCode) ->
+  newKeyEvent('.text-editor', getInnerDocument(), eventType, keyCode)
+
 typeKeyInTextEditor = (keyCode) ->
-  keyEvent('.text-editor', $('iframe.text-editor-frame').contents(), 'keydown', keyCode).then ->
-  keyEvent('.text-editor', $('iframe.text-editor-frame').contents(), 'keypress', keyCode).then ->
-  keyEvent('.text-editor', $('iframe.text-editor-frame').contents(), 'keyup', keyCode)
+  char = String.fromCharCode(keyCode).toLowerCase()
+  range = getCurrentRange()
+  sendKeyEventToTextEditor('keydown', keyCode).then ->
+    if not last_event.isDefaultPrevented()
+      if keyCode is KEY_CODES.BACKSPACE
+        getInnerDocument().execCommand('Delete', false, null)
+      else if keyCode is KEY_CODES.DELETE
+        getInnerDocument().execCommand('ForwardDelete', false, null)
+      else if typeof (char) is "string"
+        if range.startContainer.nodeType is 3 and range.collapsed
+          range.startContainer.insertData range.startOffset, char
+          range.setStart range.startContainer, range.startOffset + 1
+          range.collapse true
+          activateRange(range)
+        else
+          node = getInnerDocument().createTextNode(char)
+          range.insertNode node
+          range.setStart(node, 1)
+          range.collapse true
+          activateRange(range)
+    sendKeyEventToTextEditor('keypress', keyCode)
+  .then ->
+    sendKeyEventToTextEditor('keyup', keyCode)
 
-
-keyDownInTextEditor = (keyCode) ->
-  keyEvent('.text-editor', $('iframe.text-editor-frame').contents(), 'keydown', keyCode)
-
+typeCharInTextEditor = (char) ->
+  charCode = char.toUpperCase().charCodeAt(0)
+  typeKeyInTextEditor(charCode)
 
 test 'Text editor appears', ->
   ok isPresent('.text-editor-frame'), 'Text editor frame not found'
   ok getTextEditor().length > 0, 'Text editor not found'
 
-
 test "Insert non-editable date pill in text editor", ->
   expect 3
-  insertNonEditable().then ->
+  insertNonEditableDatePill().then ->
     textEditor = getTextEditor()
     pill = find('span.non-editable', textEditor)
     equal pill.attr('title'), "Today's Date"
     equal pill.attr('data-type'), "Ember.Widgets.TodaysDatePill"
     notEqual pill.attr('data-pill-id'), null
 
-
 test "Insert custom text pill in text editor", ->
   expect 4
-  insertNonEditableWithText('foobar').then ->
+  insertNonEditableTextPill('foobar').then ->
     textEditor = getTextEditor()
     pill = find('span.non-editable', textEditor)
     equal pill.attr('title'), "Custom Text"
@@ -125,18 +190,38 @@ test "Insert custom text pill in text editor", ->
     equal pill.text(), 'foobar'
     notEqual pill.attr('data-pill-id'), null, 'Pill id is not set'
 
+test "Type in text editor works", ->
+  expect 1
+  placeCursorAtEndOfTextEditor()
+  typeCharInTextEditor('s').then ->
+    equal getTextEditor()[0].innerHTML.toLowerCase(), '<div>s</div>', 'The character typed did not appear in the text editor'
+
+test "Insert pill via keypress at beginning of text editor", ->
+  expect 1
+
+  # Given that the user has entered text to insert a non editable element
+  text_editor_content = '<div>=dat</div>'
+  $textEditor = getTextEditor()
+  $textEditor[0].innerHTML = text_editor_content
+  placeCursorAtEndOfTextEditor()
+  typeCharInTextEditor('e')
+  .then ->
+    # When enter is pressed
+    typeKeyInTextEditor(KEY_CODES.ENTER)
+  .then ->
+    ok getTextEditor(), 'Text editor is still there'
 
 test "Left arrow selects non-editable pill", ->
   expect 3
 
   # Given a text editor with a non-editable pill inserted
-  insertNonEditable()
+  insertNonEditableDatePill()
   # When the left arrow is pressed immediately after
   .then ->
     typeKeyInTextEditor(KEY_CODES.LEFT)
   # Then the non-editable is selected
   .then ->
-    range = selectedRange()
+    range = getCurrentRange()
     pill = getTextEditor().find('.non-editable')
     equal range.startOffset, 0, 'Range start is not at beginning of pill, is instead at ' + range.startOffset
     equal range.endOffset, pill.text().length, 'Range end is not at end of pill, is instead at ' + range.endOffset
@@ -159,7 +244,7 @@ test "Arrow behavior between pills", ->
   typeKeyInTextEditor(KEY_CODES.RIGHT)
   # Then the first pill is selected
   .then ->
-    range = selectedRange()
+    range = getCurrentRange()
     equal range.startContainer.parentElement, find('span.non-editable[data-pill-id="1"]', $textEditor)[0]
     equal range.startOffset, 0
     equal range.endOffset, 8
@@ -181,7 +266,7 @@ test "Arrow behavior between pills on first line", ->
   typeKeyInTextEditor(KEY_CODES.RIGHT)
   # Then the first pill is selected
   .then ->
-    range = selectedRange()
+    range = getCurrentRange()
     equal range.startContainer.parentElement, find('span.non-editable[data-pill-id="1"]', $textEditor)[0]
     equal range.startOffset, 0
     equal range.endOffset, 8
@@ -200,7 +285,7 @@ test "Select second pill and delete", ->
   currentRange = selectIdInTextEditor("to-select")
   click(getTextEditor())
   .then ->
-    currentRange = selectedRange()
+    currentRange = getCurrentRange()
     equal( getTextEditor().find('#to-select')[0], currentRange.startContainer.parentElement, "the correct pill element is not selected")
     ok(currentRange.startOffset is 0 and currentRange.endOffset is 6, "the correct pill element is not entirely selected")
   .then ->
@@ -227,7 +312,7 @@ test "Select first pill and delete", ->
   currentRange = selectIdInTextEditor("to-select")
   click(getTextEditor())
   .then ->
-    currentRange = selectedRange()
+    currentRange = getCurrentRange()
     equal( getTextEditor().find('#to-select')[0], currentRange.startContainer.parentElement, "the correct pill element is not selected")
     ok(currentRange.startOffset is 0 and currentRange.endOffset is 6, "the correct pill element is not entirely selected")
   .then ->
@@ -245,7 +330,7 @@ test "Bolding text preserves selection", ->
   expect 2
 
   # Given a text editor with some text
-  text_editor_content = "hello world goodbye"
+  text_editor_content = "<div>hello world goodbye</div>"
   $textEditor = getTextEditor()
   $textEditor[0].innerHTML = text_editor_content
   # When the word "world" is selected
@@ -256,33 +341,32 @@ test "Bolding text preserves selection", ->
     click($('button .fa-bold').parent())
   .then ->
     # Then the word "world" is bolded
-    equal($textEditor[0].innerHTML.trim(), 'hello <span style="font-weight: bold;">world</span> goodbye', "The word 'world' was not bolded")
-    currentRange = selectedRange()
+    equal($textEditor[0].innerHTML.trim(), '<div>hello <span style="font-weight: bold;">world</span> goodbye</div>', "The word 'world' was not bolded")
+    currentRange = getCurrentRange()
     # And it is still selected
     equal( currentRange.endOffset - currentRange.startOffset, 5, "The word 'world' is no longer selected")
 
 
-test "Backspace with factors on many lines", ->
+test "Backspace with pills on many lines", ->
   expect 2
 
   # Given a text editor with some text
   text_editor_content = '<div><span class="non-editable" data-pill-id="2">and me</span></div><div><span class="non-editable" id="to-select" data-pill-id="4">Put cursor here and delete me--&gt;</span></div><div>hello</div>'
   $textEditor = getTextEditor()
   $textEditor[0].innerHTML = text_editor_content
-  # When the word "world" is selected
+  # When the pill is selected
   currentRange = placeCursorAfterElementInTextEditor("to-select")
   click(getTextEditor())
   .then ->
     # And then the backspace key is pressed
-    keyDownInTextEditor(KEY_CODES.BACKSPACE)
+    sendKeyEventToTextEditor('keydown', KEY_CODES.BACKSPACE)
   .then ->
     # Then a non editable caret is inserted after the pill about to be deleted
     equal($textEditor[0].innerHTML.trim(), '<div><span class="non-editable" data-pill-id="2">and me</span></div><div><span class="non-editable" id="to-select" data-pill-id="4">Put cursor here and delete me--&gt;</span><span class="non-editable-caret">﻿</span></div><div>hello</div>', "The html content is incorrect")
-    currentRange = selectedRange()
+    currentRange = getCurrentRange()
     # And the pill is selected
     equal(currentRange.endOffset - currentRange.startOffset, 32, "The pill is not selected")
     # At this point, the browser would finish the backspace event, though we can't test it
-
 
 test "Non editable caret on it's own line is replaced with a break", ->
   # This test only applies to chrome...

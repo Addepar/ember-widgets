@@ -124,7 +124,7 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
       editor = @getEditor()[0]
     if editor.childElementCount is 0
       # Insert div in text editor if none exists
-      @insertHTMLAtRange(@selectElement(editor), "<div>&nbsp;</div>")
+      @insertHTMLAtRange(@selectElement(editor), "<div></div>")
     return editor.children[editor.children.length - 1]
 
   onSelectedFontNameDidChange: Ember.observer ->
@@ -214,10 +214,13 @@ Ember.Widgets.DomHelper = Ember.Mixin.create
       if collapseMode != "none"
         # collapse the range to the end point. false means collapse to end rather than the start
         range.collapse(if collapseMode == "beginning" then true else false)
-      selection = window.getSelection()
-      selection.removeAllRanges()
-      selection.addRange(range)
-      return range
+      @activateRange(range)
+
+  activateRange: (range) ->
+    selection = window.getSelection()
+    selection.removeAllRanges()
+    selection.addRange(range)
+    return range
 
   # Wrapper around range.deleteContents that also deletes empty containers in the range
   deleteRange: (range, shouldDeleteContainer=true) ->
@@ -577,6 +580,23 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
     else if parentCaret?.length > 0 and !@_isNonEditable(@getNonEmptySideNode(currentRange, true)) and
     !@_isNonEditable(@getNonEmptySideNode(currentRange, false))
       @_removeCaretContainer(parentCaret[0])
+
+    # move things around so that all text are within divs
+    editor = @getEditor()[0]
+    i = 0
+    while i < editor.childNodes.length
+      range = @getCurrentRange()
+      childNode = editor.childNodes[i++]
+      if range.startContainer == childNode  # we need to restore it
+        offset = range.startOffset
+      if childNode.nodeType == 3 and childNode.data.length > 0  # text node
+        newChild = document.createElement('div')
+        newChild.innerHTML = childNode.data
+        if offset
+          editor.replaceChild(newChild, childNode)
+          range.setStart(newChild, offset)
+          range.setEnd(newChild, offset)
+          @activateRange(range)
 
   _showPillConfig: (query) ->
     @set 'showConfigPopover', true
