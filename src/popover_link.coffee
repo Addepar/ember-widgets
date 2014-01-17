@@ -6,6 +6,7 @@ Ember.Widgets.PopoverLinkComponent = Ember.Component.extend
   title:      null
   contentViewClass: null
   disabled:   no
+  popoverClassNames: []
   rootElement: '.ember-application'
 
   _contentViewClass: Ember.computed ->
@@ -15,6 +16,8 @@ Ember.Widgets.PopoverLinkComponent = Ember.Component.extend
   click: (event) ->
     return if @get('disabled')
     popoverView = Ember.View.extend Ember.Widgets.PopoverMixin,
+      layoutName: 'popover-link-popover'
+      classNames: @get('popoverClassNames')
       controller: this
       targetElement: @get('element')
       container: @get('container')
