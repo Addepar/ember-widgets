@@ -1,5 +1,5 @@
-Ember.Widgets.PopoverComponent =
-Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
+Ember.Widgets.PopoverMixin =
+Ember.Mixin.create Ember.Widgets.StyleBindingsMixin,
 Ember.Widgets.BodyEventListener,
   layoutName: 'popover'
   classNames: ['popover']
@@ -189,6 +189,8 @@ Ember.Widgets.BodyEventListener,
     @_resizeHandler = null
     $(document).off 'scroll', @_scrollHandler
     @_scrollHandler = null
+
+Ember.Widgets.PopoverComponent = Ember.Component.extend(Ember.Widgets.PopoverMixin)
 
 Ember.Widgets.PopoverComponent.reopenClass
   rootElement: '.ember-application'

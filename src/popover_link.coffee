@@ -6,6 +6,7 @@ Ember.Widgets.PopoverLinkComponent = Ember.Component.extend
   title:      null
   contentViewClass: null
   disabled:   no
+  rootElement: '.ember-application'
 
   _contentViewClass: Ember.computed ->
     Ember.get(@get('contentViewClass')) if @get('contentViewClass')
@@ -13,17 +14,14 @@ Ember.Widgets.PopoverLinkComponent = Ember.Component.extend
 
   click: (event) ->
     return if @get('disabled')
-    Ember.Widgets.PopoverComponent.popup
-      parentController: this
+    popoverView = Ember.View.extend Ember.Widgets.PopoverMixin,
+      controller: this
       targetElement: @get('element')
       container: @get('container')
-      placement: @get('placement')
-      title:  @get('title')
-      content: @get('content')
+      placement: Ember.computed.alias 'controller.placement'
+      title:  Ember.computed.alias 'controller.title'
       contentViewClass: @get('_contentViewClass')
-      # forward actions to popover link component
-      sendAction: ->
-        context = @get 'parentController'
-        context.sendAction.apply context, arguments
+    popover = popoverView.create()
+    popover.appendTo rootElement
 
 Ember.Handlebars.helper('popover-link-component', Ember.Widgets.PopoverLinkComponent)
