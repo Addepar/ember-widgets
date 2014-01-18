@@ -54,26 +54,31 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
   ]
 
   iframeHeadContents: Ember.computed ->
-    """<style>
+    """
+    <link rel="stylesheet" href="css/addepar-style-guide.css">
+    <style>
+      html,
       body {
+        min-height: 0;
+        min-width: 0;
         margin: 0;
+        background: transparent;
+        font-family: "Helvetica Neue";
       }
       .""" + @EDITOR_CLASS + """ {
         min-height: 100%;
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         box-sizing: border-box;
-        padding: 0;
-        font-family: "Helvetica Neue";
+        padding: 5px;
       }
       .""" + @EDITOR_CLASS + """:focus {
         outline: none;
       }
       .non-editable {
         display: inline-block;
-        background-color: #ccc;
         padding: 0 5px;
-        border-radius: 3px;
+        background-color: #e7e7e7;
         list-style-type: none;
         cursor: pointer;
       }
@@ -82,7 +87,8 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
         color: grey;
         font-style: italic;
       }
-    </style>"""
+    </style>
+    """
   .property 'EDITOR_CLASS'
 
   iframeBodyContents: Ember.computed ->
