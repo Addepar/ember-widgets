@@ -2,31 +2,92 @@
 // Ember.Widgets.ColorPicker
 // -----------------------------------------------------------------------------
 
-.color-picker {
-  display: inline-block
-}
+@colorpicker-cell-width: 30px;
+@colorpicker-cell-height: @colorpicker-cell-width;
+@colorpicker-cell-margin: 3px;
 
-.ember-widget-color-button {
+.color-picker-button {
+  display: inline-block;
+  // Let the color-picker-cell within it flood the whole button
   padding: 0;
+  .color-picker-cell {
+    // Make it fill the entire button
+    margin: 3px 0 0 3px;
+  }
+}
+// Depending on the size of the button
+.color-picker-button .btn {
+  .fa-caret-down {
+    .button-size(@padding-base-vertical; @padding-button-horizontal - 5px; @font-size-base; @line-height-base; @border-radius-base);
+  }
 
   .color-picker-cell {
-    width: 25px;
-    // This should be dependent on the button size
-    height: 26px;
+    // TODO(Louis): This is bad..
+    height: 25px;
   }
 }
 
-.ember-color-picker-dropdown {
-  min-width: 300px;
-  padding: 10px 5px 5px 10px;
+.color-picker-button.btn-lg {
+  .fa-caret-down {
+    // line-height: ensure even-numbered height of button next to large input
+    .button-size(@padding-large-vertical; @padding-large-horizontal; @font-size-large; @line-height-large; @border-radius-large);
+  }
+
+  .color-picker-cell {
+    height: @line-height-large;
+  }
+}
+
+.color-picker-button.btn-sm {
+  .fa-caret-down {
+    // line-height: ensure proper height of button next to small input
+    .button-size(@padding-small-vertical; @padding-small-horizontal; @font-size-small; @line-height-small; @border-radius-small);
+  }
+
+  .color-picker-cell {
+    // TODO(Louis): This is bad..
+    height: 20px;
+  }
+}
+
+.color-picker-button.btn-xs {
+  .fa-caret-down {
+    .button-size(@padding-xs-vertical; @padding-xs-horizontal; @font-size-small; @line-height-small; @border-radius-small);
+  }
+
+  .color-picker-cell {
+    height: @line-height-small;
+  }
+}
+
+.color-picker-button .fa-caret-down {
+  .button-size(@padding-base-vertical; @padding-button-horizontal - 5px; @font-size-base; @line-height-base; @border-radius-base);
+
+  .color-picker-cell {
+    height: @line-height-base;
+  }
+}
+
+.color-picker-cell {
+  width: 25px;
+  // This should be dependent on the button size
+  height: 26px;
+}
+
+.color-picker-dropdown {
+  min-width: @colorpicker-cell-width * 5 + 14px;
+  padding: 7px;
 }
 
 .color-row {
   .color-picker-cell {
-    float: left;
-    margin: 0 5px 5px 0;
-    height: 30px;
-    width: 30px;
+    margin:  @colorpicker-cell-margin;
+    height: @colorpicker-cell-height;
+    width: @colorpicker-cell-width;
     cursor: pointer;
+
+    &.active {
+      border: 1px solid #333;
+    }
   }
 }

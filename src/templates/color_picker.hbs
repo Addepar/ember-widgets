@@ -1,24 +1,28 @@
-<div class="btn-group">
-  <button type="button" {{bindAttr class="buttonClass :ember-widget-color-button"}}>
+<div class="dropdown">
+  <a data-toggle="dropdown" href="#">
     {{view Ember.Widgets.ColorPickerCell
       colorBinding ='selectedColor'
-      classNames='color-picker-cell'
     }}
-  </button>
-  <button type="button" {{bindAttr class=":dropdown-toggle buttonClass"}} data-toggle="dropdown">
-    <span class="caret"></span>
-    <span class="sr-only">Toggle Dropdown</span>
-  </button>
-  <div {{bindAttr class=":dropdown-menu dropdownClass"}} role="menu">
+    <span class="fa fa-caret-down"></span>
+  </a>
+  <div {{bindAttr class=":dropdown-menu dropdownClass"}} role="menu" aria-labelledby="dLabel">
     {{#each row in colorRows}}
       <div class="color-row clearfix">
         {{#each color in row}}
           {{view Ember.Widgets.ColorPickerCell
-            colorBinding ='color'
-            classNames='color-picker-cell'
+            colorBinding = 'color'
            }}
         {{/each}}
       </div>
     {{/each}}
+    <form>
+      <div class="form-group form-group-sm">
+        {{view Ember.TextField valueBinding="customColor"
+          class="form-control"
+          placeholder="Custom HEX value"
+          type="text"
+        }}
+      </div>
+    </form>
   </div>
 </div>

@@ -1,0 +1,172 @@
+//
+// Addepar Popovers
+// -----------------------------------------------------------------------------
+
+// Do not limit the popovers to have width 276px
+// .popover {
+//   max-width: none;
+//   border: 1px solid #ddd;
+//   // Need to be above modals
+//   z-index: 1050;
+//   .box-shadow(none) !important;
+// }
+
+// .popover.bottom.no-arrow .arrow,
+// .popover.top.no-arrow .arrow {
+//   visibility: hidden;
+// }
+
+// .popover.bottom.no-arrow,
+// .popover.top.no-arrow {
+//   margin-top: 0;
+// }
+
+// .popover.top-right {
+//   margin-left: 10px;
+//   margin-top: -4px;
+// }
+
+// .popover.top-right .arrow {
+//   top: 18px;
+//   left: -11px;
+//   margin-top: -11px;
+//   border-left-width: 0;
+//   border-right-color: #999;
+//   border-right-color: rgba(0, 0, 0, 0.25);
+// }
+
+// .popover.top-right .arrow:after {
+//   left: 1px;
+//   bottom: -10px;
+//   border-left-width: 0;
+//   border-right-color: #FFF;
+// }
+
+// .popover.top-left {
+//   margin-left: -10px;
+//   margin-top: -4px;
+// }
+
+// .popover.top-left .arrow {
+//   top: 18px;
+//   right: -11px;
+//   margin-top: -11px;
+//   border-right-width: 0;
+//   border-left-color: #999;
+//   border-left-color: rgba(0, 0, 0, 0.25);
+// }
+
+// .popover.top-left .arrow:after {
+//   right: 1px;
+//   border-right-width: 0;
+//   border-left-color: #FFF;
+//   bottom: -10px;
+// }
+
+// .popover.bottom.no-arrow .arrow, .popover.top.no-arrow .arrow {
+//   visibility: hidden;
+// }
+
+// .popover.bottom.no-arrow, .popover.top.no-arrow {
+//   margin-top: 0;
+// }
+
+// .popover.bottom-right {
+//   font-size: 12px;
+//   margin-top: 0;
+// }
+
+// .popover.bottom-right .arrow {
+//   left: 85%;
+//   margin-left: -@popoverArrowOuterWidth;
+//   border-top-width: 0;
+//   border-bottom-color: #999; // IE8 fallback
+//   border-bottom-color: @popoverArrowOuterColor;
+//   top: -@popoverArrowOuterWidth;
+//   &:after {
+//     top: 1px;
+//     margin-left: -@popoverArrowWidth;
+//     border-top-width: 0;
+//     border-bottom-color: @popoverArrowColor;
+//   }
+// }
+
+// .popover.bottom-left {
+//   font-size: 12px;
+//   margin-top: 0;
+// }
+
+// .popover.bottom-left .arrow {
+//   left: 15%;
+//   margin-left: -@popoverArrowOuterWidth;
+//   border-top-width: 0;
+//   border-bottom-color: #999; // IE8 fallback
+//   border-bottom-color: @popoverArrowOuterColor;
+//   top: -@popoverArrowOuterWidth;
+//   &:after {
+//     top: 1px;
+//     margin-left: -@popoverArrowWidth;
+//     border-top-width: 0;
+//     border-bottom-color: @popoverArrowColor;
+//   }
+// }
+
+// .popover-title {
+//   overflow: hidden;
+//   white-space: nowrap;
+//   text-overflow: ellipsis;
+// }
+
+/* Large Popovers
+-------------------------------------------------- */
+
+.large-popover .popover-content {
+  padding: 0;
+}
+
+.large-popover-header {
+  position: relative;
+  padding: 20px 20px 0 20px;
+  text-align: center;
+
+  // TODO: Clean this up
+  .btn-group.btn-group-sm,
+  .btn.btn-sm {
+    margin-top: -7px;
+  }
+
+  .left,
+  .center,
+  .right {
+    display: inline-block;
+  }
+
+  .left {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+  }
+
+  .center {
+    margin: auto;
+  }
+
+  .right {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+  }
+}
+
+// TODO(Louis): Review this
+.large-popover-title {
+  color: #444;
+  font-weight: bold;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.large-popover-body {
+  padding: 10px 20px;
+}
