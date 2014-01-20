@@ -1,12 +1,18 @@
 Ember.Widgets.ColorPicker = Ember.Component.extend
   templateName: 'color_picker'
   classNames: ['color-picker-button']
-  selectedColor: '#0074D9'
   colorPickerPlacement: 'right'
-
   dropdownClass: null
 
+  INITIAL_COLOR: '#0074D9'
+
+  selectedColor: '#0074D9'
   customColor: ''
+
+  setCustomColor: Ember.observer ->
+    if @get('isCustomColorValid') is true
+      @set 'selectedColor', @get 'customColor'
+  , 'customColor', 'isCustomColorValid'
 
   isCustomColorValid: Ember.computed ->
     /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test("#{@get('customColor')}")
@@ -49,6 +55,7 @@ Ember.Widgets.ColorPicker = Ember.Component.extend
 
   actions:
     setColor: (color) ->
+      @set 'customColor', ''
       @set 'selectedColor', color
 
 Ember.Widgets.ColorPickerCell = Ember.View.extend Ember.Widgets.StyleBindingsMixin,
