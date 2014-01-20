@@ -9495,7 +9495,7 @@ input[type="radio"] {
   cursor: pointer;
 }
 .color-picker-dropdown .color-row .color-picker-cell.active {
-  background: url('../img/icon_16645_mod_color_picker.svg') no-repeat center center;
+  border: 2px solid #0097e3;
 }
 .color-picker-custom-form {
   padding-top: 2px;

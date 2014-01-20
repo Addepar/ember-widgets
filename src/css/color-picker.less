@@ -5,7 +5,6 @@
 @colorpicker-cell-width: 30px;
 @colorpicker-cell-height: @colorpicker-cell-width;
 @colorpicker-cell-margin: 2px;
-@colorpicker-cell-active-checkmark: '../img/icon_16645_mod_color_picker.svg';
 
 .color-picker-button {
   display: inline-block;
@@ -110,7 +109,8 @@
   cursor: pointer;
 
   &.active {
-    background: url('@{colorpicker-cell-active-checkmark}') no-repeat center center;
+    border: 2px solid @highlight-blue;
+    // background: url('@{colorpicker-cell-active-checkmark}') no-repeat center center;
   }
 }
 
