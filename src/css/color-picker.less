@@ -15,8 +15,9 @@
     margin: 3px 0 0 3px;
   }
 }
+
 // Depending on the size of the button
-.color-picker-button .btn {
+.color-picker-button.btn {
   .fa-caret-down {
     .button-size(@padding-base-vertical; @padding-button-horizontal - 5px; @font-size-base; @line-height-base; @border-radius-base);
   }
@@ -68,26 +69,52 @@
   }
 }
 
-.color-picker-cell {
-  width: 25px;
-  // This should be dependent on the button size
-  height: 26px;
-}
-
+// Color picker dropdown containing the color-row which contains the
+// color-picker-cells
 .color-picker-dropdown {
   min-width: @colorpicker-cell-width * 5 + 14px;
   padding: 7px;
+  // Align it to the button
+  margin-left: -1px;
+
+  &.pull-right {
+    margin-left: 0;
+    margin-right: -1px;
+  }
+
+  hr {
+    margin: 7px;
+  }
 }
 
-.color-row {
-  .color-picker-cell {
-    margin:  @colorpicker-cell-margin;
-    height: @colorpicker-cell-height;
-    width: @colorpicker-cell-width;
-    cursor: pointer;
+/* Color Picker Cells */
 
-    &.active {
-      border: 1px solid #333;
-    }
+.color-picker-custom-preview {
+  width: @colorpicker-cell-width;
+}
+
+.color-picker-cell {
+  // Height depends on the button size
+  width: @colorpicker-cell-width;
+  border: 1px solid #ddd;
+}
+
+// Stong selector to override color-picker-button.btn css
+.color-picker-dropdown .color-row .color-picker-cell {
+  margin:  @colorpicker-cell-margin;
+  height: @colorpicker-cell-height;
+  width: @colorpicker-cell-width;
+  cursor: pointer;
+
+  &.active {
+    // border: 1px solid #333;
+  }
+}
+
+.color-picker-custom-form {
+  margin:  @colorpicker-cell-margin;
+
+  .color-picker-cell {
+    margin: 0;
   }
 }

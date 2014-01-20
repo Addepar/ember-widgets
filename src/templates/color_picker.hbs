@@ -5,7 +5,8 @@
     }}
     <span class="fa fa-caret-down"></span>
   </a>
-  <div {{bindAttr class=":dropdown-menu dropdownClass"}} role="menu" aria-labelledby="dLabel">
+  <div {{bindAttr class=":dropdown-menu :color-picker-dropdown dropdownClass"}}
+    role="menu" aria-labelledby="dLabel">
     {{#each row in colorRows}}
       <div class="color-row clearfix">
         {{#each color in row}}
@@ -14,14 +15,20 @@
            }}
         {{/each}}
       </div>
+      <hr>
     {{/each}}
-    <form>
+    <form class="color-picker-custom-form">
       <div class="form-group form-group-sm">
-        {{view Ember.TextField valueBinding="customColor"
-          class="form-control"
-          placeholder="Custom HEX value"
-          type="text"
-        }}
+        <div class="input-group">
+          <span {{bindAttr class=":input-group-addon
+            :color-picker-custom-preview isCustomColor:active"
+            style="customColorCSS"}}></span>
+          {{view Ember.TextField valueBinding="customColor"
+            class="form-control input-sm"
+            type="text"
+            placeholder="Custom HEX"
+          }}
+        </div>
       </div>
     </form>
   </div>

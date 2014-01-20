@@ -4,14 +4,17 @@ Ember.Widgets.ColorPicker = Ember.Component.extend
   selectedColor: '#0074D9'
   colorPickerPlacement: 'right'
 
-  dropdownClass: 'color-picker-dropdown'
-
+  dropdownClass: null
+  customColor: null
+  isCustomColor: no
   colorRows:
     [
       [ '#000000',
         '#111111',
         '#434343',
         '#666666',
+        '#999999',
+        '#AAAAAA',
         '#B7B7B7',
         '#CCCCCC',
         '#D9D9D9',
@@ -35,6 +38,10 @@ Ember.Widgets.ColorPicker = Ember.Component.extend
       ]
     ]
 
+  customColorCSS: Ember.computed ->
+    "background-color: #{@get('customColor')}"
+  .property 'customColor'
+
   actions:
     setColor: (color) ->
       @set 'selectedColor', color
@@ -44,7 +51,6 @@ Ember.Widgets.ColorPickerCell = Ember.View.extend Ember.Widgets.StyleBindingsMix
   classNameBindings: ['isActive:active:inactive']
   styleBindings:  'color:background-color'
   color: null
-  customColor: null
 
   isActive: Ember.computed ->
     @get('controller.selectedColor') is @get('color')
