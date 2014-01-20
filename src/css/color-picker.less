@@ -4,12 +4,13 @@
 
 @colorpicker-cell-width: 30px;
 @colorpicker-cell-height: @colorpicker-cell-width;
-@colorpicker-cell-margin: 3px;
+@colorpicker-cell-margin: 2px;
 
 .color-picker-button {
   display: inline-block;
   // Let the color-picker-cell within it flood the whole button
   padding: 0;
+
   .color-picker-cell {
     // Make it fill the entire button
     margin: 3px 0 0 3px;
@@ -72,7 +73,8 @@
 // Color picker dropdown containing the color-row which contains the
 // color-picker-cells
 .color-picker-dropdown {
-  min-width: @colorpicker-cell-width * 5 + 14px;
+  // Padding 2 * 7 = 14 and 2px for the border and 1 for the negative margin
+  min-width: (@colorpicker-cell-width + 2 * @colorpicker-cell-margin) * 4 + 14px + 2px + 1px;
   padding: 7px;
   // Align it to the button
   margin-left: -1px;
@@ -83,7 +85,7 @@
   }
 
   hr {
-    margin: 7px;
+    margin: 7px @colorpicker-cell-margin;
   }
 }
 
@@ -96,7 +98,7 @@
 .color-picker-cell {
   // Height depends on the button size
   width: @colorpicker-cell-width;
-  border: 1px solid #ddd;
+  border: 1px solid #e6e6e6;
 }
 
 // Stong selector to override color-picker-button.btn css
@@ -112,7 +114,8 @@
 }
 
 .color-picker-custom-form {
-  margin:  @colorpicker-cell-margin;
+  padding-top: @colorpicker-cell-margin;
+  margin: @colorpicker-cell-margin;
 
   .color-picker-cell {
     margin: 0;

@@ -9469,7 +9469,7 @@ input[type="radio"] {
   height: 1.6796875;
 }
 .color-picker-dropdown {
-  min-width: 164px;
+  min-width: 153px;
   padding: 7px;
   margin-left: -1px;
 }
@@ -9478,7 +9478,7 @@ input[type="radio"] {
   margin-right: -1px;
 }
 .color-picker-dropdown hr {
-  margin: 7px;
+  margin: 7px 2px;
 }
 /* Color Picker Cells */
 .color-picker-custom-preview {
@@ -9486,16 +9486,17 @@ input[type="radio"] {
 }
 .color-picker-cell {
   width: 30px;
-  border: 1px solid #ddd;
+  border: 1px solid #e6e6e6;
 }
 .color-picker-dropdown .color-row .color-picker-cell {
-  margin: 3px;
+  margin: 2px;
   height: 30px;
   width: 30px;
   cursor: pointer;
 }
 .color-picker-custom-form {
-  margin: 3px;
+  padding-top: 2px;
+  margin: 2px;
 }
 .color-picker-custom-form .color-picker-cell {
   margin: 0;
