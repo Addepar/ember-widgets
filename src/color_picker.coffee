@@ -9,15 +9,6 @@ Ember.Widgets.ColorPicker = Ember.Component.extend
   selectedColor: '#0074D9'
   customColor: ''
 
-  setCustomColor: Ember.observer ->
-    if @get('isCustomColorValid') is true
-      @set 'selectedColor', @get 'customColor'
-  , 'customColor', 'isCustomColorValid'
-
-  isCustomColorValid: Ember.computed ->
-    /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test("#{@get('customColor')}")
-  .property 'customColor'
-
   colorRows:
     [
       [ '#000000',
@@ -48,6 +39,15 @@ Ember.Widgets.ColorPicker = Ember.Component.extend
         '#B10DC9'
       ]
     ]
+
+  setCustomColor: Ember.observer ->
+    if @get('isCustomColorValid') is true
+      @set 'selectedColor', @get 'customColor'
+  , 'customColor', 'isCustomColorValid'
+
+  isCustomColorValid: Ember.computed ->
+    /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test("#{@get('customColor')}")
+  .property 'customColor'
 
   customColorCSS: Ember.computed ->
     "background-color: #{@get('customColor')}"
