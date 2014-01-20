@@ -9482,7 +9482,7 @@ input[type="radio"] {
 }
 /* Color Picker Cells */
 .color-picker-custom-preview {
-  width: 30px;
+  width: 29px;
 }
 .color-picker-cell {
   width: 30px;
@@ -9495,11 +9495,19 @@ input[type="radio"] {
   cursor: pointer;
 }
 .color-picker-dropdown .color-row .color-picker-cell.active {
-  border: 2px solid #0097e3;
+  border-color: #0097e3;
 }
 .color-picker-custom-form {
   padding-top: 2px;
   margin: 2px;
+}
+.color-picker-custom-form.valid .color-picker-custom-preview {
+  border-color: #0097e3;
+  background-url: none;
+}
+.color-picker-custom-form.invalid .color-picker-custom-preview {
+  background: url('../img/invalid_color.svg') no-repeat center center;
+  background-size: cover;
 }
 .color-picker-custom-form .color-picker-cell {
   margin: 0;

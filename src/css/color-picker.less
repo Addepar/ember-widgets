@@ -2,9 +2,14 @@
 // Ember.Widgets.ColorPicker
 // -----------------------------------------------------------------------------
 
+// Tribute for the cross
+// Designed by Convoy
+// Hamburg, Hamburg, DE 2012
+
 @colorpicker-cell-width: 30px;
 @colorpicker-cell-height: @colorpicker-cell-width;
 @colorpicker-cell-margin: 2px;
+@colorpicker-cell-invalid: '../img/invalid_color.svg';
 
 .color-picker-button {
   display: inline-block;
@@ -92,7 +97,8 @@
 /* Color Picker Cells */
 
 .color-picker-custom-preview {
-  width: @colorpicker-cell-width;
+  // To get the diagonal line to line up properly
+  width: @colorpicker-cell-width - 1px;
 }
 
 .color-picker-cell {
@@ -109,14 +115,23 @@
   cursor: pointer;
 
   &.active {
-    border: 2px solid @highlight-blue;
-    // background: url('@{colorpicker-cell-active-checkmark}') no-repeat center center;
+    border-color: @highlight-blue;
   }
 }
 
 .color-picker-custom-form {
   padding-top: @colorpicker-cell-margin;
   margin: @colorpicker-cell-margin;
+
+  &.valid .color-picker-custom-preview {
+    border-color: @highlight-blue;
+    background-url: none;
+  }
+
+  &.invalid .color-picker-custom-preview {
+    background: url('@{colorpicker-cell-invalid}') no-repeat center center;
+    background-size: cover;
+  }
 
   .color-picker-cell {
     margin: 0;

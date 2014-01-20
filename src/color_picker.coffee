@@ -5,10 +5,11 @@ Ember.Widgets.ColorPicker = Ember.Component.extend
   colorPickerPlacement: 'right'
 
   dropdownClass: null
+
   customColor: ''
 
-  definedCustomColor: Ember.computed ->
-    @get('customColor') is ''
+  isCustomColorValid: Ember.computed ->
+    /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test("#{@get('customColor')}")
   .property 'customColor'
 
   colorRows:
