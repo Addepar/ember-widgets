@@ -1,9 +1,9 @@
 <div class="dropdown">
-  <a data-toggle="dropdown" href="#">
+  <a class="color-picker-dropdown-button" data-toggle="dropdown" href="#">
     {{view Ember.Widgets.ColorPickerCell
       colorBinding ='selectedColor'
     }}
-    <span class="fa fa-caret-down"></span>
+    <span class="fa fa-caret-down color-picker-dropdown-caret"></span>
   </a>
   <div {{bindAttr class=":dropdown-menu :color-picker-dropdown dropdownClass"}}
     role="menu" aria-labelledby="dLabel">

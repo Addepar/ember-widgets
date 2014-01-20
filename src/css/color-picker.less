@@ -5,6 +5,7 @@
 @colorpicker-cell-width: 30px;
 @colorpicker-cell-height: @colorpicker-cell-width;
 @colorpicker-cell-margin: 2px;
+@colorpicker-cell-active-checkmark: '../img/icon_16645_mod_color_picker.svg';
 
 .color-picker-button {
   display: inline-block;
@@ -13,24 +14,24 @@
 
   .color-picker-cell {
     // Make it fill the entire button
-    margin: 3px 0 0 3px;
+    margin: @colorpicker-cell-margin 0 0 @colorpicker-cell-margin;
   }
 }
 
 // Depending on the size of the button
 .color-picker-button.btn {
-  .fa-caret-down {
+  .color-picker-dropdown-caret {
     .button-size(@padding-base-vertical; @padding-button-horizontal - 5px; @font-size-base; @line-height-base; @border-radius-base);
   }
 
   .color-picker-cell {
     // TODO(Louis): This is bad..
-    height: 25px;
+    height: 28px;
   }
 }
 
 .color-picker-button.btn-lg {
-  .fa-caret-down {
+  .color-picker-dropdown-caret {
     // line-height: ensure even-numbered height of button next to large input
     .button-size(@padding-large-vertical; @padding-large-horizontal; @font-size-large; @line-height-large; @border-radius-large);
   }
@@ -41,7 +42,7 @@
 }
 
 .color-picker-button.btn-sm {
-  .fa-caret-down {
+  .color-picker-dropdown-caret {
     // line-height: ensure proper height of button next to small input
     .button-size(@padding-small-vertical; @padding-small-horizontal; @font-size-small; @line-height-small; @border-radius-small);
   }
@@ -53,7 +54,7 @@
 }
 
 .color-picker-button.btn-xs {
-  .fa-caret-down {
+  .color-picker-dropdown-caret {
     .button-size(@padding-xs-vertical; @padding-xs-horizontal; @font-size-small; @line-height-small; @border-radius-small);
   }
 
@@ -62,7 +63,7 @@
   }
 }
 
-.color-picker-button .fa-caret-down {
+.color-picker-button .color-picker-dropdown-caret {
   .button-size(@padding-base-vertical; @padding-button-horizontal - 5px; @font-size-base; @line-height-base; @border-radius-base);
 
   .color-picker-cell {
@@ -109,7 +110,7 @@
   cursor: pointer;
 
   &.active {
-    // border: 1px solid #333;
+    background: url('@{colorpicker-cell-active-checkmark}') no-repeat center center;
   }
 }
 
