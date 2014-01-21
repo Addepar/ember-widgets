@@ -9418,7 +9418,7 @@ input[type="radio"] {
    in Ember.Widgets.TextEditorComponent */
 .color-picker-button {
   display: inline-block;
-  padding: 0;
+  padding: 0 !important;
 }
 .color-picker-button .color-picker-cell {
   margin: 2px 0 0 2px;
