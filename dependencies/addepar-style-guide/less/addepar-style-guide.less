@@ -4,16 +4,12 @@
 
 // Dependencies
 // -------------------------
-// Note: Import these in your app.less, the Addepar Style Guide depends on it
-// TODO(Louis): Decide if we want to couple the addepar style guide with
-// Bootstrap
-
-// http://stackoverflow.com/questions/18414668/set-less-variable-if-its-not-set
-// path to the dependencies, define in where you are calling it, or otherwise
-// define within here to the usual spot it is used to in the addepar
-// style guide repo
-@import '../../../dependencies/bootstrap/less/bootstrap.less';
-@import '../../../dependencies/font-awesome/less/font-awesome.less';
+// Note: Import bootstrap.less and font-awesome.less in your app.less
+// The Addepar Style Guide depends on both files in LESS format. The style
+// guide uses the mixins in bootstrap and will not work otherwise alone.
+// Use the addepar-style-guide-export.less to compile down to a single CSS file.
+// @import '../../dependencies/bootstrap/less/bootstrap.less';
+// @import '../../dependencies/font-awesome/less/font-awesome.less';
 
 // Dependencies Variables
 // ------------------------

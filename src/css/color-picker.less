@@ -8,9 +8,16 @@
   padding: 0 !important;
 
   .color-picker-cell {
+    width: calc(~"100% - 31px");
+    min-width: @colorpicker-cell-height - 2px;
     // Make it fill the entire button
     margin: @colorpicker-cell-margin 0 0 @colorpicker-cell-margin;
   }
+}
+
+// fa.pull-right has a margin on it that needs to be overriden
+.color-picker-dropdown-caret {
+  margin-left: 0 !important;
 }
 
 // Depending on the size of the button
@@ -21,7 +28,7 @@
 
   .color-picker-cell {
     // TODO(Louis): This is bad..
-    height: 28px;
+    height: @colorpicker-cell-height - 2px;
   }
 }
 
