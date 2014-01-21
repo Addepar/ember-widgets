@@ -6555,7 +6555,6 @@ body * {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   font-smoothing: antialiased;
-  font-smoothing: subpixel-antialiased;
 }
 h4,
 h5,
