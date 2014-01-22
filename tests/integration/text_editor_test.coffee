@@ -44,6 +44,9 @@ activateRange = (range) ->
   selection.removeAllRanges()
   selection.addRange(range)
   return range
+getTextEditorComponend = ->
+  id = $('iframe.text-editor-frame').parent()[0].id
+  Ember.View.views[id]
 
 ###############################################################################
 # Event Helpers
@@ -70,6 +73,7 @@ newKeyEvent = (app, selector, context, type, keyCode) ->
 
 insertNonEditableDatePill = ->
   selectInChosen(getInsertNonEditableButton(), "Today's Date")
+
 insertNonEditableTextPill = (text="foobar") ->
   selectInChosen(getInsertNonEditableButton(), "Custom Text").then ->
     fillIn(find('.modal input'), text).then ->
@@ -382,3 +386,22 @@ test "Non editable caret on it's own line is replaced with a break", ->
   .then ->
     # Then the caret is replaced with a break
     equal($textEditor[0].innerHTML.trim(), '<div><span class="non-editable" data-pill-id="1">A pill</span></div><div><br></div><div>hello</div>', "The html content is incorrect")
+
+
+test "Insert non-editable on new line stays on new line", ->
+  expect 1
+
+  text_editor_content = '<div><span class="non-editable" title="Custom Text" data-text="hello" data-pill-id="1" data-type="Ember.Widgets.NonEditableTextPill">hello</span></div><div>=tod</div>'
+  $textEditor = getTextEditor()
+  $textEditor[0].innerHTML = text_editor_content
+  # When the the text editor is clicked
+  currentRange = placeCursorAtEndOfTextEditor()
+  click(getTextEditor())
+  .then ->
+    typeCharInTextEditor('a')
+  .then ->
+    # When enter is pressed
+    typeKeyInTextEditor(KEY_CODES.ENTER)
+  .then ->
+    editor = getTextEditorComponend()
+    equal editor.serialize(), '<div><span class="non-editable" title="Custom Text" data-text="hello" data-pill-id="1" data-type="Ember.Widgets.NonEditableTextPill"></span></div><div><span class="non-editable" title="Today\'s Date" data-pill-id="1" data-type="Ember.Widgets.TodaysDatePill"></span><span class="non-editable-caret">﻿</span></div>'

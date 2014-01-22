@@ -118,7 +118,7 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
   # Return the last child node of the editor
   getOrCreateLastElementInEditor: ->
     editor = @getEditor()[0]
-    if editor is undefined
+    if editor is `undefined`
       iframe = @$('iframe.text-editor-frame').contents()
       iframe.find('body').append(@get('iframeBodyContents'))
       editor = @getEditor()[0]
@@ -237,8 +237,8 @@ Ember.Widgets.DomHelper = Ember.Mixin.create
     @insertElementAtRange(range, @createElementsFromString(html)[0])
 
   # Inserts node at range
-  insertElementAtRange: (range, node, shouldDeleteContainer=false) ->
-    @deleteRange(range, shouldDeleteContainer)
+  insertElementAtRange: (range, node) ->
+    @deleteRange(range, false)
     range.insertNode(node)
     node
 
@@ -319,9 +319,12 @@ Ember.Widgets.BaseNonEditablePill = Ember.Controller.extend Ember.Widgets.DomHel
 
   actions:
     modalConfirm: ->
-      @get('params')['pillId'] = @textEditor.getNewPillId()
-      @get('params')['type'] = "" + @constructor
-      @get('textEditor').insertPill this
+      if @get 'params.pillId'
+        @get('textEditor').updatePill this
+      else
+        @set 'params.pillId', @textEditor.getNewPillId()
+        @set 'params.type', "" + @constructor
+        @get('textEditor').insertPill this
     modalCancel: -> Ember.K
 
   # Update the text of the pill with the latest results
@@ -400,6 +403,10 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
       params[key] = value
     Ember.get(data.type).create({'textEditor': this, 'params': params})
 
+  _getElementFromPill: (pill) ->
+    pillId = pill.get('params.pillId')
+    @getEditor().find('.non-editable[data-pill-id="' + pillId + '"]')
+
   selectedPillOptionDidChange: Ember.observer ->
     selectedPillOption = @get('selectedPillOption')
     return unless selectedPillOption
@@ -426,6 +433,11 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
   getNewPillId: ->
     @incrementProperty 'pillId'
 
+  updatePill: (pill) ->
+    # TODO: allow updating pill params
+    pillElement = @_getElementFromPill(pill)
+    $(pillElement).text(pill.result())
+
   insertPill: (pill) ->
     precedingCharacters = @getCharactersPrecedingCaret(this.getEditor()[0])
     matches = precedingCharacters.match @get('insertPillRegex')
@@ -442,7 +454,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
 
     existingNonEditable = this._getNonEditableParent(range.startContainer) || this._getNonEditableParent(range.endContainer)
     existingNonEditable?.remove()
-    factor = @insertElementAtRange(range, pill.render(), true)
+    factor = @insertElementAtRange(range, pill.render())
     caretContainer = @_insertCaretContainer(factor, false)
 
     # Set cursor to the end of the caret container just created
