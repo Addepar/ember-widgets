@@ -127,18 +127,6 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
       @insertHTMLAtRange(@selectElement(editor), "<div></div>")
     return editor.children[editor.children.length - 1]
 
-  onSelectedFontNameDidChange: Ember.observer ->
-    @fontName @get('selectedFontName')
-  , 'selectedFontName'
-
-  onSelectedFontSizeDidChange: Ember.observer ->
-    @fontSize @get('selectedFontSize')
-  , 'selectedFontSize'
-
-  onSelectedForeColorDidChange: Ember.observer ->
-    @foreColor @get('selectedForeColor')
-  , 'selectedForeColor'
-
   init: ->
     @_super()
 
@@ -165,6 +153,14 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
       @mouseDown(event)
     iframe.contentWindow.onclick = (event) =>
       @click(event)
+
+  actions:
+    applyFontSize: (options) ->
+      @fontSize options.size
+    applyFontName: (font) ->
+      @fontName font
+    applyForeColor: (color) ->
+      @foreColor color
 
   keyUp: (event) ->
     @queryCommandState()

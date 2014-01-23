@@ -7,6 +7,7 @@
     isSelect="true"
     buttonClass="btn btn-default btn-sm btn-form text-left"
     itemViewClassBinding="fontChooserItemViewClass"
+    userSelected="applyFontName"
   }}
 
   {{!-- Add the fontWeight another select and then apply the different weights to it. --}}
@@ -31,11 +32,13 @@
     class="ember-text-editor-font-size-select"
     isSelect="true"
     buttonClass="btn btn-default btn-sm"
+    userSelected="applyFontSize"
   }}
 
   {{view Ember.Widgets.ColorPicker
     selectedColorBinding="selectedForeColor"
     class="btn btn-default btn-sm"
+    userSelected="applyForeColor"
   }}
 
   <div class="btn-group">

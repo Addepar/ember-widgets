@@ -58,6 +58,9 @@ Ember.Widgets.ColorPicker = Ember.Component.extend
       @set 'customColor', ''
       @set 'selectedColor', color
 
+  userDidSelect: (selection) ->
+    @sendAction 'userSelected', selection
+
 Ember.Widgets.ColorPickerCell = Ember.View.extend Ember.Widgets.StyleBindingsMixin,
   classNames: ['pull-left', 'color-picker-cell']
   classNameBindings: ['isActive:active:inactive']
@@ -69,4 +72,5 @@ Ember.Widgets.ColorPickerCell = Ember.View.extend Ember.Widgets.StyleBindingsMix
   .property 'controller.selectedColor', 'color'
 
   click: (event) ->
-    this.get('controller').send 'setColor', @get('color')
+    @get('controller').send 'setColor', @get 'color'
+    @get('controller').userDidSelect @get 'color'
