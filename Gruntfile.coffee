@@ -17,6 +17,13 @@ module.exports = (grunt) ->
         configFile: 'karma.conf.js'
         singleRun: true
         exclude: ['build/src/ember_widgets.js', 'tests/integration/*.js'],
+      integration:
+        configFile: 'karma.conf.js'
+        singleRun: true
+        exclude: ['build/src/ember_widgets.js', 'tests/unit/*.js'],
+      default:
+        configFile: 'karma.conf.js'
+        singleRun: false
 
     uglify:
       "dist/ember-widgets.min.js": "dist/ember-widgets.js"
