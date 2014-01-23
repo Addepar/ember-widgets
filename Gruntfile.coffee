@@ -10,12 +10,13 @@ module.exports = (grunt) ->
       target: ['build', 'dist' , 'gh_pages']
 
     karma:
-      continuous:  # continuous integration mode: run tests once
+      continuous:  # continuous integration mode
         configFile: 'karma.conf.js'
         singleRun: true
       unit:
         configFile: 'karma.conf.js'
-        singleRun: false
+        singleRun: true
+        exclude: ['build/src/ember_widgets.js', 'tests/integration/*.js'],
 
     uglify:
       "dist/ember-widgets.min.js": "dist/ember-widgets.js"

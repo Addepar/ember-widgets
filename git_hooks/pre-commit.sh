@@ -7,7 +7,7 @@
 ######################################################################
 # Unit Tests: Run unit tests/specs before committing
 ######################################################################
-grunt karma:continuous
+grunt karma:unit
 EXIT_CODE=$?
 if [[ ${EXIT_CODE} -ne 0 ]]; then
     echo "[ERRROR] code = " ${EXIT_CODE}
