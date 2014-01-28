@@ -83,6 +83,8 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
   # Change the button class when necessary
   buttonClass: 'btn btn-default'
 
+  dropdownMenuClass: ''
+
   # The list of options
   content:    []
   selection:  null
