@@ -8177,3 +8177,10 @@ input[type="radio"] {
 .color-picker-custom-form .color-picker-cell {
   margin: 0;
 }
+.no-color-indicator-holder {
+  position: relative;
+  z-index: -1;
+  background: url('../img/no_color.svg') no-repeat center center;
+  background-size: cover;
+  height: 100%;
+}

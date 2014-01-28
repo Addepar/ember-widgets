@@ -135,3 +135,14 @@
     margin: 0;
   }
 }
+
+// When there is no color in .color-picker-cell the no color indicator shines
+// through
+.no-color-indicator-holder {
+  position: relative;
+  z-index: -1;
+  background: url('@{colorpicker-cell-no-color}') no-repeat center center;
+  background-size: cover;
+  height: 100%;
+}
+

@@ -35,8 +35,8 @@ Ember.Widgets.ColorPicker = Ember.Component.extend
         '#FF851B',
         '#FF4136',
         '#85144B',
-        '#F012BE',
-        '#B10DC9'
+        '#B10DC9',
+        'transparent'
       ]
     ]
 
@@ -62,6 +62,7 @@ Ember.Widgets.ColorPicker = Ember.Component.extend
     @sendAction 'userSelected', selection
 
 Ember.Widgets.ColorPickerCell = Ember.View.extend Ember.Widgets.StyleBindingsMixin,
+  templateName: 'color_picker_cell'
   classNames: ['pull-left', 'color-picker-cell']
   classNameBindings: ['isActive:active:inactive']
   styleBindings:  'color:background-color'
