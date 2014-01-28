@@ -92,6 +92,10 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
   optionGroupPath: ''
   optionDefaultPath: ''
 
+  # This augments the dropdown to provide a place for adding a select menu that
+  # possibly says 'create item' or something along that line
+  selectMenuView: null
+
   # TODO(Peter): consider calling this optionViewClass?
   itemView: Ember.computed ->
     itemViewClass = @get 'itemViewClass'

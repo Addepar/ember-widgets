@@ -27,4 +27,7 @@
   {{#if hasNoResults}}
     <span class="ember-select-no-results">No results match "{{query}}"</span>
   {{/if}}
+  {{#if selectMenuView}}
+    {{view selectMenuView}}
+  {{/if}}
 </div>
