@@ -26,7 +26,7 @@ module.exports = (grunt) ->
         singleRun: false
 
     uglify:
-      "dist/ember-widgets.min.js": "dist/ember-widgets.js"
+      "dist/js/ember-widgets.min.js": "dist/js/ember-widgets.js"
 
     # https://github.com/yatskevich/grunt-bower-task
     bower:
@@ -75,7 +75,7 @@ module.exports = (grunt) ->
     neuter:
       options:
         includeSourceURL: env is "dev"
-      "dist/ember-widgets.js":  "build/src/ember_widgets.js"
+      "dist/js/ember-widgets.js":  "build/src/ember_widgets.js"
       "gh_pages/app.js":        "build/app/app.js"
 
     less:
@@ -83,7 +83,7 @@ module.exports = (grunt) ->
         options:
           yuicompress: env isnt "dev"
         files:
-          "dist/ember-widgets.css": "src/css/ember-widgets.less"
+          "dist/css/ember-widgets.css": "src/css/ember-widgets.less"
       app:
         options:
           yuicompress: env isnt "dev"
@@ -94,7 +94,7 @@ module.exports = (grunt) ->
     copy:
       gh_pages:
         files: [
-          {src: ['dist/ember-widgets.css'], dest: 'gh_pages/css/ember-widgets.css'},
+          {src: ['dist/css/ember-widgets.css'], dest: 'gh_pages/css/ember-widgets.css'},
           {src: ['app/index.html'], dest: 'gh_pages/index.html'},
           {expand: true, flatten: true, cwd: 'dependencies/', src: ['**/*.js'], dest: 'gh_pages/lib'},
           {expand: true, flatten: true, cwd: 'dependencies/', src: ['**/*.css'], dest: 'gh_pages/css'},
@@ -146,7 +146,7 @@ module.exports = (grunt) ->
         files: [ 'bower.json']
         tasks: [ 'bower']
       uglify:
-        files: [ 'dist/ember-widgets.js' ]
+        files: [ 'dist/js/ember-widgets.js' ]
         tasks: [ 'uglify' ]
 
     ###
