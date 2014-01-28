@@ -102,6 +102,7 @@ module.exports = (grunt) ->
           {expand: true, cwd: 'app/assets/font/', src: ['**'], dest: 'gh_pages/fonts'},
           {expand: true, cwd: 'app/assets/img/', src: ['**'],  dest: 'gh_pages/img'},
           {expand: true, cwd: 'src/img/', src: ['**'], dest: 'gh_pages/img'}
+          {expand: true, cwd: 'src/img/', src: ['**'], dest: 'dist/img'}
         ]
 
     ###
