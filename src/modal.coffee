@@ -14,11 +14,13 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   headerText:       "Modal Header"
   confirmText:      "Confirm"
   cancelText:       "Cancel"
+  closeText:        "Close"
   content:          ""
   isValid: true
 
   confirm: Ember.K
   cancel: Ember.K
+  close: Ember.K
 
   contentViewClass: Ember.View.extend
     template: Ember.Handlebars.compile("<p>{{content}}</p>")
@@ -41,26 +43,28 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   .property 'footerViewClass'
 
   actions:
+    # Important: we do not want to send cancel after modal is closed.
+    # It turns out that this happens sometimes which leads to undesire
+    # behaviors
     sendCancel: ->
-      # Important: we do not want to send cancel after modal is closed.
-      # It turns out that this happens sometimes which leads to undesire
-      # behaviors
       return unless @get('isShowing')
-      # TODO: this is for backward compatibility only. If cancel is a function
-      # we will invoke the callback
+      # NOTE: we support callback for backward compatibility.
       cancel = @get 'cancel'
       if typeof(cancel) is 'function' then cancel() else @sendAction 'cancel'
       @hide()
 
     sendConfirm: ->
-      # Important: we do not want to send confirm after modal is closed.
-      # It turns out that this happens sometimes which leads to undesire
-      # behaviors
       return unless @get('isShowing')
-      # TODO: this is for backward compatibility only. If confirm is a function
-      # we will invoke the callback
+      # NOTE: we support callback for backward compatibility.
       confirm = @get 'confirm'
       if typeof(confirm) is 'function' then confirm() else @sendAction 'confirm'
+      @hide()
+
+    sendClose: ->
+      return unless @get('isShowing')
+      # NOTE: we support callback for backward compatibility.
+      close = @get 'close'
+      if typeof(close) is 'function' then close() else @sendAction 'close'
       @hide()
 
   didInsertElement: ->
