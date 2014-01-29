@@ -5,20 +5,10 @@
       <h4 class="modal-title">{{headerText}}</h4>
     </div>
     <div class="modal-body">
-      {{view _contentViewClass contentBinding="content"}}
+      {{view _contentViewClass}}
     </div>
     <div class="modal-footer">
-      {{#if confirmText}}
-        <button type="button" {{bindAttr class=":btn :btn-primary isValid::disabled"}}  {{action sendConfirm}}>
-          {{confirmText}}
-        </button>
-      {{/if}}
-
-      {{#if cancelText}}
-        <button type="button" class="btn btn-default" {{action sendCancel}}>
-          {{cancelText}}
-        </button>
-      {{/if}}
+      {{view _footerViewClass}}
     </div>
   </div>
 </div>

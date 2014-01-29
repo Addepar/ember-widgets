@@ -15,22 +15,30 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   confirmText:      "Confirm"
   cancelText:       "Cancel"
   content:          ""
-  contentViewClass: null
   isValid: true
 
   confirm: Ember.K
   cancel: Ember.K
 
-  defaultContentViewClass: Ember.View.extend
+  contentViewClass: Ember.View.extend
     template: Ember.Handlebars.compile("<p>{{content}}</p>")
+
+  footerViewClass:  Ember.View.extend
+    templateName: 'modal_footer'
 
   _contentViewClass: Ember.computed ->
     contentViewClass = @get 'contentViewClass'
-    return @get('defaultContentViewClass') unless contentViewClass
     if typeof contentViewClass is 'string'
-      Ember.get @get('contentViewClass')
+      Ember.get contentViewClass
     else contentViewClass
   .property 'contentViewClass'
+
+  _footerViewClass: Ember.computed ->
+    footerViewClass = @get 'footerViewClass'
+    if typeof footerViewClass is 'string'
+      Ember.get footerViewClass
+    else footerViewClass
+  .property 'footerViewClass'
 
   actions:
     sendCancel: ->
@@ -38,10 +46,10 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
       # It turns out that this happens sometimes which leads to undesire
       # behaviors
       return unless @get('isShowing')
-      cancel = @get 'cancel'
       # TODO: this is for backward compatibility only. If cancel is a function
       # we will invoke the callback
-      if typeof(cancel) is 'function' then @cancel() else @sendAction 'cancel'
+      cancel = @get 'cancel'
+      if typeof(cancel) is 'function' then cancel() else @sendAction 'cancel'
       @hide()
 
     sendConfirm: ->
@@ -49,10 +57,10 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
       # It turns out that this happens sometimes which leads to undesire
       # behaviors
       return unless @get('isShowing')
-      confirm = @get 'confirm'
       # TODO: this is for backward compatibility only. If confirm is a function
       # we will invoke the callback
-      if typeof(confirm) is 'function' then @confirm() else @sendAction 'confirm'
+      confirm = @get 'confirm'
+      if typeof(confirm) is 'function' then confirm() else @sendAction 'confirm'
       @hide()
 
   didInsertElement: ->

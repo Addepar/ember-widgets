@@ -1,0 +1,11 @@
+{{#if confirmText}}
+  <button type="button" {{bindAttr class=":btn :btn-primary isValid::disabled"}}  {{action sendConfirm}}>
+    {{confirmText}}
+  </button>
+{{/if}}
+
+{{#if cancelText}}
+  <button type="button" class="btn btn-default" {{action sendCancel}}>
+    {{cancelText}}
+  </button>
+{{/if}}
