@@ -14,7 +14,7 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   headerText:       "Modal Header"
   confirmText:      "Confirm"
   cancelText:       "Cancel"
-  closeText:        "Close"
+  closeText:        null
   content:          ""
   isValid: true
 
