@@ -10,7 +10,10 @@ Ember.Widgets.PopoverLinkComponent = Ember.Component.extend
   rootElement: '.ember-application'
 
   _contentViewClass: Ember.computed ->
-    Ember.get(@get('contentViewClass')) if @get('contentViewClass')
+    contentViewClass = @get 'contentViewClass'
+    if typeof contentViewClass is 'string'
+      return Ember.get contentViewClass
+    contentViewClass
   .property 'contentViewClass'
 
   click: (event) ->
