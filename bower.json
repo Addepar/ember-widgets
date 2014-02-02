@@ -38,6 +38,10 @@
     "addepar-style-guide": "git@github.com:Addepar/style-guide.git#358a102d18049e38838dd481d3cee0995663adab"
   },
   "exportsOverride": {
+    "addepar-style-guide": {
+      "img": "dist/img/*",
+      "less": "dist/less/*"
+    },
     "bootstrap": {
       "less": "less/*",
       "fonts": "dist/fonts/*",
