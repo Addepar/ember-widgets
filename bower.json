@@ -35,7 +35,7 @@
     "rangy": "~1.2.3"
   },
   "devDependencies": {
-    "addepar-style-guide": "git@github.com:Addepar/style-guide.git#358a102d18049e38838dd481d3cee0995663adab"
+    "addepar-style-guide": "git@github.com:Addepar/style-guide.git#b99fd9bf2a5677732d16d80cdbd639901215e156"
   },
   "exportsOverride": {
     "addepar-style-guide": {
