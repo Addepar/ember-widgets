@@ -5141,7 +5141,7 @@ a.list-group-item.active:focus .list-group-item-text {
 }
 .panel-footer {
   padding: 10px 15px;
-  background-color: #f5f5f5;
+  background-color: #ffffff;
   border-top: 1px solid #dddddd;
   border-bottom-right-radius: -1;
   border-bottom-left-radius: -1;
@@ -7541,6 +7541,16 @@ input[type="radio"] {
 }
 .panel {
   border: 0;
+}
+.panel-body {
+  position: relative;
+}
+.panel-body.flush {
+  padding: 0;
+}
+.panel-body.vertical-stretch {
+  height: calc(100% -  72px);
+  overflow: auto;
 }
 .panel-default {
   border-color: #dddddd;
