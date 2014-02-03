@@ -7552,6 +7552,9 @@ input[type="radio"] {
   height: calc(100% -  72px);
   overflow: auto;
 }
+.panel-title {
+  font-weight: normal;
+}
 .panel-default {
   border-color: #dddddd;
 }
