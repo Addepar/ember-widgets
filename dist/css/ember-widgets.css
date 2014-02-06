@@ -7553,7 +7553,7 @@ input[type="radio"] {
   overflow: auto;
 }
 .panel-title {
-  font-weight: normal;
+  font-weight: 500;
 }
 .panel-default {
   border-color: #dddddd;

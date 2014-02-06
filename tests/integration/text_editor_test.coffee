@@ -351,6 +351,24 @@ test "Bolding text preserves selection", ->
     equal( currentRange.endOffset - currentRange.startOffset, 5, "The word 'world' is no longer selected")
 
 
+test "Bolding text activates the bold button on the toolbar immediately", ->
+  expect 1
+
+  # Given a text editor with some text
+  text_editor_content = "<div>hello world goodbye</div>"
+  $textEditor = getTextEditor()
+  $textEditor[0].innerHTML = text_editor_content
+  # When the word "world" is selected
+  currentRange = selectMatchingTextInTextEditor("world")
+  click(getTextEditor())
+  .then ->
+    # And then bold is clicked
+    click($('button .fa-bold').parent())
+  .then ->
+    # Then the bold button is active
+    ok $('button .fa-bold').parent().hasClass('active'), "The bold button is not active"
+
+
 test "Backspace with pills on many lines", ->
   expect 2
 

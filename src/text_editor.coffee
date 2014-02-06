@@ -132,8 +132,10 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
 
     # Defines commands in @get('commands'), such as fontName and fontSize
     @get('commands').forEach (command) =>
-      @set command, (arg) ->
+      @set command, (arg) =>
         @getDocument().execCommand command, true, arg
+        # We should update the state immediately after executing a command
+        @queryCommandState()
 
   didInsertElement: ->
     @_super()
