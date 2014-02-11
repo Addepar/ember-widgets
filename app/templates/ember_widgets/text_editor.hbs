@@ -5,7 +5,12 @@
       <p class="elevated">Text editor that supports non editable text.</p>
     </div>
     <div class="col-md-12">
-      {{view Ember.Widgets.TextEditorWithNonEditableComponent}}
+      {{view Ember.Widgets.TextEditorConfigComponent
+        textEditor=view.textEditor
+      }}
+      {{view Ember.Widgets.TextEditorWithNonEditableComponent
+        viewName="textEditor"
+      }}
     </div>
   </div>
 </div>

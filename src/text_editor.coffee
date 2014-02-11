@@ -25,34 +25,6 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
     'strikeThrough',
   ]
 
-  fontNames: [
-    'Arial',
-    'Calibri',
-    'Cambria',
-    'Consolas',
-    'Corsiva',
-    'Courier New',
-    'Georgia',
-    'Helvetica Neue',
-    'Helvetica',
-    'Sans-Serif',
-    'Serif',
-    'Syncopate',
-    'Times New Roman',
-    'Trebuchet MS',
-    'Verdana'
-  ]
-
-  fontSizes: [
-    {size:'1', name: '8'},
-    {size:'2', name: '10'},
-    {size:'3', name: '12'},
-    {size:'4', name: '14'},
-    {size:'5', name: '18'},
-    {size:'6', name: '24'},
-    {size:'7', name: '36'}
-  ]
-
   iframeHeadContents: Ember.computed ->
     """
     <link rel="stylesheet" href="css/addepar-style-guide.css">
@@ -95,12 +67,6 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
     '<div class="' + @EDITOR_CLASS + '" contenteditable="true" data-ph="' + @PLACEHOLDER_TEXT + '"></div>'
   .property 'EDITOR_CLASS', 'PLACEHOLDER_TEXT'
 
-  fontChooserItemViewClass: Ember.Widgets.SelectOptionView.extend
-    templateName: 'font_chooser_item'
-    style: Ember.computed ->
-      "font-family:#{@get('label')};"
-    .property 'label'
-
   getEditor: ->
     @$('iframe.text-editor-frame').contents().find('.' + @EDITOR_CLASS)
 
@@ -127,16 +93,6 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
       @insertHTMLAtRange(@selectElement(editor), "<div></div>")
     return editor.children[editor.children.length - 1]
 
-  init: ->
-    @_super()
-
-    # Defines commands in @get('commands'), such as fontName and fontSize
-    @get('commands').forEach (command) =>
-      @set command, (arg) =>
-        @getDocument().execCommand command, true, arg
-        # We should update the state immediately after executing a command
-        @queryCommandState()
-
   didInsertElement: ->
     @_super()
     iframe = @$('iframe.text-editor-frame').contents()
@@ -156,13 +112,12 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
     iframe.contentWindow.onclick = (event) =>
       @click(event)
 
-  actions:
-    applyFontSize: (options) ->
-      @fontSize options.size
-    applyFontName: (font) ->
-      @fontName font
-    applyForeColor: (color) ->
-      @foreColor color
+    # Defines commands in @get('commands'), such as fontName and fontSize
+    @get('commands').forEach (command) =>
+      @set command, (arg) =>
+        @getDocument().execCommand command, true, arg
+        # We should update the state immediately after executing a command
+        @queryCommandState()
 
   keyUp: (event) ->
     @queryCommandState()
