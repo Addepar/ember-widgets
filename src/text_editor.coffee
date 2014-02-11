@@ -342,11 +342,6 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
   showConfigPopover: false
   selectedPillOption: null
 
-  _pillOptions : Ember.computed ->
-    @getWithDefault('pillOptions', []).map (option) =>
-      option.create textEditor: this
-  .property('pillOptions')
-
   _getPillFromElement: (pillElement) ->
     # Deserialize the pillElement into a pill object
     data = $(pillElement).data()

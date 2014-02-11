@@ -6,6 +6,14 @@ Ember.Widgets.TextEditorConfigComponent = Ember.Component.extend
   selectedForeColor: 'rgb(0, 0, 0)'
   textEditor: null
 
+  # Options
+  pillOptions: [Ember.Widgets.TodaysDatePill, Ember.Widgets.NonEditableTextPill]
+
+  _pillOptions : Ember.computed ->
+    @getWithDefault('pillOptions', []).map (option) =>
+      option.create textEditor: @get('textEditor')
+  .property 'pillOptions', 'textEditor'
+
   fontNames: [
     'Arial',
     'Calibri',
@@ -23,7 +31,6 @@ Ember.Widgets.TextEditorConfigComponent = Ember.Component.extend
     'Trebuchet MS',
     'Verdana'
   ]
-
   fontSizes: [
     {size:'1', name: '8'},
     {size:'2', name: '10'},
@@ -67,3 +74,6 @@ Ember.Widgets.TextEditorConfigComponent = Ember.Component.extend
       @get('textEditor').outdent()
     indent: ->
       @get('textEditor').indent()
+    insertPill: (selectedPillOption) ->
+      selectedPillOption.configure()
+      @set 'selectedPillOption', null
