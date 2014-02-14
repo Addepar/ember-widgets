@@ -97,3 +97,19 @@
     <i class="fa fa-indent"></i>
   </button>
 </div>
+
+{{select-component
+  class="insert-non-editable-btn"
+  isSelect=pillHideSearchBox
+  query=query
+  showDropdown=showConfigPopover
+  content=_pillOptions
+  prompt="Insert Non-Editable"
+  optionLabelPath="name"
+  optionValuePath="name"
+  selection=selectedPillOption
+  buttonClass='btn btn-default btn-sm'
+  isSelect="true"
+  viewName="pillChooser"
+  userSelected="insertPill"
+}}

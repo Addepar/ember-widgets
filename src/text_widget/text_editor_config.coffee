@@ -7,13 +7,6 @@ Ember.Widgets.TextEditorConfigComponent = Ember.Component.extend
   textEditor: null
 
   # Options
-  pillOptions: [Ember.Widgets.TodaysDatePill, Ember.Widgets.NonEditableTextPill]
-
-  _pillOptions : Ember.computed ->
-    @getWithDefault('pillOptions', []).map (option) =>
-      option.create textEditor: @get('textEditor')
-  .property 'pillOptions', 'textEditor'
-
   fontNames: [
     'Arial',
     'Calibri',
@@ -40,7 +33,6 @@ Ember.Widgets.TextEditorConfigComponent = Ember.Component.extend
     {size:'6', name: '24'},
     {size:'7', name: '36'}
   ]
-
   fontChooserItemViewClass: Ember.Widgets.SelectOptionView.extend
     templateName: 'font_chooser_item'
     style: Ember.computed ->
@@ -74,6 +66,20 @@ Ember.Widgets.TextEditorConfigComponent = Ember.Component.extend
       @get('textEditor').outdent()
     indent: ->
       @get('textEditor').indent()
+
+
+Ember.Widgets.TextEditorWithNonEditableConfigComponent = Ember.Widgets.TextEditorConfigComponent.extend
+  templateName: 'text_editor_with_non_editable_config'
+
+  # Options
+  pillOptions: [Ember.Widgets.TodaysDatePill, Ember.Widgets.NonEditableTextPill]
+
+  _pillOptions : Ember.computed ->
+    @getWithDefault('pillOptions', []).map (option) =>
+      option.create textEditor: @get('textEditor')
+  .property 'pillOptions', 'textEditor'
+
+  actions:
     insertPill: (selectedPillOption) ->
       selectedPillOption.configure()
       @set 'selectedPillOption', null
