@@ -26,7 +26,7 @@ Ember.Widgets.BaseNonEditablePill = Ember.Controller.extend Ember.Widgets.DomHel
       if @get 'params.pillId'
         @get('textEditor').updatePill this
       else
-        @set 'params.pillId', @textEditor.getNewPillId()
+        @set 'params.pillId', @get('textEditor').getNewPillId()
         @set 'params.type', "" + @constructor
         @get('textEditor').insertPill this
     modalCancel: -> Ember.K
@@ -48,6 +48,7 @@ Ember.Widgets.BaseNonEditablePill = Ember.Controller.extend Ember.Widgets.DomHel
     @updateContent(span)
     return span[0]
 
+
 Ember.Widgets.NonEditableTextPill = Ember.Widgets.BaseNonEditablePill.extend
   name: "Custom Text"
   text: Ember.computed.alias 'params.text'
@@ -66,8 +67,28 @@ Ember.Widgets.NonEditableTextPill = Ember.Widgets.BaseNonEditablePill.extend
       headerText: @get('name')
       confirmText: "Insert"
 
+
 Ember.Widgets.TodaysDatePill = Ember.Widgets.BaseNonEditablePill.extend
   name: "Today's Date"
 
   result: -> Date()
 
+
+Ember.Widgets.PillSelect = Ember.Widgets.SelectComponent.extend
+  templateName: 'text_editor_pill_menu'
+  isSelect: true
+  showButton: true
+
+
+Ember.Widgets.PillInsertMixin = Ember.Mixin.create
+  pillOptions: [Ember.Widgets.TodaysDatePill, Ember.Widgets.NonEditableTextPill]
+
+  _pillOptions : Ember.computed ->
+    @getWithDefault('pillOptions', []).map (option) =>
+      return option.create textEditor: @get('textEditor') or this
+  .property 'pillOptions', 'textEditor'
+
+  actions:
+    insertPill: (selectedPillOption) ->
+      selectedPillOption.configure()
+      @set 'selectedPillOption', null

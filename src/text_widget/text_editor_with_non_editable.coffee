@@ -1,10 +1,12 @@
 Ember.Widgets.TextEditorWithNonEditableComponent =
-Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper,
+Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper, Ember.Widgets.PillInsertMixin,
+  templateName: 'text_editor_with_non_editable'
+
   ##############################################################################
   # Interface
   ##############################################################################
   pillOptions: [Ember.Widgets.TodaysDatePill, Ember.Widgets.NonEditableTextPill]
-  getInsertSelectController: -> @get('pillChooser')
+  getInsertSelectController: -> @get('pillChooserInLine')
   INVISIBLE_CHAR:   '\uFEFF'
   INSERT_PILL_CHAR: '='
   insertPillRegex: Ember.computed ->

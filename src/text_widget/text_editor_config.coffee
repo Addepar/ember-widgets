@@ -24,6 +24,7 @@ Ember.Widgets.TextEditorConfigComponent = Ember.Component.extend
     'Trebuchet MS',
     'Verdana'
   ]
+
   fontSizes: [
     {size:'1', name: '8'},
     {size:'2', name: '10'},
@@ -68,18 +69,5 @@ Ember.Widgets.TextEditorConfigComponent = Ember.Component.extend
       @get('textEditor').indent()
 
 
-Ember.Widgets.TextEditorWithNonEditableConfigComponent = Ember.Widgets.TextEditorConfigComponent.extend
+Ember.Widgets.TextEditorWithNonEditableConfigComponent = Ember.Widgets.TextEditorConfigComponent.extend Ember.Widgets.PillInsertMixin,
   templateName: 'text_editor_with_non_editable_config'
-
-  # Options
-  pillOptions: [Ember.Widgets.TodaysDatePill, Ember.Widgets.NonEditableTextPill]
-
-  _pillOptions : Ember.computed ->
-    @getWithDefault('pillOptions', []).map (option) =>
-      option.create textEditor: @get('textEditor')
-  .property 'pillOptions', 'textEditor'
-
-  actions:
-    insertPill: (selectedPillOption) ->
-      selectedPillOption.configure()
-      @set 'selectedPillOption', null
