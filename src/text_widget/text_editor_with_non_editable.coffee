@@ -35,13 +35,6 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper, Ember.Widgets.
     pillId = pill.get('params.pillId')
     @getEditor().find('.non-editable[data-pill-id="' + pillId + '"]')
 
-  selectedPillOptionDidChange: Ember.observer ->
-    selectedPillOption = @get('selectedPillOption')
-    return unless selectedPillOption
-    selectedPillOption.configure()
-    @set 'selectedPillOption', null
-  , 'selectedPillOption'
-
   serialize: ->
     raw_html = @getEditor().html()
     div = $('<div/>').html(raw_html)

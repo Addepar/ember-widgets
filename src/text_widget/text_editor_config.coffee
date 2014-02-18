@@ -34,6 +34,7 @@ Ember.Widgets.TextEditorConfigComponent = Ember.Component.extend
     {size:'6', name: '24'},
     {size:'7', name: '36'}
   ]
+
   fontChooserItemViewClass: Ember.Widgets.SelectOptionView.extend
     templateName: 'font_chooser_item'
     style: Ember.computed ->

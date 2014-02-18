@@ -85,10 +85,12 @@ Ember.Widgets.PillInsertMixin = Ember.Mixin.create
 
   _pillOptions : Ember.computed ->
     @getWithDefault('pillOptions', []).map (option) =>
-      return option.create textEditor: @get('textEditor') or this
-  .property 'pillOptions', 'textEditor'
+      label: option.create().name
+      value: option
+  .property 'pillOptions'
 
   actions:
-    insertPill: (selectedPillOption) ->
+    insertPill: (pillOption) ->
+      selectedPillOption = pillOption.value.create textEditor: @get('textEditor') or this
       selectedPillOption.configure()
       @set 'selectedPillOption', null
