@@ -49,3 +49,9 @@ test "Insert custom text pill in text editor", ->
     equal $pill.attr('data-type'), "Ember.Widgets.NonEditableTextPill"
     equal $pill.text(), 'foobar'
     notEqual $pill.attr('data-pill-id'), null, 'Pill id is not set'
+
+test "Type in text editor works", ->
+  expect 1
+  helpers.placeCursorAtEndOfTextEditor()
+  helpers.typeCharInTextEditor('s').then ->
+    equal helpers.getTextEditor()[0].innerHTML.toLowerCase(), '<div>s</div>', 'The character typed did not appear in the text editor'
