@@ -12,8 +12,3 @@ App.injectTestHelpers()
 Ember.Logger.log = Ember.K
 Ember.Logger.debug = Ember.K
 Ember.deprecate = Ember.K
-
-append = (item) ->
-  Ember.run ->
-    item.appendTo(Ember.$('#ember-testing')[0])
-    wait()

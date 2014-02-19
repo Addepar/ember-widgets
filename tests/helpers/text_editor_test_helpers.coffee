@@ -80,8 +80,38 @@ Ember.Widgets.TestHelpers.TextEditor =
     range.selectNodeContents(editor)
     range.collapse false  # collapse to end of range
     @activateRange(range)
+  placeCursorInTextEditor: ->
+    range = @createNewRange()
+    # Select the entire contents of the element with the range
+    element = @getTextEditor().find('.non-editable-caret')[0]
+    range.selectNodeContents(element)
+    range.collapse(true)
+    @activateRange(range)
+  selectNodeInTextEditor: (node, startOffset=0, endOffset=-1) ->
+    range = @createNewRange()
+    if node.nodeType == 1  # element node
+      node_length = node.childNodes.length
+    else if node.nodeType == 3  # text node
+      nodeLength = node.length
+    else  # no support for other kinds of nodes, just collapse to beginning
+      endOffset = 0
+    endOffset = if endOffset >= 0 then endOffset else node.length
+    range.selectNodeContents(node)
+    range.setStart(node, startOffset)
+    range.setEnd(node, endOffset)
+    @activateRange(range)
+  selectIdInTextEditor: (eid, startOffset, endOffset) ->
+    element = @getTextEditor().find('#' + eid)[0].childNodes[0]
+    @selectNodeInTextEditor(element)
+  placeCursorAfterElementInTextEditor: (eid, startOffset=0, endOffset=0) ->
+    range = @createNewRange()
+    # Select the entire contents of the element with the range
+    element = @getTextEditor().find('#' + eid)[0].childNodes[0]
+    range.selectNodeContents(element)
+    range.collapse(false)
+    @activateRange(range)
   selectMatchingTextInTextEditor: (text) ->
-    innerSelect = (node, pat) ->
+    innerSelect = (node, pat) =>
       pat = pat.toLowerCase()
       if node.nodeType is 3
         pos = node.data.toLowerCase().indexOf(pat)

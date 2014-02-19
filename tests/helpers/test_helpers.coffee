@@ -67,6 +67,12 @@ _findInSelect = (app, element, itemText) ->
     item = $('li', element).filter -> $.text([this]).trim() is itemText
     click item
 
+_append = (app, item) ->
+  Ember.run ->
+    item.appendTo(Ember.$('#ember-testing')[0])
+  wait app
+
+Ember.Test.registerHelper 'find', _find
 Ember.Test.registerHelper 'findInChosen', _findInChosen
 Ember.Test.registerHelper 'findInMultiChosen', _findInMultiChosen
 Ember.Test.registerHelper 'selectInMultiChosen', _selectInMultiChosen
@@ -79,6 +85,7 @@ Ember.Test.registerHelper 'isPresent', _isPresent
 Ember.Test.registerHelper 'isNotPresent', _isNotPresent
 Ember.Test.registerHelper 'isVisible', _isVisible
 Ember.Test.registerHelper 'isHidden', _isHidden
-Ember.Test.registerHelper 'find', _find
+
+Ember.Test.registerHelper 'append', _append
 
 App.injectTestHelpers()
