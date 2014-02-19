@@ -162,16 +162,6 @@ typeCharInTextEditor = (char) ->
   charCode = char.toUpperCase().charCodeAt(0)
   typeKeyInTextEditor(charCode)
 
-test "Insert custom text pill in text editor", ->
-  expect 4
-  insertNonEditableTextPill('foobar').then ->
-    textEditor = helpers.getTextEditor()
-    pill = find('span.non-editable', textEditor)
-    equal pill.attr('title'), "Custom Text"
-    equal pill.attr('data-type'), "Ember.Widgets.NonEditableTextPill"
-    equal pill.text(), 'foobar'
-    notEqual pill.attr('data-pill-id'), null, 'Pill id is not set'
-
 test "Type in text editor works", ->
   expect 1
   placeCursorAtEndOfTextEditor()

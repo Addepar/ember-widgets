@@ -5,8 +5,7 @@ Ember.Widgets.TestHelpers.TextEditor = Ember.Widgets.TestHelpers.TextEditor || E
 ###############################################################################
 # Object Helpers
 ###############################################################################
-
-Ember.Widgets.TestHelpers.TextEditor.getInsertNonEditableButton = -> find '.insert-non-editable-btn'
+Ember.Widgets.TestHelpers.TextEditor.getInsertNonEditableButton = -> find('.insert-non-editable-btn')[0]
 Ember.Widgets.TestHelpers.TextEditor.getTextEditor = ->
   find('iframe.text-editor-frame').contents().find('.text-editor')
 Ember.Widgets.TestHelpers.TextEditor.getTextEditorComponent = ->
@@ -17,6 +16,9 @@ Ember.Widgets.TestHelpers.TextEditor.getTextEditorComponent = ->
 ###############################################################################
 # Actions
 ###############################################################################
-
 Ember.Widgets.TestHelpers.TextEditor.insertNonEditableDatePill = ->
-  selectInChosen(helpers.getInsertNonEditableButton(), "Today's Date")
+  selectInChosen(Ember.Widgets.TestHelpers.TextEditor.getInsertNonEditableButton(), "Today's Date")
+Ember.Widgets.TestHelpers.TextEditor.insertNonEditableTextPill = (text="foobar") ->
+  selectInChosen(Ember.Widgets.TestHelpers.TextEditor.getInsertNonEditableButton(), "Custom Text").then ->
+    fillIn(find('.modal input', 'body'), text).then ->
+      click find("button:contains('Insert')", 'body')

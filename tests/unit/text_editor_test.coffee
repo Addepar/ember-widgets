@@ -35,7 +35,17 @@ test "Insert non-editable date pill in text editor", ->
   expect 3
   helpers.insertNonEditableDatePill().then ->
     $textEditor = helpers.getTextEditor()
-    pill = find('span.non-editable', $textEditor)
-    equal pill.attr('title'), "Today's Date"
-    equal pill.attr('data-type'), "Ember.Widgets.TodaysDatePill"
-    notEqual pill.attr('data-pill-id'), null
+    $pill = find('span.non-editable', $textEditor)
+    equal $pill.attr('title'), "Today's Date"
+    equal $pill.attr('data-type'), "Ember.Widgets.TodaysDatePill"
+    notEqual $pill.attr('data-pill-id'), null
+
+test "Insert custom text pill in text editor", ->
+  expect 4
+  helpers.insertNonEditableTextPill('foobar').then ->
+    $textEditor = helpers.getTextEditor()
+    $pill = find('span.non-editable', $textEditor)
+    equal $pill.attr('title'), "Custom Text"
+    equal $pill.attr('data-type'), "Ember.Widgets.NonEditableTextPill"
+    equal $pill.text(), 'foobar'
+    notEqual $pill.attr('data-pill-id'), null, 'Pill id is not set'
