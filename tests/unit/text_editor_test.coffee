@@ -10,23 +10,34 @@ test 'Text editor has default font size of 2', ->
   textEditor = Ember.Widgets.TextEditorWithNonEditableComponent.create()
   equal(textEditor.get('selectedFontSize'), 2)
 
+testDomHelperWrapInDiv = (startContents, expectedEndContents) ->
+  startContents = "<div class=\"text-editor\">#{startContents}</div>"
+  domHelper = Ember.Object.createWithMixins(Ember.Widgets.DomHelper)
+  textEditor = domHelper.createElementsFromString(startContents)
+  startElements = textEditor.contents()
+  domHelper.wrapInDiv(startElements)
+  equal textEditor.html(), expectedEndContents, "The content was not wrapped in a div"
+
 
 test 'DomHelper.wrapInDiv helper function works when the entire content is not in a div', ->
-  domHelper = Ember.Object.createWithMixins(Ember.Widgets.DomHelper)
-  startHTML = "s"
-  endHTML = domHelper.wrapInDiv(startHTML)
-  equal endHTML, "<div>s</div>", "The content was not wrapped in a div"
+  startContents = 's'
+  expectedEndContents = '<div>s</div>'
+  testDomHelperWrapInDiv(startContents, expectedEndContents)
 
 
 test 'DomHelper.wrapInDiv helper function works when the first line is not in a div', ->
-  domHelper = Ember.Object.createWithMixins(Ember.Widgets.DomHelper)
-  startHTML = 'aaaa<span style="font-weight: bold;">bbbb</span>cccc<div>s</div>'
-  endHTML = domHelper.wrapInDiv(startHTML)
-  equal endHTML, '<div>aaaa<span style="font-weight: bold;">bbbb</span>cccc</div><div>s</div>', "The content was not wrapped in a div"
+  startContents = 'aaaa<span style="font-weight: bold;">bbbb</span>cccc<div>s</div>'
+  expectedEndContents = '<div>aaaa<span style="font-weight: bold;">bbbb</span>cccc</div><div>s</div>'
+  testDomHelperWrapInDiv(startContents, expectedEndContents)
 
 
-test 'DomHelper.wrapInDiv helper function works when the second line is not in a div', ->
-  domHelper = Ember.Object.createWithMixins(Ember.Widgets.DomHelper)
-  startHTML = '<div>aaaa</div><span style="font-weight: bold;">bbbb</span>cccc'
-  endHTML = domHelper.wrapInDiv(startHTML)
-  equal endHTML, '<div>aaaa</div><div><span style="font-weight: bold;">bbbb</span>cccc</div>', "The content was not wrapped in a div"
+test 'DomHelper.wrapInDiv helper function works when the last line is not in a div', ->
+  startContents = '<div>aaaa</div><span style="font-weight: bold;">bbbb</span>cccc'
+  expectedEndContents = '<div>aaaa</div><div><span style="font-weight: bold;">bbbb</span>cccc</div>'
+  testDomHelperWrapInDiv(startContents, expectedEndContents)
+
+
+test 'DomHelper.wrapInDiv helper function works when the middle line is not in a div', ->
+  startContents = '<div>aaaa</div><span style="font-weight: bold;">bbbb</span>cccc<div>ddddd</div>'
+  expectedEndContents = '<div>aaaa</div><div><span style="font-weight: bold;">bbbb</span>cccc</div><div>ddddd</div>'
+  testDomHelperWrapInDiv(startContents, expectedEndContents)

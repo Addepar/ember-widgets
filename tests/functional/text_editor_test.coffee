@@ -153,7 +153,7 @@ test "Select second pill and delete", ->
     # Then the pill is entirely deleted
     $textEditor = helpers.getTextEditor()[0]
     equal($textEditor.innerHTML.trim(), """
-      <span class="non-editable" data-pill-id="1">Pill 1</span><span class="non-editable-caret">﻿</span>
+      <div><span class="non-editable" data-pill-id="1">Pill 1</span><span class="non-editable-caret">﻿</span></div>
     """.trim(), "Pill is entirely deleted from text editor")
 
 
@@ -180,7 +180,7 @@ test "Select first pill and delete", ->
     # Then the pill is entirely deleted
     $textEditor = helpers.getTextEditor()[0]
     equal($textEditor.innerHTML.trim(), """
-      <span class="non-editable-caret">﻿</span><span class="non-editable" data-pill-id="2">Pill 2</span>
+      <div><span class="non-editable-caret">﻿</span><span class="non-editable" data-pill-id="2">Pill 2</span></div>
     """.trim(), "Pill is entirely deleted from text editor")
 
 

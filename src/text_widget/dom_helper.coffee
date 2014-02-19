@@ -107,21 +107,19 @@ Ember.Widgets.DomHelper = Ember.Mixin.create
     range.setStart(range.startContainer, range.endOffset - length)
     @deleteRange(range, shouldDeleteContainer)
 
-  wrapInDiv: (htmlString) ->
-    htmlElements = @createElementsFromString(htmlString)
-    newHtmlElements = []
-    tempLine = ""
-    appendTempElements = =>
-      if tempLine.length > 0
-        tempLine = "<div>#{tempLine}</div>"
-        newHtmlElements.addObject(@createElementsFromString(tempLine))
-        tempLine = ""
-    for el in htmlElements
-      if el.tagName?.toLowerCase() == 'div'
-        appendTempElements()
-        newHtmlElements.addObject(el)
+  wrapInDiv: (htmlElements) ->
+    isDiv = htmlElements.map (i, el) -> el.tagName?.toLowerCase() == "div"
+    isDiv = isDiv.toArray()
+    return if isDiv.every (elem) -> elem
+    while htmlElements.length > 0
+      endSlice = isDiv.indexOf(true)
+      if endSlice == -1
+        endSlice = isDiv.length
+      if endSlice > 0
+        slicedElements = htmlElements.slice(0, endSlice)
+        newElement = slicedElements.wrapAll('<div/>')
+        slicedElements.wrapAll('<div/>').parent().replaceWith(newElement)
       else
-        tempLine += @convertElementsToString(el)
-    appendTempElements()
-
-    return @convertElementsToString(newHtmlElements)
+        endSlice = 1
+      htmlElements = htmlElements.slice(endSlice)
+      isDiv = isDiv.slice(endSlice)

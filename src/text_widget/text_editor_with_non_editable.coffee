@@ -218,8 +218,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper, Ember.Widgets.
     $editor = @getEditor()
     savedSelection = rangy.saveSelection(@$('iframe.text-editor-frame')[0].contentWindow)
     contents = $editor.contents()
-    newContents = @wrapInDiv(contents)
-    $editor.html(newContents)
+    @wrapInDiv(contents)
     rangy.restoreSelection(savedSelection)
 
   _showPillConfig: (query) ->
