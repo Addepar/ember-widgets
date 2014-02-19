@@ -23,6 +23,7 @@ module.exports = function(config) {
       'tests/*.js',  // order matters!
       'tests/helpers/*.js',
       'tests/unit/*.js',
+      'tests/functional/*.js',
       'tests/integration/*.js',
     ],
     // list of files to exclude

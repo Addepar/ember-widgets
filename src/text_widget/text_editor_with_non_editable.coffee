@@ -215,21 +215,12 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper, Ember.Widgets.
       @_removeCaretContainer(parentCaret[0])
 
     # move things around so that all text are within divs
-    editor = @getEditor()[0]
-    i = 0
-    while i < editor.childNodes.length
-      range = @getCurrentRange()
-      childNode = editor.childNodes[i++]
-      if range.startContainer == childNode  # we need to restore it
-        offset = range.startOffset
-      if childNode.nodeType == 3 and childNode.data.length > 0  # text node
-        newChild = document.createElement('div')
-        newChild.innerHTML = childNode.data
-        if offset
-          editor.replaceChild(newChild, childNode)
-          range.setStart(newChild, offset)
-          range.setEnd(newChild, offset)
-          @activateRange(range)
+    $editor = @getEditor()
+    savedSelection = rangy.saveSelection(@$('iframe.text-editor-frame')[0].contentWindow)
+    contents = $editor.contents()
+    newContents = @wrapInDiv(contents)
+    $editor.html(newContents)
+    rangy.restoreSelection(savedSelection)
 
   _showPillConfig: (query) ->
     @set 'showConfigPopover', true
