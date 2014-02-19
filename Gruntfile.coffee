@@ -58,6 +58,9 @@ module.exports = (grunt) ->
         dest: "build/app/"
         ext: ".js"
       tests:
+        options:
+          bare: true
+          sourceMap: false
         expand: true
         cwd: "tests/"
         src: ["**/*.coffee" ]

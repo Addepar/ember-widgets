@@ -80,3 +80,5 @@ Ember.Test.registerHelper 'isNotPresent', _isNotPresent
 Ember.Test.registerHelper 'isVisible', _isVisible
 Ember.Test.registerHelper 'isHidden', _isHidden
 Ember.Test.registerHelper 'find', _find
+
+App.injectTestHelpers()

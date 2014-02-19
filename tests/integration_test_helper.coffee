@@ -8,3 +8,11 @@ App.rootElement = '#ember-testing'
 Ember.testing = true
 App.setupForTesting()
 App.injectTestHelpers()
+
+Ember.Logger.log = Ember.K
+Ember.Logger.debug = Ember.K
+
+append = (item) ->
+  Ember.run ->
+    item.appendTo "#ember-testing"
+    wait()
