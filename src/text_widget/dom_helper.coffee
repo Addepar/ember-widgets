@@ -111,6 +111,7 @@ Ember.Widgets.DomHelper = Ember.Mixin.create
     isDiv = htmlElements.map (i, el) -> el.tagName?.toLowerCase() == "div"
     isDiv = isDiv.toArray()
     return if isDiv.every (elem) -> elem
+    return if htmlElements.length == 1 and htmlElements[0].className == "rangySelectionBoundary"
     while htmlElements.length > 0
       endSlice = isDiv.indexOf(true)
       if endSlice == -1

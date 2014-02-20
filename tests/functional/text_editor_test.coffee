@@ -48,6 +48,7 @@ test "Insert custom text pill in text editor", ->
 
 test "Type in text editor works", ->
   expect 1
+  debugger
   helpers.placeCursorAtEndOfTextEditor()
   helpers.typeCharInTextEditor('s').then ->
     equal helpers.getTextEditor()[0].innerHTML.toLowerCase(), '<div>s</div>', 'The character typed did not appear in the text editor'
