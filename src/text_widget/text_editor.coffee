@@ -143,6 +143,4 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
 
   click: (event) -> Ember.K
   keyDown: (event) -> Ember.K
-  keyUp: (event) -> Ember.K
   mouseDown: (event) -> Ember.K
-  mouseUp: (event) -> Ember.K

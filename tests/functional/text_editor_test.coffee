@@ -48,7 +48,6 @@ test "Insert custom text pill in text editor", ->
 
 test "Type in text editor works", ->
   expect 1
-  debugger
   helpers.placeCursorAtEndOfTextEditor()
   helpers.typeCharInTextEditor('s').then ->
     equal helpers.getTextEditor()[0].innerHTML.toLowerCase(), '<div>s</div>', 'The character typed did not appear in the text editor'
@@ -293,3 +292,21 @@ test "First line is wrapped in div", ->
   .then ->
     editor = helpers.getTextEditorComponent()
     equal editor.serialize(), '<div>aaaa<span style="font-weight: bold;">bbbb</span>cccc</div>'
+
+
+test "Bold button active state reflects style of text under cursor", ->
+  expect 2
+
+  text_editor_content = '<span id="regular-text">aaaa</span><span style="font-weight: bold;" id="bold-text">bbbb</span>cccc'
+  $textEditor = helpers.getTextEditor()
+  $textEditor[0].innerHTML = text_editor_content
+  # When the bolded text is selected
+  currentRange = helpers.selectIdInTextEditor("bold-text", 1, 2)
+  click(helpers.getTextEditor())
+  .then ->
+    ok find(".js-btn-bold").hasClass('active'), "Bold button should be active when bold text is selected"
+    # When the unbolded text is selected
+    currentRange = helpers.selectIdInTextEditor("regular-text", 1, 2)
+    click(helpers.getTextEditor())
+  .then ->
+    ok !find(".js-btn-bold").hasClass('active'), "Bold button should not be active when regular text is selected"

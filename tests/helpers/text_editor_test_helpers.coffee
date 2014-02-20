@@ -102,7 +102,7 @@ Ember.Widgets.TestHelpers.TextEditor =
     @activateRange(range)
   selectIdInTextEditor: (eid, startOffset, endOffset) ->
     element = @getTextEditor().find('#' + eid)[0].childNodes[0]
-    @selectNodeInTextEditor(element)
+    @selectNodeInTextEditor(element, startOffset, endOffset)
   placeCursorAfterElementInTextEditor: (eid, startOffset=0, endOffset=0) ->
     range = @createNewRange()
     # Select the entire contents of the element with the range
