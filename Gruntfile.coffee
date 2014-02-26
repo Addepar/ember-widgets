@@ -16,11 +16,15 @@ module.exports = (grunt) ->
       unit:
         configFile: 'karma.conf.js'
         singleRun: true
-        exclude: ['build/src/ember_widgets.js', 'tests/integration/*.js'],
+        exclude: ['build/src/ember_widgets.js', 'tests/functional/*.js', 'tests/integration/*.js'],
+      functional:
+        configFile: 'karma.conf.js'
+        singleRun: true
+        exclude: ['build/src/ember_widgets.js', 'tests/unit/*.js', 'tests/integration/*.js'],
       integration:
         configFile: 'karma.conf.js'
         singleRun: true
-        exclude: ['build/src/ember_widgets.js', 'tests/unit/*.js'],
+        exclude: ['build/src/ember_widgets.js', 'tests/unit/*.js', 'tests/functional/*.js'],
       default:
         configFile: 'karma.conf.js'
         singleRun: false
@@ -58,6 +62,9 @@ module.exports = (grunt) ->
         dest: "build/app/"
         ext: ".js"
       tests:
+        options:
+          bare: true
+          sourceMap: false
         expand: true
         cwd: "tests/"
         src: ["**/*.coffee" ]

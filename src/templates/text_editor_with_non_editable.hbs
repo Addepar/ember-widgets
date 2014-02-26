@@ -1,0 +1,18 @@
+<iframe class="text-editor-frame" src="about:blank">
+</iframe>
+
+{{view Ember.Widgets.PillSelect
+  class="insert-non-editable-btn"
+  isSelect=pillHideSearchBox
+  query=query
+  showDropdown=showConfigPopover
+  content=_pillOptions
+  optionLabelPath="label"
+  optionValuePath="value"
+  prompt="Insert Non-Editable"
+  selection=selectedPillOption
+  buttonClass='btn btn-default btn-sm'
+  viewName="pillChooserInLine"
+  userSelected="insertPill"
+  showButton=false
+}}

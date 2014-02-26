@@ -1,0 +1,87 @@
+{{select-component
+  content=fontNames
+  placeholder="Select a Font"
+  selection=textEditor.selectedFontName
+  class="ember-text-editor-font-family-select"
+  isSelect="true"
+  buttonClass="btn btn-default btn-sm btn-form text-left"
+  itemViewClass=fontChooserItemViewClass
+  userSelected="applyFontName"
+}}
+
+{{select-component
+  content=fontSizes
+  placeholder="Select Font Size"
+  optionLabelPath="name"
+  optionValuePath="size"
+  value=textEditor.selectedFontSize
+  sortLabels=false
+  class="ember-text-editor-font-size-select"
+  isSelect="true"
+  buttonClass="btn btn-default btn-sm"
+  userSelected="applyFontSize"
+}}
+
+{{view Ember.Widgets.ColorPicker
+  selectedColor=textEditor.selectedForeColor
+  class="btn btn-default btn-sm"
+  userSelected="applyForeColor"
+}}
+
+<div class="btn-group">
+  <button type="button"
+    {{bindAttr class=":btn :btn-default :btn-sm textEditor.isBold:active"}}
+    {{action "toggleBold"}}>
+    <i class="fa fa-bold"></i>
+  </button>
+  <button type="button"
+    {{bindAttr class=":btn :btn-default :btn-sm textEditor.isItalic:active"}}
+    {{action "toggleItalic"}}>
+    <i class="fa fa-italic"></i>
+  </button>
+  <button type="button"
+    {{bindAttr class=":btn :btn-default :btn-sm textEditor.isUnderline:active"}}
+    {{action "toggleUnderline"}}>
+    <i class="fa fa-underline"></i>
+  </button>
+</div>
+
+<div class="btn-group">
+  <button type="button"
+    {{bindAttr class=":btn :btn-default :btn-sm textEditor.isJustifyLeft:active"}}
+    {{action "justifyLeft"}}>
+    <i class="fa fa-align-left"></i>
+  </button>
+  <button type="button"
+    {{bindAttr class=":btn :btn-default :btn-sm textEditor.isJustifyCenter:active"}}
+    {{action "justifyCenter"}}>
+    <i class="fa fa-align-center"></i>
+  </button>
+  <button type="button"
+    {{bindAttr class=":btn :btn-default :btn-sm textEditor.isJustifyRight:active"}}
+    {{action "justifyRight"}}>
+    <i class="fa fa-align-right"></i>
+  </button>
+</div>
+
+<div class="btn-group">
+  <button type="button" class="btn btn-default btn-sm"
+    {{action "insertOrderedList"}}>
+    <i class="fa fa-list-ol"></i>
+  </button>
+  <button type="button" class="btn btn-default btn-sm"
+    {{action "insertUnorderedList"}}>
+    <i class="fa fa-list-ul"></i>
+  </button>
+</div>
+
+<div class="btn-group">
+  <button type="button" class="btn btn-default btn-sm"
+    {{action "outdent"}}>
+    <i class="fa fa-outdent"></i>
+  </button>
+  <button type="button" class="btn btn-default btn-sm"
+    {{action "indent"}}>
+    <i class="fa fa-indent"></i>
+  </button>
+</div>
