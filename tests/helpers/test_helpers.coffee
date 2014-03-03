@@ -34,8 +34,6 @@ _findInChosen = (app, element, itemText) ->
     promise = wait()
 
   promise.then ->
-    fillIn searchBox, itemText
-  .then ->
     #Need to use filter to get an exact match
     $('li', element).filter -> $.text([this]).trim() is itemText
 

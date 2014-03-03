@@ -44,30 +44,43 @@ Ember.Widgets.TextEditorConfigComponent = Ember.Component.extend
   actions:
     applyFontSize: (options) ->
       @get('textEditor').fontSize options.size
+      @get('textEditor').getEditor().focus()
     applyFontName: (font) ->
       @get('textEditor').fontName font
+      @get('textEditor').getEditor().focus()
     applyForeColor: (color) ->
       @get('textEditor').foreColor color
+      @get('textEditor').getEditor().focus()
     toggleBold: ->
       @get('textEditor').bold()
+      @get('textEditor').getEditor().focus()
     toggleItalic: ->
       @get('textEditor').italic()
+      @get('textEditor').getEditor().focus()
     toggleUnderline: ->
       @get('textEditor').underline()
+      @get('textEditor').getEditor().focus()
     justifyLeft: ->
       @get('textEditor').justifyLeft()
+      @get('textEditor').getEditor().focus()
     justifyCenter: ->
       @get('textEditor').justifyCenter()
+      @get('textEditor').getEditor().focus()
     justifyRight: ->
       @get('textEditor').justifyRight()
+      @get('textEditor').getEditor().focus()
     insertOrderedList: ->
       @get('textEditor').insertOrderedList()
+      @get('textEditor').getEditor().focus()
     insertUnorderedList: ->
       @get('textEditor').insertUnorderedList()
+      @get('textEditor').getEditor().focus()
     outdent: ->
       @get('textEditor').outdent()
+      @get('textEditor').getEditor().focus()
     indent: ->
       @get('textEditor').indent()
+      @get('textEditor').getEditor().focus()
 
 
 Ember.Widgets.TextEditorWithNonEditableConfigComponent = Ember.Widgets.TextEditorConfigComponent.extend Ember.Widgets.PillInsertMixin,

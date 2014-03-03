@@ -2,7 +2,7 @@
   content=fontNames
   placeholder="Select a Font"
   selection=textEditor.selectedFontName
-  class="ember-text-editor-font-family-select"
+  class="ember-text-editor-font-family-select js-ember-text-editor-font-family-select"
   isSelect="true"
   buttonClass="btn btn-default btn-sm btn-form text-left"
   itemViewClass=fontChooserItemViewClass
@@ -30,7 +30,7 @@
 
 <div class="btn-group">
   <button type="button"
-    {{bindAttr class=":btn :btn-default :btn-sm textEditor.isBold:active"}}
+    {{bindAttr class=":btn :btn-default :btn-sm textEditor.isBold:active :js-btn-bold"}}
     {{action "toggleBold"}}>
     <i class="fa fa-bold"></i>
   </button>
