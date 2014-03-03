@@ -50,21 +50,24 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
       return unless @get('isShowing')
       # NOTE: we support callback for backward compatibility.
       cancel = @get 'cancel'
-      if typeof(cancel) is 'function' then @cancel(this) else @sendAction 'cancel'
+      if typeof(cancel) is 'function' then @cancel(this)
+      else @sendAction 'cancel'
       @hide()
 
     sendConfirm: ->
       return unless @get('isShowing')
       # NOTE: we support callback for backward compatibility.
       confirm = @get 'confirm'
-      if typeof(confirm) is 'function' then @confirm(this) else @sendAction 'confirm'
+      if typeof(confirm) is 'function' then @confirm(this)
+      else @sendAction 'confirm'
       @hide()
 
     sendClose: ->
       return unless @get('isShowing')
       # NOTE: we support callback for backward compatibility.
       close = @get 'close'
-      if typeof(close) is 'function' then @close(this) else @sendAction 'close'
+      if typeof(close) is 'function' then @close(this)
+      else @sendAction 'close'
       @hide()
 
   didInsertElement: ->

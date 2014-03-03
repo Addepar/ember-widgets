@@ -47,7 +47,7 @@ Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
     return if @get('content.isGroupOption')
     @set 'controller.selection', @get('content')
     @get('controller').userDidSelect @get 'content'
-    @get('controller').hideDropdown()
+    @get('controller').send 'hideDropdown'
 
   mouseEnter: ->
     return if @get('content.isGroupOption')
@@ -194,12 +194,6 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
     regex = new RegExp(escapedSearchText, 'i')
     regex.test(label)
 
-  toggleDropdown: (event) ->
-    @toggleProperty 'showDropdown'
-
-  hideDropdown: (event) ->
-    @set 'showDropdown', no
-
   # TODO(Peter): This needs to be rethought
   setDefaultSelection: Ember.observer ->
     # do not set default selection if selection is defined
@@ -246,7 +240,7 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
     value
   .property 'selectableOptions', 'highlightedIndex'
 
-  bodyClick: -> @hideDropdown()
+  bodyClick: -> @send 'hideDropdown'
 
   keyDown: (event) ->
     # show dropdown if dropdown is not already showing
@@ -258,14 +252,14 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
   deletePressed: Ember.K
 
   escapePressed: (event) ->
-    @hideDropdown()
+    @send 'hideDropdown'
 
   enterPressed: (event) ->
     item = @get 'highlighted'
     @set 'selection', item if item
     @userDidSelect(item) if item
     # in case dropdown doesn't close
-    @hideDropdown()
+    @send 'hideDropdown'
     # TODO(Peter): HACK the web app somehow reloads when enter is pressed.
     event.preventDefault()
 
@@ -313,5 +307,11 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
   userDidSelect: (selection) ->
     @sendAction 'userSelected', selection
 
+  actions:
+    toggleDropdown: (event) ->
+      @toggleProperty 'showDropdown'
+
+    hideDropdown: (event) ->
+      @set 'showDropdown', no
 
 Ember.Handlebars.helper('select-component', Ember.Widgets.SelectComponent)
