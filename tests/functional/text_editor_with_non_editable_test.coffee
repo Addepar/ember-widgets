@@ -310,3 +310,15 @@ test "Bold button active state reflects style of text under cursor", ->
     click(helpers.getTextEditor())
   .then ->
     ok !find(".js-btn-bold").hasClass('active'), "Bold button should not be active when regular text is selected"
+
+
+test "After selecting font, text editor is focused", ->
+  expect 1
+
+  helpers.placeCursorAtEndOfTextEditor()
+  helpers.typeCharInTextEditor('s').then ->
+    # And then bold is clicked
+    selectComponent = $('.js-ember-text-editor-font-family-select')
+    selectInChosen(selectComponent, 'Arial')
+  .then ->
+    equal helpers.getTextEditor()[0].ownerDocument.activeElement.className, 'text-editor', "Text editor should be active"

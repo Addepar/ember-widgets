@@ -214,13 +214,6 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper, Ember.Widgets.
     !@_isNonEditable(@getNonEmptySideNode(currentRange, false))
       @_removeCaretContainer(parentCaret[0])
 
-    # move things around so that all text are within divs
-    $editor = @getEditor()
-    savedSelection = rangy.saveSelection(@$('iframe.text-editor-frame')[0].contentWindow)
-    contents = $editor.contents()
-    @wrapInDiv(contents)
-    rangy.restoreSelection(savedSelection)
-
   _showPillConfig: (query) ->
     @set 'showConfigPopover', true
     @set 'pillHideSearchBox', true
@@ -315,9 +308,21 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper, Ember.Widgets.
     handleLeftNodeCase()
     handleRightNodeCase()
 
+  _wrapText: ->
+    # move things around so that all text are within divs
+    # This can only happen on mouse up and key up so that font style selections
+    # are saved
+    $editor = @getEditor()
+    savedSelection = rangy.saveSelection(@$('iframe.text-editor-frame')[0].contentWindow)
+    contents = $editor.contents()
+    @wrapInDiv(contents)
+    rangy.restoreSelection(savedSelection)
+
   keyUp: (event) ->
     return unless @isTargetInEditor(event)
     @_moveSelection()
+    @_wrapText()
+
     unless event.keyCode == @KEY_CODES.ESCAPE
       @_handlePillConfig()
       @_super()
@@ -330,6 +335,8 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper, Ember.Widgets.
   mouseUp: (event) ->
     return unless @isTargetInEditor(event)
     @_moveSelection()  # expand selection if only part of a non-editable was selected
+    @_wrapText()
+
     currentRange = @getCurrentRange()
     if @_isNonEditable(event.target) and event.target == @mouseDownTarget and @_isRangeWithinNonEditable(currentRange)
       # This prevents the user from putting the cursor within a non-editable that was previously selected
