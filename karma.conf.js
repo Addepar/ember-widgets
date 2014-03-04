@@ -21,7 +21,9 @@ module.exports = function(config) {
       'http://fast.fonts.net/cssapi/cc61a2f8-3c32-45ef-9be7-fc0cc1fab22b.css',
       'gh_pages/css/app.css',
       'tests/*.js',  // order matters!
+      'tests/helpers/*.js',
       'tests/unit/*.js',
+      'tests/functional/*.js',
       'tests/integration/*.js',
     ],
     // list of files to exclude

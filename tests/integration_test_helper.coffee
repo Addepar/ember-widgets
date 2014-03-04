@@ -8,3 +8,7 @@ App.rootElement = '#ember-testing'
 Ember.testing = true
 App.setupForTesting()
 App.injectTestHelpers()
+
+Ember.Logger.log = Ember.K
+Ember.Logger.debug = Ember.K
+Ember.deprecate = Ember.K
