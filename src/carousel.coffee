@@ -19,21 +19,22 @@ Ember.Widgets.CarouselComponent = Ember.Component.extend
     # the correct number of carousel indicator
     @set 'content', new Array(@$('.item').length) if not @get('content')
 
-  prev: ->
-    return if @get('sliding')
-    activeIndex = @get 'activeIndex'
-    contentLength = @get 'content.length'
-    nextIndex = activeIndex - 1
-    nextIndex = if nextIndex < 0 then contentLength - 1 else nextIndex
-    @slide 'prev', nextIndex
-
-  next: ->
-    return if @get('sliding')
-    activeIndex = @get 'activeIndex'
-    contentLength = @get 'content.length'
-    nextIndex = activeIndex + 1
-    nextIndex = if nextIndex >= contentLength then 0 else nextIndex
-    @slide 'next', nextIndex
+  actions:
+    prev: ->
+      return if @get('sliding')
+      activeIndex = @get 'activeIndex'
+      contentLength = @get 'content.length'
+      nextIndex = activeIndex - 1
+      nextIndex = if nextIndex < 0 then contentLength - 1 else nextIndex
+      @slide 'prev', nextIndex
+  
+    next: ->
+      return if @get('sliding')
+      activeIndex = @get 'activeIndex'
+      contentLength = @get 'content.length'
+      nextIndex = activeIndex + 1
+      nextIndex = if nextIndex >= contentLength then 0 else nextIndex
+      @slide 'next', nextIndex
 
   to: (pos) ->
     return  unless 0 <= pos < @get('content.length')
