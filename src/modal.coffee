@@ -101,7 +101,7 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     # to transfer scroll behavior back to the app
     $(document.body).removeClass('modal-open')
     # fade out backdrop
-    @_backdrop.removeClass('in')
+    @_backdrop.removeClass('in') if @_backdrop
     # destroy modal after backdroop faded out. We need to wrap this in a
     # run-loop otherwise ember-testing will complain about auto run being
     # disabled when we are in testing mode.
@@ -133,7 +133,8 @@ Ember.Widgets.ModalComponent.reopenClass
   hideAll: -> $(document).trigger('modal:hide')
 
   popup: (options = {}) ->
-    @hideAll()
+    if not options.keepOpen
+      @hideAll()
     rootElement = options.rootElement or @rootElement
     modal = this.create options
     modal.set 'container', modal.get('targetObject.container')
