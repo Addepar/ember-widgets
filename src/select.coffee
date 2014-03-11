@@ -256,8 +256,8 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
 
   enterPressed: (event) ->
     item = @get 'highlighted'
-    @set 'selection', item if item
-    @userDidSelect(item) if item
+    @set 'selection', item unless Ember.isEmpty(item)
+    @userDidSelect(item) unless Ember.isEmpty(item)
     # in case dropdown doesn't close
     @send 'hideDropdown'
     # TODO(Peter): HACK the web app somehow reloads when enter is pressed.

@@ -19,5 +19,7 @@ dependencies/jquery-browser
 dependencies/lodash
 dependencies/qunit
 dependencies/rangy
+dependencies/sinonjs
+dependencies/sinon-qunit
 
 tests/**/*.js

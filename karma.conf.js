@@ -16,6 +16,7 @@ module.exports = function(config) {
       'dependencies/list-view.js',
       'dependencies/rangy/rangy-core.js',
       'dependencies/rangy/rangy-selectionsaverestore.js',
+      'dependencies/sinonjs/sinon.js',
       'gh_pages/app.js',
 
       'http://fast.fonts.net/cssapi/cc61a2f8-3c32-45ef-9be7-fc0cc1fab22b.css',
