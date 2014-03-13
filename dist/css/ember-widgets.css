@@ -7904,6 +7904,7 @@ input[type="radio"] {
 .panel-title,
 .panel-footer {
   font-size: 13px;
+  font-weight: 500;
   color: #333;
   line-height: 1;
 }
