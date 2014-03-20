@@ -17,7 +17,7 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   contentViewClass: null
 
   defaultContentViewClass: Ember.View.extend
-    template: Ember.Handlebars.compile("<p>{{content}}</p>")
+    templateName: 'component_default_content'
 
   _contentViewClass: Ember.computed ->
     contentViewClass = @get 'contentViewClass'

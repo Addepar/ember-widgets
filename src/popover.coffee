@@ -27,7 +27,7 @@ Ember.Widgets.BodyEventListener,
     return @get('contentViewClass') if @get('contentViewClass')
     Ember.View.extend
       content: Ember.computed.alias 'parentView.content'
-      template: Ember.Handlebars.compile('{{view.parentView.content}}')
+      templateName: 'view_parent_view_content'
   .property 'contentViewClass'
 
   didInsertElement: ->
