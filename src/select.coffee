@@ -186,6 +186,10 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
     regex = new RegExp(escapedSearchText, 'i')
     regex.test(label)
 
+  actions:
+    toggleDropdown: (event) ->
+      @toggleDropdown(event)
+
   toggleDropdown: (event) ->
     @toggleProperty 'showDropdown'
 

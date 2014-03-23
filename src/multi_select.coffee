@@ -89,4 +89,8 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
   removeSelectItem: (item) ->
     @get('selections').removeObject item
 
+  actions:
+    removeSelectItem: (item) ->
+      @removeSelectItem(item)
+
 Ember.Handlebars.helper('multi-select-component', Ember.Widgets.MultiSelectComponent)
