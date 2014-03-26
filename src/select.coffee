@@ -47,9 +47,13 @@ Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
     return if @get('content.isGroupOption')
     @set 'controller.selection', @get('content')
     @get('controller').userDidSelect @get 'content'
-    @get('controller').send 'hideDropdown'
-    # return false to prevent propagation
-    return no
+    # if there's a selection and the dropdown is unexpanded, we want to
+    # propagate the click event
+    # if the dropdown is expanded and we select something, don't propagate
+    if @get('controller.showDropdown')
+      @get('controller').hideDropdown()
+      # return false to prevent propagation
+      return no
 
   mouseEnter: ->
     return if @get('content.isGroupOption')
