@@ -48,6 +48,8 @@ Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
     @set 'controller.selection', @get('content')
     @get('controller').userDidSelect @get 'content'
     @get('controller').send 'hideDropdown'
+    # return false to prevent propagation
+    return no
 
   mouseEnter: ->
     return if @get('content.isGroupOption')
