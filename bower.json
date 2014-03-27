@@ -1,0 +1,71 @@
+{
+  "name": "ember-widgets",
+  "version": "0.0.1",
+  "main": [
+    "./dist/js/ember-widgets.js",
+    "./dist/css/ember-widgets.css",
+    "./dist/img/*"
+  ],
+  "ignore": [
+    ".gitignore",
+    ".jshintrc",
+    "app",
+    "build",
+    "dependencies",
+    "gh_pages",
+    "node_modules",
+    "src",
+    "test",
+    "CHANGELOG",
+    "example.js",
+    "Gruntfile.coffee",
+    "package.json",
+    "VERSION"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.0.0",
+    "ember": "~1.1.0",
+    "font-awesome": "~4.0.1",
+    "handlebars": "1.0.0",
+    "holder": "holderjs#1.9",
+    "jquery": "1.9.1",
+    "jquery-browser": "jquery.browser#~0.0.4",
+    "lodash": "~1.2.1",
+    "qunit": "~1.12.0",
+    "rangy": "~1.2.3"
+  },
+  "devDependencies": {
+    "addepar-style-guide": "git@github.com:Addepar/style-guide.git#c4a85958abacdf7f20ffc3dfc5d3c19ccc03ba74",
+    "sinonjs": "~1.7.3",
+    "sinon-qunit": "~1.0.0"
+  },
+  "exportsOverride": {
+    "addepar-style-guide": {
+      "img": "dist/img/*",
+      "less": "dist/less/*"
+    },
+    "bootstrap": {
+      "less": "less/*",
+      "fonts": "dist/fonts/*",
+      "js": "dist/js/*.js"
+    },
+    "ember": {
+      ".": "ember.js"
+    },
+    "lodash": {
+      ".": "lodash.js"
+    },
+    "font-awesome": {
+      "css": "css/*",
+      "less": "less/*",
+      "scss": "scss/*",
+      "fonts": "fonts/*"
+    },
+    "jquery": {
+      ".": ["jquery.js"]
+    },
+    "rangy": {
+      ".": ["rangy-core.js", "rangy-selectionsaverestore.js"]
+    }
+  }
+}

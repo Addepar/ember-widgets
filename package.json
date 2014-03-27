@@ -1,5 +1,5 @@
 {
-  "name": "addepar-bootstrap",
+  "name": "ember-widgets",
   "version": "0.0.1",
   "main": "Gruntfile.js",
   "scripts": {
@@ -8,7 +8,9 @@
   "repository": "",
   "license": "MIT",
   "devDependencies": {
+    "bower": "1.2.7",
     "grunt": "~0.4.1",
+    "grunt-bower-task": "~0.3.4",
     "grunt-contrib-copy": "~0.4.1",
     "grunt-contrib-clean": "~0.4.1",
     "grunt-contrib-coffee": "~0.4.0",
@@ -23,8 +25,13 @@
     "grunt-jsdoc": "*",
     "grunt-neuter": "~0.4.0",
     "grunt-shell": "*",
-    "grunt-jsdoc": "*",
+    "karma": "0.10.2",
+    "karma-chrome-launcher": "~0.1.2",
+    "karma-ember-preprocessor": "*",
+    "karma-qunit": "*",
+    "karma-spec-reporter": "0.0.6",
     "node-static": "*",
-    "lockdown": "0.0.5"
+    "lockdown": "0.0.5",
+    "grunt-karma": "~0.6.2"
   }
 }

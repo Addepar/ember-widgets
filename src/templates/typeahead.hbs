@@ -1,0 +1,15 @@
+<div>
+  {{view searchView classBinding="searchFieldClass"}}
+</div>
+{{#unless hasNoResults}}
+  <div class="dropdown-menu">
+    {{view listView
+      tagName="ul"
+      classNames="ember-typeahead-results"
+      heightBinding="dropdownHeight"
+      rowHeightBinding="rowHeight"
+      contentBinding="groupedContent"
+      itemViewClassBinding="itemView"
+    }}
+  </div>
+{{/unless}}

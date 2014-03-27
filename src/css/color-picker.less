@@ -1,0 +1,148 @@
+//
+// Ember.Widgets.ColorPicker
+// -----------------------------------------------------------------------------
+
+.color-picker-button {
+  display: inline-block;
+  // Let the color-picker-cell within it flood the whole button
+  padding: 0 !important;
+
+  .color-picker-cell {
+    width: calc(~"100% - 31px");
+    min-width: @colorpicker-cell-height - 2px;
+    // Make it fill the entire button
+    margin: @colorpicker-cell-margin 0 0 @colorpicker-cell-margin;
+  }
+}
+
+// fa.pull-right has a margin on it that needs to be overriden
+.color-picker-dropdown-caret {
+  margin-left: 0 !important;
+}
+
+// Depending on the size of the button
+.color-picker-button.btn {
+  .color-picker-dropdown-caret {
+    .button-size(@padding-base-vertical; @padding-button-horizontal - 5px; @font-size-base; @line-height-base; @border-radius-base);
+  }
+
+  .color-picker-cell {
+    // TODO(Louis): This is bad..
+    height: @colorpicker-cell-height - 2px;
+  }
+}
+
+.color-picker-button.btn-lg {
+  .color-picker-dropdown-caret {
+    // line-height: ensure even-numbered height of button next to large input
+    .button-size(@padding-large-vertical; @padding-large-horizontal; @font-size-large; @line-height-large; @border-radius-large);
+  }
+
+  .color-picker-cell {
+    height: @line-height-large;
+  }
+}
+
+.color-picker-button.btn-sm {
+  .color-picker-dropdown-caret {
+    // line-height: ensure proper height of button next to small input
+    .button-size(@padding-small-vertical; @padding-small-horizontal; @font-size-small; @line-height-small; @border-radius-small);
+  }
+
+  .color-picker-cell {
+    // TODO(Louis): This is bad..
+    height: 22px;
+  }
+}
+
+.color-picker-button.btn-xs {
+  .color-picker-dropdown-caret {
+    .button-size(@padding-xs-vertical; @padding-xs-horizontal; @font-size-small; @line-height-small; @border-radius-small);
+  }
+
+  .color-picker-cell {
+    height: @line-height-small;
+  }
+}
+
+.color-picker-button .color-picker-dropdown-caret {
+  .button-size(@padding-base-vertical; @padding-button-horizontal - 5px; @font-size-base; @line-height-base; @border-radius-base);
+
+  .color-picker-cell {
+    height: @line-height-base;
+  }
+}
+
+// Color picker dropdown containing the color-row which contains the
+// color-picker-cells
+.color-picker-dropdown {
+  // Padding 2 * 7 = 14 and 2px for the border and 1 for the negative margin
+  min-width: (@colorpicker-cell-width + 2 * @colorpicker-cell-margin) * 4 + 14px + 2px + 1px;
+  padding: 7px;
+  // Align it to the button
+  margin-left: -1px;
+
+  &.pull-right {
+    margin-left: 0;
+    margin-right: -1px;
+  }
+
+  hr {
+    margin: 7px @colorpicker-cell-margin;
+  }
+}
+
+/* Color Picker Cells */
+
+.color-picker-custom-preview {
+  // To get the diagonal line to line up properly
+  width: @colorpicker-cell-width - 1px;
+}
+
+.color-picker-cell {
+  // Height depends on the button size
+  width: @colorpicker-cell-width;
+  border: 1px solid #e6e6e6;
+}
+
+// Stong selector to override color-picker-button.btn css
+.color-picker-dropdown .color-row .color-picker-cell {
+  margin:  @colorpicker-cell-margin;
+  height: @colorpicker-cell-height;
+  width: @colorpicker-cell-width;
+  cursor: pointer;
+
+  &.active {
+    border-color: @highlight-blue;
+  }
+}
+
+.color-picker-custom-form {
+  padding-top: @colorpicker-cell-margin;
+  margin: @colorpicker-cell-margin;
+
+  &.valid .color-picker-custom-preview {
+    border-color: @highlight-blue;
+    background-url: none;
+  }
+
+  &.invalid .color-picker-custom-preview {
+    background: url('@{colorpicker-cell-invalid}') no-repeat center center;
+    background-size: cover;
+  }
+
+  .color-picker-cell {
+    margin: 0;
+  }
+}
+
+// When there is no color in .color-picker-cell the no color indicator shines
+// through
+.no-color-indicator-holder {
+  position: relative;
+  z-index: -1;
+  background: url('@{colorpicker-cell-no-color}') no-repeat center center;
+  background-size: cover;
+  height: 100%;
+}
+

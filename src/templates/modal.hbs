@@ -1,24 +1,14 @@
 <div class="modal-dialog">
   <div class="modal-content">
     <div class="modal-header">
-      <button type="button" class="close" {{action sendCancel}}>&times;</button>
+      <button type="button" class="close" {{action sendClose}}>&times;</button>
       <h4 class="modal-title">{{headerText}}</h4>
     </div>
     <div class="modal-body">
-      {{view _contentViewClass contentBinding="content"}}
+      {{view _contentViewClass}}
     </div>
     <div class="modal-footer">
-      {{#if confirmText}}
-        <button type="button" class="btn btn-primary" {{action sendConfirm}}>
-          {{confirmText}}
-        </button>
-      {{/if}}
-
-      {{#if cancelText}}
-        <button type="button" class="btn btn-default" {{action sendCancel}}>
-          {{cancelText}}
-        </button>
-      {{/if}}
+      {{view _footerViewClass}}
     </div>
   </div>
 </div>

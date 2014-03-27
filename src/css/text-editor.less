@@ -1,0 +1,67 @@
+//
+// Ember.Widgets.TextEditorComponent CSS
+// -----------------------------------------------------------------------------
+
+.ember-text-editor-toolbar {
+  border: 1px solid #ddd;
+  border-bottom: none;
+  background-color: #fff;
+  padding: 5px;
+
+  .font,
+  .font-size{
+    display: inline-block;
+    vertical-align: top;
+    line-height: 20px;
+  }
+
+  // TODO(Louis): Fix the line-height issue in the ember-select for btn-sm
+  .ember-text-editor-font-family-select,
+  .ember-text-editor-font-size-select,
+  .insert-non-editable-btn {
+    .btn-sm {
+      margin-top: -1px;
+    }
+  }
+}
+
+.ember-text-editor-font-family-select .btn {
+  width: 150px;
+}
+
+.ember-text-editor-font-size-select {
+  .ember-select-choice.btn {
+    width: 50px;
+  }
+
+  &.ember-select .dropdown-menu {
+    min-width: 48px;
+  }
+}
+
+/* iFrame */
+
+.text-editor-frame {
+  display: block;
+  // Why is this needed
+  width: 100%;
+  // Min Height of one line
+  min-height: 20px;
+  border: 1px solid #ddd;
+}
+
+/* .text-editor => Text Editor
+   Note: This has to be copied into iframeHeadContents
+   in Ember.Widgets.TextEditorComponent */
+
+/* .non-editable => Non-Editable Pills
+   Note: This has to be copied into iframeHeadContents
+   in Ember.Widgets.TextEditorComponent */
+// .non-editable {
+//   display: inline-block;
+//   padding: 0 5px;
+//   border: 1px solid #ddd;
+//   background: transparent;
+//   list-style-type: none;
+//   cursor: pointer;
+// }

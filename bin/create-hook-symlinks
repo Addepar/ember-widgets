@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# save current working directory
+cwd=$(pwd)
+
+# change to this script's directory
+cd "$( dirname "${BASH_SOURCE[0]}" )"
+HOOK_DIR=../.git/hooks
+
+for file in ../git_hooks/*.sh; do
+  if [[ -f $file ]]; then
+    hook=`basename "$file" .sh`  # e.g. pre-commit
+
+    # If the hook already exists, is executable, and is not a symlink
+    if [ ! -h $HOOK_DIR/$hook -a -x $HOOK_DIR/$hook ]; then
+        mv $HOOK_DIR/$hook $HOOK_DIR/$hook.local
+    fi
+    # create the symlink, overwriting the file if it exists
+    ln -s -f ../../git_hooks/$hook.sh $HOOK_DIR/$hook
+    echo "Installing $hook hook"
+  fi
+done
+
+cd $cwd

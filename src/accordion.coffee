@@ -21,7 +21,9 @@ Ember.Widgets.AccordionItem = Ember.View.extend
     @set 'index', index
     @isActiveDidChange()
 
-  click: ->
+  click: (event) ->
+    # only handle clicks on the title of the accordion
+    return unless @$(event.target).closest('.panel-heading').length > 0
     if @get('isActive')
       @set 'parentView.activeIndex', null
     else

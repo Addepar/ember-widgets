@@ -1,5 +1,5 @@
-Ember.Widgets.PopoverComponent =
-Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
+Ember.Widgets.PopoverMixin =
+Ember.Mixin.create Ember.Widgets.StyleBindingsMixin,
 Ember.Widgets.BodyEventListener,
   layoutName: 'popover'
   classNames: ['popover']
@@ -19,6 +19,8 @@ Ember.Widgets.BodyEventListener,
   isShowing:  no
   inserted: no
   content: ""
+  marginTop: 10
+  marginLeft: 10
 
   _resizeHandler: null
   _scrollHandler: null
@@ -43,14 +45,56 @@ Ember.Widgets.BodyEventListener,
 
   hide: ->
     @set('isShowing', no)
-    @$().one $.support.transition.end, => @destroy()
+    @$().one $.support.transition.end, =>
+      # We need to wrap this in a run-loop otherwise ember-testing will complain
+      # about auto run being disabled when we are in testing mode.
+      Ember.run this, @destroy
+
+  ###
+  Calculate the offset of the given iframe relative to the top window.
+  - Walks up the iframe chain, checking the offset of each one till it reaches top
+  - Only works with friendly iframes.
+  - Takes into account scrolling, but comes up with a result relative to
+  top iframe, regardless of being visibile withing intervening frames.
+
+  @param window win    the iframe we're interested in (e.g. window)
+  @param object pos   an object containing the offset so far:
+  { left: [x], top: [y] }
+  (optional - initializes with 0,0 if undefined)
+  @return pos object above
+
+  via http://stackoverflow.com/a/9676655
+  ###
+  computeFrameOffset: (win, pos={top: 0, left: 0}) ->
+    # find our <iframe> tag within our parent window
+    frames = win.parent.document.getElementsByTagName("iframe")
+    found = false
+
+    for frame in frames
+      if frame.contentWindow is win
+        found = true
+        break
+
+    # add the offset & recur up the frame chain
+    if found
+      rect = frame.getBoundingClientRect()
+      pos.left += rect.left
+      pos.top += rect.top
+      @computeFrameOffset win.parent, pos if win isnt top
+    pos
+
+  getOffset: ($target) ->
+    pos = $target.offset()
+    doc = $target[0].ownerDocument
+    win = doc.defaultView
+    @computeFrameOffset(win, pos)
 
   snapToPosition: ->
-    return unless @get('state') is 'inDOM'
     $target      = $(@get('targetElement'))
+    return if @get('state') isnt 'inDOM' or Ember.isEmpty($target)
     actualWidth  = @$()[0].offsetWidth
     actualHeight = @$()[0].offsetHeight
-    pos = $target.offset()
+    pos = @getOffset($target)
     pos.width  = $target[0].offsetWidth
     pos.height = $target[0].offsetHeight
 
@@ -80,31 +124,44 @@ Ember.Widgets.BodyEventListener,
         @set 'left',  pos.left
         break
       when 'left'
-        @set 'top',   pos.top + pos.height / 2 - actualHeight / 2
+        @set 'top',   pos.top - @get('marginTop')
         @set 'left',  pos.left - actualWidth
         break
       when 'right'
-        @set 'top',   pos.top + pos.height / 2 - actualHeight / 2
+        @set 'top',   pos.top - @get('marginTop')
         @set 'left',  pos.left + pos.width
         break
-    @correctHorizontalIfOffScreen()
+    @correctIfOffscreen()
+    @positionArrow()
 
-  correctHorizontalIfOffScreen: ->
+  positionArrow: ->
+    $target = $(@get('targetElement'))
+    pos = @getOffset($target)
+    pos.width  = $target[0].offsetWidth
+    pos.height = $target[0].offsetHeight
+    arrowSize = 22
+    switch @get('placement')
+      when 'left', 'right'
+        top = pos.top + pos.height / 2 - @get('top') - arrowSize / 2
+        @set 'arrowStyle', "margin-top:#{top}px;"
+      when 'top', 'bottom'
+        left = pos.left + pos.width / 2 - @get('left') - arrowSize / 2
+        @set 'arrowStyle', "margin-left:#{left}px;"
+
+  correctIfOffscreen: ->
     bodyWidth = $('body').width()
+    bodyHeight = $('body').height()
     actualWidth  = @$()[0].offsetWidth
+    actualHeight  = @$()[0].offsetHeight
 
-    # if our popover is outside of the body (either on left or on right)
-    # we need to get rid of the arrow at top/bottom of the popover
-    hideArrow = no
     if @get('left') + actualWidth > bodyWidth
-      @set 'left', bodyWidth - actualWidth
-      hideArrow = yes
-
+      @set 'left', bodyWidth - actualWidth - @get('marginLeft')
     if @get('left') < 0
-      @set 'left', 0
-      hideArrow = yes
-
-    if hideArrow then @$().addClass('no-arrow') else @$().removeClass('no-arrow')
+      @set 'left', @get('marginLeft')
+    if @get('top') + actualHeight > bodyHeight
+      @set 'top', bodyHeight - actualHeight - @get('marginTop')
+    if @get('top') < 0
+      @set 'top', @get('marginTop')
 
   # We need to put this in a computed because this is attached to the
   # resize and scroll events before snapToPosition is defined. We
@@ -114,28 +171,36 @@ Ember.Widgets.BodyEventListener,
 
   _setupDocumentHandlers: ->
     @_super()
+    unless @_hideHandler
+      @_hideHandler = => @hide()
+      $(document).on 'popover:hide', @_hideHandler
     unless @_resizeHandler
       @_resizeHandler = @get('debounceSnapToPosition')
-      $('html').on 'resize', @_resizeHandler
+      $(document).on 'resize', @_resizeHandler
     unless @_scrollHandler
       @_scrollHandler = @get('debounceSnapToPosition')
-      $('html').on 'scroll', @_scrollHandler
+      $(document).on 'scroll', @_scrollHandler
 
   _removeDocumentHandlers: ->
     @_super()
-    # remove resize callbacks
-    $('html').off 'resize', @_resizeHandler
+    $(document).off 'popover:hide', @_hideHandler
+    @_hideHandler = null
+    $(document).off 'resize', @_resizeHandler
     @_resizeHandler = null
-    $('html').off 'scroll', @_scrollHandler
+    $(document).off 'scroll', @_scrollHandler
     @_scrollHandler = null
+
+Ember.Widgets.PopoverComponent = Ember.Component.extend(Ember.Widgets.PopoverMixin)
 
 Ember.Widgets.PopoverComponent.reopenClass
   rootElement: '.ember-application'
-  hideAll: ->
+  hideAll: -> $(document).trigger('popover:hide')
 
   popup: (options) ->
+    @hideAll()
     rootElement = options.rootElement or @rootElement
     popover = this.create options
+    popover.set 'container', popover.get('targetObject.container')
     popover.appendTo rootElement
     popover
 
