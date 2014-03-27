@@ -5,23 +5,24 @@
 // External Libraries on which addepar-components.css relies
 // -------------------------
 @import "../../../dependencies/bootstrap/less/bootstrap.less";
-@import "../../../dependencies/font-awesome/less/font-awesome.less";
-@import "../../../dependencies/jquery-ui/jquery-ui-1.10.1.custom.min.css";
+@import '../../../dependencies/jquery-ui/jquery-ui-1.10.1.custom.min.css';
+@import '../../../dependencies/addepar-bootstrap-theme/addepar-bootstrap-theme.less';
+@import '../../../dependencies/addepar-bootstrap-theme/mixins.less';
 
 // Ember Table
 // -------------------------
-@import "../../../src/css/ember-widgets.less";
+@import '../../../src/css/ember-widgets.less';
 
 // Addepar Open Source
 // -------------------------
-@import "typography.less";
+@import 'typography.less';
 // Variables used for this file
-@import "variables.less";
-@import "prettify.less";
+@import 'variables.less';
+@import 'prettify.less';
 
 // Addepar Open Source Pages
 // -------------------------
-@import "ember-widgets-page.less";
+@import 'ember-widgets-page.less';
 
 //
 // General CSS
@@ -54,6 +55,212 @@ html, body {
   font-family: 'Univers LT W01 55 Roman';
   font-family: 'Univers LT W01 65 Bold';
 */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: @sansFontFamily;
+  color: #45494D;
+  line-height: 1.5;
+}
+
+h1 {
+  font: normal 24px/1.5 @sansFontFamily;
+  margin-bottom: 15px;
+
+  small {
+    font: normal 18px/1.5 @sansFontFamily;
+  }
+}
+
+h2 {
+  font: normal 20px/1.5 @sansFontFamily;
+  color: @75-percent-black;
+
+  small {
+    font-size: 14px;
+  }
+}
+
+h3 {
+  font: normal 18px/1.5 @sansFontFamily;
+  font-family: 'Univers Next W01 Light';
+}
+
+h4 {
+  font: 500 15px/1.5 @sansFontFamily;
+  font-family: 'Univers Next W01 Medium';
+}
+
+h5 {
+  display: inline-block;
+  padding-bottom: 4px;
+  color: rgba(0, 0, 0, 0.4);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  font: bold 13px/1.5 @sansFontFamily;
+  font-family: 'Univers Next W01 Bold';
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+p,
+.styled li {
+  .box-sizing(border-box);
+  font: normal 14px/1.62 @sansFontFamily;
+  // Don't know yet
+  font-family: 'UniversNextW01-Regular';
+  font-family: 'Univers Next W01 Light';
+  color: @55-percent-black;
+  margin-bottom: 20px;
+
+  &.elevated {
+    font: normal 16px/1.62 @sansFontFamily;
+    font-family: 'Univers Next W01 Light';
+    margin-bottom: 25px;
+  }
+
+  &.reduced {
+    font: normal 11px/1.4 @sansFontFamily;
+    font-family: 'UniversNextW01-Regular';
+  }
+}
+
+.styled li {
+  margin-bottom: 0;
+}
+
+.styled-spacious li {
+  margin-bottom: 20px;
+}
+
+a {
+  color: @highlight-blue;
+  // color: #333;
+
+  &:hover,
+  &:active {
+    color: @highlight-blue;
+    color: lighten(@highlight-blue, 10%);
+    text-decoration: none;
+  }
+}
+
+hr.soften {
+  height: 1px;
+  margin: 70px 0;
+  background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
+  background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
+  background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
+  background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
+  border: 0;
+}
+
+select,
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input {
+  .border-radius(2px);
+  .box-shadow(none);
+}
+
+strong {
+  font-weight: 500;
+  font-family: @sansFontFamily;
+  font-family: 'Univers Next W01 Medium';
+}
+
+/* Code Sample Styles */
+
+code, pre {
+  display: block;
+  font-family : 'SourceCodePro-Regular', Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  white-space: pre !important;
+  word-wrap: normal;
+}
+
+pre {
+  .border-radius(1px);
+  border: none;
+  background-color: #f8f8f8;
+}
+
+/* Buttons
+-------------------------------------------------- */
+.addepar-btn {
+  font: normal 13px @sansFontFamily;
+  font-family: 'Univers Next W01 Medium';
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: none;
+  background-color: #ccc;
+  border: 1px solid #ededed;
+  .box-shadow(inset 0 -2px rgba(0, 0, 0, 0.1));
+  .border-radius(5px);
+  .transition(all 0.2s);
+  .user-select(none);
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.addepar-btn-large {
+  padding: 16px 24px 17px 24px;
+}
+
+.addepar-btn-outline {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  .box-shadow(0 4px 10px rgba(0, 0, 0, 0.2));
+  padding: 14px 24px 15px 24px;
+  background: none;
+  border: 2px solid #BBB;
+  .border-radius(3px);
+}
+
+.addepar-btn-white {
+  color: #eee;
+  border-color: rgba(255, 255, 255, 0.5);
+  .transition(all 0.2s);
+
+  &:hover {
+    .transition(all 0.5s);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.99);
+    background: none;
+  }
+}
+
+.addepar-btn-primary {
+  color: #FFF;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.1);
+  // background: lighten(@highlight-blue,10%);
+  background: rgba(0,0,0,0.7);
+  border: 0 solid transparent;
+  box-shadow: none;
+  .transition(all 0.2s);
+
+  &:hover {
+    background: rgba(0,0,0,0.88);
+    border: 0 solid transparent;
+  }
+}
 
 /* Util Classes
 -------------------------------------------------- */

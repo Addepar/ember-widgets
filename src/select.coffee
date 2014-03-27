@@ -46,8 +46,7 @@ Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
   click: ->
     return if @get('content.isGroupOption')
     @set 'controller.selection', @get('content')
-    @get('controller').userDidSelect @get 'content'
-    @get('controller').send 'hideDropdown'
+    @get('controller').hideDropdown()
 
   mouseEnter: ->
     return if @get('content.isGroupOption')
@@ -76,14 +75,11 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
   sortLabels:   yes
   # If isSelect is true, we will not show the search box
   isSelect:     no
+  # If is button is true, the select will look like a button
+  isButton:     yes
 
   # Change the icon when necessary
   dropdownToggleIcon: 'fa fa-caret-down'
-
-  # Change the button class when necessary
-  buttonClass: 'btn btn-default'
-
-  dropdownMenuClass: ''
 
   # The list of options
   content:    []
@@ -93,10 +89,6 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
   optionValuePath: ''
   optionGroupPath: ''
   optionDefaultPath: ''
-
-  # This augments the dropdown to provide a place for adding a select menu that
-  # possibly says 'create item' or something along that line
-  selectMenuView: null
 
   # TODO(Peter): consider calling this optionViewClass?
   itemView: Ember.computed ->
@@ -179,7 +171,7 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
     else # getter
       valuePath = @get 'optionValuePath'
       selection = @get 'selection'
-      if valuePath then get(selection, valuePath) else selection
+      if valuePath then get(selection, valuePath) else selections
   .property 'selection'
 
   didInsertElement: ->
@@ -193,6 +185,16 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
     escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
     regex = new RegExp(escapedSearchText, 'i')
     regex.test(label)
+
+  actions:
+    toggleDropdown: (event) ->
+      @toggleDropdown(event)
+
+  toggleDropdown: (event) ->
+    @toggleProperty 'showDropdown'
+
+  hideDropdown: (event) ->
+    @set 'showDropdown', no
 
   # TODO(Peter): This needs to be rethought
   setDefaultSelection: Ember.observer ->
@@ -240,7 +242,7 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
     value
   .property 'selectableOptions', 'highlightedIndex'
 
-  bodyClick: -> @send 'hideDropdown'
+  bodyClick: -> @hideDropdown()
 
   keyDown: (event) ->
     # show dropdown if dropdown is not already showing
@@ -252,14 +254,13 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
   deletePressed: Ember.K
 
   escapePressed: (event) ->
-    @send 'hideDropdown'
+    @hideDropdown()
 
   enterPressed: (event) ->
     item = @get 'highlighted'
-    @set 'selection', item unless Ember.isEmpty(item)
-    @userDidSelect(item) unless Ember.isEmpty(item)
+    @set 'selection', item if item
     # in case dropdown doesn't close
-    @send 'hideDropdown'
+    @hideDropdown()
     # TODO(Peter): HACK the web app somehow reloads when enter is pressed.
     event.preventDefault()
 
@@ -302,16 +303,5 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
       $listView.scrollTop newIndex * @get('rowHeight')
     else if newIndex >= endIndex
       $listView.scrollTop (newIndex - numRows + 1.5) * @get('rowHeight')
-
-  #TODO Refactor other parts to use this method to set selection
-  userDidSelect: (selection) ->
-    @sendAction 'userSelected', selection
-
-  actions:
-    toggleDropdown: (event) ->
-      @toggleProperty 'showDropdown'
-
-    hideDropdown: (event) ->
-      @set 'showDropdown', no
 
 Ember.Handlebars.helper('select-component', Ember.Widgets.SelectComponent)

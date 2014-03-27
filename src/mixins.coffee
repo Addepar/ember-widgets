@@ -53,11 +53,12 @@ Ember.Widgets.BodyEventListener = Ember.Mixin.create
     @_super()
     @_removeDocumentHandlers()
 
+  # http://stackoverflow.com/questions/152975/how-to-detect-a-click-outside-an-element
+  click: (event) -> event.stopPropagation();
+
   _setupDocumentHandlers: ->
     return if @_clickHandler
-    @_clickHandler = (event) =>
-      if @get('state') is 'inDOM' and Ember.isEmpty(@$().has($(event.target)))
-        @bodyClick()
+    @_clickHandler = => @bodyClick()
     $(@get('bodyElementSelector')).on "click", @_clickHandler
 
   _removeDocumentHandlers: ->

@@ -6,12 +6,6 @@
 // -------------------------
 @import "./mixins.less";
 
-// Addepar Style Guide
-// -------------------------
-// Important to include bootstrap and the style guide in your project
-@import '../../dependencies/bootstrap/less/bootstrap.less';
-@import '../../dependencies/addepar-style-guide/less/addepar-style-guide.less';
-
 //
 // Important BG and Color Variables
 // -----------------------------------------------------------------------------
@@ -53,19 +47,9 @@
 @popoverArrowOuterWidth:  @popoverArrowWidth + 1;
 @popoverArrowOuterColor:  rgba(0,0,0,.25);
 
-// Color picker variables
-// -------------------------
-@colorpicker-cell-width:    30px;
-@colorpicker-cell-height:   @colorpicker-cell-width;
-@colorpicker-cell-margin:   2px;
-@colorpicker-cell-invalid:  '../img/invalid_color.svg';
-@colorpicker-cell-no-color: '../img/no_color.svg';
-
 //
 // Widgets
 // -----------------------------------------------------------------------------
 
 @import "./select.less";
 @import "./popover.less";
-@import "./text-editor.less";
-@import "./color-picker.less";

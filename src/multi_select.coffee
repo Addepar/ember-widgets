@@ -27,7 +27,6 @@ Ember.Widgets.MultiSelectOptionView = Ember.View.extend
 Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
   templateName: 'multi-select'
   selections: undefined
-  choicesFieldClass: ''
 
   values: Ember.computed (key, value) ->
     if arguments.length is 2 # setter

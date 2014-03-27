@@ -1,7 +1,7 @@
 # Dependencies
 require 'dependencies/list-view'
 require 'dependencies/bootstrap/js/bootstrap'
-require 'dist/js/ember-widgets'
+require 'dist/ember-widgets'
 
 # Compiled Handlebars templates
 require 'build/app/templates'
@@ -10,7 +10,7 @@ require 'build/app/templates'
 require 'build/app/data/ember_widgets/countries'
 
 window.App = Ember.Application.create
-  LOG_TRANSITIONS: false
+  LOG_TRANSITIONS: true
 
 require 'build/app/views/mixins'
 require 'build/app/views/ember_widgets'
@@ -25,8 +25,6 @@ App.Router.map ->
     @route 'modal'
     @route 'popover'
     @route 'select'
-    @route 'textEditor'
-    @route 'colorPicker'
 
 App.IndexRoute = Ember.Route.extend
   beforeModel: -> @transitionTo('emberWidgets.overview')
