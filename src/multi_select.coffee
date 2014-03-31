@@ -50,6 +50,12 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
     class: 'ember-select-input'
     valueBinding: 'parentView.query'
     focusIn: (event) -> @set 'parentView.showDropdown', yes
+    placeholder: Ember.computed ->
+      if @get 'parentView.selections.length'
+        ''
+      else
+        @get 'parentView.placeholder'
+    .property 'parentView.placeholder', 'parentView.selections.length'
 
   # the list of content that is filtered down based on the query entered
   # in the textbox
