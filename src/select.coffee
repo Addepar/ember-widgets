@@ -10,8 +10,8 @@ set = (object, key, value) ->
 # The view for each item in the select.
 Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
   tagName: 'li'
-  templateName: 'select_item'
-  layoutName: 'select_item_layout'
+  templateName: 'select-item'
+  layoutName: 'select-item-layout'
   classNames: 'ember-select-result-item'
   classNameBindings: ['content.isGroupOption:ember-select-group',
                       'isHighlighted:highlighted']
