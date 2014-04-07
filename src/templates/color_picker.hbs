@@ -1,8 +1,15 @@
 <div class="dropdown">
   <a class="clearfix color-picker-dropdown-button" data-toggle="dropdown" href="#">
-    {{view Ember.Widgets.ColorPickerCell
-      colorBinding ='selectedColor'
-    }}
+    {{#if isColorTransparent}}
+      {{view Ember.Widgets.ColorPickerCell
+        colorBinding="selectedColor"
+        classNames="color-picker-cell-transparent"
+      }}
+    {{else}}
+      {{view Ember.Widgets.ColorPickerCell
+        colorBinding="selectedColor"
+      }}
+    {{/if}}
     <span class="pull-right fa fa-caret-down color-picker-dropdown-caret"></span>
   </a>
   <div {{bind-attr class=":dropdown-menu :color-picker-dropdown dropdownClass"}}
@@ -11,7 +18,7 @@
       <div class="color-row clearfix">
         {{#each color in row}}
           {{view Ember.Widgets.ColorPickerCell
-            colorBinding = 'color'
+            colorBinding = "color"
            }}
         {{/each}}
       </div>

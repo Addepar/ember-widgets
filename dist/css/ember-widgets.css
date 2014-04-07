@@ -8887,8 +8887,12 @@ input[type="radio"] {
 }
 .no-color-indicator-holder {
   position: relative;
+  height: 100%;
   z-index: -1;
   background: url('../img/no_color.svg') no-repeat center center;
   background-size: cover;
-  height: 100%;
+}
+.color-picker-dropdown-button .color-picker-cell-transparent {
+  position: relative;
+  z-index: 1;
 }

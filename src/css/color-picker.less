@@ -140,9 +140,15 @@
 // through
 .no-color-indicator-holder {
   position: relative;
+  height: 100%;
   z-index: -1;
+
   background: url('@{colorpicker-cell-no-color}') no-repeat center center;
   background-size: cover;
-  height: 100%;
 }
 
+// Needed to be able to show the no-color background within it
+.color-picker-dropdown-button .color-picker-cell-transparent {
+  position: relative;
+  z-index: 1;
+}

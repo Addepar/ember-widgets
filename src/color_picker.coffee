@@ -9,6 +9,8 @@ Ember.Widgets.ColorPicker = Ember.Component.extend
   selectedColor: '#0074D9'
   customColor: ''
 
+  isColorTransparent: Ember.computed.equal 'selectedColor', 'transparent'
+
   colorRows:
     [
       [ '#000000',
