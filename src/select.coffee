@@ -67,6 +67,7 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
   classNameBindings: ['showDropdown:open']
   itemViewClass:      'Ember.Widgets.SelectOptionView'
   prompt:             'Select a Value'
+  disabled: no
 
   # we need to set tabindex so that div responds to key events
   highlightedIndex: -1
@@ -315,6 +316,7 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
 
   actions:
     toggleDropdown: (event) ->
+      return if @get('disabled')
       @toggleProperty 'showDropdown'
 
     hideDropdown: (event) ->
