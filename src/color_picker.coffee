@@ -214,6 +214,7 @@ Ember.Widgets.ColorPickerCell = Ember.View.extend Ember.Widgets.StyleBindingsMix
       whitesmoke: "#f5f5f5"
       yellow: "#ffff00"
       yellowgreen: "#9acd32"
+    return color if not color
     return color.toLowerCase() if color.substr(0, 1) is "#" or color is "transparent"
     return colorNameToHexMap[color.toLowerCase()] if color of colorNameToHexMap
     digits = /(.*?)rgb\((\d+), (\d+), (\d+)\)/.exec(color)
