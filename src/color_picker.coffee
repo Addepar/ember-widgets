@@ -218,10 +218,12 @@ Ember.Widgets.ColorPickerCell = Ember.View.extend Ember.Widgets.StyleBindingsMix
     return color.toLowerCase() if color.substr(0, 1) is "#" or color is "transparent"
     return colorNameToHexMap[color.toLowerCase()] if color of colorNameToHexMap
     digits = /(.*?)rgb\((\d+), (\d+), (\d+)\)/.exec(color)
-    red = parseInt(digits[2])
-    green = parseInt(digits[3])
-    blue = parseInt(digits[4])
-    rgbToHex(red, green, blue)
+    if digits?.length is 5
+      red = parseInt(digits[2])
+      green = parseInt(digits[3])
+      blue = parseInt(digits[4])
+      return rgbToHex(red, green, blue)
+    return undefined
 
   isActive: Ember.computed ->
     @colorToHex(@get('controller.selectedColor')) is @colorToHex(@get('color'))
