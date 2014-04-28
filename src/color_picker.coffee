@@ -222,6 +222,9 @@ Ember.Widgets.ColorPickerCell = Ember.View.extend Ember.Widgets.StyleBindingsMix
       red = parseInt(digits[3])
       green = parseInt(digits[4])
       blue = parseInt(digits[5])
+      opacity = parseInt(digits[7])
+      if opacity == 0
+        return "transparent"
       return rgbToHex(red, green, blue)
     return undefined
 

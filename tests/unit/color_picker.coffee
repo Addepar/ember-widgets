@@ -25,7 +25,13 @@ test 'Color picker converts color to hex when color is rgb', ->
 
 test 'Color picker converts color to hex when color is rgba', ->
   colorPickerCell = Ember.Widgets.ColorPickerCell.create()
-  equal colorPickerCell.colorToHex("rgb(0, 0, 0, 0)"), "#000000"
+  equal colorPickerCell.colorToHex("rgb(3, 2, 1, 1)"), "#030201"
+
+
+test 'Color picker converts color to hex when color is rgba and transparent', ->
+  colorPickerCell = Ember.Widgets.ColorPickerCell.create()
+  equal colorPickerCell.colorToHex("rgb(3, 2, 1, 0)"), "transparent"
+  equal colorPickerCell.colorToHex("rgb(0, 0, 0, 0)"), "transparent"
 
 
 test 'Color picker converts color to hex when color is color name', ->
