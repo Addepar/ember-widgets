@@ -23,6 +23,11 @@ test 'Color picker converts color to hex when color is rgb', ->
   equal colorPickerCell.colorToHex("rgb(0, 0, 0)"), "#000000"
 
 
+test 'Color picker converts color to hex when color is rgba', ->
+  colorPickerCell = Ember.Widgets.ColorPickerCell.create()
+  equal colorPickerCell.colorToHex("rgb(0, 0, 0, 0)"), "#000000"
+
+
 test 'Color picker converts color to hex when color is color name', ->
   colorPickerCell = Ember.Widgets.ColorPickerCell.create()
   equal colorPickerCell.colorToHex("aliceblue"), "#f0f8ff"
