@@ -166,7 +166,9 @@ Ember.Widgets.ColorPicker = Ember.Component.extend
   INITIAL_COLOR: '#0074D9'
 
   selectedColor: '#0074D9'
-  selectedColorRGB: Ember.computed -> colorToHex(@get('selectedColor'))
+  selectedColorRGB: Ember.computed ->
+    colorToHex(@get('selectedColor'))
+  .property 'selectedColor'
   customColor: ''
 
   isColorTransparent: Ember.computed.equal 'selectedColorRGB', 'transparent'
