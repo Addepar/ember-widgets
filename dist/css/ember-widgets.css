@@ -8730,20 +8730,19 @@ input[type="radio"] {
 /* Popover Title
 -------------------------------------------------- */
 .popover-title {
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #dfdfdf;
+  padding: 8px 15px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  color: #333;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
   -moz-background-clip: padding;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
-  background-color: #ededed;
-  height: 25px;
-  line-height: 25px;
-  padding: 0 15px;
-  font-size: 9px;
-  text-transform: uppercase;
-  font-weight: 600;
-  color: #555;
 }
 .ember-text-editor-toolbar {
   border: 1px solid #ddd;
