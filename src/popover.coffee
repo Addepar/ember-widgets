@@ -9,18 +9,22 @@ Ember.Widgets.BodyEventListener,
   # The target element to anchor the popover to
   targetElement: null
   contentViewClass: null
-  placement:  'top'
-  title:      ''
-  left:       0
-  top:        0
-  display:    'block'
-  visibility: 'hidden'
+
   fade: yes
-  isShowing:  no
-  inserted: no
-  content: ""
-  marginTop: 10
+  placement: 'top'
+  display: 'block'
+  visibility: 'hidden'
+
+  left: 0
+  top: 0
+  marginTop: 23
   marginLeft: 10
+
+  isShowing: no
+  inserted: no
+
+  title: ''
+  content: ''
 
   _resizeHandler: null
   _scrollHandler: null

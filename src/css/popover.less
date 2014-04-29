@@ -2,6 +2,8 @@
 // Popovers
 // -----------------------------------------------------------------------------
 
+@popover-background-color: #f8f8f8;
+
 // Do not limit the popovers to have width 276px
 .popover {
   max-width: none;
@@ -34,7 +36,7 @@
 }
 
 .popover.top-right .arrow {
-  top: 18px;
+  top: 14px;
   left: -11px;
   margin-top: -11px;
   border-left-width: 0;
@@ -46,7 +48,7 @@
   left: 1px;
   bottom: -10px;
   border-left-width: 0;
-  border-right-color: #fff;
+  border-right-color: @popover-background-color;
 }
 
 .popover.top-left {
@@ -55,7 +57,7 @@
 }
 
 .popover.top-left .arrow {
-  top: 18px;
+  top: 14px;
   right: -11px;
   margin-top: -11px;
   border-right-width: 0;
@@ -66,7 +68,7 @@
 .popover.top-left .arrow:after {
   right: 1px;
   border-right-width: 0;
-  border-left-color: #fff;
+  border-left-color: @popover-background-color;
   bottom: -10px;
 }
 
@@ -127,7 +129,7 @@
 /* Popover Title
 -------------------------------------------------- */
 .popover-title {
-  background-color: #f8f8f8;
+  background-color: @popover-background-color;
   border-bottom: 1px solid #dfdfdf;
 
   padding: 8px 15px;

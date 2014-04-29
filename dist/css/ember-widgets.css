@@ -8652,7 +8652,7 @@ input[type="radio"] {
   margin-top: -4px;
 }
 .popover.top-right .arrow {
-  top: 18px;
+  top: 14px;
   left: -11px;
   margin-top: -11px;
   border-left-width: 0;
@@ -8663,14 +8663,14 @@ input[type="radio"] {
   left: 1px;
   bottom: -10px;
   border-left-width: 0;
-  border-right-color: #fff;
+  border-right-color: #f8f8f8;
 }
 .popover.top-left {
   margin-left: -10px;
   margin-top: -4px;
 }
 .popover.top-left .arrow {
-  top: 18px;
+  top: 14px;
   right: -11px;
   margin-top: -11px;
   border-right-width: 0;
@@ -8680,7 +8680,7 @@ input[type="radio"] {
 .popover.top-left .arrow:after {
   right: 1px;
   border-right-width: 0;
-  border-left-color: #fff;
+  border-left-color: #f8f8f8;
   bottom: -10px;
 }
 .popover.bottom.no-arrow .arrow,
