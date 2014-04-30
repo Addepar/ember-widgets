@@ -21,7 +21,7 @@ Ember.AddeparMixins.ResizeHandlerMixin = Ember.Mixin.create({
       if (typeof this.onResizeStart === "function") {
         this.onResizeStart(event);
       }
-    }
+    }`
     if (typeof this.onResize === "function") {
       this.onResize(event);
     }
