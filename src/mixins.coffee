@@ -41,6 +41,7 @@ Ember.Widgets.BodyEventListener = Ember.Mixin.create
   bodyClick: Ember.K
 
   didInsertElement: ->
+    console.log('Three')
     @_super()
     # It is important to setup document handlers in the next run loop.
     # Otherwise we run in to situation whenre the click that causes a popover
@@ -50,10 +51,12 @@ Ember.Widgets.BodyEventListener = Ember.Mixin.create
     Ember.run.next this, @_setupDocumentHandlers
 
   willDestroyElement: ->
+    console.log('Four')
     @_super()
     @_removeDocumentHandlers()
 
   _setupDocumentHandlers: ->
+    console.log('_setupDocumentHandlers Two');
     return if @_clickHandler
     @_clickHandler = (event) =>
       if @get('state') is 'inDOM' and Ember.isEmpty(@$().has($(event.target)))

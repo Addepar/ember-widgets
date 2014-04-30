@@ -61,10 +61,11 @@ Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
 
 Ember.Widgets.SelectComponent =
 Ember.Component.extend Ember.Widgets.BodyEventListener,
+Ember.AddeparMixins.ResizeHandlerMixin,
   templateName:       'select'
   classNames:         'ember-select'
   attributeBindings: ['tabindex']
-  classNameBindings: ['showDropdown:open']
+  classNameBindings: ['showDropdown:open', 'isDropup:dropup']
   itemViewClass:      'Ember.Widgets.SelectOptionView'
   prompt:             'Select a Value'
   disabled: no
@@ -78,11 +79,15 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
 
   dropdownHeight: 300
   # Important: rowHeight must be synched with the CSS
-  rowHeight:    26
+  rowHeight: 26
   # Option to indicate whether we should sort the labels
-  sortLabels:   yes
+  sortLabels: yes
   # If isSelect is true, we will not show the search box
-  isSelect:     no
+  isSelect: no
+  # Align dropdown-menu above the button
+  isDropup: no
+  # Align dropdown-menu to the right of the button
+  isDropdownMenuPulledRight: no
 
   # Change the icon when necessary
   dropdownToggleIcon: 'fa fa-caret-down'
@@ -93,9 +98,9 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
   dropdownMenuClass: ''
 
   # The list of options
-  content:    []
-  selection:  null
-  query:      ''
+  content: []
+  selection: null
+  query: ''
   optionLabelPath: ''
   optionValuePath: ''
   optionGroupPath: ''
@@ -104,6 +109,49 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
   # This augments the dropdown to provide a place for adding a select menu that
   # possibly says 'create item' or something along that line
   selectMenuView: null
+
+  updateDropdownLayout: Ember.observer ->
+    return if @get('state') isnt 'inDOM' or @get('showDropdown') is no
+
+    # Render the dropdown in a hidden state to get the size
+    @$('.js-dropdown-menu').css('visibility', 'hidden');
+
+    # Render the dropdown completely into the DOM for offset()
+    Ember.run.next this, ->
+      dropdownButton = @$('.js-dropdown-toggle')[0]
+      dropdownButtonHeight = @$(dropdownButton).outerHeight()
+      dropdownButtonOffset = @$(dropdownButton).offset()
+
+      dropdownMenu = @$('.js-dropdown-menu')[0]
+      dropdownMenuHeight = @$(dropdownMenu).outerHeight()
+      dropdownMenuWidth = @$(dropdownMenu).outerWidth()
+      dropdownMenuOffset = @$(dropdownMenu).offset()
+
+      # Only switch from dropUp to dropDown if there's this much extra space
+      # under where the dropDown would be. This prevents the popup from jiggling
+      # up and down
+      dropdownMargin = 15
+
+      if @get('isDropup')
+        dropdownMenuBottom = dropdownButtonOffset.top + dropdownButtonHeight +
+          dropdownMenuHeight + dropdownMargin
+      else
+        dropdownMenuBottom = dropdownMenuOffset.top + dropdownMenuHeight
+
+      @set 'isDropup', dropdownMenuBottom > window.innerHeight
+      @set 'isDropdownMenuPulledRight', dropdownButtonOffset.left +
+        dropdownMenuWidth + dropdownMargin > window.innerWidth
+
+      @$('.js-dropdown-menu').css('visibility', 'visible');
+      return
+  , 'showDropdown', 'window.innerHeight'
+
+  onResizeEnd: ->
+    # We need to put this on the run loop, because the resize event came from
+    # the window. Otherwise, we get a warning when used in the tests. You have
+    # turned on testing mode, which disables the run-loop's autorun. You
+    # will need to wrap any code with asynchronous side-effects in an Ember.run
+    Ember.run this, @updateDropdownLayout
 
   # TODO(Peter): consider calling this optionViewClass?
   itemView: Ember.computed ->
