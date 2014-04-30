@@ -28,17 +28,14 @@ Ember.AddeparMixins.ResizeHandlerMixin = Ember.Mixin.create({
     return Ember.run.debounce(this, this.get('endResize'), event, this.get('resizeEndDelay'));
   },
   didInsertElement: function() {
-    console.log('One');
     this._super();
     return this._setupResizeDocumentHandlers();
   },
   willDestroyElement: function() {
-    console.log('Two');
     this._removeResizeDocumentHandlers();
     return this._super();
   },
   _setupResizeDocumentHandlers: function() {
-    console.log('_setupResizeDocumentHandlers One');
     if (this._resizeHandler) {
       return;
     }

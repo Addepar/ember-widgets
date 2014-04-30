@@ -84,6 +84,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   sortLabels: yes
   # If isSelect is true, we will not show the search box
   isSelect: no
+
   # Align dropdown-menu above the button
   isDropup: no
   # Align dropdown-menu to the right of the button
