@@ -8692,7 +8692,6 @@ input[type="radio"] {
   margin-top: 0;
 }
 .popover.bottom-right {
-  font-size: 12px;
   margin-top: 0;
 }
 .popover.bottom-right .arrow {
@@ -8710,7 +8709,6 @@ input[type="radio"] {
   border-bottom-color: #ffffff;
 }
 .popover.bottom-left {
-  font-size: 12px;
   margin-top: 0;
 }
 .popover.bottom-left .arrow {
