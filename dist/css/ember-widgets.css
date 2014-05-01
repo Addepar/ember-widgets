@@ -6412,11 +6412,12 @@ td.visible-print {
 /* Addepar Scrollbars
 -------------------------------------------------- */
 ::-webkit-scrollbar {
-  width: 7px;
+  width: 10px;
+  height: 10px;
   margin-right: 2px;
 }
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(0, 0, 0, 0.03);
   border: none;
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
@@ -6434,115 +6435,115 @@ td.visible-print {
 }
 @font-face {
   font-family: 'Univers-Next';
-  src: url('../fonts/univers/UniversNW01130BUlLt.woff') format('woff'), url('../fonts/univers/UniversNW01130BUlLt.ttf') format('truetype');
+  src: url("../fonts/univers/UniversNW01130BUlLt.woff") format('woff'), url("../fonts/univers/UniversNW01130BUlLt.ttf") format('truetype');
   font-weight: 100;
   font-style: normal;
 }
 @font-face {
   font-family: 'Univers-Next';
-  src: url('../fonts/univers/UniversNW01230BThin.woff') format('woff'), url('../fonts/univers/UniversNW01230BThin.ttf') format('truetype');
+  src: url("../fonts/univers/UniversNW01230BThin.woff") format('woff'), url("../fonts/univers/UniversNW01230BThin.ttf") format('truetype');
   font-weight: 200;
   font-style: normal;
 }
 @font-face {
   font-family: 'Univers-Next';
-  src: url('../fonts/univers/UniversNextW01Light.woff') format('woff'), url('../fonts/univers/UniversNextW01Light.ttf') format('truetype');
+  src: url("../fonts/univers/UniversNextW01Light.woff") format('woff'), url("../fonts/univers/UniversNextW01Light.ttf") format('truetype');
   font-weight: 300;
   font-style: normal;
 }
 @font-face {
   font-family: 'Univers-Next';
-  src: url('../fonts/univers/UniversNextW01Regular.woff') format('woff'), url('../fonts/univers/UniversNextW01Regular.ttf') format('truetype');
+  src: url("../fonts/univers/UniversNextW01Regular.woff") format('woff'), url("../fonts/univers/UniversNextW01Regular.ttf") format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'Univers-Next';
-  src: url('../fonts/univers/UniversNextW01Medium.woff') format('woff'), url('../fonts/univers/UniversNextW01Medium.ttf') format('truetype');
+  src: url("../fonts/univers/UniversNextW01Medium.woff") format('woff'), url("../fonts/univers/UniversNextW01Medium.ttf") format('truetype');
   font-weight: 500;
   font-style: normal;
 }
 @font-face {
   font-family: 'Univers-Next';
-  src: url('../fonts/univers/UniversNextW01Bold.woff') format('woff'), url('../fonts/univers/UniversNextW01Bold.ttf') format('truetype');
+  src: url("../fonts/univers/UniversNextW01Bold.woff") format('woff'), url("../fonts/univers/UniversNextW01Bold.ttf") format('truetype');
   font-weight: bold;
   font-style: normal;
 }
 @font-face {
   font-family: 'Univers-Next';
-  src: url('../fonts/univers/UniversNextW01Heavy.woff') format('woff'), url('../fonts/univers/UniversNextW01Heavy.ttf') format('truetype');
+  src: url("../fonts/univers/UniversNextW01Heavy.woff") format('woff'), url("../fonts/univers/UniversNextW01Heavy.ttf") format('truetype');
   font-weight: 800;
   font-style: normal;
 }
 @font-face {
   font-family: 'Univers-Next';
-  src: url('../fonts/univers/UniversNextW01Black.woff') format('woff'), url('../fonts/univers/UniversNextW01Black.ttf') format('truetype');
+  src: url("../fonts/univers/UniversNextW01Black.woff") format('woff'), url("../fonts/univers/UniversNextW01Black.ttf") format('truetype');
   font-weight: 900;
   font-style: normal;
 }
 @font-face {
   font-family: 'Univers-Next-Condensed';
-  src: url('../fonts/univers/UniversNW01120CdUlLt.woff') format('woff'), url('../fonts/univers/UniversNW01120CdUlLt.ttf') format('truetype');
+  src: url("../fonts/univers/UniversNW01120CdUlLt.woff") format('woff'), url("../fonts/univers/UniversNW01120CdUlLt.ttf") format('truetype');
   font-weight: 100;
   font-style: normal;
 }
 @font-face {
   font-family: 'Univers-Next-Condensed';
-  src: url('../fonts/univers/UniversNW01220CdThin.woff') format('woff'), url('../fonts/univers/UniversNW01220CdThin.ttf') format('truetype');
+  src: url("../fonts/univers/UniversNW01220CdThin.woff") format('woff'), url("../fonts/univers/UniversNW01220CdThin.ttf") format('truetype');
   font-weight: 200;
   font-style: normal;
 }
 @font-face {
   font-family: 'Univers-Next-Condensed';
-  src: url('../fonts/univers/UniversNW01320CdLt.woff') format('woff'), url('../fonts/univers/UniversNW01320CdLt.ttf') format('truetype');
+  src: url("../fonts/univers/UniversNW01320CdLt.woff") format('woff'), url("../fonts/univers/UniversNW01320CdLt.ttf") format('truetype');
   font-weight: 300;
   font-style: normal;
 }
 @font-face {
   font-family: 'Univers-Next-Condensed';
-  src: url('../fonts/univers/UniversNW01420CdRegular.woff') format('woff'), url('../fonts/univers/UniversNW01420CdRegular.ttf') format('truetype');
+  src: url("../fonts/univers/UniversNW01420CdRegular.woff") format('woff'), url("../fonts/univers/UniversNW01420CdRegular.ttf") format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'Univers-Next-Condensed';
-  src: url('../fonts/univers/UniversNW01520CdMedium.woff') format('woff'), url('../fonts/univers/UniversNW01520CdMedium.ttf') format('truetype');
+  src: url("../fonts/univers/UniversNW01520CdMedium.woff") format('woff'), url("../fonts/univers/UniversNW01520CdMedium.ttf") format('truetype');
   font-weight: 500;
   font-style: normal;
 }
 @font-face {
   font-family: 'Univers-Next-Condensed';
-  src: url('../fonts/univers/UniversNW01620CdBold.woff') format('woff'), url('../fonts/univers/UniversNW01620CdBold.ttf') format('truetype');
+  src: url("../fonts/univers/UniversNW01620CdBold.woff") format('woff'), url("../fonts/univers/UniversNW01620CdBold.ttf") format('truetype');
   font-weight: bold;
   font-style: normal;
 }
 @font-face {
   font-family: 'Univers-Next-Condensed';
-  src: url('../fonts/univers/UniversNW01720CdHeavy.woff') format('woff'), url('../fonts/univers/UniversNW01720CdHeavy.ttf') format('truetype');
+  src: url("../fonts/univers/UniversNW01720CdHeavy.woff") format('woff'), url("../fonts/univers/UniversNW01720CdHeavy.ttf") format('truetype');
   font-weight: 800;
   font-style: normal;
 }
 @font-face {
   font-family: 'Univers-Next-Condensed';
-  src: url('../fonts/univers/UniversNW01820CdBlk.woff') format('woff'), url('../fonts/univers/UniversNW01820CdBlk.ttf') format('truetype');
+  src: url("../fonts/univers/UniversNW01820CdBlk.woff") format('woff'), url("../fonts/univers/UniversNW01820CdBlk.ttf") format('truetype');
   font-weight: 900;
   font-style: normal;
 }
 @font-face {
   font-family: 'Univers-Tabular';
-  src: url('../fonts/univers/UniversLTLight.woff') format('woff'), url('../fonts/univers/UniversLTLight.ttf') format('truetype');
+  src: url("../fonts/univers/UniversLTLight.woff") format('woff'), url("../fonts/univers/UniversLTLight.ttf") format('truetype');
   font-weight: 300;
   font-style: normal;
 }
 @font-face {
   font-family: 'Univers-Tabular';
-  src: url('../fonts/univers/UniversLTRoman.woff') format('woff'), url('../fonts/univers/UniversLTRoman.ttf') format('truetype');
+  src: url("../fonts/univers/UniversLTRoman.woff") format('woff'), url("../fonts/univers/UniversLTRoman.ttf") format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'Univers-Tabular';
-  src: url('../fonts/univers/UniversLTBold.woff') format('woff'), url('../fonts/univers/UniversLTBold.ttf') format('truetype');
+  src: url("../fonts/univers/UniversLTBold.woff") format('woff'), url("../fonts/univers/UniversLTBold.ttf") format('ruetype');
   font-weight: bold;
   font-style: normal;
 }
@@ -6576,11 +6577,17 @@ h6,
 .text-medium {
   font-weight: 500;
 }
+.text-normal {
+  font-weight: normal;
+}
 ::selection {
   background-color: #c4dff5;
 }
 ::-moz-selection {
   background-color: #c4dff5;
+}
+.negative {
+  color: #ea2400;
 }
 .row-tight {
   margin-left: -5px;
@@ -7148,6 +7155,15 @@ h6,
 .sorted.sort-asc .table-sort-icon-asc {
   display: inline-block;
 }
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+  border-top: 0;
+  border-bottom: 1px solid #dddddd;
+}
 .table > thead > tr > .active,
 .table > tbody > tr > .active,
 .table > tfoot > tr > .active,
@@ -7166,9 +7182,46 @@ h6,
   background-color: #227ecb;
   color: #eee;
 }
+.table-hover > tbody > tr > td,
+.table-hover > tbody > tr > th {
+  background-color: #fff;
+  -moz-transition: 0.2s ease-in-out background-color;
+  -ms-transition: 0.2s ease-in-out background-color;
+  -o-transition: 0.2s ease-in-out background-color;
+  -webkit-transition: 0.2s ease-in-out background-color;
+  transition: 0.2s ease-in-out background-color;
+}
 .table-hover > tbody > tr:hover > td,
 .table-hover > tbody > tr:hover > th {
-  background-color: #E5EDF8;
+  background-color: #f3f8fc;
+  cursor: pointer;
+}
+.table-sm {
+  font-size: 12px;
+}
+.table-sm.table > thead > tr > th,
+.table-sm.table > tbody > tr > th,
+.table-sm.table > tfoot > tr > th,
+.table-sm.table > thead > tr > td,
+.table-sm.table > tbody > tr > td,
+.table-sm.table > tfoot > tr > td {
+  padding: 3px 8px;
+}
+.list-hover > .active:hover,
+.list-hover > .active:hover {
+  background-color: #227ecb;
+  color: #eee;
+}
+.list-hover > li {
+  background-color: #fff;
+  -moz-transition: 0.2s ease-in-out background-color;
+  -ms-transition: 0.2s ease-in-out background-color;
+  -o-transition: 0.2s ease-in-out background-color;
+  -webkit-transition: 0.2s ease-in-out background-color;
+  transition: 0.2s ease-in-out background-color;
+}
+.list-hover > li:hover {
+  background-color: #f3f8fc;
   cursor: pointer;
 }
 .form-group {
@@ -7220,6 +7273,27 @@ h6,
 }
 .form-horizontal .toggle-row {
   padding-top: 7px;
+}
+.form-horizontal.dense .form-group.form-group-sm {
+  margin-bottom: 0;
+}
+.form-horizontal.dense .form-control.non-editable,
+.form-horizontal.dense .form-label.control-label {
+  height: 21px;
+  line-height: 21px;
+  margin: 0 0 3px 0;
+  padding: 0;
+}
+.form-horizontal.dense .form-label.control-label {
+  font-weight: normal;
+}
+.form-horizontal.dense .form-control.non-editable,
+.form-horizontal.dense .form-control {
+  font-weight: 500;
+}
+.form-horizontal.dense .help-block {
+  margin: 0 0 5px 0;
+  padding: 0;
 }
 /* Legend & Fieldsets */
 .fieldset {
@@ -7560,6 +7634,34 @@ input[type="radio"] {
   padding: 0 10px;
   font-size: 12px;
 }
+.help-block-all-caps {
+  margin: 1px 0 0 0;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 500;
+  color: #999;
+}
+.form-border-bottom,
+.form-group-border-bottom .form-control,
+.has-error .form-border-bottom.form-control {
+  height: auto;
+  padding: 0;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.non-editable-form-border-bottom {
+  height: 22px;
+  line-height: 1.6796875;
+  border-bottom: 1px solid transparent;
+}
+.form-h5 {
+  font-weight: bold;
+  color: #333;
+}
 .btn {
   -webkit-transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
   -moz-transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
@@ -7612,7 +7714,13 @@ input[type="radio"] {
   height: 1px;
   margin: 9px 0;
   overflow: hidden;
-  background-color: #E5E5E5;
+  background-color: #e5e5e5;
+}
+.dropdown-menu {
+  border: 1px solid #dfdfdf;
+  -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
 }
 .dropdown-menu.expand {
   width: 100%;
@@ -7739,7 +7847,7 @@ input[type="radio"] {
 .list-sortable {
   margin: 0;
 }
-.list-sortable > li {
+.list-sortable-item {
   margin-bottom: 3px;
   padding: 6px 10px;
   font-size: 13px;
@@ -7747,6 +7855,14 @@ input[type="radio"] {
   border-radius: 0;
   color: #333333;
   border: 1px solid #cccccc;
+}
+.list-sortable-item.list-btn-group {
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+.list-sortable-item.list-btn-group > .btn-group {
+  width: 100%;
 }
 .list-sortable-form > li {
   color: #555555;
@@ -7788,7 +7904,7 @@ input[type="radio"] {
   width: calc(100% - 17px);
 }
 .list-sortable-item-content.has-sortable.has-delete {
-  width: calc(100% - 30px);
+  width: calc(100% - 31px);
 }
 .list-sortable-item-sort i,
 .list-sortable-item-controls a {
@@ -7806,6 +7922,18 @@ input[type="radio"] {
 }
 .list-sortable-item-remove {
   padding-left: 7px;
+}
+.list-btn-group .list-btn-group-title {
+  width: calc(100%);
+}
+.list-btn-group.list-btn-group-one .list-btn-group-title {
+  width: calc(100% - 47px);
+}
+.list-btn-group.list-btn-group-two .list-btn-group-title {
+  width: calc(100% - 91px);
+}
+.list-btn-group.list-btn-group-three .list-btn-group-title {
+  width: calc(100% - 134px);
 }
 /* jQuery UI Sortable */
 .list-sortable.ui-accordion > li {
@@ -7894,6 +8022,9 @@ input[type="radio"] {
 }
 .panel {
   border: 0;
+  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 .panel-heading.flush {
   padding: 0;
@@ -7901,7 +8032,11 @@ input[type="radio"] {
 .panel-heading * {
   line-height: 1;
 }
+.panel-heading-lg {
+  height: 54px;
+}
 .panel-title,
+.panel-title-h3,
 .panel-footer {
   font-size: 13px;
   font-weight: 500;
@@ -7909,8 +8044,20 @@ input[type="radio"] {
   line-height: 1;
 }
 .panel-title small,
+.panel-title-h3 small,
 .panel-footer small {
   font-size: 12px;
+}
+.panel-title a,
+.panel-title-h3 a,
+.panel-footer a {
+  color: #227ecb;
+}
+.panel-title-h2 {
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+  margin: 4px 0;
 }
 .panel-heading-tabs {
   margin: 0;
@@ -7923,6 +8070,11 @@ input[type="radio"] {
 .panel-heading-tabs a {
   font-weight: 500;
   color: #bbb;
+  -moz-transition: 0.3s ease-in-out color;
+  -ms-transition: 0.3s ease-in-out color;
+  -o-transition: 0.3s ease-in-out color;
+  -webkit-transition: 0.3s ease-in-out color;
+  transition: 0.3s ease-in-out color;
 }
 .panel-heading-tabs a:hover {
   text-decoration: none;
@@ -7933,11 +8085,24 @@ input[type="radio"] {
 }
 .panel-heading-tabs.dedicated > li {
   float: left;
-  padding: 10px 15px;
   text-align: center;
+  border-right: 0;
+  padding: 0;
+}
+.panel-heading-tabs.dedicated > li.text-left {
+  text-align: left;
+}
+.panel-heading-tabs.dedicated > li.text-right {
+  text-align: right;
+}
+.panel-heading-tabs.dedicated > li a {
+  padding: 10px 15px;
+  display: block;
+}
+.panel-heading-tabs.dedicated.bordered > li {
   border-right: 1px solid #eaeaea;
 }
-.panel-heading-tabs.dedicated > li:last-child {
+.panel-heading-tabs.dedicated.bordered > li:last-child {
   border-right: 0;
 }
 .panel-heading-tabs.one-tab > li {
@@ -7959,14 +8124,20 @@ input[type="radio"] {
   padding: 0;
 }
 .panel-body.vertical-stretch {
-  height: calc(100% -  36px);
+  height: calc(100% -  34px);
   overflow: auto;
+}
+.panel-body.has-header-lg.vertical-stretch {
+  height: calc(100% -  88px);
 }
 .panel-body.has-no-header.vertical-stretch {
   height: calc(100%);
 }
 .panel-body.has-footer.vertical-stretch {
-  height: calc(100% -  72px);
+  height: calc(100% -  68px);
+}
+.panel-body.has-footer.has-header-lg.vertical-stretch {
+  height: calc(100% -  122px);
 }
 .panel-body-content {
   padding: 15px;
@@ -7983,6 +8154,9 @@ input[type="radio"] {
 }
 .panel-sub-heading.first {
   border-top: 0;
+}
+.panel-sub-heading * {
+  line-height: 1;
 }
 .panel-sub-title {
   margin: 0;
@@ -8087,6 +8261,57 @@ input[type="radio"] {
   height: 80px;
   border-bottom: 1px solid #eaeaea;
 }
+.panel-group .panel {
+  border: 1px solid #dddddd;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.panel-group .panel-group-title-caret {
+  -moz-transition: 0.3s ease-in-out all;
+  -ms-transition: 0.3s ease-in-out all;
+  -o-transition: 0.3s ease-in-out all;
+  -webkit-transition: 0.3s ease-in-out all;
+  transition: 0.3s ease-in-out all;
+}
+.panel-group .panel-title {
+  cursor: pointer;
+}
+.panel-group .panel-title a:hover {
+  text-decoration: none;
+}
+.panel-group .panel-title.disabled,
+.panel-group .panel-title .disabled {
+  pointer-events: none;
+  cursor: default;
+}
+.panel-group .panel-title.collapsed .panel-group-title-caret:not(disabled),
+.panel-group .panel-title .collapsed .panel-group-title-caret:not(disabled) {
+  -moz-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+.panel-group .panel-group-title-caret {
+  margin-left: -2px;
+  margin-right: 2px;
+}
+.panel-group .panel-group-title-caret.disabled {
+  pointer-events: none;
+  cursor: default;
+  opacity: .3;
+}
+.panel-group .panel:first-child {
+  margin-top: 0;
+}
+.panel-group .panel {
+  margin-top: 5px;
+}
+.panel-list {
+  height: calc(100% -  30px);
+  overflow-y: auto;
+}
 .horizontal-step {
   position: relative;
 }
@@ -8126,6 +8351,12 @@ input[type="radio"] {
 .modal {
   display: block !important;
   overflow-y: auto;
+}
+.modal-sm .modal-dialog {
+  width: 400px;
+}
+.modal-lg .modal-dialog {
+  width: 800px;
 }
 @media screen and (min-width: 768px) {
   .modal-dialog {
@@ -8309,6 +8540,9 @@ input[type="radio"] {
 }
 .no-bumper-bottom {
   margin-bottom: 0;
+}
+.bumper-0 {
+  margin-top: 0;
 }
 .bumper-5 {
   margin-top: 5px;

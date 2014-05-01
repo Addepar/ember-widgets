@@ -35,7 +35,7 @@
     "rangy": "~1.2.3"
   },
   "devDependencies": {
-    "addepar-style-guide": "git@github.com:Addepar/style-guide.git#c4a85958abacdf7f20ffc3dfc5d3c19ccc03ba74",
+    "addepar-style-guide": "git@github.com:Addepar/style-guide.git#31ce9d8a9616b95cb953e6e8262557fa265dbc9e",
     "sinonjs": "~1.7.3",
     "sinon-qunit": "~1.0.0"
   },
