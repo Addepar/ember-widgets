@@ -9,8 +9,8 @@
 // Addepar Style Guide
 // -------------------------
 // Important to include bootstrap and the style guide in your project
-@import '../../dependencies/bootstrap/less/bootstrap.less';
-@import '../../dependencies/addepar-style-guide/less/addepar-style-guide.less';
+// @import '../../dependencies/bootstrap/less/bootstrap.less';
+// @import '../../dependencies/addepar-style-guide/less/addepar-style-guide.less';
 
 //
 // Important BG and Color Variables
@@ -60,6 +60,45 @@
 @colorpicker-cell-margin:   2px;
 @colorpicker-cell-invalid:  '../img/invalid_color.svg';
 @colorpicker-cell-no-color: '../img/no_color.svg';
+
+// TODO(Louis): Decouple addepar-style-guide properly
+// Default variables for the color picker
+
+@padding-base-vertical:          6px;
+@padding-button-horizontal:      16px;
+
+@padding-large-vertical:         10px;
+@padding-large-horizontal:       20px;
+
+@padding-small-vertical:         5px;
+@padding-small-horizontal:       10px;
+
+@padding-xs-vertical:            1px;
+@padding-xs-horizontal:          5px;
+
+@line-height-large:              1.33;
+@line-height-small:              1.5;
+
+@border-radius-base:             0;
+@border-radius-large:            0;
+@border-radius-small:            0;
+
+@component-active-color:         #111;
+@component-active-dropdown-bg:   #fff;
+@component-active-bg:            @brand-primary;
+
+@caret-width-base:               4px;
+@caret-width-large:              5px;
+
+@brand-primary:         #222; //#428bca #27AAE1
+
+@font-size-base:          13px;
+@font-size-large:         ceil((@font-size-base * 1.25)); // ~18px
+@font-size-small:         ceil((@font-size-base * 0.85)); // ~12px
+
+@line-height-base:        1.6796875; //1.428571429; // 20/14 or 23.515625/14
+
+@highlight-blue:      #0097e3; //#162851 #0A3250 00aeef 0075B0 27aae1
 
 //
 // Widgets
