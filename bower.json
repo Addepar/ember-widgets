@@ -23,9 +23,9 @@
     "VERSION"
   ],
   "dependencies": {
-    "bootstrap": "~3.0.0",
+    "bootstrap-addepar": "git@github.com:Addepar/bootstrap.git#e50a8bbac27234f8a3b4c885a3f3ff894f3c8081",
     "ember": "~1.1.0",
-    "font-awesome": "~4.0.1",
+    "font-awesome": "~4.0.3",
     "handlebars": "1.0.0",
     "holder": "holderjs#1.9",
     "jquery": "1.9.1",
@@ -35,7 +35,7 @@
     "rangy": "~1.2.3"
   },
   "devDependencies": {
-    "addepar-style-guide": "git@github.com:Addepar/style-guide.git#31ce9d8a9616b95cb953e6e8262557fa265dbc9e",
+    "addepar-style-guide": "git@github.com:Addepar/style-guide.git#dfea9b09c5113c9a48dd5860cdee1d55afd3ea4c",
     "sinonjs": "~1.7.3",
     "sinon-qunit": "~1.0.0"
   },
@@ -43,11 +43,6 @@
     "addepar-style-guide": {
       "img": "dist/img/*",
       "less": "dist/less/*"
-    },
-    "bootstrap": {
-      "less": "less/*",
-      "fonts": "dist/fonts/*",
-      "js": "dist/js/*.js"
     },
     "ember": {
       ".": "ember.js"
