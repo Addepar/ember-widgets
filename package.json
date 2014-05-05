@@ -25,13 +25,13 @@
     "grunt-jsdoc": "*",
     "grunt-neuter": "~0.4.0",
     "grunt-shell": "*",
-    "karma": "0.10.2",
+    "karma": "0.12",
     "karma-chrome-launcher": "~0.1.2",
     "karma-ember-preprocessor": "*",
     "karma-qunit": "*",
     "karma-spec-reporter": "0.0.6",
+    "grunt-karma": "0.8.0",
     "node-static": "*",
-    "lockdown": "0.0.5",
-    "grunt-karma": "~0.6.2"
+    "lockdown": "0.0.5"
   }
 }
