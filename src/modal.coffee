@@ -7,6 +7,7 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   bodyElementSelector: '.modal-backdrop'
 
   enforceModality: no
+  escToCancel:  yes
   backdrop:     yes
   isShowing:    no
   fade:         yes
@@ -49,6 +50,14 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     # bootstrap modal adds this class to the body when the modal opens to
     # transfer scroll behavior to the modal
     $(document.body).addClass('modal-open')
+    # add key handler
+    $(document).on('keyup', _self: this, @keyHandler)
+
+  keyHandler: (event) ->
+    _self = event.data._self
+    if event.which == 27 # ESC
+      return if not _self.escToCancel
+      _self.hide()
 
   click: (event) ->
     return if event.target isnt event.currentTarget
@@ -56,9 +65,11 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
 
   hide: ->
     @set 'isShowing', no
-    # bootstrap modal removes this class from the body when the modal cloases
+    # bootstrap modal removes this class from the body when the modal closes
     # to transfer scroll behavior back to the app
     $(document.body).removeClass('modal-open')
+    # remove key handler
+    $(document).off('keyup', @keyHandler)
     # fade out backdrop
     @_backdrop.removeClass('in')
     # remove backdrop and destroy modal only after transition is completed
