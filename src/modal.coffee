@@ -96,7 +96,7 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     fn = (event) ->
       if event.which is 27 and @get('escToCancel') # ESC
         $(document).trigger('modal:hide') 
-    fn.bind(@)
+    _.bind(fn, @)
 
   click: (event) ->
     return if event.target isnt event.currentTarget
