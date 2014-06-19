@@ -19,8 +19,6 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   content:          ""
   isValid: true
 
-  confirm: Ember.K
-  cancel: Ember.K
   close: Ember.K
 
   contentViewClass: Ember.View.extend
@@ -95,7 +93,7 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   keyHandler: Ember.computed ->
     fn = (event) ->
       if event.which is 27 and @get('escToCancel') # ESC
-        $(document).trigger('modal:hide') 
+        $(document).trigger('modal:hide')
     _.bind(fn, @)
 
   click: (event) ->
@@ -142,12 +140,24 @@ Ember.Widgets.ModalComponent.reopenClass
   hideAll: -> $(document).trigger('modal:hide')
 
   popup: (options = {}) ->
-    if not options.keepOpen
-      @hideAll()
+    @hideAll() unless options.keepOpen
+
     rootElement = options.rootElement or @rootElement
-    modal = this.create options
-    modal.set 'container', modal.get('targetObject.container')
-    modal.appendTo rootElement
-    modal
+
+    createModal = (opts) =>
+      modal = this.create opts
+      modal.set 'container', modal.get('targetObject.container')
+      modal.appendTo rootElement
+      modal
+
+    # if confirm or cancel were overrided, don't use promise behavior
+    if options.confirm or options.cancel or @confirm or @cancel
+      Ember.warn "Overriding confirm or cancel is deprecated since ModalComponent.popup now returns a promise."
+      createModal options
+    else
+      new Ember.RSVP.Promise (resolve, reject) =>
+        options.confirm = resolve
+        options.cancel = reject
+        createModal options
 
 Ember.Handlebars.helper('modal-component', Ember.Widgets.ModalComponent)
