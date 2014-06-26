@@ -27,7 +27,6 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
 
   iframeHeadContents: Ember.computed ->
     """
-    <link rel="stylesheet" href="css/addepar-style-guide.css">
     <style>
       html,
       body {

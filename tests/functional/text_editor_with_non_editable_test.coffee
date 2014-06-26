@@ -70,7 +70,7 @@ test "Insert pill via keypress at beginning of text editor", ->
 
 
 test "Left arrow selects non-editable pill", ->
-  expect 3
+  expect 2
 
   # Given a text editor with a non-editable pill inserted
   helpers.insertNonEditableDatePill()
@@ -81,9 +81,8 @@ test "Left arrow selects non-editable pill", ->
   .then ->
     range = helpers.getCurrentRange()
     pill = helpers.getTextEditor().find('.non-editable')
-    equal range.startOffset, 0, 'Range start is not at beginning of pill, is instead at ' + range.startOffset
-    equal range.endOffset, pill.text().length, 'Range end is not at end of pill, is instead at ' + range.endOffset
-    equal range.startContainer.parentElement, pill[0]
+    equal range.toString().length, pill.text().length, 'Range end is not at end of pill, is instead at ' + range.endOffset
+    equal range.startContainer, pill[0]
 
 
 test "Arrow behavior between pills", ->
