@@ -9,6 +9,7 @@ test/runner.html
 
 # Bower dependencies
 dependencies/addepar-style-guide
+dependencies/bootstrap
 dependencies/bootstrap-addepar
 dependencies/ember
 dependencies/font-awesome
@@ -23,3 +24,5 @@ dependencies/sinonjs
 dependencies/sinon-qunit
 
 tests/**/*.js
+
+npm-debug.log

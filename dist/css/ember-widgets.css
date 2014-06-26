@@ -578,3 +578,103 @@
   position: relative;
   z-index: 1;
 }
+.modal {
+  display: block !important;
+  overflow-y: auto;
+}
+.modal-sm .modal-dialog {
+  width: 400px;
+}
+.modal-lg .modal-dialog {
+  width: 800px;
+}
+@media screen and (min-width: 768px) {
+  .modal-dialog {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+}
+.modal.fade .modal-dialog {
+  transform: translate(0, 0);
+  -webkit-transform: translate(0, 0);
+  -moz-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  -o-transform: translate(0, 0);
+  -webkit-transition: -webkit-transform 0.3s ease-out;
+  -moz-transition: -moz-transform 0.3s ease-out;
+  -o-transition: -o-transform 0.3s ease-out;
+  transition: transform 0.3s ease-out;
+}
+.modal-content {
+  border: 1px solid #f1f1f1;
+  -webkit-border-radius: 1px;
+  -moz-border-radius: 1px;
+  border-radius: 1px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+.modal-backdrop,
+.modal-backdrop.fade.in {
+  filter: alpha(opacity=60);
+  -webkit-opacity: 0.6;
+  -moz-opacity: 0.6;
+  opacity: 0.6;
+}
+.modal-header {
+  padding: 20px;
+  border-bottom: 1px solid transparent;
+}
+.modal-header .close {
+  filter: alpha(opacity=30);
+  -webkit-opacity: 0.3;
+  -moz-opacity: 0.3;
+  opacity: 0.3;
+}
+.modal-title {
+  line-height: 1;
+  color: #333;
+}
+.modal-body {
+  position: static;
+  padding: 0 20px;
+}
+.modal-footer {
+  margin-top: 0;
+  border-top: 1px solid transparent;
+  text-align: left;
+}
+.has-no-close-button .close {
+  display: none;
+}
+.modal-tabs {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  border: none;
+}
+.modal-tabs > li {
+  margin-bottom: 0;
+}
+.modal-tabs > li > a {
+  padding-top: 0;
+  padding-bottom: 0;
+  border: none;
+  color: #999;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1;
+}
+.modal-tabs > li.active > a,
+.modal-tabs > li.active > a:hover,
+.modal-tabs > li.active > a:focus {
+  border: none;
+  color: #333;
+}
+.modal-tabs > li > a:hover,
+.modal-tabs > li > a:focus {
+  background-color: transparent;
+}
