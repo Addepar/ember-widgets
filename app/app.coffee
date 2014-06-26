@@ -1,6 +1,6 @@
 # Dependencies
 require 'dependencies/list-view'
-require 'dependencies/bootstrap/bootstrap'
+require 'lib/bootstrap/js/bootstrap'
 require 'dist/js/ember-widgets'
 
 # Compiled Handlebars templates

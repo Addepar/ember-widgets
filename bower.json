@@ -23,7 +23,7 @@
     "VERSION"
   ],
   "dependencies": {
-    "bootstrap": "git@github.com:twbs/bootstrap.git#f9b88cbe9edbf3ab824ce2a3912a2943c3717e6d",
+    "bootstrap": "~3.2.0",
     "ember": "~1.1.0",
     "font-awesome": "~4.0.3",
     "handlebars": "1.0.0",
@@ -42,6 +42,11 @@
     "addepar-style-guide": {
       "img": "dist/img/*",
       "less": "dist/less/*"
+    },
+    "bootstrap": {
+      "js": "**/*.js",
+      "less": "less/*.less",
+      "less/mixins": "less/mixins/*.less"
     },
     "ember": {
       ".": "ember.js"
