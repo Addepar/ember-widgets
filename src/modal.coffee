@@ -95,7 +95,7 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   keyHandler: Ember.computed ->
     fn = (event) ->
       if event.which is 27 and @get('escToCancel') # ESC
-        $(document).trigger('modal:hide') 
+        $(document).trigger('modal:hide')
     _.bind(fn, @)
 
   click: (event) ->
@@ -142,8 +142,7 @@ Ember.Widgets.ModalComponent.reopenClass
   hideAll: -> $(document).trigger('modal:hide')
 
   popup: (options = {}) ->
-    if not options.keepOpen
-      @hideAll()
+    @hideAll()
     rootElement = options.rootElement or @rootElement
     modal = this.create options
     modal.set 'container', modal.get('targetObject.container')
