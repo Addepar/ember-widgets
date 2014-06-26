@@ -36,7 +36,7 @@ module.exports = (grunt) ->
     bower:
       install:
         options:
-          targetDir: 'lib'
+          targetDir: 'vendor'
           layout: 'byComponent'
           install: true
           verbose: true
@@ -105,9 +105,9 @@ module.exports = (grunt) ->
           {src: ['app/index.html'], dest: 'gh_pages/index.html'},
           {expand: true, flatten: true, cwd: 'dependencies/', src: ['**/*.js'], dest: 'gh_pages/lib'},
           {expand: true, flatten: true, cwd: 'dependencies/', src: ['**/*.css'], dest: 'gh_pages/css'},
-          {expand: true, flatten: true, cwd: 'lib/', src: ['**/*.js'], dest: 'gh_pages/lib'},
-          {expand: true, flatten: true, cwd: 'lib/', src: ['**/*.css'], dest: 'gh_pages/css'},
-          {expand: true, cwd: 'lib/font-awesome/fonts/', src: ['**'], dest: 'gh_pages/fonts'},
+          {expand: true, flatten: true, cwd: 'vendor/', src: ['**/*.js'], dest: 'gh_pages/lib'},
+          {expand: true, flatten: true, cwd: 'vendor/', src: ['**/*.css'], dest: 'gh_pages/css'},
+          {expand: true, cwd: 'vendor/font-awesome/fonts/', src: ['**'], dest: 'gh_pages/fonts'},
           {expand: true, cwd: 'app/assets/font/', src: ['**'], dest: 'gh_pages/fonts'},
           {expand: true, cwd: 'app/assets/img/', src: ['**'],  dest: 'gh_pages/img'},
           {expand: true, cwd: 'src/img/', src: ['**'], dest: 'gh_pages/img'}
@@ -138,7 +138,7 @@ module.exports = (grunt) ->
         files: [ "src/**/*.hbs" ]
         tasks: [ "emberTemplates", "neuter" ]
       app:
-        files: [ "app/**/*.coffee", "dependencies/**/*.js", "lib/**/*.js" ]
+        files: [ "app/**/*.coffee", "dependencies/**/*.js", "vendor/**/*.js" ]
         tasks: [ "coffee:app", "neuter" ]
       app_handlebars:
         files: [ "app/**/*.hbs"]
@@ -146,7 +146,7 @@ module.exports = (grunt) ->
       less:
         files: [ "src/**/*.less", "src/**/*.css",
                  "dependencies/**/*.less", "dependencies/**/*.css",
-                 "lib/**/*.less", "lib/**/*.css",
+                 "vendor/**/*.less", "vendor/**/*.css",
                  "app/assets/**/*.less", "app/assets/**/*.css" ]
         tasks: ["less", "copy"]
       copy:
@@ -172,7 +172,7 @@ module.exports = (grunt) ->
       support files.
     ###
     jshint:
-      all: ['Gruntfile.js', 'src/**/*.js', 'test/**/*.js', '!dependencies/*.*', '!lib/*.*', '!test/support/*.*']
+      all: ['Gruntfile.js', 'src/**/*.js', 'test/**/*.js', '!dependencies/*.*', '!vendor/*.*', '!test/support/*.*']
       options:
         jshintrc: ".jshintrc"
 
