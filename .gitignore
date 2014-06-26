@@ -10,7 +10,6 @@ test/runner.html
 # Bower dependencies
 dependencies/addepar-style-guide
 dependencies/bootstrap
-dependencies/bootstrap-addepar
 dependencies/ember
 dependencies/font-awesome
 dependencies/handlebars

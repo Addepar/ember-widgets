@@ -23,7 +23,7 @@
     "VERSION"
   ],
   "dependencies": {
-    "bootstrap-addepar": "git@github.com:Addepar/bootstrap.git#e50a8bbac27234f8a3b4c885a3f3ff894f3c8081",
+    "bootstrap": "git@github.com:twbs/bootstrap.git#f9b88cbe9edbf3ab824ce2a3912a2943c3717e6d",
     "ember": "~1.1.0",
     "font-awesome": "~4.0.3",
     "handlebars": "1.0.0",
