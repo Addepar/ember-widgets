@@ -36,8 +36,8 @@ Ember.Widgets.CarouselComponent = Ember.Component.extend
     @slide 'next', nextIndex
 
   to: (pos) ->
-    return  unless 0 <= pos < @get('content.length')
-    return @$().one('slid', => @to(pos)) if @get('sliding')
+    return if @get('sliding')
+    return unless 0 <= pos < @get('content.length')
     direction = if pos > @get('activeIndex') then 'next' else 'prev'
     @slide direction, pos
 
@@ -62,7 +62,7 @@ Ember.Widgets.CarouselComponent = Ember.Component.extend
     $next.addClass(direction)
 
     # Bootstrap has this method for listening on end of transition
-    @$().one $.support.transition.end, =>
+    $next.one $.support.transition.end, =>
       # This code is async and ember-testing requires us to wrap any code with
       # asynchronous side-effects in an Ember.run
       Ember.run this, ->
