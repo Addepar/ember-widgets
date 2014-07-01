@@ -1,0 +1,7 @@
+<div class="arrow" {{bind-attr style="view.arrowStyle"}}></div>
+{{#if title}}
+  <h4 class="popover-title">{{title}}</h4>
+{{/if}}
+<div class="popover-content">
+  {{view view._contentViewClass}}
+</div>

@@ -1,9 +1,26 @@
 node_modules/
 gh_pages/
 build/
-dist/
 dependencies/compiled/*.*
 test/runner.html
 .DS_Store
 *.swo
 *.swp
+
+# Bower dependencies
+vendor/bootstrap
+vendor/ember
+vendor/font-awesome
+vendor/handlebars
+vendor/holder
+vendor/jquery
+vendor/jquery-browser
+vendor/lodash
+vendor/qunit
+vendor/rangy
+vendor/sinonjs
+vendor/sinon-qunit
+
+tests/**/*.js
+
+npm-debug.log

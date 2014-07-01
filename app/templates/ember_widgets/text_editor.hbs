@@ -1,0 +1,30 @@
+<div class="col-md-10 col-md-offset-2 left-border main-content-container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Text Editor <small> Ember.Widgets.TextEditorComponent </small></h2>
+      <p class="elevated">Text editor that supports non editable text.</p>
+    </div>
+    <div class="col-md-12">
+      {{view Ember.Widgets.TextEditorConfigComponent
+        textEditor=view.textEditorA
+      }}
+      {{view Ember.Widgets.TextEditorComponent
+        viewName="textEditorA"
+      }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Text Editor <small> Ember.Widgets.TextEditorWithNonEditableComponent </small></h2>
+      <p class="elevated">Text editor that supports non editable text.</p>
+    </div>
+    <div class="col-md-12">
+      {{view Ember.Widgets.TextEditorWithNonEditableConfigComponent
+        textEditor=view.textEditorB
+      }}
+      {{view Ember.Widgets.TextEditorWithNonEditableComponent
+        viewName="textEditorB"
+      }}
+    </div>
+  </div>
+</div>

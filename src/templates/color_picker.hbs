@@ -1,0 +1,42 @@
+<div class="dropdown">
+  <a class="clearfix color-picker-dropdown-button" data-toggle="dropdown" href="#">
+    {{#if isColorTransparent}}
+      {{view Ember.Widgets.ColorPickerCell
+        colorBinding="selectedColor"
+        classNames="color-picker-cell-transparent"
+      }}
+    {{else}}
+      {{view Ember.Widgets.ColorPickerCell
+        colorBinding="selectedColor"
+      }}
+    {{/if}}
+    <span class="pull-right fa fa-caret-down color-picker-dropdown-caret"></span>
+  </a>
+  <div {{bind-attr class=":dropdown-menu :color-picker-dropdown dropdownClass"}}
+    role="menu" aria-labelledby="dLabel">
+    {{#each row in colorRows}}
+      <div class="color-row clearfix">
+        {{#each color in row}}
+          {{view Ember.Widgets.ColorPickerCell
+            colorBinding = "color"
+           }}
+        {{/each}}
+      </div>
+      <hr>
+    {{/each}}
+    <form {{bind-attr class=":color-picker-custom-form isCustomColorValid:valid:invalid"}}>
+      <div class="form-group form-group-sm">
+        <div class="input-group">
+          <span {{bind-attr class=":input-group-addon
+            :color-picker-custom-preview isCustomColor:active"
+            style="customColorCSS"}}></span>
+          {{view Ember.TextField valueBinding="customColor"
+            class="form-control input-sm"
+            type="text"
+            placeholder="HEX code"
+          }}
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

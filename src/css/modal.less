@@ -1,0 +1,133 @@
+//
+// Modals
+// -----------------------------------------------------------------------------
+
+// This is required because bootstrap uses inline style to add display:block
+// when the modal is activated.
+
+@modal-inner-padding: 20px;
+
+.modal {
+  display: block !important;
+  overflow-y: auto;
+}
+
+// Sizes
+.modal-sm .modal-dialog {
+  width: 400px;
+}
+
+.modal-lg .modal-dialog {
+  width: 800px;
+}
+
+@media screen and (min-width: 768px) {
+  .modal-dialog {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+}
+
+// Do not have the modal fly in from the top
+.modal.fade .modal-dialog {
+  transform: translate(0, 0);
+  -webkit-transform: translate(0, 0);
+  -moz-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  -o-transform: translate(0, 0);
+  -webkit-transition: -webkit-transform 0.3s ease-out;
+  -moz-transition: -moz-transform 0.3s ease-out;
+  -o-transition: -o-transform 0.3s ease-out;
+  transition: transform 0.3s ease-out;
+}
+
+.modal-content {
+  border: 1px solid #f1f1f1;
+  .border-radius(1px);
+  .box-shadow(none);
+}
+
+.modal-backdrop,
+.modal-backdrop.fade.in {
+  filter: alpha(opacity=60);
+  -webkit-opacity: 0.6;
+  -moz-opacity: 0.6;
+  opacity: 0.6;
+}
+
+.modal-header {
+  padding: 20px;
+  border-bottom: 1px solid transparent;
+
+  .close {
+    filter: alpha(opacity=30);
+    -webkit-opacity: 0.3;
+    -moz-opacity: 0.3;
+    opacity: 0.3;
+  }
+}
+
+.modal-title {
+  line-height: 1;
+  color: #333;
+  // letter-spacing: 0.5px;
+  // text-transform: uppercase;
+}
+
+.modal-body {
+  // We do this so the modal-tabs live in the top right corner
+  position: static;
+  padding: 0 20px;
+}
+
+.modal-footer {
+  margin-top: 0;
+  border-top: 1px solid transparent;
+  text-align: left;
+}
+
+// Hide the right top close button
+.has-no-close-button .close {
+  display: none;
+}
+
+// Tabs in a Modal
+// They are rather special because they are located in the top right corner
+
+.modal-tabs {
+  position: absolute;
+  top: @modal-inner-padding;
+  right: @modal-inner-padding;
+  // Override
+  border: none;
+}
+
+// Override
+.modal-tabs > li {
+  margin-bottom: 0;
+}
+
+// Override
+.modal-tabs > li > a {
+  padding-top: 0;
+  padding-bottom: 0;
+  border: none;
+  color: #999;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1;
+}
+
+// Override
+.modal-tabs > li.active > a,
+.modal-tabs > li.active > a:hover,
+.modal-tabs > li.active > a:focus {
+  border: none;
+  color: #333;
+}
+
+// Override
+.modal-tabs > li > a:hover,
+.modal-tabs > li > a:focus {
+  background-color: transparent;
+}

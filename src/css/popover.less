@@ -2,6 +2,8 @@
 // Popovers
 // -----------------------------------------------------------------------------
 
+@popover-background-color: #f8f8f8;
+
 // Do not limit the popovers to have width 276px
 .popover {
   max-width: none;
@@ -13,13 +15,28 @@
 
 /* Popover Arrow
 -------------------------------------------------- */
+
+// TODO(Louis): look at this
+.popover.right .arrow {
+  top: auto !important;
+}
+.popover.left .arrow {
+  top: auto !important;
+}
+.popover.top .arrow {
+  left: auto !important;
+}
+.popover.bottom .arrow {
+  left: auto !important;
+}
+
 .popover.top-right {
   margin-left: 10px;
   margin-top: -4px;
 }
 
 .popover.top-right .arrow {
-  top: 18px;
+  top: 14px;
   left: -11px;
   margin-top: -11px;
   border-left-width: 0;
@@ -31,7 +48,7 @@
   left: 1px;
   bottom: -10px;
   border-left-width: 0;
-  border-right-color: #fff;
+  border-right-color: @popover-background-color;
 }
 
 .popover.top-left {
@@ -40,7 +57,7 @@
 }
 
 .popover.top-left .arrow {
-  top: 18px;
+  top: 14px;
   right: -11px;
   margin-top: -11px;
   border-right-width: 0;
@@ -51,7 +68,7 @@
 .popover.top-left .arrow:after {
   right: 1px;
   border-right-width: 0;
-  border-left-color: #fff;
+  border-left-color: @popover-background-color;
   bottom: -10px;
 }
 
@@ -66,8 +83,6 @@
 }
 
 .popover.bottom-right {
-  // This is random...
-  font-size: 12px;
   margin-top: 0;
 }
 
@@ -88,8 +103,6 @@
 }
 
 .popover.bottom-left {
-  // Random
-  font-size: 12px;
   margin-top: 0;
 }
 
@@ -112,13 +125,15 @@
 /* Popover Title
 -------------------------------------------------- */
 .popover-title {
+  background-color: @popover-background-color;
+  border-bottom: 1px solid #dfdfdf;
+
+  padding: 8px 15px;
+
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+
+  color: #333;
   .border-radius(0);
-  background-color: #ededed;
-  height: 25px;
-  line-height: 25px;
-  padding: 0 15px;
-  font-size: 9px;
-  text-transform: uppercase;
-  font-weight: 600;
-  color: #555;
 }

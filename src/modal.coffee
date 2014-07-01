@@ -2,38 +2,73 @@ Ember.Widgets.ModalComponent =
 Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   layoutName: 'modal'
   classNames: ['modal']
-  classNameBindings: ['isShowing:in', 'fade']
+  classNameBindings: ['isShowing:in', 'hasCloseButton::has-no-close-button','fade']
   modalPaneBackdrop: '<div class="modal-backdrop"></div>'
   bodyElementSelector: '.modal-backdrop'
 
-  enforceModality: no
-  backdrop:     yes
-  isShowing:    no
-  fade:         yes
-  headerText:   "Modal Header"
-  confirmText:  "Confirm"
-  cancelText:   "Cancel"
-  content:      ""
-  contentViewClass: null
+  enforceModality:  no
+  escToCancel:      yes
+  backdrop:         yes
+  isShowing:        no
+  hasCloseButton:   yes
+  fade:             yes
+  headerText:       "Modal Header"
+  confirmText:      "Confirm"
+  cancelText:       "Cancel"
+  closeText:        null
+  content:          ""
+  isValid: true
 
-  defaultContentViewClass: Ember.View.extend
-    templateName: 'component_default_content'
+  confirm: Ember.K
+  cancel: Ember.K
+  close: Ember.K
+
+  contentViewClass: Ember.View.extend
+    template: Ember.Handlebars.compile("<p>{{content}}</p>")
+
+  footerViewClass:  Ember.View.extend
+    templateName: 'modal_footer'
 
   _contentViewClass: Ember.computed ->
     contentViewClass = @get 'contentViewClass'
-    return @get('defaultContentViewClass') unless contentViewClass
     if typeof contentViewClass is 'string'
-      Ember.get @get('contentViewClass')
+      Ember.get contentViewClass
     else contentViewClass
   .property 'contentViewClass'
 
+  _footerViewClass: Ember.computed ->
+    footerViewClass = @get 'footerViewClass'
+    if typeof footerViewClass is 'string'
+      Ember.get footerViewClass
+    else footerViewClass
+  .property 'footerViewClass'
+
   actions:
+    # Important: we do not want to send cancel after modal is closed.
+    # It turns out that this happens sometimes which leads to undesire
+    # behaviors
     sendCancel: ->
-      @sendAction 'cancel'
+      return unless @get('isShowing')
+      # NOTE: we support callback for backward compatibility.
+      cancel = @get 'cancel'
+      if typeof(cancel) is 'function' then @cancel(this)
+      else @sendAction 'cancel'
       @hide()
 
     sendConfirm: ->
-      @sendAction 'confirm'
+      return unless @get('isShowing')
+      # NOTE: we support callback for backward compatibility.
+      confirm = @get 'confirm'
+      if typeof(confirm) is 'function' then @confirm(this)
+      else @sendAction 'confirm'
+      @hide()
+
+    sendClose: ->
+      return unless @get('isShowing')
+      # NOTE: we support callback for backward compatibility.
+      close = @get 'close'
+      if typeof(close) is 'function' then @close(this)
+      else @sendAction 'close'
       @hide()
 
   didInsertElement: ->
@@ -49,6 +84,19 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     # bootstrap modal adds this class to the body when the modal opens to
     # transfer scroll behavior to the modal
     $(document.body).addClass('modal-open')
+    @_setupDocumentHandlers()
+
+  willDestroyElement: ->
+    @_super()
+    @_removeDocumentHandlers()
+    # remove backdrop
+    @_backdrop.remove() if @_backdrop
+
+  keyHandler: Ember.computed ->
+    fn = (event) ->
+      if event.which is 27 and @get('escToCancel') # ESC
+        $(document).trigger('modal:hide')
+    _.bind(fn, @)
 
   click: (event) ->
     return if event.target isnt event.currentTarget
@@ -56,15 +104,15 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
 
   hide: ->
     @set 'isShowing', no
-    # bootstrap modal removes this class from the body when the modal cloases
+    # bootstrap modal removes this class from the body when the modal closes
     # to transfer scroll behavior back to the app
     $(document.body).removeClass('modal-open')
     # fade out backdrop
-    @_backdrop.removeClass('in')
-    # remove backdrop and destroy modal only after transition is completed
-    @$().one $.support.transition.end, =>
-      @_backdrop.remove() if @_backdrop
-      @destroy()
+    @_backdrop.removeClass('in') if @_backdrop
+    # destroy modal after backdroop faded out. We need to wrap this in a
+    # run-loop otherwise ember-testing will complain about auto run being
+    # disabled when we are in testing mode.
+    @$().one $.support.transition.end, => Ember.run this, @destroy
 
   _appendBackdrop: ->
     parentLayer = @$().parent()
@@ -74,14 +122,30 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     # show backdrop in next run loop so that it can fade in
     Ember.run.next this, -> @_backdrop.addClass('in')
 
+  _setupDocumentHandlers: ->
+    @_super()
+    unless @_hideHandler
+      @_hideHandler = => @hide()
+      $(document).on 'modal:hide', @_hideHandler
+    $(document).on 'keyup', @get('keyHandler')
+
+  _removeDocumentHandlers: ->
+    @_super()
+    $(document).off 'modal:hide', @_hideHandler
+    @_hideHandler = null
+    $(document).off 'keyup', @get('keyHandler')
+
 Ember.Widgets.ModalComponent.reopenClass
   rootElement: '.ember-application'
-  hideAll: ->
+  poppedModal: null
+
+  hideAll: -> $(document).trigger('modal:hide')
 
   popup: (options = {}) ->
+    @hideAll()
     rootElement = options.rootElement or @rootElement
     modal = this.create options
-    modal.container = modal.get('targetObject.container')
+    modal.set 'container', modal.get('targetObject.container')
     modal.appendTo rootElement
     modal
 

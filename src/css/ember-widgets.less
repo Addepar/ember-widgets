@@ -47,9 +47,58 @@
 @popoverArrowOuterWidth:  @popoverArrowWidth + 1;
 @popoverArrowOuterColor:  rgba(0,0,0,.25);
 
+// Color picker variables
+// -------------------------
+@colorpicker-cell-width:    30px;
+@colorpicker-cell-height:   @colorpicker-cell-width;
+@colorpicker-cell-margin:   2px;
+@colorpicker-cell-invalid:  '../img/invalid_color.svg';
+@colorpicker-cell-no-color: '../img/no_color.svg';
+
+// Default variables for the color picker
+
+@padding-base-vertical:          6px;
+@padding-button-horizontal:      16px;
+
+@padding-large-vertical:         10px;
+@padding-large-horizontal:       20px;
+
+@padding-small-vertical:         5px;
+@padding-small-horizontal:       10px;
+
+@padding-xs-vertical:            1px;
+@padding-xs-horizontal:          5px;
+
+@line-height-large:              1.33;
+@line-height-small:              1.5;
+
+@border-radius-base:             0;
+@border-radius-large:            0;
+@border-radius-small:            0;
+
+@component-active-color:         #111;
+@component-active-dropdown-bg:   #fff;
+@component-active-bg:            @brand-primary;
+
+@caret-width-base:               4px;
+@caret-width-large:              5px;
+
+@brand-primary:         #222;
+
+@font-size-base:          13px;
+@font-size-large:         ceil((@font-size-base * 1.25));
+@font-size-small:         ceil((@font-size-base * 0.85));
+
+@line-height-base:        1.6796875;
+
+@highlight-blue:      #0097e3;
+
 //
 // Widgets
 // -----------------------------------------------------------------------------
 
 @import "./select.less";
 @import "./popover.less";
+@import "./text-editor.less";
+@import "./color-picker.less";
+@import "./modal.less";

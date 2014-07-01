@@ -46,7 +46,14 @@ Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
   click: ->
     return if @get('content.isGroupOption')
     @set 'controller.selection', @get('content')
-    @get('controller').hideDropdown()
+    @get('controller').userDidSelect @get 'content'
+    # if there's a selection and the dropdown is unexpanded, we want to
+    # propagate the click event
+    # if the dropdown is expanded and we select something, don't propagate
+    if @get('controller.showDropdown')
+      @get('controller').send 'hideDropdown'
+      # return false to prevent propagation
+      return no
 
   mouseEnter: ->
     return if @get('content.isGroupOption')
@@ -54,12 +61,14 @@ Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
 
 Ember.Widgets.SelectComponent =
 Ember.Component.extend Ember.Widgets.BodyEventListener,
+Ember.AddeparMixins.ResizeHandlerMixin,
   layoutName:       'select'
   classNames:         'ember-select'
   attributeBindings: ['tabindex']
-  classNameBindings: ['showDropdown:open']
+  classNameBindings: ['showDropdown:open', 'isDropup:dropup']
   itemViewClass:      'Ember.Widgets.SelectOptionView'
   prompt:             'Select a Value'
+  disabled: no
 
   # we need to set tabindex so that div responds to key events
   highlightedIndex: -1
@@ -70,25 +79,80 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
 
   dropdownHeight: 300
   # Important: rowHeight must be synched with the CSS
-  rowHeight:    26
+  rowHeight: 26
   # Option to indicate whether we should sort the labels
-  sortLabels:   yes
+  sortLabels: yes
   # If isSelect is true, we will not show the search box
-  isSelect:     no
-  # If is button is true, the select will look like a button
-  isButton:     yes
+  isSelect: no
+
+  # Align dropdown-menu above the button
+  isDropup: no
+  # Align dropdown-menu to the right of the button
+  isDropdownMenuPulledRight: no
 
   # Change the icon when necessary
   dropdownToggleIcon: 'fa fa-caret-down'
 
+  # Change the button class when necessary
+  buttonClass: 'btn btn-default'
+
+  dropdownMenuClass: ''
+
   # The list of options
-  content:    []
-  selection:  null
-  query:      ''
+  content: []
+  selection: null
+  query: ''
   optionLabelPath: ''
   optionValuePath: ''
   optionGroupPath: ''
   optionDefaultPath: ''
+
+  # This augments the dropdown to provide a place for adding a select menu that
+  # possibly says 'create item' or something along that line
+  selectMenuView: null
+
+  updateDropdownLayout: Ember.observer ->
+    return if @get('state') isnt 'inDOM' or @get('showDropdown') is no
+
+    # Render the dropdown in a hidden state to get the size
+    @$('.js-dropdown-menu').css('visibility', 'hidden');
+
+    # Render the dropdown completely into the DOM for offset()
+    Ember.run.next this, ->
+      dropdownButton = @$('.js-dropdown-toggle')[0]
+      dropdownButtonHeight = @$(dropdownButton).outerHeight()
+      dropdownButtonOffset = @$(dropdownButton).offset()
+
+      dropdownMenu = @$('.js-dropdown-menu')[0]
+      dropdownMenuHeight = @$(dropdownMenu).outerHeight()
+      dropdownMenuWidth = @$(dropdownMenu).outerWidth()
+      dropdownMenuOffset = @$(dropdownMenu).offset()
+
+      # Only switch from dropUp to dropDown if there's this much extra space
+      # under where the dropDown would be. This prevents the popup from jiggling
+      # up and down
+      dropdownMargin = 15
+
+      if @get('isDropup')
+        dropdownMenuBottom = dropdownButtonOffset.top + dropdownButtonHeight +
+          dropdownMenuHeight + dropdownMargin
+      else
+        dropdownMenuBottom = dropdownMenuOffset.top + dropdownMenuHeight
+
+      @set 'isDropup', dropdownMenuBottom > window.innerHeight
+      @set 'isDropdownMenuPulledRight', dropdownButtonOffset.left +
+        dropdownMenuWidth + dropdownMargin > window.innerWidth
+
+      @$('.js-dropdown-menu').css('visibility', 'visible');
+      return
+  , 'showDropdown', 'window.innerHeight'
+
+  onResizeEnd: ->
+    # We need to put this on the run loop, because the resize event came from
+    # the window. Otherwise, we get a warning when used in the tests. You have
+    # turned on testing mode, which disables the run-loop's autorun. You
+    # will need to wrap any code with asynchronous side-effects in an Ember.run
+    Ember.run this, @updateDropdownLayout
 
   # TODO(Peter): consider calling this optionViewClass?
   itemView: Ember.computed ->
@@ -171,7 +235,7 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
     else # getter
       valuePath = @get 'optionValuePath'
       selection = @get 'selection'
-      if valuePath then get(selection, valuePath) else selections
+      if valuePath then get(selection, valuePath) else selection
   .property 'selection'
 
   didInsertElement: ->
@@ -185,16 +249,6 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
     escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
     regex = new RegExp(escapedSearchText, 'i')
     regex.test(label)
-
-  actions:
-    toggleDropdown: (event) ->
-      @toggleDropdown(event)
-
-  toggleDropdown: (event) ->
-    @toggleProperty 'showDropdown'
-
-  hideDropdown: (event) ->
-    @set 'showDropdown', no
 
   # TODO(Peter): This needs to be rethought
   setDefaultSelection: Ember.observer ->
@@ -242,7 +296,7 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
     value
   .property 'selectableOptions', 'highlightedIndex'
 
-  bodyClick: -> @hideDropdown()
+  bodyClick: -> @send 'hideDropdown'
 
   keyDown: (event) ->
     # show dropdown if dropdown is not already showing
@@ -254,13 +308,14 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
   deletePressed: Ember.K
 
   escapePressed: (event) ->
-    @hideDropdown()
+    @send 'hideDropdown'
 
   enterPressed: (event) ->
     item = @get 'highlighted'
-    @set 'selection', item if item
+    @set 'selection', item unless Ember.isEmpty(item)
+    @userDidSelect(item) unless Ember.isEmpty(item)
     # in case dropdown doesn't close
-    @hideDropdown()
+    @send 'hideDropdown'
     # TODO(Peter): HACK the web app somehow reloads when enter is pressed.
     event.preventDefault()
 
@@ -303,5 +358,17 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
       $listView.scrollTop newIndex * @get('rowHeight')
     else if newIndex >= endIndex
       $listView.scrollTop (newIndex - numRows + 1.5) * @get('rowHeight')
+
+  #TODO Refactor other parts to use this method to set selection
+  userDidSelect: (selection) ->
+    @sendAction 'userSelected', selection
+
+  actions:
+    toggleDropdown: (event) ->
+      return if @get('disabled')
+      @toggleProperty 'showDropdown'
+
+    hideDropdown: (event) ->
+      @set 'showDropdown', no
 
 Ember.Handlebars.helper('select-component', Ember.Widgets.SelectComponent)

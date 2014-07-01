@@ -23,8 +23,6 @@
   position: relative;
   display: inline-block;
   outline: none;
-
-  font-size: 12px;
 }
 
 .ember-select-choice i {
@@ -40,7 +38,12 @@
 
 .ember-select-choice.btn-sm i {
   top: 9px;
-  right: 10px;
+  right: 11px;
+}
+
+.ember-select-choice.btn-xs i {
+  top: 6px;
+  right: 7px;
 }
 
 .ember-select-choice.btn-large i {
@@ -115,25 +118,15 @@
 -------------------------------------------------- */
 .ember-select-multi {
   .ember-select-choices {
-    background-color: #fff;
-    border: 1px solid #d9d9d9;
-    border-top: 1px solid #c0c0c0;
-    margin: 0;
-    padding: 0;
-    cursor: text;
-    overflow: hidden;
-    height: auto !important;
-    height: 1%;
-    position: relative;
     min-height: 28px;
     min-width: 160px;
-    .border-radius(0);
-    .box-sizing();
-
-    &:hover {
-      border: 1px solid #b9b9b9;
-      border-top: 1px solid #a0a0a0;
-    }
+    height: auto !important;
+    height: 1%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+    cursor: text;
 
     li {
       float: left;
@@ -142,66 +135,100 @@
 
     .ember-select-search-field {
       width: 25px;
-      margin: 3px 0;
+      // margin: 3px 0;
       padding: 0;
       white-space: nowrap;
-    }
 
-    .ember-select-search-field input {
-      color: #666;
-      background: transparent !important;
-      font-size: 100%;
-      padding: 5px;
-      margin: 1px 0;
-      outline: 0;
-      border: 0;
-      .box-shadow(none);
-    }
-
-    .ember-select-search-field input.ember-select-active {
-        background: #fff url('../img/spinner.gif') no-repeat 100% !important;
-    }
-
-    .ember-select-search-choice {
-      position: relative;
-      background-color: #DAE4F6;
-      color: #222;
-      border: 1px solid #DAE4F6;
-      line-height: 27px;
-      padding: 0 19px 0 5px;
-      margin: 3px 0 0 3px;
-      -moz-background-clip   : padding;
-      -webkit-background-clip: padding-box;
-      background-clip        : padding-box;
-      .border-radius(0);
-
-      .ember-select-search-choice-close {
-        display: block;
-        position: absolute;
-        right: 3px;
-        top: 4px;
-        cursor: pointer;
-        width: 12px;
-        height: 13px;
-        font-size: 17px;
-        line-height: 16px;
-        color: #444;
-        font-weight: bold;
-        outline: none;
-
-        &:hover {
-          text-decoration: none;
-          color: #222;
-        }
+     input {
+        color: #666;
+        background: transparent !important;
+        font-size: 100%;
+        padding: 5px;
+        margin: 1px 0;
+        outline: 0;
+        border: 0;
+        .box-shadow(none);
       }
     }
+  }
 
-    .ember-select-search-choice span {
+  .ember-select-search-field input.ember-select-active {
+    background: #fff url('../img/spinner.gif') no-repeat 100% !important;
+  }
+
+  .ember-select-search-choice {
+    position: relative;
+    background-color: #DAE4F6;
+    color: #222;
+    border: 1px solid #DAE4F6;
+    line-height: 27px;
+    padding: 0 19px 0 5px;
+    margin: 2px 0 0 2px;
+    cursor: default;
+    .border-radius(0);
+
+    span {
       cursor: default;
     }
 
-    .ember-select-search-choice-focus {
-      background: #A6D7F5;
+    .ember-select-search-choice-close {
+      display: block;
+      position: absolute;
+      right: 3px;
+      top: 4px;
+      width: 12px;
+      height: 13px;
+      font-size: 17px;
+      line-height: 16px;
+      color: #444;
+      font-weight: bold;
+      outline: none;
+
+      &:hover {
+        text-decoration: none;
+        color: #222;
+        cursor: pointer;
+      }
+    }
+  }
+
+  /* Small Version */
+
+  .ember-select-choices.input-sm {
+    .ember-select-search-field input {
+      margin: 0;
+    }
+
+    .ember-select-search-choice {
+      line-height: 22px;
+    }
+
+    .ember-select-search-choice-close {
+      top: 2px;
+    }
+  }
+
+  /* XS version */
+
+  .ember-select-choices.input-xs {
+    // This should remain in sync with addepar-boostrap-theme
+    min-height: 22px;
+    // padding: 0 5px;
+    // line-height: 20px;
+    // font-size: 12px;
+    // color: #333;
+    .ember-select-search-field {
+      height: 22px;
+      margin: 0;
+    }
+
+    .ember-select-search-choice {
+      line-height: 18px;
+      margin: 1px 0 0 1px;
+    }
+
+    .ember-select-search-choice-close {
+      top: 0;
     }
   }
 }
@@ -237,7 +264,8 @@
 
 /* Ember Select Results
 -------------------------------------------------- */
-.ember-select-results {
+.ember-select-results,
+.ember-typeahead-results {
   margin: 4px 0 4px 0;
   padding: 0;
   position: relative;
