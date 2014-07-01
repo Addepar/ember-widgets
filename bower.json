@@ -39,10 +39,6 @@
     "sinon-qunit": "~1.0.0"
   },
   "exportsOverride": {
-    "addepar-style-guide": {
-      "img": "dist/img/*",
-      "less": "dist/less/*"
-    },
     "bootstrap": {
       "js": "**/*.js",
       "less": "less/*.less",

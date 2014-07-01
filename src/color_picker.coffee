@@ -232,11 +232,8 @@ Ember.Widgets.ColorPickerCell = Ember.View.extend Ember.Widgets.StyleBindingsMix
   styleBindings:  'color:background-color'
   color: null
 
-  colorToHex: (color) ->
-    colorToHex(color)
-
   isActive: Ember.computed ->
-    @colorToHex(@get('controller.selectedColor')) is @colorToHex(@get('color'))
+    colorToHex(@get('controller.selectedColor')) is colorToHex(@get('color'))
   .property 'controller.selectedColor', 'color'
 
   click: (event) ->
