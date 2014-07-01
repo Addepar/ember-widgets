@@ -191,7 +191,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     style: Ember.computed ->
       height = Math.min @get('height'), @get('totalHeight')
       "height: #{height}px"
-  .property('height', 'totalHeight'),
+    .property('height', 'totalHeight'),
 
   # the list of content that is filtered down based on the query entered
   # in the textbox
