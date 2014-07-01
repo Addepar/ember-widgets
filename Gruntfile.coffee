@@ -2,10 +2,24 @@
 # ember-todos-with-build-tools-tests-and-other-modern-conveniences
 module.exports = (grunt) ->
 
-  # env could be 'dev' or 'prod'
-  env = grunt.option("env") or "dev"
+  grunt.loadNpmTasks "grunt-bower-task"
+  grunt.loadNpmTasks "grunt-contrib-uglify"
+  grunt.loadNpmTasks "grunt-contrib-jshint"
+  grunt.loadNpmTasks "grunt-contrib-qunit"
+  grunt.loadNpmTasks "grunt-neuter"
+  grunt.loadNpmTasks "grunt-contrib-watch"
+  grunt.loadNpmTasks "grunt-ember-templates"
+  grunt.loadNpmTasks "grunt-contrib-coffee"
+  grunt.loadNpmTasks "grunt-contrib-less"
+  grunt.loadNpmTasks "grunt-contrib-copy"
+  grunt.loadNpmTasks "grunt-contrib-clean"
+  grunt.loadNpmTasks "grunt-karma"
+  grunt.loadNpmTasks "grunt-banner"
+  grunt.loadNpmTasks "grunt-text-replace"
 
   grunt.initConfig
+    pkg: grunt.file.readJSON('package.json')
+
     clean:
       target: ['build', 'dist' , 'gh_pages']
 
@@ -81,21 +95,46 @@ module.exports = (grunt) ->
 
     neuter:
       options:
-        includeSourceURL: env is "dev"
+        includeSourceURL: yes
       "dist/js/ember-widgets.js":  "build/src/ember_widgets.js"
       "gh_pages/app.js":        "build/app/app.js"
 
     less:
       development:
         options:
-          yuicompress: env isnt "dev"
+          yuicompress: no
         files:
           "dist/css/ember-widgets.css": "src/css/ember-widgets.less"
       app:
         options:
-          yuicompress: env isnt "dev"
+          yuicompress: no
         files:
           "gh_pages/css/app.css": "app/assets/css/app.less"
+
+    usebanner:
+      dist:
+        options:
+          banner: '/*!\n* <%=pkg.name %> v<%=pkg.version%>\n' +
+            '* Copyright 2013-<%=grunt.template.today("yyyy")%> Addepar Inc.\n' +
+            '* See LICENSE.\n*/',
+        files:
+          src: ['dist/js/*', 'dist/css/*']
+
+    replace:
+      global_version:
+        src: ['VERSION']
+        overwrite: true
+        replacements: [{
+          from: /.*\..*\..*/
+          to: '<%=pkg.version%>'
+        }]
+      main_coffee_version:
+        src: ['src/ember_widgets.coffee']
+        overwrite: true
+        replacements: [{
+          from: /Ember.Widgets.VERSION = '.*\..*\..*'/
+          to: "Ember.Widgets.VERSION = '<%=pkg.version%>'"
+        }]
 
     # Copy build/app/assets/css into gh_pages/asset and other assets from app
     copy:
@@ -185,18 +224,6 @@ module.exports = (grunt) ->
     build_test_runner_file:
       all: [ "tests/**/*_test.js" ]
 
-  grunt.loadNpmTasks "grunt-bower-task"
-  grunt.loadNpmTasks "grunt-contrib-uglify"
-  grunt.loadNpmTasks "grunt-contrib-jshint"
-  grunt.loadNpmTasks "grunt-contrib-qunit"
-  grunt.loadNpmTasks "grunt-neuter"
-  grunt.loadNpmTasks "grunt-contrib-watch"
-  grunt.loadNpmTasks "grunt-ember-templates"
-  grunt.loadNpmTasks "grunt-contrib-coffee"
-  grunt.loadNpmTasks "grunt-contrib-less"
-  grunt.loadNpmTasks "grunt-contrib-copy"
-  grunt.loadNpmTasks "grunt-contrib-clean"
-  grunt.loadNpmTasks "grunt-karma"
   ###
     A task to build the test runner html file that get place in
     /test so it will be picked up by the qunit task. Will
@@ -212,9 +239,9 @@ module.exports = (grunt) ->
   grunt.registerTask "build_srcs", [ "coffee:srcs", "emberTemplates", "neuter" ]
   grunt.registerTask "build_app", [ "coffee:app", "emberTemplates", "neuter" ]
   grunt.registerTask "build_tests", [ "coffee:tests", "emberTemplates", "neuter" ]
-  if env is "dev"
-    grunt.registerTask "default", [ "clean", "bower", "build_srcs", "build_app", "build_tests", "less", "copy", "uglify", "watch" ]
-    # build: same as default but no bower
-    grunt.registerTask "build", [ "clean", "build_srcs", "build_app", "build_tests", "less", "copy", "uglify", "watch" ]
-  else
-    grunt.registerTask "default", [ "bower", "less", "build_srcs", "uglify"]
+
+  # build dist files: same as default but no bower or watch
+  grunt.registerTask "dist", [ "clean", "replace", "build_srcs", "build_app", "build_tests", "less", "copy", "uglify", "usebanner" ]
+
+  grunt.registerTask "default", [ "clean", "bower", "replace", "build_srcs", "build_app", "build_tests", "less", "copy", "uglify", "usebanner", "watch" ]
+

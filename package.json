@@ -32,6 +32,7 @@
     "karma-spec-reporter": "0.0.6",
     "grunt-karma": "0.8.0",
     "node-static": "*",
-    "lockdown": "0.0.5"
+    "grunt-banner": "~0.2.3",
+    "grunt-text-replace": "~0.3.12"
   }
 }
