@@ -4,7 +4,7 @@ A collection of small widgets, easy to drop into place as Ember Components.
 
 
 ## Demo and Documentation
-http://addepar.github.com/ember-widgets/
+http://addepar.github.com/#/ember-widgets/
 
 
 ## Getting started
