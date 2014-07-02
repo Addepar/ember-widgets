@@ -1,6 +1,6 @@
 {
   "name": "ember-widgets",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": [
     "./dist/js/ember-widgets.js",
     "./dist/css/ember-widgets.css",
@@ -57,10 +57,15 @@
       "fonts": "fonts/*"
     },
     "jquery": {
-      ".": ["jquery.js"]
+      ".": [
+        "jquery.js"
+      ]
     },
     "rangy": {
-      ".": ["rangy-core.js", "rangy-selectionsaverestore.js"]
+      ".": [
+        "rangy-core.js",
+        "rangy-selectionsaverestore.js"
+      ]
     }
   }
 }
