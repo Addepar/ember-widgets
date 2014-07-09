@@ -1,5 +1,5 @@
 Ember.Widgets.TypeaheadComponent = Ember.Widgets.SelectComponent.extend
-  templateName: 'typeahead'
+  layoutName: 'typeahead'
   searchFieldClass: 'form-control'
 
   searchView: Ember.TextField.extend
