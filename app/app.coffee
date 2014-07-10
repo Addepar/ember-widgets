@@ -27,6 +27,7 @@ App.Router.map ->
     @route 'select'
     @route 'textEditor'
     @route 'colorPicker'
+    @route 'radioButton'
 
 App.IndexRoute = Ember.Route.extend
   beforeModel: -> @transitionTo('emberWidgets.overview')

@@ -16,3 +16,6 @@ Ember.View.extend(App.CodePrettyPrintMixin, App.SmallHeroAffixMixin)
 
 App.EmberWidgetsSelectView =
 Ember.View.extend(App.CodePrettyPrintMixin, App.SmallHeroAffixMixin)
+
+App.EmberWidgetsRadioButtonView =
+Ember.View.extend(App.CodePrettyPrintMixin, App.SmallHeroAffixMixin)
