@@ -683,3 +683,6 @@
 .modal-tabs > li > a:focus {
   background-color: transparent;
 }
+.radio-input {
+  display: inline-block;
+}
