@@ -48,6 +48,7 @@ Ember.Widgets.BodyEventListener,
   bodyClick: -> @hide()
 
   hide: ->
+    return if @get('isDestroyed')
     @set('isShowing', no)
     @$().one $.support.transition.end, =>
       # We need to wrap this in a run-loop otherwise ember-testing will complain
