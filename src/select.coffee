@@ -55,12 +55,13 @@ Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
 Ember.Widgets.SelectComponent =
 Ember.Component.extend Ember.Widgets.BodyEventListener,
 Ember.AddeparMixins.ResizeHandlerMixin,
-  layoutName:       'select'
+  layoutName:         'select'
   classNames:         'ember-select'
   attributeBindings: Ember.A ['tabindex']
   classNameBindings: Ember.A ['showDropdown:open', 'isDropup:dropup']
   itemViewClass:      'Ember.Widgets.SelectOptionView'
   prompt:             'Select a Value'
+  placeholder:        'Search'
   disabled: no
 
   # we need to set tabindex so that div responds to key events
@@ -175,7 +176,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   .property 'selection', 'optionLabelPath'
 
   searchView: Ember.TextField.extend
-    placeholder: 'Search'
+    placeholder: Ember.computed.alias 'parentView.placeholder'
     valueBinding: 'parentView.query'
     # we want to focus on search input when dropdown is opened. We need to put
     # this in a run loop to wait for the event that triggers the showDropdown
