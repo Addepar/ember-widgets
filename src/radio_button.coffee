@@ -1,5 +1,6 @@
 Ember.Widgets.RadioButtonComponent = Ember.Component.extend
   attributeBindings: ['type', 'checked']
+  classNames: ['radio-input']
   tagName: 'input'
   type: 'radio'
   checked: Ember.computed.alias 'parentView.checked'
@@ -10,6 +11,7 @@ Ember.Widgets.RadioButtonWrapperComponent = Ember.Component.extend
   layoutName: 'radio_button_layout'
   value: null
   selectedValue: Ember.computed.alias 'parentView.selectedValue'
+  classNames: ['radio-button']
 
   # Sets the checked property on the element.
   checked: false
