@@ -8,18 +8,7 @@ test/runner.html
 *.swp
 
 # Bower dependencies
-vendor/bootstrap
-vendor/ember
-vendor/font-awesome
-vendor/handlebars
-vendor/holder
-vendor/jquery
-vendor/jquery-browser
-vendor/lodash
-vendor/qunit
-vendor/rangy
-vendor/sinonjs
-vendor/sinon-qunit
+vendor/
 
 tests/**/*.js
 

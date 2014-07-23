@@ -1,4 +1,4 @@
-module "Color picker unit tests"
+module "Color picker unit tests",
 
 
 test 'Color picker converts color to hex when color is undefined', ->

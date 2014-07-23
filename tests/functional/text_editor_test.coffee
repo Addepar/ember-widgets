@@ -4,7 +4,7 @@ textEditor = undefined
 textEditorConfig = undefined
 
 
-module "Text editor component functional tests"
+module "Text editor component functional tests",
   setup: ->
     dispatcher = Ember.EventDispatcher.create()
     dispatcher.setup()

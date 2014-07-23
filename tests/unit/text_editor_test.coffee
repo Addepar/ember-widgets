@@ -1,4 +1,4 @@
-module "Text editor unit tests"
+module "Text editor unit tests",
 
 
 test 'Todays Date Pill has content', ->
