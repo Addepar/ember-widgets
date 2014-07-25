@@ -139,13 +139,20 @@ Ember.AddeparMixins.ResizeHandlerMixin,
       else
         dropdownMenuBottom = dropdownMenuOffset.top + dropdownMenuHeight
 
-      @set 'isDropup', dropdownMenuBottom > window.innerHeight
+      # regardless of whether it is dropping up or down, we want to know
+      # where dropUp will put the top since we don't want this to fall
+      # above the top of the screen
+      dropupMenuTop = dropdownButtonOffset.top - dropdownMenuHeight -
+        dropdownMargin
+
+      @set 'isDropup', dropupMenuTop > window.scrollY and
+        dropdownMenuBottom > window.innerHeight
       @set 'isDropdownMenuPulledRight', dropdownButtonOffset.left +
         dropdownMenuWidth + dropdownMargin > window.innerWidth
 
       @$('.js-dropdown-menu').css('visibility', 'visible');
       return
-  , 'showDropdown', 'window.innerHeight'
+  , 'showDropdown'
 
   onResizeEnd: ->
     # We need to put this on the run loop, because the resize event came from
