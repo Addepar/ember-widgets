@@ -14,6 +14,7 @@ Ember.Widgets.BodyEventListener,
   placement: 'top'
   display: 'block'
   visibility: 'hidden'
+  debounceTime: 100
 
   left: 0
   top: 0
@@ -172,7 +173,8 @@ Ember.Widgets.BodyEventListener,
   # resize and scroll events before snapToPosition is defined. We
   # throttle for 100 ms because that looks nice.
   debounceSnapToPosition: Ember.computed ->
-    Ember.run.debounce(this, @snapToPosition, 100)
+    =>
+      Ember.run.debounce(this, @snapToPosition, @get('debounceTime'))
 
   _setupDocumentHandlers: ->
     @_super()
