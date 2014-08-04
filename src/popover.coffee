@@ -34,7 +34,7 @@ Ember.Widgets.BodyEventListener,
     return @get('contentViewClass') if @get('contentViewClass')
     Ember.View.extend
       content: Ember.computed.alias 'parentView.content'
-      templateName: 'view_parent_view_content'
+      templateName: 'view-parent-view-content'
   .property 'contentViewClass'
 
   didInsertElement: ->

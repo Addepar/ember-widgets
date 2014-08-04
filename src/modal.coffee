@@ -31,7 +31,7 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     template: Ember.Handlebars.compile("<p>{{content}}</p>")
 
   footerViewClass:  Ember.View.extend
-    templateName: 'modal_footer'
+    templateName: 'modal-footer'
 
   _headerViewClass: Ember.computed ->
     headerViewClass = @get 'headerViewClass'

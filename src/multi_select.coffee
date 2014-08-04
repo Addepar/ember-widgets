@@ -9,7 +9,7 @@ set = (object, key, value) ->
 
 Ember.Widgets.MultiSelectOptionView = Ember.View.extend
   tagName: 'li'
-  templateName: 'multi_select_item'
+  templateName: 'multi-select-item'
   classNames:   'ember-select-search-choice'
   labelPath: Ember.computed.alias 'controller.optionLabelPath'
 
