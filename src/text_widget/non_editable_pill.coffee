@@ -63,7 +63,7 @@ Ember.Widgets.NonEditableTextPill = Ember.Widgets.BaseNonEditablePill.extend
       confirm: "modalConfirm"
       cancel: "modalCancel"
       contentViewClass: Ember.View.extend
-        templateName: 'non_editable_text_pill_configuration'
+        templateName: 'non-editable-text-pill-configuration'
       headerText: @get('name')
       confirmText: "Insert"
 
@@ -75,7 +75,7 @@ Ember.Widgets.TodaysDatePill = Ember.Widgets.BaseNonEditablePill.extend
 
 
 Ember.Widgets.PillSelect = Ember.Widgets.SelectComponent.extend
-  templateName: 'text_editor_pill_menu'
+  templateName: 'text-editor-pill-menu'
   isSelect: true
   showButton: true
 

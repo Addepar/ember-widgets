@@ -8,7 +8,7 @@ Ember.Widgets.RadioButtonComponent = Ember.Component.extend
 # Clickable wrapper around the actual radio button which allows the text near the
 # button to be clickable too.
 Ember.Widgets.RadioButtonWrapperComponent = Ember.Component.extend
-  layoutName: 'radio_button_layout'
+  layoutName: 'radio-button-layout'
   value: null
   selectedValue: Ember.computed.alias 'parentView.selectedValue'
   classNames: ['radio-button']
