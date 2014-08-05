@@ -24,11 +24,21 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   cancel: Ember.K
   close: Ember.K
 
+  headerViewClass: Ember.View.extend
+    templateName: 'modal_header'
+
   contentViewClass: Ember.View.extend
     template: Ember.Handlebars.compile("<p>{{content}}</p>")
 
   footerViewClass:  Ember.View.extend
     templateName: 'modal_footer'
+
+  _headerViewClass: Ember.computed ->
+    headerViewClass = @get 'headerViewClass'
+    if typeof headerViewClass is 'string'
+      Ember.get headerViewClass
+    else headerViewClass
+  .property 'headerViewClass'
 
   _contentViewClass: Ember.computed ->
     contentViewClass = @get 'contentViewClass'
