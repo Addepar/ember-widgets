@@ -17,6 +17,7 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   cancelText:       "Cancel"
   closeText:        null
   content:          ""
+  size:             "normal"
   isValid: true
 
   confirm: Ember.K
@@ -42,6 +43,13 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
       Ember.get footerViewClass
     else footerViewClass
   .property 'footerViewClass'
+
+  sizeClass: Ember.computed ->
+    switch @get 'size'
+      when 'large' then 'modal-lg'
+      when 'small' then 'modal-sm'
+      else ''
+  .property 'size'
 
   actions:
     # Important: we do not want to send cancel after modal is closed.
