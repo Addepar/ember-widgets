@@ -1,6 +1,6 @@
 Ember.Widgets.TextEditorWithNonEditableComponent =
 Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper, Ember.Widgets.PillInsertMixin,
-  templateName: 'text_editor_with_non_editable'
+  templateName: 'text-editor-with-non-editable'
 
   ##############################################################################
   # Interface

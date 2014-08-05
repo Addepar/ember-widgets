@@ -1,5 +1,5 @@
 Ember.Widgets.EditableLabel = Ember.View.extend
-  templateName: 'editable_label'
+  templateName: 'editable-label'
   classNames: ['editable-label']
   placeholder: ''
   isEditing: no

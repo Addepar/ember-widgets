@@ -1,5 +1,5 @@
 Ember.Widgets.TextEditorConfigComponent = Ember.Component.extend
-  templateName: 'text_editor_config'
+  templateName: 'text-editor-config'
   classNames: ['ember-text-editor-toolbar']
   selectedFontName: 'Helvetica Neue'
   selectedFontSize: '2'
@@ -36,7 +36,7 @@ Ember.Widgets.TextEditorConfigComponent = Ember.Component.extend
   ]
 
   fontChooserItemViewClass: Ember.Widgets.SelectOptionView.extend
-    templateName: 'font_chooser_item'
+    templateName: 'font-chooser-item'
     style: Ember.computed ->
       "font-family:#{@get('label')};"
     .property 'label'
@@ -84,4 +84,4 @@ Ember.Widgets.TextEditorConfigComponent = Ember.Component.extend
 
 
 Ember.Widgets.TextEditorWithNonEditableConfigComponent = Ember.Widgets.TextEditorConfigComponent.extend Ember.Widgets.PillInsertMixin,
-  templateName: 'text_editor_with_non_editable_config'
+  templateName: 'text-editor-with-non-editable-config'
