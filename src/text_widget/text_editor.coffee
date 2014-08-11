@@ -8,7 +8,7 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
   EDITOR_CLASS: 'text-editor'
   PLACEHOLDER_TEXT: 'Click to edit'
 
-  commands: [
+  commands: Ember.A [
     'bold',
     'italic',
     'underline',

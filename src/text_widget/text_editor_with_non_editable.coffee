@@ -5,7 +5,10 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper, Ember.Widgets.
   ##############################################################################
   # Interface
   ##############################################################################
-  pillOptions: [Ember.Widgets.TodaysDatePill, Ember.Widgets.NonEditableTextPill]
+  pillOptions: Ember.A [
+    Ember.Widgets.TodaysDatePill
+    Ember.Widgets.NonEditableTextPill
+  ]
   getInsertSelectController: -> @get('pillChooserInLine')
   INVISIBLE_CHAR:   '\uFEFF'
   INSERT_PILL_CHAR: '='

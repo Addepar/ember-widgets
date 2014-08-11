@@ -13,8 +13,10 @@ Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
   templateName: 'select_item'
   layoutName: 'select_item_layout'
   classNames: 'ember-select-result-item'
-  classNameBindings: ['content.isGroupOption:ember-select-group',
-                      'isHighlighted:highlighted']
+  classNameBindings: Ember.A [
+    'content.isGroupOption:ember-select-group'
+    'isHighlighted:highlighted'
+  ]
   labelPath: Ember.computed.alias  'controller.optionLabelPath'
 
   isHighlighted: Ember.computed ->
@@ -64,8 +66,8 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
 Ember.AddeparMixins.ResizeHandlerMixin,
   layoutName:       'select'
   classNames:         'ember-select'
-  attributeBindings: ['tabindex']
-  classNameBindings: ['showDropdown:open', 'isDropup:dropup']
+  attributeBindings: Ember.A ['tabindex']
+  classNameBindings: Ember.A ['showDropdown:open', 'isDropup:dropup']
   itemViewClass:      'Ember.Widgets.SelectOptionView'
   prompt:             'Select a Value'
   disabled: no
@@ -99,7 +101,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   dropdownMenuClass: ''
 
   # The list of options
-  content: []
+  content: Ember.A []
   selection: null
   query: ''
   optionLabelPath: ''
@@ -205,10 +207,15 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   filteredContent: Ember.computed ->
     content = @get 'content'
     query   = @get 'query'
-    return [] unless content
-    filteredContent = @get('content').filter (item) => @matcher(query, item)
+    return Ember.A [] unless content
+    filteredContent = Ember.A(
+      @get('content').filter (item) => @matcher(query, item)
+    )
     return filteredContent unless @get('sortLabels')
-    _.sortBy filteredContent, (item) => get(item, @get('optionLabelPath'))?.toLowerCase()
+    Ember.A(
+      _.sortBy filteredContent, (item) =>
+        get(item, @get('optionLabelPath'))?.toLowerCase()
+    )
   .property 'content.@each', 'query', 'optionLabelPath', 'sortLabels'
 
   # the list of content that is grouped by the content in the optionGroupPath
@@ -286,14 +293,16 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   # All the selectable options - namely everything except for the non-group
   # options that are artificially created.
   selectableOptions: Ember.computed ->
-    (@get('groupedContent') or []).filter (item) ->
-      not get(item, 'isGroupOption')
+    Ember.A(
+      (@get('groupedContent') or []).filter (item) ->
+        not get(item, 'isGroupOption')
+    )
   .property 'groupedContent'
 
   # The option that is currently highlighted.
   highlighted: Ember.computed (key, value) ->
-    content   = @get('selectableOptions') or []
-    value     = value or []
+    content   = @get('selectableOptions') or Ember.A []
+    value     = value or Ember.A []
     if arguments.length is 1 # getter
       index = @get 'highlightedIndex'
       value = content.objectAt index
