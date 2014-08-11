@@ -174,8 +174,9 @@ Ember.Widgets.ColorPicker = Ember.Component.extend
   isColorTransparent: Ember.computed.equal 'selectedColorRGB', 'transparent'
 
   colorRows:
-    [
-      [ '#000000',
+    Ember.A([
+      Ember.A([
+        '#000000',
         '#111111',
         '#434343',
         '#666666',
@@ -187,8 +188,8 @@ Ember.Widgets.ColorPicker = Ember.Component.extend
         '#EFEFEF',
         '#F3F3F3',
         '#FFFFFF'
-      ],
-      [
+      ])
+      Ember.A([
         '#001F3F',
         '#0074D9',
         '#7FDBFF',
@@ -201,8 +202,8 @@ Ember.Widgets.ColorPicker = Ember.Component.extend
         '#85144B',
         '#B10DC9',
         'transparent'
-      ]
-    ]
+      ])
+    ])
 
   setCustomColor: Ember.observer ->
     if @get('isCustomColorValid') is true
@@ -228,7 +229,7 @@ Ember.Widgets.ColorPicker = Ember.Component.extend
 Ember.Widgets.ColorPickerCell = Ember.View.extend Ember.Widgets.StyleBindingsMixin,
   templateName: 'color_picker_cell'
   classNames: ['pull-left', 'color-picker-cell']
-  classNameBindings: ['isActive:active:inactive']
+  classNameBindings: Ember.A ['isActive:active:inactive']
   styleBindings:  'color:background-color'
   color: null
 

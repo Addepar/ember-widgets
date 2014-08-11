@@ -33,8 +33,10 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
     if arguments.length is 2 # setter
       return unless value
       valuePath = @get 'optionValuePath'
-      @set 'selections', @get('content').filter (item) ->
-        value.contains get(item, valuePath)
+      @set 'selections', Ember.A(
+        @get('content').filter (item) ->
+          value.contains get(item, valuePath)
+      )
       value
     else # getter
       valuePath = @get 'optionValuePath'
@@ -55,10 +57,12 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
     content = @get 'content'
     query   = @get 'query'
     selections = @get 'selections'
-    return [] unless content and selections
+    return Ember.A [] unless content and selections
     # excludes items that are already selected
-    @get('content').filter (item) =>
-      not selections.contains(item) and @matcher(query, item)
+    Ember.A(
+      @get('content').filter (item) =>
+        not selections.contains(item) and @matcher(query, item)
+    )
   .property 'content.@each', 'optionLabelPath', 'query', 'selections.@each'
 
   # uses single select's "selection" value - adds it to selections and
@@ -80,8 +84,8 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
     # the value to [] if its value is undefined but the bindings would not have
     # realized a change and fail to fire.
     @_super()
-    @set 'selections', [] unless @get('selections')
-    @set 'values', [] unless @get('values')
+    @set 'selections', Ember.A [] unless @get('selections')
+    @set 'values', Ember.A [] unless @get('values')
 
   deletePressed: (event) ->
     if event.target.selectionStart == 0

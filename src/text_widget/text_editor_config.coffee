@@ -1,13 +1,13 @@
 Ember.Widgets.TextEditorConfigComponent = Ember.Component.extend
   templateName: 'text_editor_config'
-  classNames: ['ember-text-editor-toolbar']
+  classNames: Ember.A ['ember-text-editor-toolbar']
   selectedFontName: 'Helvetica Neue'
   selectedFontSize: '2'
   selectedForeColor: 'rgb(0, 0, 0)'
   textEditor: null
 
   # Options
-  fontNames: [
+  fontNames: Ember.A [
     'Arial',
     'Calibri',
     'Cambria',
@@ -25,7 +25,7 @@ Ember.Widgets.TextEditorConfigComponent = Ember.Component.extend
     'Verdana'
   ]
 
-  fontSizes: [
+  fontSizes: Ember.A [
     {size:'1', name: '8'},
     {size:'2', name: '10'},
     {size:'3', name: '12'},

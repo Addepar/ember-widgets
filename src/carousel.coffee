@@ -10,14 +10,14 @@
 Ember.Widgets.CarouselComponent = Ember.Component.extend
   layoutName: 'carousel'
   classNames: ['carousel', 'slide']
-  classNameBindings: ['sliding']
+  classNameBindings: Ember.A ['sliding']
   activeIndex: 0
 
   didInsertElement: ->
     # suppose a content array is not specified in use case 1, we use jquery to
     # figure out how many carousel items are there. This allows us to generate
     # the correct number of carousel indicator
-    @set 'content', new Array(@$('.item').length) if not @get('content')
+    @set 'content', Ember.A new Array(@$('.item').length) if not @get('content')
 
   actions:
     prev: ->
@@ -27,7 +27,7 @@ Ember.Widgets.CarouselComponent = Ember.Component.extend
       nextIndex = activeIndex - 1
       nextIndex = if nextIndex < 0 then contentLength - 1 else nextIndex
       @slide 'prev', nextIndex
-  
+
     next: ->
       return if @get('sliding')
       activeIndex = @get 'activeIndex'

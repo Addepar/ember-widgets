@@ -43,7 +43,7 @@ Ember.Widgets.BaseNonEditablePill = Ember.Controller.extend Ember.Widgets.DomHel
     span.attr('title': @get('name'))
     # include all params as data-attributes
     for key, value of @get('params')
-      span.attr('data-' + key.dasherize(), value)
+      span.attr('data-' + Ember.String.dasherize(key), value)
     @set 'pillElement', span
     @updateContent(span)
     return span[0]
@@ -81,10 +81,13 @@ Ember.Widgets.PillSelect = Ember.Widgets.SelectComponent.extend
 
 
 Ember.Widgets.PillInsertMixin = Ember.Mixin.create
-  pillOptions: [Ember.Widgets.TodaysDatePill, Ember.Widgets.NonEditableTextPill]
+  pillOptions: Ember.A [
+    Ember.Widgets.TodaysDatePill
+    Ember.Widgets.NonEditableTextPill
+  ]
 
   _pillOptions : Ember.computed ->
-    @getWithDefault('pillOptions', []).map (option) =>
+    Ember.A @getWithDefault('pillOptions', []).map (option) =>
       label: option.create().name
       value: option
   .property 'pillOptions'
