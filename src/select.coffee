@@ -354,6 +354,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   ensureVisible: (index) ->
     $listView  = @$('.ember-list-view')
     listView   = Ember.View.views[$listView.attr('id')]
+    return unless listView
     startIndex = listView._startingIndex()
     numRows    = listView._childViewCount() - 1
     endIndex   = startIndex + numRows
