@@ -114,7 +114,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   selectMenuView: null
 
   updateDropdownLayout: Ember.observer ->
-    return if @get('state') isnt 'inDOM' or @get('showDropdown') is no
+    return if @get('_state') isnt 'inDOM' or @get('showDropdown') is no
 
     # Render the dropdown in a hidden state to get the size
     @$('.js-dropdown-menu').css('visibility', 'hidden');
@@ -191,7 +191,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     # to finishes before trying to focus the input. Otherwise, focus when be
     # "stolen" from us.
     showDropdownDidChange: Ember.observer ->
-      Ember.run.next this, -> @$().focus() if @get('state') is 'inDOM'
+      Ember.run.next this, -> @$().focus() if @get('_state') is 'inDOM'
     , 'parentView.showDropdown'
 
   # This is a hack. Ember.ListView doesn't handle case when total height
