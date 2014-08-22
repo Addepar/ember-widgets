@@ -84,6 +84,8 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   rowHeight: 26
   # Option to indicate whether we should sort the labels
   sortLabels: yes
+  # Use title on labels, containing content of the labels
+  titleOnOptions: no
   # If isSelect is true, we will not show the search box
   isSelect: no
 

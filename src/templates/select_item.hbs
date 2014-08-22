@@ -1,1 +1,7 @@
-{{view.label}}
+{{#if titleOnOptions}}
+  <span {{bind-attr title=view.label}}>
+    {{view.label}}
+  </span>
+{{else}}
+  {{view.label}}
+{{/if}}
