@@ -4,14 +4,14 @@ Ember.Widgets.RadioButtonComponent = Ember.Component.extend
   tagName: 'input'
   type: 'radio'
   checked: Ember.computed.alias 'parentView.checked'
-  disabled: Ember.computed.alias 'parentView.disabled'
+  disabled: Ember.computed.alias 'parentView._disabled'
 
 # Clickable wrapper around the actual radio button which allows the text near the
 # button to be clickable too.
 Ember.Widgets.RadioButtonWrapperComponent = Ember.Component.extend
   layoutName: 'radio-button-layout'
   value: null
-  isDisabled: false
+  disabled: false
   selectedValue: Ember.computed.alias 'parentView.selectedValue'
   classNames: ['radio-button']
 
@@ -19,9 +19,7 @@ Ember.Widgets.RadioButtonWrapperComponent = Ember.Component.extend
   checked: false
 
   # Sets the disabled property on the element.
-  disabled: Ember.computed ->
-    if @get('parentView.disabled') then true else @get('isDisabled')
-  .property 'parentView.disabled', 'isDisabled'
+  _disabled: Ember.computed.or 'parentView.disabled', 'disabled'
 
   selectedValueChanged: Ember.on 'init', Ember.observer(->
     selectedValue = @get 'selectedValue'
@@ -32,7 +30,7 @@ Ember.Widgets.RadioButtonWrapperComponent = Ember.Component.extend
   , 'selectedValue')
 
   click: (event) ->
-    return if @get('disabled')
+    return if @get('_disabled')
     @set 'checked', true
     @set 'selectedValue', @get 'value'
 
