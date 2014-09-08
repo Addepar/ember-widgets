@@ -324,6 +324,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     @get(method)?.apply(this, arguments) if method
 
   focusIn: (event) ->
+    # the event is targeting myself (and not my descendants)
     if @.$()[0] is event.target
       @set 'showDropdown', yes
 
@@ -402,4 +403,3 @@ Ember.AddeparMixins.ResizeHandlerMixin,
       @set 'showDropdown', no
 
 Ember.Handlebars.helper('select-component', Ember.Widgets.SelectComponent)
-
