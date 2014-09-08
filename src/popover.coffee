@@ -11,6 +11,7 @@ Ember.Widgets.BodyEventListener,
   contentViewClass: null
 
   fade: yes
+  escToCancel: yes
   placement: 'top'
   display: 'block'
   visibility: 'hidden'
@@ -169,6 +170,11 @@ Ember.Widgets.BodyEventListener,
     if @get('top') < 0
       @set 'top', @get('marginTop')
 
+  keyHandler: Ember.computed ->
+    (event) =>
+      if event.which is 27 and @get('escToCancel') # ESC
+        @hide()
+
   # We need to put this in a computed because this is attached to the
   # resize and scroll events before snapToPosition is defined. We
   # throttle for 100 ms because that looks nice.
@@ -187,6 +193,7 @@ Ember.Widgets.BodyEventListener,
     unless @_scrollHandler
       @_scrollHandler = @get('debounceSnapToPosition')
       $(document).on 'scroll', @_scrollHandler
+    $(document).on 'keyup', @get('keyHandler')
 
   _removeDocumentHandlers: ->
     @_super()

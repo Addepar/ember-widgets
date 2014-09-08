@@ -111,10 +111,9 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     @_backdrop.remove() if @_backdrop
 
   keyHandler: Ember.computed ->
-    fn = (event) ->
+    (event) =>
       if event.which is 27 and @get('escToCancel') # ESC
-        $(document).trigger('modal:hide')
-    _.bind(fn, @)
+        @send 'sendCancel'
 
   click: (event) ->
     return if event.target isnt event.currentTarget
