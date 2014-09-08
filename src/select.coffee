@@ -72,10 +72,10 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   prompt:             'Select a Value'
   disabled: no
 
-  # we need to set tabindex so that div responds to key events
   highlightedIndex: -1
 
-  tabindex: -1
+  # we need to set tabindex so that div responds to key events
+  tabindex: 0
 
   showDropdown: no
 
@@ -323,6 +323,17 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     method = map[event.keyCode]
     @get(method)?.apply(this, arguments) if method
 
+  focusIn: (event) ->
+    if @.$()[0] is event.target
+      @set 'showDropdown', yes
+
+  focusOut: (event) ->
+    ancestor = '#' + @get('elementId')
+    # relatedTarget is the element the focus is being shifted to
+    # close the dropdown if the related field is not a child of this view
+    if event.relatedTarget and Ember.isEmpty($(event.relatedTarget).closest(ancestor))
+      @send 'hideDropdown'
+
   deletePressed: Ember.K
 
   escapePressed: (event) ->
@@ -391,3 +402,4 @@ Ember.AddeparMixins.ResizeHandlerMixin,
       @set 'showDropdown', no
 
 Ember.Handlebars.helper('select-component', Ember.Widgets.SelectComponent)
+
