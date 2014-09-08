@@ -1,12 +1,3 @@
-get = (object, key) ->
-  return undefined unless object
-  return object    unless key
-  object.get?(key) or object[key]
-
-set = (object, key, value) ->
-  return unless object and key
-  object.set?(key, value) or object[key] = value;
-
 # The view for each item in the select.
 Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
   tagName: 'li'
@@ -182,7 +173,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   .property 'itemView'
 
   selectedLabel: Ember.computed ->
-    get @get('selection'), @get('optionLabelPath')
+    Ember.get @get('selection'), @get('optionLabelPath')
   .property 'selection', 'optionLabelPath'
 
   searchView: Ember.TextField.extend
@@ -206,19 +197,34 @@ Ember.AddeparMixins.ResizeHandlerMixin,
 
   # the list of content that is filtered down based on the query entered
   # in the textbox
-  filteredContent: Ember.computed ->
-    content = @get 'content'
-    query   = @get 'query'
-    return Ember.A [] unless content
-    filteredContent = Ember.A(
-      @get('content').filter (item) => @matcher(query, item)
-    )
-    return filteredContent unless @get('sortLabels')
-    Ember.A(
-      _.sortBy filteredContent, (item) =>
-        get(item, @get('optionLabelPath'))?.toLowerCase()
-    )
-  .property 'content.@each', 'query', 'optionLabelPath', 'sortLabels'
+  preparedContent: Ember.computed ->
+    if @get('sortLabels') then @get('sortedFilteredContent') else @get('filteredContent')
+  .property 'sortLabels', 'filteredContent.@each', 'sortedFilteredContent.@each'
+
+  contentProxy: Ember.computed ->
+    matcher = (searchText, item) => @matcher(searchText, item)
+    optionLabelPath = @get('optionLabelPath') 
+    query = @get('query')
+
+    # TODO(chris): review & find a way to use ArrayProxy
+    ContentProxy = Ember.ObjectProxy.extend
+      filteredContent: Ember.computed ->
+        Ember.A(@get('content').filter (item) -> matcher(query, item))
+      .property "content.@each.#{optionLabelPath}"
+
+      sortedFilteredContent: Ember.computed ->
+        Ember.A(
+          _.sortBy @get('filteredContent'), (item) =>
+            Ember.get(item, optionLabelPath)?.toLowerCase()
+        )
+      .property "content.@each.#{optionLabelPath}"
+
+    ContentProxy.create
+      content: @get('content')
+  .property 'content.@each', 'optionLabelPath', 'query'
+
+  filteredContent: Ember.computed.alias 'contentProxy.filteredContent'
+  sortedFilteredContent: Ember.computed.alias 'contentProxy.sortedFilteredContent'
 
   # the list of content that is grouped by the content in the optionGroupPath
   # e.g. {name: 'Addepar', location: 'Mountain View'}
@@ -229,17 +235,17 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   #   Google
   groupedContent: Ember.computed ->
     path    = @get 'optionGroupPath'
-    content = @get 'filteredContent'
+    content = @get 'preparedContent'
     return content unless path
-    groups  = _.groupBy content, (item) -> get(item, path)
+    groups  = _.groupBy content, (item) -> Ember.get(item, path)
     result  = Ember.A()
     _.keys(groups).sort().forEach (key) ->
       result.pushObject  Ember.Object.create isGroupOption: yes, name:key
       result.pushObjects groups[key]
     result
-  .property 'filteredContent', 'optionGroupPath'
+  .property 'preparedContent.@each', 'optionGroupPath', 'labels.@each'
 
-  hasNoResults: Ember.computed.empty 'filteredContent'
+  hasNoResults: Ember.computed.empty 'preparedContent'
 
   value: Ember.computed (key, value) ->
     if arguments.length is 2 # setter
@@ -251,7 +257,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     else # getter
       valuePath = @get 'optionValuePath'
       selection = @get 'selection'
-      if valuePath then get(selection, valuePath) else selection
+      if valuePath then Ember.get(selection, valuePath) else selection
   .property 'selection'
 
   didInsertElement: ->
@@ -261,7 +267,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   # It matches the item label with the query. This can be overrideen for better
   matcher: (searchText, item) ->
     return yes unless searchText
-    label = get(item, @get('optionLabelPath'))
+    label = Ember.get(item, @get('optionLabelPath'))
     escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
     regex = new RegExp(escapedSearchText, 'i')
     regex.test(label)
@@ -297,7 +303,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   selectableOptions: Ember.computed ->
     Ember.A(
       (@get('groupedContent') or []).filter (item) ->
-        not get(item, 'isGroupOption')
+        not Ember.get(item, 'isGroupOption')
     )
   .property 'groupedContent'
 

@@ -283,7 +283,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper, Ember.Widgets.
         return insertSelect.downArrowPressed(event)
       else if keyCode == @KEY_CODES.UP
         return insertSelect.upArrowPressed(event)
-      else if keyCode in [@KEY_CODES.ENTER, @KEY_CODES.TAB] and insertSelect.get('filteredContent').length > 0
+      else if keyCode in [@KEY_CODES.ENTER, @KEY_CODES.TAB] and insertSelect.get('preparedContent').length > 0
         return insertSelect.enterPressed(event)
       else if keyCode == @KEY_CODES.ESCAPE
         return insertSelect.escapePressed(event)
