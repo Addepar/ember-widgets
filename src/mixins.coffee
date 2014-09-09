@@ -57,7 +57,7 @@ Ember.Widgets.BodyEventListener = Ember.Mixin.create
     return if @_clickHandler
     @_clickHandler = (event) =>
       if (@get('_state') or @get('state')) is 'inDOM' and Ember.isEmpty(@$().has($(event.target)))
-        @bodyClick()
+        @bodyClick(event)
     $(@get('bodyElementSelector')).on "click", @_clickHandler
 
   _removeDocumentHandlers: ->
