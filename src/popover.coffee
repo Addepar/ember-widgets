@@ -208,7 +208,7 @@ Ember.Widgets.PopoverComponent.reopenClass
     rootElement = options.rootElement or @rootElement
     popover = this.create options
     popover.set 'container', popover.get('targetObject.container')
-    popover.appendTo rootElement
+    popover.appendTo(rootElement) unless options.dontAppend
     popover
 
 Ember.Handlebars.helper('popover-component', Ember.Widgets.PopoverComponent)
