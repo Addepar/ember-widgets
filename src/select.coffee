@@ -113,40 +113,38 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     @$('.js-dropdown-menu').css('visibility', 'hidden');
 
     # Render the dropdown completely into the DOM for offset()
-    Ember.run.next this, ->
-      dropdownButton = @$('.js-dropdown-toggle')[0]
-      dropdownButtonHeight = @$(dropdownButton).outerHeight()
-      dropdownButtonOffset = @$(dropdownButton).offset()
+    dropdownButton = @$('.js-dropdown-toggle')[0]
+    dropdownButtonHeight = @$(dropdownButton).outerHeight()
+    dropdownButtonOffset = @$(dropdownButton).offset()
 
-      dropdownMenu = @$('.js-dropdown-menu')[0]
-      dropdownMenuHeight = @$(dropdownMenu).outerHeight()
-      dropdownMenuWidth = @$(dropdownMenu).outerWidth()
-      dropdownMenuOffset = @$(dropdownMenu).offset()
+    dropdownMenu = @$('.js-dropdown-menu')[0]
+    dropdownMenuHeight = @$(dropdownMenu).outerHeight()
+    dropdownMenuWidth = @$(dropdownMenu).outerWidth()
+    dropdownMenuOffset = @$(dropdownMenu).offset()
 
-      # Only switch from dropUp to dropDown if there's this much extra space
-      # under where the dropDown would be. This prevents the popup from jiggling
-      # up and down
-      dropdownMargin = 15
+    # Only switch from dropUp to dropDown if there's this much extra space
+    # under where the dropDown would be. This prevents the popup from jiggling
+    # up and down
+    dropdownMargin = 15
 
-      if @get('isDropup')
-        dropdownMenuBottom = dropdownButtonOffset.top + dropdownButtonHeight +
-          dropdownMenuHeight + dropdownMargin
-      else
-        dropdownMenuBottom = dropdownMenuOffset.top + dropdownMenuHeight
+    if @get('isDropup')
+      dropdownMenuBottom = dropdownButtonOffset.top + dropdownButtonHeight +
+        dropdownMenuHeight + dropdownMargin
+    else
+      dropdownMenuBottom = dropdownMenuOffset.top + dropdownMenuHeight
 
-      # regardless of whether it is dropping up or down, we want to know
-      # where dropUp will put the top since we don't want this to fall
-      # above the top of the screen
-      dropupMenuTop = dropdownButtonOffset.top - dropdownMenuHeight -
-        dropdownMargin
+    # regardless of whether it is dropping up or down, we want to know
+    # where dropUp will put the top since we don't want this to fall
+    # above the top of the screen
+    dropupMenuTop = dropdownButtonOffset.top - dropdownMenuHeight -
+      dropdownMargin
 
-      @set 'isDropup', dropupMenuTop > window.scrollY and
-        dropdownMenuBottom > window.innerHeight
-      @set 'isDropdownMenuPulledRight', dropdownButtonOffset.left +
-        dropdownMenuWidth + dropdownMargin > window.innerWidth
+    @set 'isDropup', dropupMenuTop > window.scrollY and
+      dropdownMenuBottom > window.innerHeight
+    @set 'isDropdownMenuPulledRight', dropdownButtonOffset.left +
+      dropdownMenuWidth + dropdownMargin > window.innerWidth
 
-      @$('.js-dropdown-menu').css('visibility', 'visible');
-      return
+    @$('.js-dropdown-menu').css('visibility', 'visible');
   , 'showDropdown'
 
   onResizeEnd: ->
@@ -184,7 +182,8 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     # to finishes before trying to focus the input. Otherwise, focus when be
     # "stolen" from us.
     showDropdownDidChange: Ember.observer ->
-      Ember.run.next this, -> @$().focus() if (@get('_state') or @get('state')) is 'inDOM'
+      Ember.run.schedule 'afterRender', this, ->
+          @$().focus() if @get('state') is 'inDOM'
     , 'parentView.showDropdown'
 
   # This is a hack. Ember.ListView doesn't handle case when total height
