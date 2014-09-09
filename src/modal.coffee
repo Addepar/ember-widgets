@@ -8,6 +8,7 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
 
   enforceModality:  no
   escToCancel:      yes
+  enterToConfirm:   yes
   backdrop:         yes
   isShowing:        no
   hasCloseButton:   yes
@@ -111,10 +112,11 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     @_backdrop.remove() if @_backdrop
 
   keyHandler: Ember.computed ->
-    fn = (event) ->
+    (event) =>
       if event.which is 27 and @get('escToCancel') # ESC
-        $(document).trigger('modal:hide')
-    _.bind(fn, @)
+        @send 'sendCancel'
+      else if event.which is 13 and @get('enterToConfirm') # Enter
+        @send 'sendConfirm'
 
   click: (event) ->
     return if event.target isnt event.currentTarget
