@@ -34,7 +34,7 @@ Ember.Widgets.BodyEventListener,
     return @get('contentViewClass') if @get('contentViewClass')
     Ember.View.extend
       content: Ember.computed.alias 'parentView.content'
-      templateName: 'view_parent_view_content'
+      templateName: 'view-parent-view-content'
   .property 'contentViewClass'
 
   didInsertElement: ->
@@ -97,7 +97,7 @@ Ember.Widgets.BodyEventListener,
 
   snapToPosition: ->
     $target      = $(@get('targetElement'))
-    return if @get('state') isnt 'inDOM' or Ember.isEmpty($target)
+    return if (@get('_state') or @get('state')) isnt 'inDOM' or Ember.isEmpty($target)
     actualWidth  = @$()[0].offsetWidth
     actualHeight = @$()[0].offsetHeight
     pos = @getOffset($target)

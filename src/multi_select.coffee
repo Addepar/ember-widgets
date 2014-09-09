@@ -9,7 +9,7 @@ set = (object, key, value) ->
 
 Ember.Widgets.MultiSelectOptionView = Ember.View.extend
   tagName: 'li'
-  templateName: 'multi_select_item'
+  templateName: 'multi-select-item'
   classNames:   'ember-select-search-choice'
   labelPath: Ember.computed.alias 'controller.optionLabelPath'
 
@@ -53,17 +53,24 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
 
   # the list of content that is filtered down based on the query entered
   # in the textbox
-  filteredContent: Ember.computed ->
+  preparedContent: Ember.computed ->
     content = @get 'content'
-    query   = @get 'query'
     selections = @get 'selections'
     return Ember.A [] unless content and selections
     # excludes items that are already selected
-    Ember.A(
-      @get('content').filter (item) =>
-        not selections.contains(item) and @matcher(query, item)
+    
+    nonSelectedFilteredItems = Ember.A(
+      @get('filteredContent').filter (item) =>
+        not selections.contains(item)
     )
-  .property 'content.@each', 'optionLabelPath', 'query', 'selections.@each'
+
+    return nonSelectedFilteredItems unless @get('sortLabels')
+
+    Ember.A(
+      @get('sortedFilteredContent').filter (item) =>
+        not selections.contains(item)
+    )
+  .property 'content.@each', 'filteredContent.@each', 'sortedFilteredContent.@each', 'selections.@each'
 
   # uses single select's "selection" value - adds it to selections and
   # then clears the selection value so that it can be re-selected

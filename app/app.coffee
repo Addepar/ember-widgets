@@ -53,6 +53,16 @@ App.EmberWidgetsModalRoute = Ember.Route.extend
         cancel: "modalCancel"
         content: "Isn't this one fine day?"
 
+    showSmallModal: ->
+      Ember.Widgets.ModalComponent.popup
+        targetObject: this
+        confirm: "modalConfirm"
+        cancel: "modalCancel"
+        size: 'small'
+        content: "This is quite small isn't it? You can also use 'large'."
+
+
+
     showModalWithCustomContent: ->
       Ember.Widgets.ModalComponent.popup
         targetObject: this

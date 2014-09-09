@@ -17,17 +17,28 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   cancelText:       "Cancel"
   closeText:        null
   content:          ""
+  size:             "normal"
   isValid: true
 
   confirm: Ember.K
   cancel: Ember.K
   close: Ember.K
 
+  headerViewClass: Ember.View.extend
+    templateName: 'modal_header'
+
   contentViewClass: Ember.View.extend
     template: Ember.Handlebars.compile("<p>{{content}}</p>")
 
   footerViewClass:  Ember.View.extend
-    templateName: 'modal_footer'
+    templateName: 'modal-footer'
+
+  _headerViewClass: Ember.computed ->
+    headerViewClass = @get 'headerViewClass'
+    if typeof headerViewClass is 'string'
+      Ember.get headerViewClass
+    else headerViewClass
+  .property 'headerViewClass'
 
   _contentViewClass: Ember.computed ->
     contentViewClass = @get 'contentViewClass'
@@ -42,6 +53,13 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
       Ember.get footerViewClass
     else footerViewClass
   .property 'footerViewClass'
+
+  sizeClass: Ember.computed ->
+    switch @get 'size'
+      when 'large' then 'modal-lg'
+      when 'small' then 'modal-sm'
+      else ''
+  .property 'size'
 
   actions:
     # Important: we do not want to send cancel after modal is closed.

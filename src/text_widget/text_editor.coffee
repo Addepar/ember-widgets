@@ -1,5 +1,5 @@
 Ember.Widgets.TextEditorComponent = Ember.Component.extend
-  templateName: 'text_editor'
+  templateName: 'text-editor'
   selectedFontName: 'Helvetica Neue'
   selectedFontSize: '2'
   selectedForeColor: 'rgb(0, 0, 0)'

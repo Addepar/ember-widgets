@@ -1,8 +1,7 @@
-<div class="modal-dialog">
+<div {{bind-attr class=":modal-dialog sizeClass"}}>
   <div class="modal-content">
     <div class="modal-header">
-      <button type="button" class="close" {{action "sendClose"}}>&times;</button>
-      <h4 class="modal-title">{{headerText}}</h4>
+      {{view _headerViewClass}}
     </div>
     <div class="modal-body">
       {{view _contentViewClass}}
