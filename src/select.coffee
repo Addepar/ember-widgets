@@ -325,7 +325,9 @@ Ember.AddeparMixins.ResizeHandlerMixin,
 
   focusIn: (event) ->
     # the event is targeting myself (and not my descendants)
-    if @.$()[0] is event.target
+    # also check relatedTarget b/c a keyboard triggered focus has relatedTarget,
+    # while a clicked triggered focus doesn't (and that's handled by button)
+    if @$()[0] is event.target and event.relatedTarget
       @set 'showDropdown', yes
 
   focusOut: (event) ->
