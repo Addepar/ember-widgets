@@ -42,10 +42,9 @@ Ember.Widgets.BodyEventListener,
     @_super()
     # we want the view to render first and then we snap to position after
     # it is renered
-    Ember.run.next this, ->
-      @snapToPosition()
-      @set 'visibility', 'visible'
-      @set 'isShowing', yes
+    @snapToPosition()
+    @set 'visibility', 'visible'
+    @set 'isShowing', yes
 
   bodyClick: -> @hide()
 
