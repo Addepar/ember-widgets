@@ -58,19 +58,14 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
     selections = @get 'selections'
     return Ember.A [] unless content and selections
     # excludes items that are already selected
-    
-    nonSelectedFilteredItems = Ember.A(
-      @get('filteredContent').filter (item) =>
-        not selections.contains(item)
-    )
 
-    return nonSelectedFilteredItems unless @get('sortLabels')
-
-    Ember.A(
+    if @get('sortLabels')
       @get('sortedFilteredContent').filter (item) =>
         not selections.contains(item)
-    )
-  .property 'content.@each', 'filteredContent.@each', 'sortedFilteredContent.@each', 'selections.@each'
+    else
+      @get('filteredContent').filter (item) =>
+        not selections.contains(item)
+  .property 'content.@each', 'filteredContent.[]', 'sortedFilteredContent.[], 'selections.@each', 'sortLabels'
 
   # uses single select's "selection" value - adds it to selections and
   # then clears the selection value so that it can be re-selected

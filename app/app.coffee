@@ -61,8 +61,6 @@ App.EmberWidgetsModalRoute = Ember.Route.extend
         size: 'small'
         content: "This is quite small isn't it? You can also use 'large'."
 
-
-
     showModalWithCustomContent: ->
       Ember.Widgets.ModalComponent.popup
         targetObject: this

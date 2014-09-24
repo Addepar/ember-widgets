@@ -198,29 +198,43 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   # in the textbox
   preparedContent: Ember.computed ->
     if @get('sortLabels') then @get('sortedFilteredContent') else @get('filteredContent')
-  .property 'sortLabels', 'filteredContent.@each', 'sortedFilteredContent.@each'
+  .property 'sortLabels', 'filteredContent.[]', 'sortedFilteredContent.[]'
 
   contentProxy: Ember.computed ->
     matcher = (searchText, item) => @matcher(searchText, item)
-    optionLabelPath = @get('optionLabelPath') 
+    optionLabelPath = @get('optionLabelPath')
     query = @get('query')
 
     # TODO(chris): review & find a way to use ArrayProxy
     ContentProxy = Ember.ObjectProxy.extend
-      filteredContent: Ember.computed ->
-        Ember.A((@get('content') or []).filter (item) -> matcher(query, item))
+      contentObserver: (->
+        Ember.run.debounce(@, @debouncedFilterAndSort, 300)
+      ).observes('contentChanged').on('init')
+
+      contentChanged: Ember.computed ->
+        yes
       .property "content.@each.#{optionLabelPath}"
 
-      sortedFilteredContent: Ember.computed ->
-        Ember.A(
-          _.sortBy (@get('filteredContent') or []), (item) =>
-            Ember.get(item, optionLabelPath)?.toLowerCase()
-        )
-      .property "content.@each.#{optionLabelPath}"
+      debouncedFilterAndSort: ->
+        if @get('contentChanged')
+          # filter
+          filteredContent = Ember.A((@get('content') or []).filter (item) -> matcher(query, item))
+          @set 'filteredContent', filteredContent
+
+          # sort
+          sortedContent = Ember.A(
+            _.sortBy (@get('filteredContent') or []), (item) =>
+              Ember.get(item, optionLabelPath)?.toLowerCase()
+          )
+          @set 'sortedFilteredContent', sortedContent
+          @set 'contentChanged', no
+
+      filteredContent: []
+      sortedFilteredContent: []
 
     ContentProxy.create
       content: @get('content')
-  .property 'content.@each', 'optionLabelPath', 'query'
+  .property 'content', 'optionLabelPath', 'query'
 
   filteredContent: Ember.computed.alias 'contentProxy.filteredContent'
   sortedFilteredContent: Ember.computed.alias 'contentProxy.sortedFilteredContent'
