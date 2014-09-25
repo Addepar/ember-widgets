@@ -476,8 +476,7 @@
   padding: 0 !important;
 }
 .color-picker-button .color-picker-cell {
-  width: calc(100% - 31px);
-  min-width: 28px;
+  width: 28px;
   margin: 2px 0 0 2px;
 }
 .color-picker-dropdown-caret {
