@@ -208,7 +208,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     # TODO(chris): review & find a way to use ArrayProxy
     ContentProxy = Ember.ObjectProxy.extend
       contentObserver: (->
-        Ember.run.debounce(@, @debouncedFilterAndSort, 300)
+        Ember.run.debounce(@, @debouncedFilterAndSort, 300, yes)
       ).observes('contentChanged').on('init')
 
       contentChanged: Ember.computed ->
