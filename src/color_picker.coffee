@@ -158,7 +158,7 @@ colorToHex = (color) ->
   return undefined
 
 Ember.Widgets.ColorPicker = Ember.Component.extend
-  templateName: 'color-picker'
+  layoutName: 'color-picker'
   classNames: ['color-picker-button']
   colorPickerPlacement: 'right'
   dropdownClass: null
