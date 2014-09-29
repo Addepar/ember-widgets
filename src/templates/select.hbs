@@ -17,16 +17,18 @@
       {{view searchView}}
     </div>
   {{/unless}}
-  {{view listView
-    tagName="ul"
-    classNames="ember-select-results"
-    heightBinding="dropdownHeight"
-    rowHeightBinding="rowHeight"
-    contentBinding="groupedContent"
-    itemViewClassBinding="itemView"
-  }}
-  {{#if hasNoResults}}
-    <span class="ember-select-no-results">No results match "{{query}}"</span>
+  {{#if showDropdown}}
+    {{view listView
+      tagName="ul"
+      classNames="ember-select-results"
+      heightBinding="dropdownHeight"
+      rowHeightBinding="rowHeight"
+      contentBinding="groupedContent"
+      itemViewClassBinding="itemView"
+    }}
+    {{#if hasNoResults}}
+      <span class="ember-select-no-results">No results match "{{query}}"</span>
+    {{/if}}
   {{/if}}
   {{#if selectMenuView}}
     {{view selectMenuView}}
