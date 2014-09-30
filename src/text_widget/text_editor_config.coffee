@@ -1,5 +1,5 @@
 Ember.Widgets.TextEditorConfigComponent = Ember.Component.extend
-  templateName: 'text-editor-config'
+  layoutName: 'text-editor-config'
   classNames: Ember.A ['ember-text-editor-toolbar']
   selectedFontName: 'Helvetica Neue'
   selectedFontSize: '2'
