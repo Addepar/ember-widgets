@@ -183,7 +183,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     # "stolen" from us.
     showDropdownDidChange: Ember.observer ->
       Ember.run.schedule 'afterRender', this, ->
-          @$().focus() if @get('state') is 'inDOM'
+          @$().focus() if (@get('_state') or @get('state')) is 'inDOM'
     , 'parentView.showDropdown'
 
   # This is a hack. Ember.ListView doesn't handle case when total height
