@@ -51,9 +51,12 @@ Ember.Widgets.BodyEventListener,
   hide: ->
     return if @get('isDestroyed')
     @set('isShowing', no)
-    @$().one $.support.transition.end, =>
-      # We need to wrap this in a run-loop otherwise ember-testing will complain
-      # about auto run being disabled when we are in testing mode.
+    if @get('fade')
+      @$().one $.support.transition.end, =>
+        # We need to wrap this in a run-loop otherwise ember-testing will complain
+        # about auto run being disabled when we are in testing mode.
+        Ember.run this, @destroy
+    else
       Ember.run this, @destroy
 
   ###

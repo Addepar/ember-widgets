@@ -8,6 +8,7 @@ Ember.Widgets.PopoverLinkComponent = Ember.Component.extend
   disabled:   no
   popoverClassNames: []
   rootElement: '.ember-application'
+  fade: yes
 
   _contentViewClass: Ember.computed ->
     contentViewClass = @get 'contentViewClass'
@@ -27,6 +28,7 @@ Ember.Widgets.PopoverLinkComponent = Ember.Component.extend
       placement: Ember.computed.alias 'controller.placement'
       title:  Ember.computed.alias 'controller.title'
       contentViewClass: @get('_contentViewClass')
+      fade: @get('fade')
     popover = popoverView.create()
     popover.appendTo @get('rootElement')
 
