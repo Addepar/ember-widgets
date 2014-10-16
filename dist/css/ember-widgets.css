@@ -133,7 +133,7 @@
   list-style: none;
 }
 .ember-select-multi .ember-select-choices .ember-select-search-field {
-  width: 25px;
+  width: 100%;
   padding: 0;
   white-space: nowrap;
 }
