@@ -3,7 +3,9 @@
     {{! TODO(Louis):get help from peter to get a placeholder or a zero value }}
     {{each selections itemViewClass="view.selectionItemView"}}
     <li class="ember-select-search-field">
-      {{view searchView}}
+      {{view searchView
+        placeholder = placeholder
+      }}
     </li>
   </ul>
 </div>
