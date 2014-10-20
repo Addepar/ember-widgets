@@ -216,7 +216,8 @@ Ember.Widgets.PopoverComponent.reopenClass
     @hideAll()
     rootElement = options.rootElement or @rootElement
     popover = this.create options
-    popover.set 'container', popover.get('targetObject.container')
+    if popover.get('targetObject.container')
+      popover.set 'container', popover.get('targetObject.container')
     popover.appendTo rootElement
     popover
 
