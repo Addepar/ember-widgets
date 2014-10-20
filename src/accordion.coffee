@@ -1,6 +1,7 @@
 Ember.Widgets.AccordionComponent = Ember.Component.extend
   classNames: 'panel-group'
   activeIndex: 0
+  allowMultipleActive: no
 
 Ember.Widgets.AccordionItem = Ember.View.extend
   defaultTemplate: Ember.Handlebars.compile('{{view.content}}')
@@ -12,7 +13,8 @@ Ember.Widgets.AccordionItem = Ember.View.extend
   content: Ember.computed.alias 'parentView.content'
 
   isActiveDidChange: Ember.observer ->
-    @set 'isActive', (@get('parentView.activeIndex') is @get('index'))
+    if not @get('parentView.allowMultipleActive')
+      @set 'isActive', (@get('parentView.activeIndex') is @get('index'))
     if @get('isActive') then @show() else @hide()
   , 'parentView.activeIndex'
 
@@ -24,10 +26,14 @@ Ember.Widgets.AccordionItem = Ember.View.extend
   click: (event) ->
     # only handle clicks on the title of the accordion
     return unless @$(event.target).closest('.panel-heading').length > 0
-    if @get('isActive')
-      @set 'parentView.activeIndex', null
+    if @get('parentView.allowMultipleActive')
+      @toggleProperty('isActive')
+      if @get('isActive') then @show() else @hide()
     else
-      @set 'parentView.activeIndex', @get('index')
+      if @get('isActive')
+        @set 'parentView.activeIndex', null
+      else
+        @set 'parentView.activeIndex', @get('index')
 
   hide: ->
     $accordionBody = @$('.panel-collapse')
