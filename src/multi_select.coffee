@@ -28,8 +28,9 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
   layoutName: 'multi-select'
   selections: undefined
   choicesFieldClass: ''
-  placeholder: ''
-
+  placeholder: undefined
+  persistentPlaceholder: undefined
+  
   values: Ember.computed (key, value) ->
     if arguments.length is 2 # setter
       return unless value
@@ -47,16 +48,24 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
 
   selectionItemView: Ember.Widgets.MultiSelectOptionView
 
+  # Invisible span used to make sure there is a good amount of room for either
+  # the placeholder values, or for the query the user has entered.
+  invisiblePlaceholderText: Ember.computed ->
+    return @get('query') if @get 'query'
+    return @get('persistentPlaceholder') if @get('selections.length')
+    @get('placeholder') or @get('persistentPlaceholder')
+  .property 'query', 'placeholder', 'persistentPlaceholder', 'selections.length'
+
   searchView: Ember.TextField.extend
     class: 'ember-select-input'
     valueBinding: 'parentView.query'
     focusIn: (event) -> @set 'parentView.showDropdown', yes
     placeholder: Ember.computed ->
-      if @get 'parentView.selections.length'
-        ''
-      else
-        @get 'parentView.placeholder'
-    .property 'parentView.placeholder', 'parentView.selections.length'
+      if @get('parentView.selections.length')
+        return @get('parentView.persistentPlaceholder') 
+      @get('parentView.placeholder') or @get('parentView.persistentPlaceholder')
+    .property('parentView.placeholder', 'parentView.persistentPlaceholder',
+      'parentView.selections.length')
 
   # the list of content that is filtered down based on the query entered
   # in the textbox

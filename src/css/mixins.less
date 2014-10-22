@@ -1,6 +1,6 @@
 //
 // Mixins
-// -----------------------------------------------------------------------------
+
 
 .text-shadow (@string: 0 1px 3px rgba(0, 0, 0, 0.25)) {
   -webkit-text-shadow: @string;
@@ -31,10 +31,6 @@
   -webkit-border-radius: @radius;
   -moz-border-radius:    @radius;
   border-radius:         @radius;
-
-  -moz-background-clip:    padding;
-  -webkit-background-clip: padding-box;
-  background-clip:         padding-box;
 }
 .border-radiuses (@topright: 0, @bottomright: 0, @bottomleft: 0, @topleft: 0) {
   -webkit-border-top-right-radius:    @topright;
@@ -51,10 +47,6 @@
   border-bottom-right-radius:         @bottomright;
   border-bottom-left-radius:          @bottomleft;
   border-top-left-radius:             @topleft;
-
-  -moz-background-clip:    padding;
-  -webkit-background-clip: padding-box;
-  background-clip:         padding-box;
 }
 .opacity (@opacity: 50) {
   -webkit-opacity: @opacity/100;
@@ -171,6 +163,16 @@
   &:after {
     clear: both;
   }
+}
+
+// Input field for select and multi-select
+// -------------------------
+.select-search-field-sizing {
+  font-size: 100%;
+  padding: 5px;
+  outline: 0;
+  border: 0;
+  .box-shadow(none);
 }
 
 // Button sizes

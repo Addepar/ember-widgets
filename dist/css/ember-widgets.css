@@ -15,6 +15,15 @@
 .clearfix:after {
   clear: both;
 }
+.select-search-field-sizing {
+  font-size: 100%;
+  padding: 5px;
+  outline: 0;
+  border: 0;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
 /* Type */
 /* Colors */
 /* Highlights / Hover */
@@ -123,7 +132,7 @@
   height: auto !important;
   height: 1%;
   margin: 0;
-  padding: 0;
+  padding: 0 0 1px 0;
   overflow: hidden;
   position: relative;
   cursor: text;
@@ -133,16 +142,31 @@
   list-style: none;
 }
 .ember-select-multi .ember-select-choices .ember-select-search-field {
-  width: 25px;
+  min-width: 40px;
   padding: 0;
   white-space: nowrap;
+  position: relative;
+}
+.ember-select-multi .ember-select-choices .ember-select-search-field .invisible-placeholder {
+  visibility: hidden;
+  line-height: 32px;
+  font-size: 100%;
+  padding: 5px;
+  outline: 0;
+  border: 0;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
 }
 .ember-select-multi .ember-select-choices .ember-select-search-field input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1000px;
   color: #666;
   background: transparent !important;
   font-size: 100%;
   padding: 5px;
-  margin: 1px 0;
   outline: 0;
   border: 0;
   -webkit-box-shadow: none;
@@ -164,9 +188,6 @@
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
 }
 .ember-select-multi .ember-select-search-choice span {
   cursor: default;
@@ -189,8 +210,12 @@
   color: #222;
   cursor: pointer;
 }
+.ember-select-multi .ember-select-choices.input-sm {
+  padding: 0;
+}
 .ember-select-multi .ember-select-choices.input-sm .ember-select-search-field input {
-  margin: 0;
+  margin: 1px 0 0 0;
+  padding: 0 5px;
 }
 .ember-select-multi .ember-select-choices.input-sm .ember-select-search-choice {
   line-height: 22px;
@@ -199,11 +224,16 @@
   top: 2px;
 }
 .ember-select-multi .ember-select-choices.input-xs {
+  padding: 0;
   min-height: 22px;
 }
 .ember-select-multi .ember-select-choices.input-xs .ember-select-search-field {
   height: 22px;
   margin: 0;
+}
+.ember-select-multi .ember-select-choices.input-xs .ember-select-search-field input {
+  margin: 1px 0 0 0;
+  padding: 0 5px;
 }
 .ember-select-multi .ember-select-choices.input-xs .ember-select-search-choice {
   line-height: 18px;
@@ -238,9 +268,6 @@
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
 }
 .ember-select-search input.select2-active {
   background: #ffffff url('../img/spinner.gif') no-repeat 100%;
@@ -300,6 +327,9 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+.ember-select {
+  max-width: 100%;
+}
 .ember-select .dropdown-menu {
   min-width: 200px;
   max-width: 600px;
@@ -319,9 +349,6 @@
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
 }
 /* Popover Arrow
 -------------------------------------------------- */
@@ -428,9 +455,6 @@
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
 }
 .ember-text-editor-toolbar {
   border: 1px solid #ddd;
@@ -614,9 +638,6 @@
   -webkit-border-radius: 1px;
   -moz-border-radius: 1px;
   border-radius: 1px;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;

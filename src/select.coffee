@@ -57,11 +57,11 @@ Ember.Component.extend Ember.Widgets.BodyEventListener,
 Ember.AddeparMixins.ResizeHandlerMixin,
   layoutName:         'select'
   classNames:         'ember-select'
-  attributeBindings: Ember.A ['tabindex']
-  classNameBindings: Ember.A ['showDropdown:open', 'isDropup:dropup']
+  attributeBindings:  Ember.A ['tabindex']
+  classNameBindings:  Ember.A ['showDropdown:open', 'isDropup:dropup']
   itemViewClass:      'Ember.Widgets.SelectOptionView'
   prompt:             'Select a Value'
-  placeholder:        'Search'
+  placeholder:        undefined
   disabled: no
 
   # we need to set tabindex so that div responds to key events

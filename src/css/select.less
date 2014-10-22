@@ -123,7 +123,7 @@
     height: auto !important;
     height: 1%;
     margin: 0;
-    padding: 0;
+    padding: 0 0 1px 0;
     overflow: hidden;
     position: relative;
     cursor: text;
@@ -134,20 +134,25 @@
     }
 
     .ember-select-search-field {
-      width: 25px;
-      // margin: 3px 0;
+      min-width: 40px;
       padding: 0;
       white-space: nowrap;
+      position: relative;
 
-     input {
+      .invisible-placeholder {
+        visibility: hidden;
+        line-height: 32px;  // HACK: Need to take up enough vertical space
+        .select-search-field-sizing;
+      }
+
+      input {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1000px;  // HACK: We want to take up 100% of the select area
         color: #666;
         background: transparent !important;
-        font-size: 100%;
-        padding: 5px;
-        margin: 1px 0;
-        outline: 0;
-        border: 0;
-        .box-shadow(none);
+        .select-search-field-sizing;
       }
     }
   }
@@ -195,8 +200,11 @@
   /* Small Version */
 
   .ember-select-choices.input-sm {
+    padding: 0;
+
     .ember-select-search-field input {
-      margin: 0;
+      margin: 1px 0 0 0;
+      padding: 0 5px;
     }
 
     .ember-select-search-choice {
@@ -211,6 +219,8 @@
   /* XS version */
 
   .ember-select-choices.input-xs {
+    padding: 0;
+
     // This should remain in sync with addepar-boostrap-theme
     min-height: 22px;
     // padding: 0 5px;
@@ -220,6 +230,11 @@
     .ember-select-search-field {
       height: 22px;
       margin: 0;
+    }
+
+    .ember-select-search-field input {
+      margin: 1px 0 0 0;
+      padding: 0 5px;
     }
 
     .ember-select-search-choice {
@@ -322,6 +337,8 @@
 
 // TODO(Louis): Needs to be organized
 .ember-select {
+  max-width: 100%;
+
   .dropdown-menu {
     // This causes stress
     min-width: 200px;
