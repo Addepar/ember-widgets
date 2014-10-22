@@ -15,7 +15,7 @@ Ember.Widgets.DomHelper = Ember.Mixin.create
   # beginning or end
   #   element       the element to select
   #   collapseMode  "none", "beginning", "end"
-  selectElement: (element, collapseMode="end") ->
+  selectElement: (document, element, collapseMode="end") ->
     # http://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity
     if(document.createRange)  # Firefox, Chrome, Opera, Safari, IE 9+
       range = document.createRange()
@@ -24,10 +24,10 @@ Ember.Widgets.DomHelper = Ember.Mixin.create
       if collapseMode != "none"
         # collapse the range to the end point. false means collapse to end rather than the start
         range.collapse(if collapseMode == "beginning" then true else false)
-      @activateRange(range)
+      @activateRange(document, range)
 
-  activateRange: (range) ->
-    selection = window.getSelection()
+  activateRange: (document, range) ->
+    selection = document.getSelection()
     selection.removeAllRanges()
     selection.addRange(range)
     return range

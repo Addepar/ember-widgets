@@ -39,6 +39,7 @@ _findInChosen = (app, element, itemText) ->
 
 _findInMultiChosen = (app, element, itemText) ->
   searchBox = find 'input', element
+  click searchBox
   fillIn(searchBox, itemText).then ->
     #Need to use filter to get an exact match
     $('li', element).filter -> $.text([this]).trim() is itemText

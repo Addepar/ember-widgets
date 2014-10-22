@@ -89,7 +89,7 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
       editor = @getEditor()[0]
     if editor.childElementCount is 0
       # Insert div in text editor if none exists
-      @insertHTMLAtRange(@selectElement(editor), "<div></div>")
+      @insertHTMLAtRange(@selectElement(@getDocument(), editor), "<div></div>")
     return editor.children[editor.children.length - 1]
 
   didInsertElement: ->

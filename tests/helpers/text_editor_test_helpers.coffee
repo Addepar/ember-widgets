@@ -13,8 +13,6 @@ KEY_CODES =
   UP: 38,
   ESCAPE: 27
 
-# Used to track the last key event
-last_event = null
 
 Ember.Widgets.TestHelpers.TextEditor =
   ###############################################################################
@@ -42,28 +40,10 @@ Ember.Widgets.TestHelpers.TextEditor =
     if currentSelection.rangeCount > 0 then currentSelection.getRangeAt(0) else null
   createNewRange: -> document.createRange()  # TODO: browser compatability
   activateRange: (range) ->
-    selection = window.getSelection()
+    selection = @getSelection()
     selection.removeAllRanges()
     selection.addRange(range)
     return range
-
-  ###############################################################################
-  # Event Helpers
-  ###############################################################################
-  newKeyEvent: (app, selector, context, type, keyCode) ->
-    # Same as Ember's key event but saves the event for us to access later
-    $el = undefined
-    if typeof keyCode is "undefined"
-      keyCode = type
-      type = context
-      context = null
-    $el = findWithAssert(app, selector, context)
-    event = Ember.$.Event(type,
-      keyCode: keyCode
-    )
-    Ember.run $el, "trigger", event
-    last_event = event  # Store event for access later
-    return wait(app)
 
   ###############################################################################
   # Actions
@@ -129,28 +109,30 @@ Ember.Widgets.TestHelpers.TextEditor =
       return null
     innerSelect(@getTextEditor()[0], text)
   sendKeyEventToTextEditor: (eventType, keyCode) ->
-    @newKeyEvent('.text-editor', @getInnerDocument(), eventType, keyCode)
+    keyEvent('.text-editor', @getInnerDocument(), eventType, keyCode)
   typeKeyInTextEditor: (keyCode) ->
     char = String.fromCharCode(keyCode).toLowerCase()
-    range = @getCurrentRange()
     @sendKeyEventToTextEditor('keydown', keyCode).then =>
-      if not last_event.isDefaultPrevented()
-        if keyCode is KEY_CODES.BACKSPACE
-          @getInnerDocument().execCommand('Delete', false, null)
-        else if keyCode is KEY_CODES.DELETE
-          @getInnerDocument().execCommand('ForwardDelete', false, null)
-        else if typeof (char) is "string"
-          if range.startContainer.nodeType is 3 and range.collapsed
-            range.startContainer.insertData range.startOffset, char
-            range.setStart range.startContainer, range.startOffset + 1
-            range.collapse true
-            @activateRange(range)
-          else
-            node = @getInnerDocument().createTextNode(char)
-            range.insertNode node
-            range.setStart(node, 1)
-            range.collapse true
-            @activateRange(range)
+      if keyCode is KEY_CODES.BACKSPACE
+        @getInnerDocument().execCommand('Delete', false, null)
+      else if keyCode is KEY_CODES.DELETE
+        @getInnerDocument().execCommand('ForwardDelete', false, null)
+      else if keyCode is KEY_CODES.LEFT or keyCode is KEY_CODES.RIGHT
+        # Do nothing
+      else if typeof (char) is "string"
+        range = @getCurrentRange() or @createNewRange()
+
+        if range.startContainer.nodeType is 3 and range.collapsed
+          range.startContainer.insertData range.startOffset, char
+          range.setStart range.startContainer, range.startOffset + 1
+          range.collapse true
+          @activateRange(range)
+        else
+          node = @getInnerDocument().createTextNode(char)
+          range.insertNode node
+          range.setStart(node, 1)
+          range.collapse true
+          @activateRange(range)
       @sendKeyEventToTextEditor('keypress', keyCode)
     .then =>
       @sendKeyEventToTextEditor('keyup', keyCode)

@@ -63,6 +63,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper, Ember.Widgets.
     $(pillElement).text(pill.result())
 
   insertPill: (pill) ->
+    document = @getDocument()
     precedingCharacters = @getCharactersPrecedingCaret(this.getEditor()[0])
     matches = precedingCharacters.match @get('insertPillRegex')
     if matches
@@ -73,7 +74,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper, Ember.Widgets.
     range = @getCurrentRange()
     if not range or not @inEditor(range)
       if not (range = @getCurrentRange()) or not @inEditor(range)
-        @selectElement(@getOrCreateLastElementInEditor())
+        @selectElement(document, @getOrCreateLastElementInEditor())
       range = @getCurrentRange()
 
     existingNonEditable = this._getNonEditableParent(range.startContainer) || this._getNonEditableParent(range.endContainer)
@@ -82,7 +83,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper, Ember.Widgets.
     caretContainer = @_insertCaretContainer(factor, false)
 
     # Set cursor to the end of the caret container just created
-    @selectElement(caretContainer)
+    @selectElement(document, caretContainer)
     # Remove other caret containers, excluding the one we just selected
     @_removeCaretContainers()
 
@@ -94,7 +95,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper, Ember.Widgets.
 
     # select the caret container again (which has probably been moved)
     @getEditor().focus()
-    @selectElement(factor.nextSibling)
+    @selectElement(document, factor.nextSibling)
 
   _isNonEditable: (node) ->
     not Ember.isEmpty($(node).closest('.non-editable'))
@@ -207,7 +208,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper, Ember.Widgets.
         if caretContainer
           # place cursor at end of caret unless the caret is the first child
           collapse = if $(caretContainer).is(":first-child") then "beginning" else "end"
-          @selectElement(caretContainer, collapse)
+          @selectElement(@getDocument(), caretContainer, collapse)
           return
 
       # We are in the middle of a non editable (either collapsed or not). Select the entire non-
@@ -251,10 +252,10 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper, Ember.Widgets.
     handleLeftNodeCase = =>
       if leftNode
         if keyCode == @KEY_CODES.LEFT and isCollapsed
-          @selectElement(leftNode, "none")
+          @selectElement(@getDocument(), leftNode, "none")
           event.preventDefault()
         else if keyCode == @KEY_CODES.BACKSPACE
-          @selectElement(leftNode, "none")
+          @selectElement(@getDocument(), leftNode, "none")
       else if leftNodeDeep and keyCode == @KEY_CODES.BACKSPACE
         # This happens when the last node on the previous line is a non-editable
         @_insertCaretContainer(leftNodeDeep, false)
@@ -262,9 +263,9 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper, Ember.Widgets.
     handleRightNodeCase = =>
       if rightNode
         if keyCode == @KEY_CODES.DELETE
-          @selectElement(rightNode, "none")
+          @selectElement(@getDocument(), rightNode, "none")
         else if keyCode == @KEY_CODES.RIGHT and isCollapsed
-          @selectElement(rightNode, "none")
+          @selectElement(@getDocument(), rightNode, "none")
           event.preventDefault()
       else if rightNodeDeep and keyCode == @KEY_CODES.DELETE and not rightNode
         # This happens when the first node on the next line is a non-editable
@@ -307,7 +308,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper, Ember.Widgets.
       if (leftNode || rightNode) and !isCollapsed
         caret = @_insertCaretContainer(leftNode || rightNode, if leftNode then false else true)
         @deleteRange(range)
-        @selectElement(caret)
+        @selectElement(@getDocument(), caret)
       else if nonEditableParent
         @deleteRange(range)  # special delete in case a non-editable is selected
 
@@ -350,7 +351,7 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.DomHelper, Ember.Widgets.
     currentRange = @getCurrentRange()
     if @_isNonEditable(event.target) and event.target == @mouseDownTarget and @_isRangeWithinNonEditable(currentRange)
       # This prevents the user from putting the cursor within a non-editable that was previously selected
-      @selectElement(event.target, "none")
+      @selectElement(@getDocument(), event.target, "none")
       event.preventDefault()
     @_super()
 
