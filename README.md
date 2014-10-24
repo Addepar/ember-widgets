@@ -11,7 +11,7 @@ http://addepar.github.com/#/ember-widgets/
 
 ### JS Bin Starter Kit
 
-http://emberjs.jsbin.com/xabeb/1/edit
+http://emberjs.jsbin.com/hebexa/1/edit
 
 ### Installation
 
