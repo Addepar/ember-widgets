@@ -23,7 +23,7 @@ Ember.Widgets.PopoverLinkComponent = Ember.Component.extend
 
     popover = @get('_popover')
 
-    if @get('toggle') and popover?.get('state') == 'inDOM'
+    if @get('toggle') and (popover?.get('_state') or popover?.get('state')) is 'inDOM'
       popover.hide()
     else
       popoverView = Ember.View.extend Ember.Widgets.PopoverMixin,
