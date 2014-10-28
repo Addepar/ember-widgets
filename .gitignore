@@ -4,6 +4,7 @@ build/
 dependencies/compiled/*.*
 test/runner.html
 .DS_Store
+.stage
 *.swo
 *.swp
 

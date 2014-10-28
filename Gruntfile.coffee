@@ -16,9 +16,13 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks "grunt-karma"
   grunt.loadNpmTasks "grunt-banner"
   grunt.loadNpmTasks "grunt-text-replace"
+  grunt.loadNpmTasks "grunt-release-it"
 
   grunt.initConfig
     pkg: grunt.file.readJSON('package.json')
+    banner: '/*!\n* <%=pkg.name %> v<%=pkg.version%>\n' +
+            '* Copyright 2013-<%=grunt.template.today("yyyy")%> Addepar Inc.\n' +
+            '* See LICENSE.\n*/',
 
     clean:
       target: ['build', 'dist' , 'gh_pages']
@@ -52,11 +56,8 @@ module.exports = (grunt) ->
         options:
           targetDir: 'vendor'
           layout: 'byComponent'
-          install: true
           verbose: true
-          cleanTargetDir: false
-          cleanBowerDir: true
-          bowerOptions: {}
+          copy: false
 
     coffee:
       srcs:
@@ -97,7 +98,7 @@ module.exports = (grunt) ->
       options:
         includeSourceURL: yes
       "dist/js/ember-widgets.js":  "build/src/ember_widgets.js"
-      "gh_pages/app.js":        "build/app/app.js"
+      "gh_pages/app.js":           "build/app/app.js"
 
     less:
       development:
@@ -112,13 +113,16 @@ module.exports = (grunt) ->
           "gh_pages/css/app.css": "app/assets/css/app.less"
 
     usebanner:
-      dist:
+      js:
         options:
-          banner: '/*!\n* <%=pkg.name %> v<%=pkg.version%>\n' +
-            '* Copyright 2013-<%=grunt.template.today("yyyy")%> Addepar Inc.\n' +
-            '* See LICENSE.\n*/',
+          banner: '<%=banner%>'
         files:
-          src: ['dist/js/*', 'dist/css/*']
+          src: ['dist/js/*']
+      css:
+        options:
+          banner: '<%=banner%>'
+        files:
+          src: ['dist/css/*']
 
     replace:
       global_version:
@@ -135,6 +139,13 @@ module.exports = (grunt) ->
           from: /Ember.Widgets.VERSION = '.*\..*\..*'/
           to: "Ember.Widgets.VERSION = '<%=pkg.version%>'"
         }]
+      overview_page:
+        src: ['app/templates/ember_widgets/overview.hbs']
+        overwrite: true,
+        replacements: [{
+          from: /The current version is .*\..*\..*./
+          to: "The current version is <%=pkg.version%>."
+        }]
 
     # Copy build/app/assets/css into gh_pages/asset and other assets from app
     copy:
@@ -142,11 +153,11 @@ module.exports = (grunt) ->
         files: [
           {src: ['dist/css/ember-widgets.css'], dest: 'gh_pages/css/ember-widgets.css'},
           {src: ['app/index.html'], dest: 'gh_pages/index.html'},
-          {expand: true, flatten: true, cwd: 'dependencies/', src: ['**/*.js'], dest: 'gh_pages/lib'},
-          {expand: true, flatten: true, cwd: 'dependencies/', src: ['**/*.css'], dest: 'gh_pages/css'},
-          {expand: true, flatten: true, cwd: 'vendor/', src: ['**/*.js'], dest: 'gh_pages/lib'},
-          {expand: true, flatten: true, cwd: 'vendor/', src: ['**/*.css'], dest: 'gh_pages/css'},
-          {expand: true, cwd: 'vendor/font-awesome/fonts/', src: ['**'], dest: 'gh_pages/fonts'},
+          {expand: true, cwd: 'dependencies/', src: ['**/*.js'], dest: 'gh_pages/lib'},
+          {expand: true, cwd: 'dependencies/', src: ['**/*.css'], dest: 'gh_pages/lib'},
+          {expand: true, cwd: 'vendor/', src: ['**/*.js'], dest: 'gh_pages/lib'},
+          {expand: true, cwd: 'vendor/', src: ['**/*.css'], dest: 'gh_pages/lib'},
+          {expand: true, cwd: 'vendor/font-awesome/fonts/', src: ['**'], dest: 'gh_pages/lib/font-awesome/fonts'},
           {expand: true, cwd: 'app/assets/font/', src: ['**'], dest: 'gh_pages/fonts'},
           {expand: true, cwd: 'app/assets/img/', src: ['**'],  dest: 'gh_pages/img'},
           {expand: true, cwd: 'src/img/', src: ['**'], dest: 'gh_pages/img'}
@@ -169,34 +180,31 @@ module.exports = (grunt) ->
         tasks: [ "default" ]
       src:
         files: [ "src/**/*.coffee"]
-        tasks: [ "coffee:srcs", "neuter" ]
+        tasks: [ "coffee:srcs", "neuter", "uglify", "usebanner:js" ]
       test:
         files: [ "tests/**/*.coffee"]
-        tasks: [ "coffee:tests", "neuter" ]
+        tasks: [ "coffee:tests", "neuter", "uglify", "usebanner:js" ]
       src_handlebars:
         files: [ "src/**/*.hbs" ]
-        tasks: [ "emberTemplates", "neuter" ]
+        tasks: [ "emberTemplates", "neuter", "uglify", "usebanner:js" ]
       app:
         files: [ "app/**/*.coffee", "dependencies/**/*.js", "vendor/**/*.js" ]
-        tasks: [ "coffee:app", "neuter" ]
+        tasks: [ "coffee:app", "neuter", "uglify", "usebanner:js" ]
       app_handlebars:
         files: [ "app/**/*.hbs"]
-        tasks: [ "emberTemplates", "neuter" ]
+        tasks: [ "emberTemplates", "neuter", "uglify", "usebanner:js" ]
       less:
         files: [ "src/**/*.less", "src/**/*.css",
                  "dependencies/**/*.less", "dependencies/**/*.css",
                  "vendor/**/*.less", "vendor/**/*.css",
                  "app/assets/**/*.less", "app/assets/**/*.css" ]
-        tasks: ["less", "copy"]
+        tasks: [ "less", "copy", "usebanner:css" ]
       copy:
         files: [ "app/index.html" ]
         tasks: [ "copy" ]
       bower:
         files: [ 'bower.json']
         tasks: [ 'bower']
-      uglify:
-        files: [ 'dist/js/ember-widgets.js' ]
-        tasks: [ 'uglify' ]
 
     ###
       Runs all .html files found in the test/ directory through PhantomJS.
@@ -224,6 +232,20 @@ module.exports = (grunt) ->
     build_test_runner_file:
       all: [ "tests/**/*_test.js" ]
 
+    "release-it":
+      options:
+        "pkgFiles": ["package.json", "bower.json"]
+        "commitMessage": "Release %s"
+        "tagName": "v%s"
+        "tagAnnotation": "Release %s"
+        "increment": "patch"
+        "buildCommand": "grunt dist"
+        "distRepo": "-b gh-pages git@github.com:Addepar/ember-widgets"
+        "distStageDir": ".stage"
+        "distBase": "gh_pages"
+        "distFiles": ["**/*"]
+        "publish": false
+
   ###
     A task to build the test runner html file that get place in
     /test so it will be picked up by the qunit task. Will
@@ -241,7 +263,7 @@ module.exports = (grunt) ->
   grunt.registerTask "build_tests", [ "coffee:tests", "emberTemplates", "neuter" ]
 
   # build dist files: same as default but no bower or watch
-  grunt.registerTask "dist", [ "clean", "replace", "build_srcs", "build_app", "build_tests", "less", "copy", "uglify", "usebanner" ]
+  grunt.registerTask "dist", [ "clean", "bower", "replace", "build_srcs", "build_app", "build_tests", "less", "copy", "uglify", "usebanner" ]
 
-  grunt.registerTask "default", [ "clean", "bower", "replace", "build_srcs", "build_app", "build_tests", "less", "copy", "uglify", "usebanner", "watch" ]
+  grunt.registerTask "default", [ "dist", "watch" ]
 

@@ -1,6 +1,6 @@
 # Dependencies
-require 'dependencies/list-view'
-require 'vendor/bootstrap/js/bootstrap'
+require 'vendor/ember-list-view/list-view'
+require 'vendor/bootstrap/dist/js/bootstrap'
 require 'dist/js/ember-widgets'
 
 # Compiled Handlebars templates
@@ -34,6 +34,15 @@ App.IndexRoute = Ember.Route.extend
 
 App.EmberWidgetsIndexRoute = Ember.Route.extend
   beforeModel: -> @transitionTo('emberWidgets.overview')
+
+App.EmberWidgetsOverviewRoute = Ember.Route.extend
+  activate: ->
+    controller = @controllerFor('emberWidgets')
+    controller.set 'showLargeHero', yes
+
+  deactivate: ->
+    controller = @controllerFor('emberWidgets')
+    controller.set 'showLargeHero', no
 
 App.CustomPopoverContentView = Ember.View.extend
   templateName: 'custom-popover-content'
