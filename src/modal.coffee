@@ -1,12 +1,12 @@
 Ember.Widgets.ModalComponent =
-Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
+Ember.Component.extend Ember.Widgets.StyleBindingsMixin, Ember.Widgets.TabbableModal, Ember.Widgets.DomHelper,
   layoutName: 'modal'
   classNames: ['modal']
   classNameBindings: ['isShowing:in', 'hasCloseButton::has-no-close-button', 'fadeEnabled:fade']
   modalPaneBackdrop: '<div class="modal-backdrop"></div>'
   bodyElementSelector: '.modal-backdrop'
 
-  enforceModality:  no
+  enforceModality:  yes
   escToCancel:      yes
   backdrop:         yes
   isShowing:        no
@@ -18,7 +18,7 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   closeText:        null
   content:          ""
   size:             "normal"
-  isValid: true
+  isValid:          true
 
   fadeEnabled: Ember.computed ->
     return false if Ember.Widgets.DISABLE_ANIMATIONS
@@ -28,6 +28,8 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   confirm: Ember.K
   cancel: Ember.K
   close: Ember.K
+
+  isNotValid: Ember.computed.not('isValid')
 
   headerViewClass: Ember.View.extend
     templateName: 'modal_header'
@@ -94,8 +96,22 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
       else @sendAction 'close'
       @hide()
 
+    # showPopover: ->
+    #   popoverOptions =
+    #     container: this
+    #     title: 'Select Benchmark'
+    #     classNames: 'benchmark-chooser'
+    #     content:contentView
+
+    #   Ember.Widgets.PopoverComponent.popup popoverOptions
+        # rootElement: 'body'
+
   didInsertElement: ->
     @_super()
+    # Make sure that after the modal is rendered, set focus to the first
+    # tabbable element
+    Ember.run.schedule 'afterRender', this, ->
+      @_focusTabbable()
     # See force reflow at http://stackoverflow.com/questions/9016307/
     # force-reflow-in-css-transitions-in-bootstrap
     @$()[0].offsetWidth if @get('fade')
@@ -115,15 +131,6 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     # remove backdrop
     @_backdrop.remove() if @_backdrop
 
-  keyHandler: Ember.computed ->
-    (event) =>
-      if event.which is 27 and @get('escToCancel') # ESC
-        @send 'sendCancel'
-
-  click: (event) ->
-    return unless event.target is event.currentTarget
-    @send 'sendCancel' unless @get('enforceModality')
-
   hide: ->
     @set 'isShowing', no
     # bootstrap modal removes this class from the body when the modal closes
@@ -139,6 +146,9 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     else
       Ember.run this, @destroy
 
+  doCancelation: ->
+    @send 'sendCancel'
+
   _appendBackdrop: ->
     parentLayer = @$().parent()
     modalPaneBackdrop = @get 'modalPaneBackdrop'
@@ -152,13 +162,11 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     unless @_hideHandler
       @_hideHandler = => @hide()
       $(document).on 'modal:hide', @_hideHandler
-    $(document).on 'keyup', @get('keyHandler')
 
   _removeDocumentHandlers: ->
     @_super()
     $(document).off 'modal:hide', @_hideHandler
     @_hideHandler = null
-    $(document).off 'keyup', @get('keyHandler')
 
 Ember.Widgets.ModalComponent.reopenClass
   rootElement: '.ember-application'
