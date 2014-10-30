@@ -3,7 +3,7 @@ Ember.Mixin.create Ember.Widgets.StyleBindingsMixin,
 Ember.Widgets.BodyEventListener,
   layoutName: 'popover'
   classNames: ['popover']
-  classNameBindings: ['isShowing:in', 'fade', 'placement']
+  classNameBindings: ['isShowing:in', 'fadeEnabled:fade', 'placement']
   styleBindings: ['left', 'top', 'display', 'visibility']
 
   # The target element to anchor the popover to
@@ -16,6 +16,11 @@ Ember.Widgets.BodyEventListener,
   display: 'block'
   visibility: 'hidden'
   debounceTime: 100
+
+  fadeEnabled: Ember.computed ->
+    return false if Ember.Widgets.DISABLE_ANIMATIONS
+    @get('fade')
+  .property 'fade'
 
   left: 0
   top: 0
@@ -51,7 +56,7 @@ Ember.Widgets.BodyEventListener,
   hide: ->
     return if @get('isDestroyed')
     @set('isShowing', no)
-    if @get('fade')
+    if @get('fadeEnabled')
       @$().one $.support.transition.end, =>
         # We need to wrap this in a run-loop otherwise ember-testing will complain
         # about auto run being disabled when we are in testing mode.

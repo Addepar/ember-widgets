@@ -2,7 +2,7 @@ Ember.Widgets.ModalComponent =
 Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   layoutName: 'modal'
   classNames: ['modal']
-  classNameBindings: ['isShowing:in', 'hasCloseButton::has-no-close-button','fade']
+  classNameBindings: ['isShowing:in', 'hasCloseButton::has-no-close-button', 'fadeEnabled:fade']
   modalPaneBackdrop: '<div class="modal-backdrop"></div>'
   bodyElementSelector: '.modal-backdrop'
 
@@ -19,6 +19,11 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   content:          ""
   size:             "normal"
   isValid: true
+
+  fadeEnabled: Ember.computed ->
+    return false if Ember.Widgets.DISABLE_ANIMATIONS
+    @get('fade')
+  .property 'fade'
 
   confirm: Ember.K
   cancel: Ember.K
@@ -126,7 +131,7 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     $(document.body).removeClass('modal-open')
     # fade out backdrop
     @_backdrop.removeClass('in') if @_backdrop
-    if @get('fade')
+    if @get('fadeEnabled')
       # destroy modal after backdroop faded out. We need to wrap this in a
       # run-loop otherwise ember-testing will complain about auto run being
       # disabled when we are in testing mode.

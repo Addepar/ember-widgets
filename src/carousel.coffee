@@ -63,7 +63,7 @@ Ember.Widgets.CarouselComponent = Ember.Component.extend
     $next.addClass(direction)
 
     # Bootstrap has this method for listening on end of transition
-    $next.one $.support.transition.end, =>
+    @_onTransitionEnd $next, =>
       # This code is async and ember-testing requires us to wrap any code with
       # asynchronous side-effects in an Ember.run
       Ember.run this, ->
@@ -71,6 +71,12 @@ Ember.Widgets.CarouselComponent = Ember.Component.extend
         $next.removeClass([type, direction].join(' ')).addClass('active')
         $active.removeClass(['active', direction].join(' '))
         @set 'sliding', no
+
+  _onTransitionEnd: ($el, callback) ->
+    if Ember.Widgets.DISABLE_ANIMATIONS
+      callback()
+    else
+      $el.one $.support.transition.end, callback
 
 Ember.Widgets.CarouselIndicator = Ember.View.extend
   classNameBindings: 'isActive:active'

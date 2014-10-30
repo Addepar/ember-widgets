@@ -34,7 +34,9 @@ Ember.Widgets.AccordionItem = Ember.View.extend
     $accordionBody.height($accordionBody.height())[0].offsetHeight
 
     $accordionBody.removeClass('collapse').removeClass('in').addClass('collapsing')
-    $accordionBody.height(0).one $.support.transition.end, =>
+    $accordionBody.height(0)
+
+    @_onTransitionEnd $accordionBody, =>
       $accordionBody.removeClass('collapsing').addClass('collapse')
 
   show: ->
@@ -42,9 +44,15 @@ Ember.Widgets.AccordionItem = Ember.View.extend
     $accordionBody.removeClass('collapse').addClass('collapsing').height(0)
 
     $accordionBody.height($accordionBody[0]['scrollHeight'])
-    @$().one $.support.transition.end, =>
+    @_onTransitionEnd $(), =>
       $accordionBody.removeClass('collapsing').addClass('in')
         .height('auto')
+
+  _onTransitionEnd: ($el, callback) ->
+    if Ember.Widgets.DISABLE_ANIMATIONS
+      callback()
+    else
+      $el.one $.support.transition.end, callback
 
 Ember.Handlebars.helper('accordion-component', Ember.Widgets.AccordionComponent)
 Ember.Handlebars.helper('accordion-item', Ember.Widgets.AccordionItem)
