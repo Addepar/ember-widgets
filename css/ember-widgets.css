@@ -1,0 +1,703 @@
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.clearfix:after {
+  clear: both;
+}
+.select-search-field-sizing {
+  font-size: 100%;
+  padding: 5px;
+  outline: 0;
+  border: 0;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+/* Type */
+/* Colors */
+/* Highlights / Hover */
+/* Variables
+-------------------------------------------------- */
+/* List View - Note: Required for list-view to work
+-------------------------------------------------- */
+.ember-list-view {
+  overflow: auto;
+  position: relative;
+}
+.ember-list-item-view {
+  position: absolute;
+}
+/* Ember Select
+-------------------------------------------------- */
+.ember-select {
+  position: relative;
+  display: inline-block;
+  outline: none;
+}
+.ember-select-choice i {
+  position: absolute;
+  top: 3px;
+  right: -6px;
+}
+.ember-select-choice.btn i {
+  top: 11px;
+  right: 15px;
+}
+.ember-select-choice.btn-sm i {
+  top: 9px;
+  right: 11px;
+}
+.ember-select-choice.btn-xs i {
+  top: 6px;
+  right: 7px;
+}
+.ember-select-choice.btn-large i {
+  top: 11px;
+  right: 6px;
+}
+.ember-select-choice:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
+.ember-select-choice span {
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
+  margin-right: 12px;
+  -o-text-overflow: ellipsis;
+  -ms-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+}
+.ember-select-choice abbr {
+  display: block;
+  position: absolute;
+  right: 26px;
+  top: 8px;
+  width: 12px;
+  height: 12px;
+  font-size: 17px;
+  line-height: 16px;
+  color: #595959;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  border: 0;
+  outline: 0;
+}
+.ember-select-choice abbr:hover {
+  color: #222;
+  cursor: pointer;
+}
+.ember-select-choice .ember-select-search-choice-close {
+  display: block;
+  position: absolute;
+  right: 3px;
+  top: 4px;
+  width: 12px;
+  height: 13px;
+  font-size: 17px;
+  line-height: 16px;
+  color: #444;
+  font-weight: bold;
+  outline: none;
+}
+.ember-select-choice .ember-select-search-choice-close:hover {
+  text-decoration: none;
+  color: #222;
+  cursor: pointer;
+}
+/* Ember Multi-Select
+-------------------------------------------------- */
+.ember-select-multi {
+  /* Small Version */
+
+  /* XS version */
+
+}
+.ember-select-multi .ember-select-choices {
+  min-height: 28px;
+  min-width: 160px;
+  height: auto !important;
+  height: 1%;
+  margin: 0;
+  padding: 0 0 1px 0;
+  overflow: hidden;
+  position: relative;
+  cursor: text;
+}
+.ember-select-multi .ember-select-choices li {
+  float: left;
+  list-style: none;
+}
+.ember-select-multi .ember-select-choices .ember-select-search-field {
+  min-width: 40px;
+  padding: 0;
+  white-space: nowrap;
+  position: relative;
+}
+.ember-select-multi .ember-select-choices .ember-select-search-field .invisible-placeholder {
+  visibility: hidden;
+  line-height: 32px;
+  font-size: 100%;
+  padding: 5px;
+  outline: 0;
+  border: 0;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+.ember-select-multi .ember-select-choices .ember-select-search-field input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1000px;
+  color: #666;
+  background: transparent !important;
+  font-size: 100%;
+  padding: 5px;
+  outline: 0;
+  border: 0;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+.ember-select-multi .ember-select-search-field input.ember-select-active {
+  background: #ffffff url('../img/spinner.gif') no-repeat 100% !important;
+}
+.ember-select-multi .ember-select-search-choice {
+  position: relative;
+  background-color: #DAE4F6;
+  color: #222;
+  border: 1px solid #DAE4F6;
+  line-height: 27px;
+  padding: 0 19px 0 5px;
+  margin: 2px 0 0 2px;
+  cursor: default;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+.ember-select-multi .ember-select-search-choice span {
+  cursor: default;
+}
+.ember-select-multi .ember-select-search-choice .ember-select-search-choice-close {
+  display: block;
+  position: absolute;
+  right: 3px;
+  top: 4px;
+  width: 12px;
+  height: 13px;
+  font-size: 17px;
+  line-height: 16px;
+  color: #444;
+  font-weight: bold;
+  outline: none;
+}
+.ember-select-multi .ember-select-search-choice .ember-select-search-choice-close:hover {
+  text-decoration: none;
+  color: #222;
+  cursor: pointer;
+}
+.ember-select-multi .ember-select-choices.input-sm {
+  padding: 0;
+}
+.ember-select-multi .ember-select-choices.input-sm .ember-select-search-field input {
+  margin: 1px 0 0 0;
+  padding: 0 5px;
+}
+.ember-select-multi .ember-select-choices.input-sm .ember-select-search-choice {
+  line-height: 22px;
+}
+.ember-select-multi .ember-select-choices.input-sm .ember-select-search-choice-close {
+  top: 2px;
+}
+.ember-select-multi .ember-select-choices.input-xs {
+  padding: 0;
+  min-height: 22px;
+}
+.ember-select-multi .ember-select-choices.input-xs .ember-select-search-field {
+  height: 22px;
+  margin: 0;
+}
+.ember-select-multi .ember-select-choices.input-xs .ember-select-search-field input {
+  margin: 1px 0 0 0;
+  padding: 0 5px;
+}
+.ember-select-multi .ember-select-choices.input-xs .ember-select-search-choice {
+  line-height: 18px;
+  margin: 1px 0 0 1px;
+}
+.ember-select-multi .ember-select-choices.input-xs .ember-select-search-choice-close {
+  top: 0;
+}
+/* Ember Select Search
+-------------------------------------------------- */
+.ember-select-search {
+  display: inline-block;
+  white-space: nowrap;
+  z-index: 10000;
+  min-height: 26px;
+  width: 100%;
+  margin: 0;
+  padding: 4px 4px 0 4px;
+}
+.ember-select-search input {
+  background: #ffffff url('../img/select2.png') no-repeat 100% -22px;
+  padding: 3px 20px 3px 5px;
+  outline: 0;
+  border: 1px solid #aaa;
+  width: 100%;
+  margin: 0;
+  height: auto !important;
+  min-height: 26px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+.ember-select-search input.select2-active {
+  background: #ffffff url('../img/spinner.gif') no-repeat 100%;
+}
+/* Ember Select Results
+-------------------------------------------------- */
+.ember-select-results,
+.ember-typeahead-results {
+  margin: 4px 0 4px 0;
+  padding: 0;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.ember-select-results .ember-select-result-item,
+.ember-typeahead-results .ember-select-result-item {
+  position: absolute;
+  display: block;
+  white-space: nowrap;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 26px;
+  padding: 0 3px 0 11px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.ember-select-results .ember-select-result-item.ember-select-group,
+.ember-typeahead-results .ember-select-result-item.ember-select-group {
+  font-weight: bold;
+  background-color: #e9e9e9;
+}
+.ember-select-results .ember-select-result-item.highlighted,
+.ember-typeahead-results .ember-select-result-item.highlighted {
+  cursor: pointer;
+  background-color: #4c88e5;
+  color: #fff;
+}
+/* Ember Select No-Results
+-------------------------------------------------- */
+.ember-select-no-results {
+  padding: 5px 7px 5px 7px;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Ember Select Properties
+-------------------------------------------------- */
+.ember-select.ember-select-fill,
+.ember-select.ember-select-fill .btn,
+.ember-select.ember-select-fill .dropdown-menu {
+  width: 100%;
+  text-align: left;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.ember-select {
+  max-width: 100%;
+}
+.ember-select .dropdown-menu {
+  min-width: 200px;
+  max-width: 600px;
+  padding: 0;
+}
+.ember-select.right-aligned .dropdown-menu {
+  left: auto;
+  right: 0;
+}
+.popover {
+  max-width: none;
+  padding: 0;
+  border: 1px solid #dfdfdf;
+  -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+/* Popover Arrow
+-------------------------------------------------- */
+.popover.right .arrow {
+  top: auto !important;
+}
+.popover.left .arrow {
+  top: auto !important;
+}
+.popover.top .arrow {
+  left: auto !important;
+}
+.popover.bottom .arrow {
+  left: auto !important;
+}
+.popover.top-right {
+  margin-left: 10px;
+  margin-top: -4px;
+}
+.popover.top-right .arrow {
+  top: 14px;
+  left: -11px;
+  margin-top: -11px;
+  border-left-width: 0;
+  border-right-color: #999;
+  border-right-color: rgba(0, 0, 0, 0.25);
+}
+.popover.top-right .arrow:after {
+  left: 1px;
+  bottom: -10px;
+  border-left-width: 0;
+  border-right-color: #f8f8f8;
+}
+.popover.top-left {
+  margin-left: -10px;
+  margin-top: -4px;
+}
+.popover.top-left .arrow {
+  top: 14px;
+  right: -11px;
+  margin-top: -11px;
+  border-right-width: 0;
+  border-left-color: #999;
+  border-left-color: rgba(0, 0, 0, 0.25);
+}
+.popover.top-left .arrow:after {
+  right: 1px;
+  border-right-width: 0;
+  border-left-color: #f8f8f8;
+  bottom: -10px;
+}
+.popover.bottom.no-arrow .arrow,
+.popover.top.no-arrow .arrow {
+  visibility: hidden;
+}
+.popover.bottom.no-arrow,
+.popover.top.no-arrow {
+  margin-top: 0;
+}
+.popover.bottom-right {
+  margin-top: 0;
+}
+.popover.bottom-right .arrow {
+  left: 85%;
+  margin-left: -11px;
+  border-top-width: 0;
+  border-bottom-color: #999;
+  border-bottom-color: rgba(0, 0, 0, 0.25);
+  top: -11px;
+}
+.popover.bottom-right .arrow:after {
+  top: 1px;
+  margin-left: -10px;
+  border-top-width: 0;
+  border-bottom-color: #ffffff;
+}
+.popover.bottom-left {
+  margin-top: 0;
+}
+.popover.bottom-left .arrow {
+  left: 15%;
+  margin-left: -11px;
+  border-top-width: 0;
+  border-bottom-color: #999;
+  border-bottom-color: rgba(0, 0, 0, 0.25);
+  top: -11px;
+}
+.popover.bottom-left .arrow:after {
+  top: 1px;
+  margin-left: -10px;
+  border-top-width: 0;
+  border-bottom-color: #ffffff;
+}
+/* Popover Title
+-------------------------------------------------- */
+.popover-title {
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #dfdfdf;
+  padding: 8px 15px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  color: #333;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+.ember-text-editor-toolbar {
+  border: 1px solid #ddd;
+  border-bottom: none;
+  background-color: #fff;
+  padding: 5px;
+}
+.ember-text-editor-toolbar .font,
+.ember-text-editor-toolbar .font-size {
+  display: inline-block;
+  vertical-align: top;
+  line-height: 20px;
+}
+.ember-text-editor-toolbar .ember-text-editor-font-family-select .btn-sm,
+.ember-text-editor-toolbar .ember-text-editor-font-size-select .btn-sm,
+.ember-text-editor-toolbar .insert-non-editable-btn .btn-sm {
+  margin-top: -1px;
+}
+.ember-text-editor-font-family-select .btn {
+  width: 150px;
+}
+.ember-text-editor-font-size-select .ember-select-choice.btn {
+  width: 50px;
+}
+.ember-text-editor-font-size-select.ember-select .dropdown-menu {
+  min-width: 48px;
+}
+/* iFrame */
+.text-editor-frame {
+  display: block;
+  width: 100%;
+  min-height: 20px;
+  border: 1px solid #ddd;
+}
+/* .text-editor => Text Editor
+   Note: This has to be copied into iframeHeadContents
+   in Ember.Widgets.TextEditorComponent */
+/* .non-editable => Non-Editable Pills
+   Note: This has to be copied into iframeHeadContents
+   in Ember.Widgets.TextEditorComponent */
+.color-picker-button {
+  display: inline-block;
+  padding: 0 !important;
+}
+.color-picker-button .color-picker-cell {
+  width: 28px;
+  margin: 2px 0 0 2px;
+}
+.color-picker-dropdown-caret {
+  margin-left: 0 !important;
+}
+.color-picker-button.btn .color-picker-dropdown-caret {
+  padding: 6px 11px;
+  font-size: 13px;
+  line-height: 1.6796875;
+  border-radius: 0;
+}
+.color-picker-button.btn .color-picker-cell {
+  height: 28px;
+}
+.color-picker-button.btn-lg .color-picker-dropdown-caret {
+  padding: 10px 20px;
+  font-size: 17px;
+  line-height: 1.33;
+  border-radius: 0;
+}
+.color-picker-button.btn-lg .color-picker-cell {
+  height: 1.33;
+}
+.color-picker-button.btn-sm .color-picker-dropdown-caret {
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 0;
+}
+.color-picker-button.btn-sm .color-picker-cell {
+  height: 22px;
+}
+.color-picker-button.btn-xs .color-picker-dropdown-caret {
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 0;
+}
+.color-picker-button.btn-xs .color-picker-cell {
+  height: 1.5;
+}
+.color-picker-button .color-picker-dropdown-caret {
+  padding: 6px 11px;
+  font-size: 13px;
+  line-height: 1.6796875;
+  border-radius: 0;
+}
+.color-picker-button .color-picker-dropdown-caret .color-picker-cell {
+  height: 1.6796875;
+}
+.color-picker-dropdown {
+  min-width: 153px;
+  padding: 7px;
+  margin-left: -1px;
+}
+.color-picker-dropdown.pull-right {
+  margin-left: 0;
+  margin-right: -1px;
+}
+.color-picker-dropdown hr {
+  margin: 7px 2px;
+}
+/* Color Picker Cells */
+.color-picker-custom-preview {
+  width: 29px;
+}
+.color-picker-cell {
+  width: 30px;
+  border: 1px solid #e6e6e6;
+}
+.color-picker-dropdown .color-row .color-picker-cell {
+  margin: 2px;
+  height: 30px;
+  width: 30px;
+  cursor: pointer;
+}
+.color-picker-dropdown .color-row .color-picker-cell.active {
+  border-color: #0097e3;
+}
+.color-picker-custom-form {
+  padding-top: 2px;
+  margin: 2px;
+}
+.color-picker-custom-form.valid .color-picker-custom-preview {
+  border-color: #0097e3;
+  background-url: none;
+}
+.color-picker-custom-form.invalid .color-picker-custom-preview {
+  background: url('../img/invalid_color.svg') no-repeat center center;
+  background-size: cover;
+}
+.color-picker-custom-form .color-picker-cell {
+  margin: 0;
+}
+.no-color-indicator-holder {
+  position: relative;
+  height: 100%;
+  z-index: -1;
+  background: url('../img/no_color.svg') no-repeat center center;
+  background-size: cover;
+}
+.color-picker-dropdown-button .color-picker-cell-transparent {
+  position: relative;
+  z-index: 1;
+}
+.modal {
+  display: block !important;
+  overflow-y: auto;
+}
+.modal-sm .modal-dialog {
+  width: 400px;
+}
+.modal-lg .modal-dialog {
+  width: 800px;
+}
+@media screen and (min-width: 768px) {
+  .modal-dialog {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+}
+.modal.fade .modal-dialog {
+  transform: translate(0, 0);
+  -webkit-transform: translate(0, 0);
+  -moz-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  -o-transform: translate(0, 0);
+  -webkit-transition: -webkit-transform 0.3s ease-out;
+  -moz-transition: -moz-transform 0.3s ease-out;
+  -o-transition: -o-transform 0.3s ease-out;
+  transition: transform 0.3s ease-out;
+}
+.modal-content {
+  border: 1px solid #f1f1f1;
+  -webkit-border-radius: 1px;
+  -moz-border-radius: 1px;
+  border-radius: 1px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+.modal-backdrop,
+.modal-backdrop.fade.in {
+  filter: alpha(opacity=60);
+  -webkit-opacity: 0.6;
+  -moz-opacity: 0.6;
+  opacity: 0.6;
+}
+.modal-header {
+  padding: 20px;
+  border-bottom: 1px solid transparent;
+}
+.modal-header .close {
+  filter: alpha(opacity=30);
+  -webkit-opacity: 0.3;
+  -moz-opacity: 0.3;
+  opacity: 0.3;
+}
+.modal-title {
+  line-height: 1;
+  color: #333;
+}
+.modal-body {
+  position: static;
+  padding: 0 20px;
+}
+.modal-footer {
+  margin-top: 0;
+  border-top: 1px solid transparent;
+  text-align: left;
+}
+.has-no-close-button .close {
+  display: none;
+}
+.modal-tabs {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  border: none;
+}
+.modal-tabs > li {
+  margin-bottom: 0;
+}
+.modal-tabs > li > a {
+  padding-top: 0;
+  padding-bottom: 0;
+  border: none;
+  color: #999;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1;
+}
+.modal-tabs > li.active > a,
+.modal-tabs > li.active > a:hover,
+.modal-tabs > li.active > a:focus {
+  border: none;
+  color: #333;
+}
+.modal-tabs > li > a:hover,
+.modal-tabs > li > a:focus {
+  background-color: transparent;
+}
+.radio-button {
+  display: inline-block;
+}
