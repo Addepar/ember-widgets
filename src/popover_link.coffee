@@ -9,6 +9,7 @@ Ember.Widgets.PopoverLinkComponent = Ember.Component.extend
   popoverClassNames: []
   rootElement: '.ember-application'
   fade: yes
+  toggle: yes
 
   _contentViewClass: Ember.computed ->
     contentViewClass = @get 'contentViewClass'
@@ -19,17 +20,24 @@ Ember.Widgets.PopoverLinkComponent = Ember.Component.extend
 
   click: (event) ->
     return if @get('disabled')
-    popoverView = Ember.View.extend Ember.Widgets.PopoverMixin,
-      layoutName: 'popover-link-popover'
-      classNames: @get('popoverClassNames')
-      controller: this
-      targetElement: @get('element')
-      container: @get('container')
-      placement: Ember.computed.alias 'controller.placement'
-      title:  Ember.computed.alias 'controller.title'
-      contentViewClass: @get('_contentViewClass')
-      fade: @get('fade')
-    popover = popoverView.create()
-    popover.appendTo @get('rootElement')
+
+    popover = @get('_popover')
+
+    if @get('toggle') and (popover?.get('_state') or popover?.get('state')) is 'inDOM'
+      popover.hide()
+    else
+      popoverView = Ember.View.extend Ember.Widgets.PopoverMixin,
+        layoutName: 'popover-link-popover'
+        classNames: @get('popoverClassNames')
+        controller: this
+        targetElement: @get('element')
+        container: @get('container')
+        placement: Ember.computed.alias 'controller.placement'
+        title:  Ember.computed.alias 'controller.title'
+        contentViewClass: @get('_contentViewClass')
+        fade: @get('fade')
+      popover = popoverView.create()
+      @set '_popover', popover
+      popover.appendTo @get('rootElement')
 
 Ember.Handlebars.helper('popover-link-component', Ember.Widgets.PopoverLinkComponent)
