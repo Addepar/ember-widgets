@@ -55,12 +55,13 @@ Ember.Widgets.CarouselComponent = Ember.Component.extend
     $active = $(@$('.item').get(@get('activeIndex')))
     $next = $(@$('.item').get(nextIndex))
 
-    @set 'sliding', yes
-    $next.addClass(type)
-    # force reflow
-    $next[0].offsetWidth
-    $active.addClass(direction)
-    $next.addClass(direction)
+    unless Ember.Widgets.DISABLE_ANIMATIONS
+      @set 'sliding', yes
+      $next.addClass(type)
+      # force reflow
+      $next[0].offsetWidth
+      $active.addClass(direction)
+      $next.addClass(direction)
 
     # Bootstrap has this method for listening on end of transition
     @_onTransitionEnd $next, =>
