@@ -1,6 +1,6 @@
 Ember.Widgets.PopoverMixin =
 Ember.Mixin.create Ember.Widgets.StyleBindingsMixin,
-Ember.Widgets.BodyEventListener,
+Ember.Widgets.BodyEventListener, Ember.Widgets.ModalTabIndex,
   layoutName: 'popover'
   classNames: ['popover']
   classNameBindings: ['isShowing:in', 'fade', 'placement']

@@ -64,3 +64,31 @@ Ember.Widgets.BodyEventListener = Ember.Mixin.create
   _removeDocumentHandlers: ->
     $(@get('bodyElementSelector')).off "click", @_clickHandler
     @_clickHandler = null
+
+# Mixin to enforce the tab through fields only within a component
+# Step 1: Store the current tabindex of each tabbable element before the component appears
+# Step 2: Restore the saved tabindex of each element before the component is destroyed
+Ember.Widgets.ModalTabIndex = Ember.Mixin.create
+  savedTabbableObjects: null
+
+  willInsertElement: ->
+    @_super()
+    tabbableObjects = $(":tabbable")
+    tabbableObjectMaps = $.map(tabbableObjects, (input) ->
+      {'object': input, 'tabindex':$(input).attr('tabindex')})
+    @set 'savedTabbableObjects', tabbableObjectMaps
+    for element in tabbableObjects
+      $(element).attr("tabindex", -1)
+    $(document.activeElement).blur()
+
+  willDestroyElement: ->
+    @_super()
+    tabbableObjectMaps = @get 'savedTabbableObjects'
+    if tabbableObjectMaps?
+      for element in tabbableObjectMaps
+        if $(document)[0].contains(element['object'])
+          if element['tabindex']?
+            $(element['object']).attr('tabindex',element['tabindex'])
+          else
+            $(element['object']).removeAttr('tabindex')
+
