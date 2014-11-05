@@ -393,6 +393,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
       @toggleProperty 'showDropdown'
 
     hideDropdown: (event) ->
+      return if @get('isDestroyed') or @get('isDestroying')
       @set 'showDropdown', no
 
 Ember.Handlebars.helper('select-component', Ember.Widgets.SelectComponent)
