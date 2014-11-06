@@ -9,6 +9,7 @@ Ember.Widgets.PopoverLinkComponent = Ember.Component.extend
   popoverClassNames: []
   rootElement: '.ember-application'
   fade: yes
+  showOnLoad: no
 
   _contentViewClass: Ember.computed ->
     contentViewClass = @get 'contentViewClass'
@@ -17,7 +18,13 @@ Ember.Widgets.PopoverLinkComponent = Ember.Component.extend
     contentViewClass
   .property 'contentViewClass'
 
+  didInsertElement: ->
+    if @get('showOnLoad') then Ember.run.scheduleOnce 'afterRender', this, @show
+
   click: (event) ->
+    @show()
+
+  show: ->
     return if @get('disabled')
 
     popover = @get('_popover')
