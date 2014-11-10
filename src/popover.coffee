@@ -210,6 +210,7 @@ Ember.Widgets.BodyEventListener,
     @_resizeHandler = null
     $(document).off 'scroll', @_scrollHandler
     @_scrollHandler = null
+    $(document).off 'keyup', @get('keyHandler')
 
 Ember.Widgets.PopoverComponent = Ember.Component.extend(Ember.Widgets.PopoverMixin)
 
