@@ -105,12 +105,22 @@ Ember.Widgets.BodyEventListener,
 
   snapToPosition: ->
     $target      = $(@get('targetElement'))
-    return if (@get('_state') or @get('state')) isnt 'inDOM' or Ember.isEmpty($target)
+    return if (@get('_state') or @get('state')) isnt 'inDOM'
     actualWidth  = @$()[0].offsetWidth
     actualHeight = @$()[0].offsetHeight
-    pos = @getOffset($target)
-    pos.width  = $target[0].offsetWidth
-    pos.height = $target[0].offsetHeight
+    # For context menus where the position is set directly, rather
+    # than by a target element, $target is empty. Therefore, we
+    # set top, left, width, and height manually.
+    if Ember.isEmpty($target)
+      pos =
+        top: this.get 'top'
+        left: this.get 'left'
+        width: 0
+        height: 0
+    else
+      pos = @getOffset($target)
+      pos.width  = $target[0].offsetWidth
+      pos.height = $target[0].offsetHeight
 
     switch @get('placement')
       when 'bottom'
@@ -146,7 +156,9 @@ Ember.Widgets.BodyEventListener,
         @set 'left',  pos.left + pos.width
         break
     @correctIfOffscreen()
-    @positionArrow()
+    # In the case of a context menu with no target element, there is no
+    # need to display a position arrow.
+    @positionArrow() unless Ember.isEmpty($target)
 
   positionArrow: ->
     $target = $(@get('targetElement'))
