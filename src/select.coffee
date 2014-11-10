@@ -94,6 +94,9 @@ Ember.AddeparMixins.ResizeHandlerMixin,
 
   dropdownMenuClass: ''
 
+  # Query will only match from beginning of the string
+  standardQuery: no
+
   # The list of options
   content: Ember.A []
   selection: null
@@ -267,7 +270,8 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     return yes unless searchText
     label = Ember.get(item, @get('optionLabelPath'))
     escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
-    regex = new RegExp(escapedSearchText, 'i')
+    regexSource = if @standardQuery then ['^',escapedSearchText].join('') else escapedSearchText
+    regex = new RegExp(regexSource, 'i')
     regex.test(label)
 
   # TODO(Peter): This needs to be rethought
@@ -394,6 +398,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
 
     hideDropdown: (event) ->
       return if @get('isDestroyed') or @get('isDestroying')
+      @set 'query', ''
       @set 'showDropdown', no
 
 Ember.Handlebars.helper('select-component', Ember.Widgets.SelectComponent)
