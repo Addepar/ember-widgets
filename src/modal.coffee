@@ -121,8 +121,8 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
         @send 'sendCancel'
 
   click: (event) ->
-    return if event.target isnt event.currentTarget
-    @hide() unless @get('enforceModality')
+    return unless event.target is event.currentTarget
+    @send 'sendCancel' unless @get('enforceModality')
 
   hide: ->
     @set 'isShowing', no
