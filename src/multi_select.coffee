@@ -1,12 +1,3 @@
-get = (object, key) ->
-  return undefined unless object
-  return object    unless key
-  object.get?(key) or object[key]
-
-set = (object, key, value) ->
-  return unless object and key
-  object.set?(key, value) or object[key] = value;
-
 Ember.Widgets.MultiSelectOptionView = Ember.View.extend
   tagName: 'li'
   templateName: 'multi-select-item'
@@ -30,14 +21,14 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
   choicesFieldClass: ''
   placeholder: undefined
   persistentPlaceholder: undefined
-  
+
   values: Ember.computed (key, value) ->
     if arguments.length is 2 # setter
       return unless value
       valuePath = @get 'optionValuePath'
       @set 'selections', Ember.A(
         @get('content').filter (item) ->
-          value.contains get(item, valuePath)
+          value.contains Ember.get(item, valuePath)
       )
       value
     else # getter
@@ -62,7 +53,7 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
     focusIn: (event) -> @set 'parentView.showDropdown', yes
     placeholder: Ember.computed ->
       if @get('parentView.selections.length')
-        return @get('parentView.persistentPlaceholder') 
+        return @get('parentView.persistentPlaceholder')
       @get('parentView.placeholder') or @get('parentView.persistentPlaceholder')
     .property('parentView.placeholder', 'parentView.persistentPlaceholder',
       'parentView.selections.length')
@@ -76,12 +67,13 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
     # excludes items that are already selected
 
     if @get('sortLabels')
-      @get('sortedFilteredContent').filter (item) =>
+      @get('sortedFilteredContent').filter (item) ->
         not selections.contains(item)
     else
-      @get('filteredContent').filter (item) =>
+      @get('filteredContent').filter (item) ->
         not selections.contains(item)
-  .property 'content.@each', 'filteredContent.[]', 'sortedFilteredContent.[]', 'selections.@each', 'sortLabels'
+  .property('content.@each', 'filteredContent.[]', 'sortedFilteredContent.[]',
+    'selections.@each', 'sortLabels')
 
   # uses single select's "selection" value - adds it to selections and
   # then clears the selection value so that it can be re-selected
@@ -116,4 +108,7 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
     removeSelectItem: (item) ->
       @removeSelectItem(item)
 
-Ember.Handlebars.helper('multi-select-component', Ember.Widgets.MultiSelectComponent)
+Ember.Handlebars.helper(
+  'multi-select-component'
+  Ember.Widgets.MultiSelectComponent
+)
