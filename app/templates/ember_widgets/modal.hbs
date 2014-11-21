@@ -25,11 +25,10 @@ container.</p>
 <pre class="prettyprint lang-coffee">App.ApplicationController = Ember.Controller.extend
   actions:
     showModal: ->
-      Ember.Widgets.ModalComponent.popup
+      Ember.Widgets.ModalComponent.popup(
         targetObject: this
-        confirm: "modalConfirm"
-        cancel: "modalCancel"
         content: "Isn't this one fine day?"
+      ).then @modalConfirm, @modalCancel
 
     modalConfirm: -> console.log("Modal Confirm!")
 
@@ -51,12 +50,11 @@ container.</p>
 <pre class="prettyprint lang-coffee">App.ApplicationController = Ember.Controller.extend
   actions:
     showModal: ->
-      Ember.Widgets.ModalComponent.popup
+      Ember.Widgets.ModalComponent.popup(
         targetObject: this
-        confirm: "modalConfirm"
-        cancel: "modalCancel"
         content: { name: "Louis" }
         contentViewClass: App.CustomModalContentView
+      ).then @modalConfirm, @modalCancel
 
     modalConfirm: -> console.log("Modal Confirm!")
 
@@ -89,12 +87,11 @@ container.</p>
 <pre class="prettyprint lang-coffee">App.ApplicationController = Ember.Controller.extend
   actions:
     showModal: ->
-      Ember.Widgets.ModalComponent.popup
+      Ember.Widgets.ModalComponent.popup(
         targetObject: this
-        confirm: "modalConfirm"
-        cancel: "modalCancel"
         size: 'small'
         content: "This is quite small isn't it?"
+      ).then @modalConfirm, @modalCancel
 
     modalConfirm: -> console.log("Modal Confirm!")
 

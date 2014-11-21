@@ -53,13 +53,16 @@ App.EmberWidgetsSelectRoute = Ember.Route.extend
   model: -> window.countries
 
 App.EmberWidgetsModalRoute = Ember.Route.extend
+  modalConfirm: -> console.log("Modal Confirm!")
+
+  modalCancel: -> console.log("Modal Cancel!")
+
   actions:
     showModal: ->
-      Ember.Widgets.ModalComponent.popup
+      Ember.Widgets.ModalComponent.popup(
         targetObject: this
-        confirm: "modalConfirm"
-        cancel: "modalCancel"
         content: "Isn't this one fine day?"
+      ).then @modalConfirm, @modalCancel
 
     showSmallModal: ->
       Ember.Widgets.ModalComponent.popup
@@ -70,16 +73,11 @@ App.EmberWidgetsModalRoute = Ember.Route.extend
         content: "This is quite small isn't it? You can also use 'large'."
 
     showModalWithCustomContent: ->
-      Ember.Widgets.ModalComponent.popup
+      Ember.Widgets.ModalComponent.popup(
         targetObject: this
-        confirm: "modalConfirm"
-        cancel: "modalCancel"
         content: { name: "Louis" }
         contentViewClass: App.CustomModalContentView
-
-    modalConfirm: -> console.log("Modal Confirm!")
-
-    modalCancel: -> console.log("Modal Cancel!")
+      ).then @modalConfirm, @modalCancel
 
 App.EmberWidgetsPopoverRoute = Ember.Route.extend
   model: -> {name: "Louis"}

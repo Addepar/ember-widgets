@@ -2,7 +2,11 @@ Ember.Widgets.ModalComponent =
 Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   layoutName: 'modal'
   classNames: ['modal']
-  classNameBindings: ['isShowing:in', 'hasCloseButton::has-no-close-button', 'fadeEnabled:fade']
+  classNameBindings: [
+    'isShowing:in'
+    'hasCloseButton::has-no-close-button'
+    'fadeEnabled:fade'
+  ]
   modalPaneBackdrop: '<div class="modal-backdrop"></div>'
   bodyElementSelector: '.modal-backdrop'
 
@@ -142,7 +146,8 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   _appendBackdrop: ->
     parentLayer = @$().parent()
     modalPaneBackdrop = @get 'modalPaneBackdrop'
-    @_backdrop = jQuery(modalPaneBackdrop).addClass('fade') if @get('fadeEnabled')
+    @_backdrop =
+      jQuery(modalPaneBackdrop).addClass('fade') if @get('fadeEnabled')
     @_backdrop.appendTo(parentLayer)
     # show backdrop in next run loop so that it can fade in
     Ember.run.next this, -> @_backdrop.addClass('in')
@@ -169,10 +174,23 @@ Ember.Widgets.ModalComponent.reopenClass
   popup: (options = {}) ->
     @hideAll()
     rootElement = options.rootElement or @rootElement
-    modal = this.create options
-    if modal.get('targetObject.container')
-      modal.set 'container', modal.get('targetObject.container')
-    modal.appendTo rootElement
-    modal
+
+    createModal = (opts) =>
+      modal = this.create opts
+      if modal.get('targetObject.container')
+        modal.set 'container', modal.get('targetObject.container')
+      modal.appendTo rootElement
+      modal
+
+    # if confirm or cancel were overridden, don't use promise behavior
+    if options.confirm or options.cancel or @confirm or @cancel
+      Ember.warn "Overriding confirm or cancel is deprecated since
+        ModalComponent.popup now returns a promise."
+      createModal options
+    else
+      new Ember.RSVP.Promise (resolve, reject) ->
+        options.confirm = resolve
+        options.cancel = reject
+        createModal options
 
 Ember.Handlebars.helper('modal-component', Ember.Widgets.ModalComponent)
