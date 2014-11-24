@@ -37,7 +37,7 @@ Ember.Widgets.AccordionItem = Ember.View.extend
     $accordionBody.height(0)
 
     @_onTransitionEnd $accordionBody, =>
-      $accordionBody.removeClass('collapsing').addClass('collapse')
+      if not @get('isActive') then $accordionBody.removeClass('collapsing').addClass('collapse')
 
   show: ->
     $accordionBody = @$('.panel-collapse')
@@ -45,7 +45,7 @@ Ember.Widgets.AccordionItem = Ember.View.extend
 
     $accordionBody.height($accordionBody[0]['scrollHeight'])
     @_onTransitionEnd $(), =>
-      $accordionBody.removeClass('collapsing').addClass('in')
+      if @get('isActive') then $accordionBody.removeClass('collapsing').addClass('in')
         .height('auto')
 
   _onTransitionEnd: ($el, callback) ->
