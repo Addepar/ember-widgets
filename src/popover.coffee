@@ -1,10 +1,15 @@
 Ember.Widgets.PopoverMixin =
 Ember.Mixin.create Ember.Widgets.StyleBindingsMixin,
-Ember.Widgets.BodyEventListener,
+Ember.Widgets.BodyEventListener, Ember.Widgets.TabbableModal, Ember.Widgets.DomHelper,
   layoutName: 'popover'
   classNames: ['popover']
   classNameBindings: ['isShowing:in', 'fadeEnabled:fade', 'placement']
   styleBindings: ['left', 'top', 'display', 'visibility']
+
+  # TODO (Thang): rootElement cannot be a view,
+  # I don't find any good way now to set the focus back to the
+  # previously focused element, so I add it here. Looking for a better fix
+  focusBackElement: null
 
   # The target element to anchor the popover to
   targetElement: null
@@ -45,6 +50,10 @@ Ember.Widgets.BodyEventListener,
 
   didInsertElement: ->
     @_super()
+    # Make sure that after the popover is rendered, set focus to the first
+    # tabbable element
+    Ember.run.schedule 'afterRender', this, ->
+      @_focusTabbable()
     # we want the view to render first and then we snap to position after
     # it is renered
     @snapToPosition()
@@ -54,6 +63,9 @@ Ember.Widgets.BodyEventListener,
   bodyClick: -> @hide()
 
   hide: ->
+    _focusBackElement = @get 'targetElement'
+    if _focusBackElement? and _focusBackElement.length > 0
+      _focusBackElement[0].focus()
     return if @get('isDestroyed')
     @set('isShowing', no)
     if @get('fadeEnabled')
@@ -63,6 +75,9 @@ Ember.Widgets.BodyEventListener,
         Ember.run this, @destroy
     else
       Ember.run this, @destroy
+
+  doCancelation: ->
+    @hide()
 
   ###
   Calculate the offset of the given iframe relative to the top window.
@@ -189,11 +204,6 @@ Ember.Widgets.BodyEventListener,
     if @get('top') < 0
       @set 'top', @get('marginTop')
 
-  keyHandler: Ember.computed ->
-    (event) =>
-      if event.which is 27 and @get('escToCancel') # ESC
-        @hide()
-
   # We need to put this in a computed because this is attached to the
   # resize and scroll events before snapToPosition is defined. We
   # throttle for 100 ms because that looks nice.
@@ -212,7 +222,6 @@ Ember.Widgets.BodyEventListener,
     unless @_scrollHandler
       @_scrollHandler = @get('debounceSnapToPosition')
       $(document).on 'scroll', @_scrollHandler
-    $(document).on 'keyup', @get('keyHandler')
 
   _removeDocumentHandlers: ->
     @_super()
@@ -227,6 +236,7 @@ Ember.Widgets.BodyEventListener,
 Ember.Widgets.PopoverComponent = Ember.Component.extend(Ember.Widgets.PopoverMixin)
 
 Ember.Widgets.PopoverComponent.reopenClass
+
   rootElement: '.ember-application'
   hideAll: -> $(document).trigger('popover:hide')
 
