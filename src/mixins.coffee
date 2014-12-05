@@ -54,7 +54,7 @@ Ember.Widgets.BodyEventListener = Ember.Mixin.create
     @_removeDocumentHandlers()
 
   _setupDocumentHandlers: ->
-    return if @_clickHandler
+    return if @_clickHandler or @isDestroying
     @_clickHandler = (event) =>
       Ember.run =>
         if (@get('_state') or @get('state')) is 'inDOM' and Ember.isEmpty(@$().has($(event.target)))
