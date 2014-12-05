@@ -7,33 +7,35 @@ Ember.Widgets.TextEditorConfigComponent = Ember.Component.extend
   textEditor: null
 
   # Options
-  fontNames: Ember.A [
-    'Arial',
-    'Calibri',
-    'Cambria',
-    'Consolas',
-    'Corsiva',
-    'Courier New',
-    'Georgia',
-    'Helvetica Neue',
-    'Helvetica',
-    'Sans-Serif',
-    'Serif',
-    'Syncopate',
-    'Times New Roman',
-    'Trebuchet MS',
-    'Verdana'
-  ]
+  fontNames: Ember.computed ->
+    Ember.A [
+      'Arial',
+      'Calibri',
+      'Cambria',
+      'Consolas',
+      'Corsiva',
+      'Courier New',
+      'Georgia',
+      'Helvetica Neue',
+      'Helvetica',
+      'Sans-Serif',
+      'Serif',
+      'Syncopate',
+      'Times New Roman',
+      'Trebuchet MS',
+      'Verdana'
+    ]
 
-  fontSizes: Ember.A [
-    {size:'1', name: '8'},
-    {size:'2', name: '10'},
-    {size:'3', name: '12'},
-    {size:'4', name: '14'},
-    {size:'5', name: '18'},
-    {size:'6', name: '24'},
-    {size:'7', name: '36'}
-  ]
+  fontSizes: Ember.computed ->
+    Ember.A [
+      {size:'1', name: '8'},
+      {size:'2', name: '10'},
+      {size:'3', name: '12'},
+      {size:'4', name: '14'},
+      {size:'5', name: '18'},
+      {size:'6', name: '24'},
+      {size:'7', name: '36'}
+    ]
 
   fontChooserItemViewClass: Ember.Widgets.SelectOptionView.extend
     templateName: 'font-chooser-item'
