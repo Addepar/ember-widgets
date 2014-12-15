@@ -191,7 +191,7 @@ Ember.Widgets.BodyEventListener,
 
   keyHandler: Ember.computed ->
     (event) =>
-      if event.which is 27 and @get('escToCancel') # ESC
+      if event.keyCode is 27 and @get('escToCancel') # ESC
         @hide()
 
   # We need to put this in a computed because this is attached to the
