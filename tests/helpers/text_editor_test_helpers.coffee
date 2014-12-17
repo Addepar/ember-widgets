@@ -57,7 +57,7 @@ Ember.Widgets.TestHelpers.TextEditor =
   placeCursorAtEndOfTextEditor: ->
     range = @createNewRange()
     editor = @getTextEditor()[0]
-    range.selectNodeContents(editor)
+    range.selectNodeContents(editor.firstChild)
     range.collapse false  # collapse to end of range
     @activateRange(range)
   placeCursorInTextEditor: ->

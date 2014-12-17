@@ -16,6 +16,7 @@ Ember.Widgets.BaseNonEditablePill = Ember.Controller.extend Ember.Widgets.DomHel
 
   # Configure the parameters of the pill, e.g. by displaying a modal with input options that are
   # then stored in @get('params')
+  configurable: false
   configure: ->
     @send 'modalConfirm'  # No configuration by default
 
@@ -40,7 +41,11 @@ Ember.Widgets.BaseNonEditablePill = Ember.Controller.extend Ember.Widgets.DomHel
   render: ->
     span = @createElementsFromString("<span></span>")
     span.addClass('non-editable')
+    if @get('configurable')
+      span.addClass 'configurable'
+
     span.attr('title': @get('name'))
+    span.attr('contentEditable', false)
     # include all params as data-attributes
     for key, value of @get('params')
       span.attr('data-' + Ember.String.dasherize(key), value)
@@ -56,6 +61,7 @@ Ember.Widgets.NonEditableTextPill = Ember.Widgets.BaseNonEditablePill.extend
   result: ->
     @get('params.text')
 
+  configurable: true
   configure: ->
     modal = Ember.Widgets.ModalComponent.popup
       content: this

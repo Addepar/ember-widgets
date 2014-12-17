@@ -29,7 +29,7 @@ test "Type in text editor works", ->
   expect 1
   helpers.placeCursorAtEndOfTextEditor()
   helpers.typeCharInTextEditor('s').then ->
-    equal helpers.getTextEditor()[0].innerHTML.toLowerCase(), 's', 'The character typed did not appear in the text editor'
+    equal helpers.getTextEditor()[0].firstChild.innerHTML.toLowerCase(), 's', 'The character typed did not appear in the text editor'
 
 
 test "Insert pill via keypress at beginning of text editor", ->
@@ -38,7 +38,7 @@ test "Insert pill via keypress at beginning of text editor", ->
   # Given that the user has entered text to insert a non editable element
   text_editor_content = '<div>=dat</div>'
   $textEditor = helpers.getTextEditor()
-  $textEditor[0].innerHTML = text_editor_content
+  $textEditor[0].firstChild.innerHTML = text_editor_content
   helpers.placeCursorAtEndOfTextEditor()
   helpers.typeCharInTextEditor('e')
   .then ->
@@ -54,7 +54,7 @@ test "Bolding text preserves selection", ->
   # Given a text editor with some text
   text_editor_content = "<div>hello world goodbye</div>"
   $textEditor = helpers.getTextEditor()
-  $textEditor[0].innerHTML = text_editor_content
+  $textEditor[0].firstChild.innerHTML = text_editor_content
   # When the word "world" is selected
   currentRange = helpers.selectMatchingTextInTextEditor("world")
   click(helpers.getTextEditor())
@@ -63,7 +63,7 @@ test "Bolding text preserves selection", ->
     click($('button .fa-bold').parent())
   .then ->
     # Then the word "world" is bolded
-    equal($textEditor[0].innerHTML.trim(), '<div>hello <span style="font-weight: bold;">world</span> goodbye</div>', "The word 'world' was not bolded")
+    equal($textEditor[0].firstChild.innerHTML.trim(), '<div>hello <b>world</b> goodbye</div>', "The word 'world' was not bolded")
     currentRange = helpers.getCurrentRange()
     # And it is still selected
     equal( currentRange.endOffset - currentRange.startOffset, 5, "The word 'world' is no longer selected")
@@ -75,7 +75,7 @@ test "Bolding text activates the bold button on the toolbar immediately", ->
   # Given a text editor with some text
   text_editor_content = "<div>hello world goodbye</div>"
   $textEditor = helpers.getTextEditor()
-  $textEditor[0].innerHTML = text_editor_content
+  $textEditor[0].firstChild.innerHTML = text_editor_content
   # When the word "world" is selected
   currentRange = helpers.selectMatchingTextInTextEditor("world")
   click(helpers.getTextEditor())
@@ -90,9 +90,9 @@ test "Bolding text activates the bold button on the toolbar immediately", ->
 test "Bold button active state reflects style of text under cursor", ->
   expect 2
 
-  text_editor_content = '<span id="regular-text">aaaa</span><span style="font-weight: bold;" id="bold-text">bbbb</span>cccc'
+  text_editor_content = '<span id="regular-text">aaaa</span><b id="bold-text">bbbb</b>cccc'
   $textEditor = helpers.getTextEditor()
-  $textEditor[0].innerHTML = text_editor_content
+  $textEditor[0].firstChild.innerHTML = text_editor_content
   # When the bolded text is selected
   currentRange = helpers.selectIdInTextEditor("bold-text", 1, 2)
   click(helpers.getTextEditor())

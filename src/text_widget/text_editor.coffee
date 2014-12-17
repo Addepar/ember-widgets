@@ -1,4 +1,4 @@
-Ember.Widgets.TextEditorComponent = Ember.Component.extend
+Ember.Widgets.TextEditorComponent = Ember.Component.extend Ember.Widgets.DomHelper, 
   layoutName: 'text-editor'
   selectedFontName: 'Helvetica Neue'
   selectedFontSize: '2'
@@ -48,12 +48,15 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
       }
       .non-editable {
         display: inline-block;
-        padding: 0 5px;
+        padding: 0 4px;
+        margin: 0 1px;
         background-color: #e7e7e7;
         list-style-type: none;
+      }
+      .configurable {
         cursor: pointer;
       }
-      [contentEditable=true]:empty:not(:focus):before {
+      p:first-of-type:empty:not(:focus):before {
         content: attr(data-ph);
         color: grey;
         font-style: italic;
@@ -63,9 +66,10 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
   .property 'EDITOR_CLASS'
 
   iframeBodyContents: Ember.computed ->
-    '<div class="' + @EDITOR_CLASS + '" contenteditable="true" data-ph="' + @PLACEHOLDER_TEXT + '"></div>'
-  .property 'EDITOR_CLASS', 'PLACEHOLDER_TEXT'
+    '<p data-ph="' + @PLACEHOLDER_TEXT + '"></p>'
+  .property 'PLACEHOLDER_TEXT'
 
+  # Used only in test?
   getEditor: ->
     @$('iframe.text-editor-frame').contents().find('.' + @EDITOR_CLASS)
 
@@ -73,33 +77,21 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
     iframe = @$('iframe.text-editor-frame')[0]
     iframe.contentDocument || iframe.contentWindow.document
 
-  # Returns true if the entire range is in the text editor
-  inEditor: (range) ->
-    @$(range.endContainer).parents().has(range.startContainer).first().closest('.' + @EDITOR_CLASS).length > 0
-
-  isTargetInEditor: (event) ->
-    not Ember.isEmpty($(event.target).closest('.' + @EDITOR_CLASS))
-
-  # Return the last child node of the editor
-  getOrCreateLastElementInEditor: ->
-    editor = @getEditor()[0]
-    if editor is `undefined`
-      iframe = @$('iframe.text-editor-frame').contents()
-      iframe.find('body').append(@get('iframeBodyContents'))
-      editor = @getEditor()[0]
-    if editor.childElementCount is 0
-      # Insert div in text editor if none exists
-      @insertHTMLAtRange(@selectElement(@getDocument(), editor), "<div></div>")
-    return editor.children[editor.children.length - 1]
-
   didInsertElement: ->
     @_super()
-    iframe = @$('iframe.text-editor-frame').contents()
-    iframe.find('body').append(@get('iframeBodyContents'))
-    iframe.find('head').append(@get('iframeHeadContents'))
-    @getDocument().execCommand 'styleWithCSS', true, true
 
-    iframe = @$('iframe.text-editor-frame')[0]
+    $iframe = @$('iframe.text-editor-frame')
+    $iframeContents = $iframe.contents()
+
+    $head = $iframeContents.find('head')
+    $head.append(@get('iframeHeadContents'))
+
+    $body = $iframeContents.find('body')
+    $body.addClass @EDITOR_CLASS
+    $body.attr 'contentEditable', true
+    $body.append(@get('iframeBodyContents'))
+
+    iframe = $iframe[0]
     iframe.contentWindow.onkeyup = (event) =>
       @keyUp(event)
     iframe.contentWindow.onkeydown = (event) =>
@@ -119,7 +111,22 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend
         @queryCommandState()
 
   keyUp: (event) ->
-    @queryCommandState()
+    if event.keyCode is @KEY_CODES.BACKSPACE
+      # We need to make sure that we let one paragraph
+      $iframe = @$('iframe.text-editor-frame')
+      $iframeContents = $iframe.contents()
+      $body = $iframeContents.find('body')
+      if not $body.children().length
+        $body.append(@get('iframeBodyContents'))
+        # put the cursor back in the paragraph
+        iframeDocument = @getDocument()
+        selection = iframeDocument.getSelection()
+        selection.removeAllRanges()
+        range = iframeDocument.createRange()
+        range.selectNodeContents iframeDocument.body.firstChild
+        selection.addRange range
+    else
+      @queryCommandState()
 
   mouseUp: (event) ->
     @queryCommandState()

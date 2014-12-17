@@ -50,7 +50,7 @@ test "Type in text editor works", ->
   expect 1
   helpers.placeCursorAtEndOfTextEditor()
   helpers.typeCharInTextEditor('s').then ->
-    equal helpers.getTextEditor()[0].innerHTML.toLowerCase(), '<div>s</div>', 'The character typed did not appear in the text editor'
+    equal helpers.getTextEditor()[0].firstChild.innerHTML.toLowerCase(), 's', 'The character typed did not appear in the text editor'
 
 
 test "Insert pill via keypress at beginning of text editor", ->
@@ -90,10 +90,10 @@ test "Arrow behavior between pills", ->
 
   # Given a text editor with the following content
   text_editor_content = """
-      <div><span class="non-editable-caret">﻿</span><span class="non-editable" data-pill-id="1">Factor 1</span>regular text<span class="non-editable" data-pill-id="2">Factor 2</span></div>
+      <span class="non-editable-caret">﻿</span><span class="non-editable" data-pill-id="1">Factor 1</span>regular text<span class="non-editable" data-pill-id="2">Factor 2</span>
   """
   $textEditor = helpers.getTextEditor()
-  $textEditor[0].innerHTML = text_editor_content
+  $textEditor[0].firstChild.innerHTML = text_editor_content
   # When the cursor is placed in the text editor
   currentRange = helpers.placeCursorInTextEditor()
   ok(currentRange.startOffset is 0 and currentRange.endOffset is 0, "cursor is placed in beginning of text editor content")
