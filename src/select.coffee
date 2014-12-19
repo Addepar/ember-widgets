@@ -208,17 +208,17 @@ Ember.AddeparMixins.ResizeHandlerMixin,
 
     ContentProxy = Ember.ObjectProxy.extend
       filteredContent:  Ember.computed ->
-        (@get('content') or []).filter (item) ->
+        Ember.A (@get('content') or []).filter (item) ->
           matcher(query, item)
       .property("content.@each.#{optionLabelPath}")
 
       sortedFilteredContent: Ember.computed ->
-        _.sortBy @get('filteredContent'), (item) =>
+        Ember.A _.sortBy @get('filteredContent'), (item) =>
           Ember.get(item, optionLabelPath)?.toLowerCase()
       .property("filteredContent")
 
     ContentProxy.create
-      content: @get('content')
+      content: Ember.A @get('content')
   .property 'content', 'optionLabelPath', 'query'
 
   filteredContent: Ember.computed.alias 'contentProxy.filteredContent'
@@ -247,6 +247,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
 
   value: Ember.computed (key, value) ->
     if arguments.length is 2 # setter
+      debugger
       valuePath = @get 'optionValuePath'
       selection = value
       selection = @get('content').findProperty(valuePath, value) if valuePath

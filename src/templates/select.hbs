@@ -1,7 +1,7 @@
 <div class="ember-select-container dropdown-toggle js-dropdown-toggle" {{action "toggleDropdown"}}>
   <a {{bind-attr class=":form-control :ember-select-choice buttonClass disabled:disabled"}}>
     {{#if selection}}
-      {{view selectedItemView contentBinding="selection"}}
+      {{view selectedItemView content=selection}}
       <i {{bind-attr class="view.dropdownToggleIcon"}}></i>
     {{else}}
       <span>{{prompt}}</span>
@@ -21,10 +21,10 @@
     {{view listView
       tagName="ul"
       classNames="ember-select-results"
-      heightBinding="dropdownHeight"
-      rowHeightBinding="rowHeight"
-      contentBinding="groupedContent"
-      itemViewClassBinding="itemView"
+      height=dropdownHeight
+      rowHeight=rowHeight
+      content=groupedContent
+      itemViewClass=itemView
     }}
     {{#if hasNoResults}}
       <span class="ember-select-no-results">No results match "{{query}}"</span>
