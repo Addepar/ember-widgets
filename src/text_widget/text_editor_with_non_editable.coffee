@@ -10,7 +10,6 @@ Ember.Widgets.TextEditorComponent.extend Ember.Widgets.PillInsertMixin,
     Ember.Widgets.NonEditableTextPill
   ]
   getInsertSelectController: -> @get('pillChooserInLine')
-  INVISIBLE_CHAR:   '\uFEFF'
   INSERT_PILL_CHAR: '='
   insertPillRegex: Ember.computed ->
     new RegExp @INSERT_PILL_CHAR + '[A-Za-z0-9_\+\-]*$', 'gi'

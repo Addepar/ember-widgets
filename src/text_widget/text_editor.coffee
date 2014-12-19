@@ -7,6 +7,7 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend Ember.Widgets.DomHelp
 
   EDITOR_CLASS: 'text-editor'
   PLACEHOLDER_TEXT: 'Click to edit'
+  INVISIBLE_CHAR:   '\uFEFF'
 
   commands: Ember.A [
     'bold',
@@ -56,7 +57,7 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend Ember.Widgets.DomHelp
       .configurable {
         cursor: pointer;
       }
-      p:first-of-type:empty:not(:focus):before {
+      div:first-of-type:empty:not(:focus):before {
         content: attr(data-ph);
         color: grey;
         font-style: italic;
@@ -66,7 +67,7 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend Ember.Widgets.DomHelp
   .property 'EDITOR_CLASS'
 
   iframeBodyContents: Ember.computed ->
-    '<p data-ph="' + @PLACEHOLDER_TEXT + '"></p>'
+    '<div data-ph="' + @PLACEHOLDER_TEXT + '"></div>'
   .property 'PLACEHOLDER_TEXT'
 
   # Used only in test?
@@ -76,6 +77,20 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend Ember.Widgets.DomHelp
   getDocument: ->
     iframe = @$('iframe.text-editor-frame')[0]
     iframe.contentDocument || iframe.contentWindow.document
+
+  selectLastElement: ->
+    # put the cursor back in the paragraph
+    iframeDocument = @getDocument()
+    selection = iframeDocument.getSelection()
+    selection.removeAllRanges()
+    range = iframeDocument.createRange()
+    # Hack to place the caret inside an empty element node
+    # which works in FF but not in Webkit
+    # http://stackoverflow.com/questions/5488809/how-to-place-caret-inside-an-empty-dom-element-node
+    if iframeDocument.body.lastChild.innerHTML.length is 0
+      iframeDocument.body.lastChild.innerHTML = @INVISIBLE_CHAR 
+    range.selectNodeContents iframeDocument.body.lastChild
+    selection.addRange range
 
   didInsertElement: ->
     @_super()
@@ -118,13 +133,7 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend Ember.Widgets.DomHelp
       $body = $iframeContents.find('body')
       if not $body.children().length
         $body.append(@get('iframeBodyContents'))
-        # put the cursor back in the paragraph
-        iframeDocument = @getDocument()
-        selection = iframeDocument.getSelection()
-        selection.removeAllRanges()
-        range = iframeDocument.createRange()
-        range.selectNodeContents iframeDocument.body.firstChild
-        selection.addRange range
+        @selectLastElement()
     else
       @queryCommandState()
 
