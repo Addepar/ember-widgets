@@ -107,6 +107,14 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   # possibly says 'create item' or something along that line
   selectMenuView: null
 
+  # This doesn't clean correctly if `optionLabelPath` changes
+  willDestroy: ->
+    propertyName = 'contentProxy'
+    if @cacheFor propertyName
+      contentProxy = @get propertyName
+      contentProxy.destroy()
+    @_super()
+
   updateDropdownLayout: Ember.observer ->
     return if (@get('_state') or @get('state')) isnt 'inDOM' or @get('showDropdown') is no
 
@@ -204,24 +212,29 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   .property 'sortLabels', 'filteredContent', 'sortedFilteredContent'
 
   contentProxy: Ember.computed ->
-    matcher = (searchText, item) => @matcher(searchText, item)
     optionLabelPath = @get('optionLabelPath')
-    query = @get('query')
 
     ContentProxy = Ember.ObjectProxy.extend
+      _select: null
+      content: Ember.computed.alias '_select.content'
+      query: Ember.computed.alias '_select.query'
+
       filteredContent:  Ember.computed ->
+        selectComponent = @get('_select')
+        query = @get 'query'
+
         (@get('content') or []).filter (item) ->
-          matcher(query, item)
-      .property("content.@each.#{optionLabelPath}")
+          selectComponent.matcher(query, item)
+      .property "content.@each.#{optionLabelPath}", 'query'
 
       sortedFilteredContent: Ember.computed ->
         _.sortBy @get('filteredContent'), (item) =>
           Ember.get(item, optionLabelPath)?.toLowerCase()
-      .property("filteredContent")
+      .property 'filteredContent'
 
     ContentProxy.create
-      content: @get('content')
-  .property 'content', 'optionLabelPath', 'query'
+      _select: this
+  .property 'optionLabelPath'
 
   filteredContent: Ember.computed.alias 'contentProxy.filteredContent'
   sortedFilteredContent: Ember.computed.alias 'contentProxy.sortedFilteredContent'
