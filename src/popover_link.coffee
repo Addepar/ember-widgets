@@ -10,6 +10,14 @@ Ember.Widgets.PopoverLinkComponent = Ember.Component.extend
   rootElement: '.ember-application'
   fade: yes
 
+  willDestroy: ->
+    @_super()
+
+    propertyName = '_popover'
+    if @cacheFor propertyName
+      property = @get propertyName
+      property.destroy()
+
   _contentViewClass: Ember.computed ->
     contentViewClass = @get 'contentViewClass'
     if typeof contentViewClass is 'string'
