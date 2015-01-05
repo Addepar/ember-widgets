@@ -183,7 +183,9 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     # to finishes before trying to focus the input. Otherwise, focus when be
     # "stolen" from us.
     showDropdownDidChange: Ember.observer ->
-      Ember.run.schedule 'afterRender', this, ->
+      # when closing, don't need to focus the now-hidden search box
+      if @get('parentView.showDropdown')
+        Ember.run.schedule 'afterRender', this, ->
           @$().focus() if (@get('_state') or @get('state')) is 'inDOM'
     , 'parentView.showDropdown'
 
