@@ -19,6 +19,7 @@ var app = new EmberAddon({
 app.import(app.bowerDirectory + '/font-awesome/css/font-awesome.css');
 app.import(app.bowerDirectory + '/font-awesome/fonts/fontawesome-webfont.ttf', {destDir: 'assets'});
 app.import(app.bowerDirectory + '/font-awesome/fonts/fontawesome-webfont.woff', {destDir: 'assets'});
+app.import(app.bowerDirectory + '/bootstrap/dist/js/bootstrap.min.js');
 app.import(app.bowerDirectory + '/lodash/dist/lodash.min.js');
 app.import(app.bowerDirectory + '/modernizr/modernizr.js');
 app.import('vendor/list-view/list-view.js');

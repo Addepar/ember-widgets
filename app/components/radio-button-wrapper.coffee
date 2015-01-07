@@ -1,7 +1,7 @@
 `import Ember from 'ember'`
 
-# Clickable wrapper around the actual radio button which allows the text near the
-# button to be clickable too.
+# Clickable wrapper around the actual radio button which allows the text near
+# the button to be clickable too.
 RadioButtonWrapperComponent = Ember.Component.extend
   layoutName: 'radio-button-layout'
   value: null

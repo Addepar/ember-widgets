@@ -1,5 +1,6 @@
 `import Ember from 'ember'`
 `import StyleBindingsMixin from '../mixins/style-bindings'`
+`import transitionend from '../utils/css-transitions'`
 
 ModalComponent = Ember.Component.extend StyleBindingsMixin,
   layoutName: 'modal'
@@ -138,7 +139,7 @@ ModalComponent = Ember.Component.extend StyleBindingsMixin,
       # destroy modal after backdroop faded out. We need to wrap this in a
       # run-loop otherwise ember-testing will complain about auto run being
       # disabled when we are in testing mode.
-      @$().one $.support.transition.end, => Ember.run this, @destroy
+      @$().one transitionend, => Ember.run this, @destroy
     else
       Ember.run this, @destroy
 

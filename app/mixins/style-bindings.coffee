@@ -38,4 +38,4 @@ StyleBindingsMixin = Ember.Mixin.create
     @applyStyleBindings()
     @_super()
 
-`export default Ember`
+`export default StyleBindingsMixin`
