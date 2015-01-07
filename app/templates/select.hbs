@@ -1,0 +1,36 @@
+<div class="ember-select-container dropdown-toggle js-dropdown-toggle" {{action "toggleDropdown"}}>
+  <a {{bind-attr class=":form-control :ember-select-choice buttonClass disabled:disabled"}}>
+    {{#if selection}}
+      {{view selectedItemView contentBinding="selection"}}
+      <i {{bind-attr class="view.dropdownToggleIcon"}}></i>
+    {{else}}
+      <span>{{prompt}}</span>
+      <i {{bind-attr class="view.dropdownToggleIcon"}}></i>
+    {{/if}}
+  </a>
+</div>
+
+<div {{bind-attr class=":dropdown-menu :js-dropdown-menu dropdownMenuClass
+  isDropdownMenuPulledRight:pull-right"}}>
+  {{#unless isSelect}}
+    <div class="ember-select-search">
+      {{view searchView}}
+    </div>
+  {{/unless}}
+  {{#if showDropdown}}
+    {{view listView
+      tagName="ul"
+      classNames="ember-select-results"
+      heightBinding="dropdownHeight"
+      rowHeightBinding="rowHeight"
+      contentBinding="groupedContent"
+      itemViewClassBinding="itemView"
+    }}
+    {{#if hasNoResults}}
+      <span class="ember-select-no-results">No results match "{{query}}"</span>
+    {{/if}}
+  {{/if}}
+  {{#if selectMenuView}}
+    {{view selectMenuView}}
+  {{/if}}
+</div>

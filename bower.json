@@ -1,73 +1,28 @@
 {
   "name": "ember-widgets",
-  "version": "0.2.0",
-  "main": [
-    "./dist/js/ember-widgets.js",
-    "./dist/css/ember-widgets.css",
-    "./dist/img/*"
-  ],
-  "ignore": [
-    ".gitignore",
-    ".jshintrc",
-    "app",
-    "build",
-    "dependencies",
-    "gh_pages",
-    "node_modules",
-    "src",
-    "test",
-    "CHANGELOG",
-    "example.js",
-    "Gruntfile.coffee",
-    "package.json",
-    "VERSION"
-  ],
   "dependencies": {
     "bootstrap": "~3.2.0",
     "ember": "~1.1.0",
     "jquery": "~1.10.2",
     "jquery-ui": "~1.10.1",
     "handlebars": "~1.3.0",
-    "lodash": "~1.2.1",
-    "ember-list-view": "~0.0.4"
+    "jquery": "^1.11.1",
+    "ember": "1.8.1",
+    "ember-resolver": "~0.1.11",
+    "loader.js": "stefanpenner/loader.js#1.0.1",
+    "ember-cli-shims": "stefanpenner/ember-cli-shims#0.0.3",
+    "ember-cli-test-loader": "rwjblue/ember-cli-test-loader#0.0.4",
+    "ember-load-initializers": "stefanpenner/ember-load-initializers#0.0.2",
+    "ember-qunit": "0.1.8",
+    "ember-qunit-notifications": "0.0.4",
+    "qunit": "~1.15.0",
+    "lodash": "~2.4.1",
+    "bootstrap": "~3.3.1",
+    "jquery-ui": "1.10.1",
+    "modernizr": "2.8.3",
+    "font-awesome": "~4.2.0"
   },
-  "devDependencies": {
-    "font-awesome": "~4.0.3",
-    "sinonjs": "~1.7.3",
-    "sinon-qunit": "~1.0.0",
-    "holder": "holderjs#1.9",
-    "jquery-browser": "jquery.browser#~0.0.4",
-    "qunit": "~1.12.0",
-    "rangy": "~1.2.3"
-  },
-  "exportsOverride": {
-    "bootstrap": {
-      "js": "**/*.js",
-      "less": "less/*.less",
-      "less/mixins": "less/mixins/*.less"
-    },
-    "ember": {
-      ".": "ember.js"
-    },
-    "lodash": {
-      ".": "lodash.js"
-    },
-    "font-awesome": {
-      "css": "css/*",
-      "less": "less/*",
-      "scss": "scss/*",
-      "fonts": "fonts/*"
-    },
-    "jquery": {
-      ".": [
-        "jquery.js"
-      ]
-    },
-    "rangy": {
-      ".": [
-        "rangy-core.js",
-        "rangy-selectionsaverestore.js"
-      ]
-    }
+  "resolutions": {
+    "handlebars": ">= 1.0.0 < 2.0.0"
   }
 }

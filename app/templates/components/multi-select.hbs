@@ -1,0 +1,25 @@
+<div class="ember-select-container ember-select-multi dropdown-toggle js-dropdown-toggle">
+  <ul {{bind-attr class=":form-control :ember-select-choices choicesFieldClass"}}>
+    {{each selections itemViewClass="view.selectionItemView"}}
+    <li class="ember-select-search-field">
+      {{! Invisible span containing the placeholder/query text, used to set
+          the width of its parent element. }}
+      <span class="invisible-placeholder">{{invisiblePlaceholderText}}</span>
+      {{view searchView}}
+    </li>
+  </ul>
+</div>
+
+<div class="dropdown-menu js-dropdown-menu">
+  {{view listView
+    tagName="ul"
+    classNames="ember-select-results"
+    heightBinding="dropdownHeight"
+    rowHeightBinding="rowHeight"
+    contentBinding="groupedContent"
+    itemViewClassBinding="itemView"
+  }}
+  {{#if hasNoResults}}
+    <span class="ember-select-no-results">No results match "{{query}}"</span>
+  {{/if}}
+</div>
