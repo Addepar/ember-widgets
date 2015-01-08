@@ -46,7 +46,7 @@ AccordionItem = Ember.View.extend
     $accordionBody.removeClass('collapse').addClass('collapsing').height(0)
 
     $accordionBody.height($accordionBody[0]['scrollHeight'])
-    @_onTransitionEnd $(), ->
+    @_onTransitionEnd $accordionBody, ->
       $accordionBody.removeClass('collapsing').addClass('in')
         .height('auto')
 
