@@ -87,8 +87,8 @@ TextEditorComponent.extend PillInsertMixin,
     if matches
       # Inserting via key, so we need to replace the characters before
       @deleteCharactersPrecedingCaret(matches[0].length, false)
-    # Ensure that we insert the factor in the text editor (move the range inside the editor if
-    # not already)
+    # Ensure that we insert the factor in the text editor (move the range
+    # inside the editor if not already)
     range = @getCurrentRange()
     if not range or not @inEditor(range)
       selection = iframeDocument.getSelection()
@@ -146,7 +146,8 @@ TextEditorComponent.extend PillInsertMixin,
         return insertSelect.downArrowPressed(event)
       else if keyCode == @KEY_CODES.UP
         return insertSelect.upArrowPressed(event)
-      else if keyCode in [@KEY_CODES.ENTER, @KEY_CODES.TAB] and insertSelect.get('preparedContent').length > 0
+      else if keyCode in [@KEY_CODES.ENTER, @KEY_CODES.TAB] and
+      insertSelect.get('preparedContent').length > 0
         return insertSelect.enterPressed(event)
       else if keyCode == @KEY_CODES.ESCAPE
         return insertSelect.escapePressed(event)
@@ -160,7 +161,8 @@ TextEditorComponent.extend PillInsertMixin,
 
   click: (event) ->
     $target = $(event.target)
-    if $target.attr('contentEditable') == "false" and $target.hasClass('configurable')
+    if $target.attr('contentEditable') == "false" and
+    $target.hasClass('configurable')
       @configurePill $target
 
 `export default TextEditorWithNonEditableComponent`

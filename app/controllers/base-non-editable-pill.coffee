@@ -1,7 +1,8 @@
 `import Ember from 'ember'`
 `import DomHelper from './mixins/dom-helper'`
 
-# Base class for NonEditablePill that can be inserted into the TextEditorWithNonEditableComponent
+# Base class for NonEditablePill that can be inserted into the
+# TextEditorWithNonEditableComponent
 BaseNonEditablePill = Ember.Controller.extend DomHelper,
 
   textEditor: null
@@ -13,12 +14,13 @@ BaseNonEditablePill = Ember.Controller.extend DomHelper,
 
   name: null
 
-  # Returns a string that is displayed to the user in the non-editable pill in the text editor.
-  # This method is called whenever the text editor view is refreshed. Needs to be overriden.
+  # Returns a string that is displayed to the user in the non-editable pill in
+  # the text editor. This method is called whenever the text editor view is
+  # refreshed. Needs to be overriden.
   result: -> Ember.K
 
-  # Configure the parameters of the pill, e.g. by displaying a modal with input options that are
-  # then stored in @get('params')
+  # Configure the parameters of the pill, e.g. by displaying a modal with input
+  # options that are then stored in @get('params')
   configurable: false
   configure: ->
     @send 'modalConfirm'  # No configuration by default
@@ -39,8 +41,8 @@ BaseNonEditablePill = Ember.Controller.extend DomHelper,
   updateContent: ->
     $(@get('pillElement')).text(@result())
 
-  # Create a span element containing the correct text and with class=non-editable, that will then
-  # be inserted into the text editor DOM.
+  # Create a span element containing the correct text and with
+  # class=non-editable, that will then be inserted into the text editor DOM.
   render: ->
     span = @createElementsFromString("<span></span>")
     span.addClass('non-editable')

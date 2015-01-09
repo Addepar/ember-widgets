@@ -21,7 +21,8 @@ BodyEventListener = Ember.Mixin.create
     return if @_clickHandler or @isDestroying
     @_clickHandler = (event) =>
       Ember.run =>
-        if (@get('_state') or @get('state')) is 'inDOM' and Ember.isEmpty(@$().has($(event.target)))
+        if (@get('_state') or @get('state')) is 'inDOM' and
+        Ember.isEmpty(@$().has($(event.target)))
           @bodyClick()
     $(@get('bodyElementSelector')).on "click", @_clickHandler
 

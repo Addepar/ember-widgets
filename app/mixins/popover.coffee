@@ -61,15 +61,16 @@ PopoverMixin = Ember.Mixin.create StyleBindingsMixin, BodyEventListener,
     @set('isShowing', no)
     if @get('fadeEnabled')
       @$().one transitionend, =>
-        # We need to wrap this in a run-loop otherwise ember-testing will complain
-        # about auto run being disabled when we are in testing mode.
+        # We need to wrap this in a run-loop otherwise ember-testing will
+        # complain about auto run being disabled when we are in testing mode.
         Ember.run this, @destroy
     else
       Ember.run this, @destroy
 
   ###
   Calculate the offset of the given iframe relative to the top window.
-  - Walks up the iframe chain, checking the offset of each one till it reaches top
+  - Walks up the iframe chain, checking the offset of each one till it reaches
+    top
   - Only works with friendly iframes.
   - Takes into account scrolling, but comes up with a result relative to
   top iframe, regardless of being visibile withing intervening frames.

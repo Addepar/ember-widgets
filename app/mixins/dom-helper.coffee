@@ -13,18 +13,19 @@ DomHelper = Ember.Mixin.create
     UP: 38,
     ESCAPE: 27
 
-  # Set the selected range to the given element, with the option to collapse the selection to the
-  # beginning or end
+  # Set the selected range to the given element, with the option to collapse
+  # the selection to the beginning or end
   #   element       the element to select
   #   collapseMode  "none", "beginning", "end"
   selectElement: (document, element, collapseMode="end") ->
-    # http://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity
+    # http://bit.ly/1tOBYVf
     if(document.createRange)  # Firefox, Chrome, Opera, Safari, IE 9+
       range = document.createRange()
       # Select the entire contents of the element with the range
       range.selectNodeContents(element)
       if collapseMode != "none"
-        # collapse the range to the end point. false means collapse to end rather than the start
+        # collapse the range to the end point. false means collapse to end
+        # rather than the start
         range.collapse(if collapseMode == "beginning" then true else false)
       @activateRange(document, range)
 
@@ -34,7 +35,8 @@ DomHelper = Ember.Mixin.create
     selection.addRange(range)
     return range
 
-  # Wrapper around range.deleteContents that also deletes empty containers in the range
+  # Wrapper around range.deleteContents that also deletes empty containers in
+  # the range
   deleteRange: (range, shouldDeleteContainer=true) ->
     startParent = range.startContainer.parentNode
     endParent = range.endContainer.parentNode
@@ -57,11 +59,14 @@ DomHelper = Ember.Mixin.create
   getCurrentRange: ->
     iframe = @$('iframe.text-editor-frame')[0]
     idocument = iframe.contentDocument || iframe.contentWindow.document
-    if idocument.getSelection().rangeCount > 0 then idocument.getSelection().getRangeAt(0) else null
+    if idocument.getSelection().rangeCount > 0
+      idocument.getSelection().getRangeAt(0)
+    else
+      null
 
-  # Returns true if the element has no child elements and has either 0 child nodes or one child
-  # node with nothing in it. Different from jQuery's .is(':empty'), which thinks some empty nodes
-  # are not empty
+  # Returns true if the element has no child elements and has either 0 child
+  # nodes or one child node with nothing in it. Different from jQuery's
+  # .is(':empty'), which thinks some empty nodes are not empty
   isEmpty: (element) ->
     return element.children.length == 0 &&
            element.childNodes.length <= 1 &&
@@ -73,8 +78,8 @@ DomHelper = Ember.Mixin.create
   convertElementsToString: (elements) ->
     $("<div/>").html(elements).html()
 
-  # get the node that is beside the current range on either the left or the right. Empty nodes,
-  # or nodes containing only whitespace are ignored
+  # get the node that is beside the current range on either the left or the
+  # right. Empty nodes, or nodes containing only whitespace are ignored
   getNonEmptySideNode: (range, left=true, deep) ->
     nodeIsEmpty = (node) ->
       return node?.nodeValue?.trim().length == 0
@@ -82,7 +87,8 @@ DomHelper = Ember.Mixin.create
     while ((sideNode = node[if left then 'previousSibling' else 'nextSibling']) is null or
     nodeIsEmpty(sideNode)) and !$(node).hasClass(@EDITOR_CLASS)  # not the editor div
       if nodeIsEmpty(sideNode)
-        # Ignore this sideNode because it's empty. Go to the next/previous sibling
+        # Ignore this sideNode because it's empty. Go to the next/previous
+        # sibling
         node = node[if left then 'previousSibling' else 'nextSibling']
       else
         # Go to the parent because this node doesn't have a side node

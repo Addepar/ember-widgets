@@ -5,7 +5,11 @@
 ModalComponent = Ember.Component.extend StyleBindingsMixin,
   layoutName: 'modal'
   classNames: ['modal']
-  classNameBindings: ['isShowing:in', 'hasCloseButton::has-no-close-button', 'fadeEnabled:fade']
+  classNameBindings: [
+    'isShowing:in'
+    'hasCloseButton::has-no-close-button'
+    'fadeEnabled:fade'
+  ]
   modalPaneBackdrop: '<div class="modal-backdrop"></div>'
   bodyElementSelector: '.modal-backdrop'
   targetObject: null
@@ -146,7 +150,8 @@ ModalComponent = Ember.Component.extend StyleBindingsMixin,
   _appendBackdrop: ->
     parentLayer = @$().parent()
     modalPaneBackdrop = @get 'modalPaneBackdrop'
-    @_backdrop = jQuery(modalPaneBackdrop).addClass('fade') if @get('fadeEnabled')
+    @_backdrop =
+      jQuery(modalPaneBackdrop).addClass('fade') if @get('fadeEnabled')
     @_backdrop.appendTo(parentLayer)
     # show backdrop in next run loop so that it can fade in
     Ember.run.next this, -> @_backdrop.addClass('in')
