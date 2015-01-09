@@ -1,6 +1,6 @@
 `import Ember from 'ember'`
-`import TextEditorConfigComponent from './components/text-editor-config'`
-`import PillInsertMixin from './mixins/pill-insert'`
+`import TextEditorConfigComponent from '../components/text-editor-config-component'`
+`import PillInsertMixin from '../mixins/pill-insert'`
 
 TextEditorWithNonEditableConfigComponent = TextEditorConfigComponent.extend(
   PillInsertMixin,

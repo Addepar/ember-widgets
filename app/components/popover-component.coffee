@@ -1,7 +1,9 @@
 `import Ember from 'ember'`
 `import PopoverMixin from '../mixins/popover'`
 
-PopoverComponent = Ember.Component.extend PopoverMixin,
+PopoverComponent = Ember.Component.extend(PopoverMixin)
+
+PopoverComponent.reopenClass
   rootElement: '.ember-application'
   hideAll: -> $(document).trigger('popover:hide')
 

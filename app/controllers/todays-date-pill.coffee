@@ -1,5 +1,5 @@
 `import Ember from 'ember'`
-`import TodaysDatePill from './controllers/base-non-editable-pill'`
+`import BaseNonEditablePill from '../controllers/base-non-editable-pill'`
 
 TodaysDatePill = BaseNonEditablePill.extend
   name: "Today's Date"

@@ -1,6 +1,6 @@
 `import Ember from 'ember'`
-`import BaseNonEditablePill from './controllers/base-non-editable-pill'`
-`import ModalComponent from './components/modal-component'`
+`import BaseNonEditablePill from '../controllers/base-non-editable-pill'`
+`import ModalComponent from '../components/modal-component'`
 
 NonEditableTextPill = BaseNonEditablePill.extend
   name: "Custom Text"

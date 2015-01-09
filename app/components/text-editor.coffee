@@ -1,5 +1,5 @@
 `import Ember from 'ember'`
-`import DomHelper from './mixins/dom-helper'`
+`import DomHelper from '../mixins/dom-helper'`
 
 TextEditorComponent = Ember.Component.extend DomHelper,
   layoutName: 'text-editor'

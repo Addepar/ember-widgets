@@ -1,5 +1,5 @@
 `import Ember from 'ember'`
-`import SelectOptionView from './components/select-option'`
+`import SelectOptionView from '../views/select-option'`
 
 TextEditorConfigComponent = Ember.Component.extend
   layoutName: 'text-editor-config'

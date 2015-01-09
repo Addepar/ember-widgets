@@ -1,8 +1,8 @@
 `import Ember from 'ember'`
-`import TextEditorComponent from './components/text-editor'`
-`import PillInsertMixin from './mixins/pill-insert'`
-`import TodaysDatePill from './controllers/todays-date-pill'`
-`import NonEditableTextPill from './controllers/non-editable-text-pill'`
+`import TextEditorComponent from '../components/text-editor'`
+`import PillInsertMixin from '../mixins/pill-insert'`
+`import TodaysDatePill from '../controllers/todays-date-pill'`
+`import NonEditableTextPill from '../controllers/non-editable-text-pill'`
 
 TextEditorWithNonEditableComponent =
 TextEditorComponent.extend PillInsertMixin,

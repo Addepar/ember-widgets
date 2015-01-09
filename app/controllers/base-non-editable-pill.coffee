@@ -1,5 +1,5 @@
 `import Ember from 'ember'`
-`import DomHelper from './mixins/dom-helper'`
+`import DomHelper from '../mixins/dom-helper'`
 
 # Base class for NonEditablePill that can be inserted into the
 # TextEditorWithNonEditableComponent

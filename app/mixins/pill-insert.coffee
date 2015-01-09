@@ -1,6 +1,6 @@
 `import Ember from 'ember'`
-`import TodaysDatePill from './controllers/todays-date-pill'`
-`import NonEditableTextPill from './controllers/non-editable-text-pill'`
+`import TodaysDatePill from '../controllers/todays-date-pill'`
+`import NonEditableTextPill from '../controllers/non-editable-text-pill'`
 
 PillInsertMixin = Ember.Mixin.create
   pillOptions: Ember.A [
@@ -8,11 +8,11 @@ PillInsertMixin = Ember.Mixin.create
     NonEditableTextPill
   ]
 
-  _pillOptions : Ember.computed ->
+  _pillOptions: Ember.computed( ->
     Ember.A @getWithDefault('pillOptions', []).map (option) ->
       label: option.create().name
       value: option
-  .property 'pillOptions'
+  ).property 'pillOptions'
 
   actions:
     insertPill: (pillOption) ->
