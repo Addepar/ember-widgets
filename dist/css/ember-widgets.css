@@ -309,7 +309,8 @@
 }
 /* Ember Select No-Results
 -------------------------------------------------- */
-.ember-select-no-results {
+.ember-select-no-results,
+.ember-select-loading {
   padding: 5px 7px 5px 7px;
   display: block;
   white-space: nowrap;

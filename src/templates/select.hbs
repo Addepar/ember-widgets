@@ -26,6 +26,9 @@
       contentBinding="groupedContent"
       itemViewClassBinding="itemView"
     }}
+    {{#if isLoading}}
+      <span class="ember-select-loading">Loading...</span>
+    {{/if}}
     {{#if hasNoResults}}
       <span class="ember-select-no-results">No results match "{{query}}"</span>
     {{/if}}

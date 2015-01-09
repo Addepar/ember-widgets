@@ -258,7 +258,10 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     result
   .property 'preparedContent', 'optionGroupPath', 'labels.[]'
 
-  hasNoResults: Ember.computed.empty 'filteredContent'
+  isLoading: no
+  isLoaded: Ember.computed.not('isLoading')
+  filteredContentIsEmpty: Ember.computed.empty 'filteredContent'
+  hasNoResults: Ember.computed.and('isLoaded', 'filteredContentIsEmpty')
 
   value: Ember.computed (key, value) ->
     if arguments.length is 2 # setter
