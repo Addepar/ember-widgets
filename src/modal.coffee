@@ -134,12 +134,12 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     # fade out backdrop
     @_backdrop.removeClass('in') if @_backdrop
     if @get('fadeEnabled')
-      # destroy modal after backdroop faded out. We need to wrap this in a
+      # destroy modal after backdrop faded out. We need to wrap this in a
       # run-loop otherwise ember-testing will complain about auto run being
       # disabled when we are in testing mode.
-      @$().one $.support.transition.end, => Ember.run this, @destroy
+      @$().one $.support.transition.end, => Ember.run.scheduleOnce 'destroy', this, @destroy
     else
-      Ember.run this, @destroy
+      Ember.run.scheduleOnce 'destroy', this, @destroy
 
   _appendBackdrop: ->
     parentLayer = @$().parent()
