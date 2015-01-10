@@ -125,6 +125,8 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     @send 'sendCancel' unless @get('enforceModality')
 
   hide: ->
+    @_removeDocumentHandlers()
+
     @set 'isShowing', no
     # bootstrap modal removes this class from the body when the modal closes
     # to transfer scroll behavior back to the app
