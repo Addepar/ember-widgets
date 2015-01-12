@@ -201,6 +201,10 @@ Ember.Widgets.BodyEventListener,
     =>
       Ember.run.debounce(this, @snapToPosition, @get('debounceTime'))
 
+  willDestroy: ->
+    @_super()
+    @_removeDocumentHandlers()
+
   _setupDocumentHandlers: ->
     @_super()
     unless @_hideHandler
