@@ -74,25 +74,25 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
       return unless @get('isShowing')
       # NOTE: we support callback for backward compatibility.
       cancel = @get 'cancel'
-      @hide()
       if typeof(cancel) is 'function' then @cancel(this)
       else @sendAction 'cancel'
+      @hide()
 
     sendConfirm: ->
       return unless @get('isShowing')
       # NOTE: we support callback for backward compatibility.
       confirm = @get 'confirm'
-      @hide()
       if typeof(confirm) is 'function' then @confirm(this)
       else @sendAction 'confirm'
+      @hide()
 
     sendClose: ->
       return unless @get('isShowing')
       # NOTE: we support callback for backward compatibility.
       close = @get 'close'
-      @hide()
       if typeof(close) is 'function' then @close(this)
       else @sendAction 'close'
+      @hide()
 
   didInsertElement: ->
     @_super()
@@ -125,7 +125,7 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     @send 'sendCancel' unless @get('enforceModality')
 
   hide: ->
-    @_removeDocumentHandlers()
+    return if @get('isDestroying')
 
     @set 'isShowing', no
     # bootstrap modal removes this class from the body when the modal closes
@@ -137,9 +137,9 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
       # destroy modal after backdrop faded out. We need to wrap this in a
       # run-loop otherwise ember-testing will complain about auto run being
       # disabled when we are in testing mode.
-      @$().one $.support.transition.end, => Ember.run.scheduleOnce 'destroy', this, @destroy
+      @$().one $.support.transition.end, => Ember.run this, @destroy
     else
-      Ember.run.scheduleOnce 'destroy', this, @destroy
+      @destroy()
 
   _appendBackdrop: ->
     parentLayer = @$().parent()
@@ -153,7 +153,8 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   _setupDocumentHandlers: ->
     @_super()
     unless @_hideHandler
-      @_hideHandler = => @hide()
+      @_hideHandler = => 
+        Ember.run this, @hide
       $(document).on 'modal:hide', @_hideHandler
     $(document).on 'keyup', @get('keyHandler')
 
