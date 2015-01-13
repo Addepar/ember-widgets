@@ -125,6 +125,8 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     @send 'sendCancel' unless @get('enforceModality')
 
   hide: ->
+    return if @get('isDestroying')
+
     @set 'isShowing', no
     # bootstrap modal removes this class from the body when the modal closes
     # to transfer scroll behavior back to the app
@@ -132,17 +134,19 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     # fade out backdrop
     @_backdrop.removeClass('in') if @_backdrop
     if @get('fadeEnabled')
-      # destroy modal after backdroop faded out. We need to wrap this in a
+      # destroy modal after backdrop faded out. We need to wrap this in a
       # run-loop otherwise ember-testing will complain about auto run being
       # disabled when we are in testing mode.
-      @$().one $.support.transition.end, => Ember.run this, @destroy
+      @$().one $.support.transition.end, =>
+        Ember.run.scheduleOnce 'destroy',  this, @destroy
     else
-      Ember.run this, @destroy
+      Ember.run.scheduleOnce 'destroy',  this, @destroy
 
   _appendBackdrop: ->
     parentLayer = @$().parent()
     modalPaneBackdrop = @get 'modalPaneBackdrop'
-    @_backdrop = jQuery(modalPaneBackdrop).addClass('fade') if @get('fadeEnabled')
+    @_backdrop = jQuery(modalPaneBackdrop)
+    @_backdrop.addClass('fade') if @get('fadeEnabled')
     @_backdrop.appendTo(parentLayer)
     # show backdrop in next run loop so that it can fade in
     Ember.run.next this, -> @_backdrop.addClass('in')
@@ -150,7 +154,8 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   _setupDocumentHandlers: ->
     @_super()
     unless @_hideHandler
-      @_hideHandler = => @hide()
+      @_hideHandler = => 
+        Ember.run this, @hide
       $(document).on 'modal:hide', @_hideHandler
     $(document).on 'keyup', @get('keyHandler')
 

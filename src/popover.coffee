@@ -54,15 +54,15 @@ Ember.Widgets.BodyEventListener,
   bodyClick: -> @hide()
 
   hide: ->
-    return if @get('isDestroyed')
+    return if @get('isDestroying')
     @set('isShowing', no)
     if @get('fadeEnabled')
       @$().one $.support.transition.end, =>
         # We need to wrap this in a run-loop otherwise ember-testing will complain
         # about auto run being disabled when we are in testing mode.
-        Ember.run this, @destroy
+        Ember.run.scheduleOnce 'destroy',  this, @destroy
     else
-      Ember.run this, @destroy
+      Ember.run.scheduleOnce 'destroy',  this, @destroy
 
   ###
   Calculate the offset of the given iframe relative to the top window.
@@ -201,10 +201,15 @@ Ember.Widgets.BodyEventListener,
     =>
       Ember.run.debounce(this, @snapToPosition, @get('debounceTime'))
 
+  willDestroy: ->
+    @_super()
+    @_removeDocumentHandlers()
+
   _setupDocumentHandlers: ->
     @_super()
     unless @_hideHandler
-      @_hideHandler = => @hide()
+      @_hideHandler = => 
+        Ember.run this, @hide
       $(document).on 'popover:hide', @_hideHandler
     unless @_resizeHandler
       @_resizeHandler = @get('debounceSnapToPosition')
