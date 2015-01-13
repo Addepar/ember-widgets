@@ -60,9 +60,9 @@ Ember.Widgets.BodyEventListener,
       @$().one $.support.transition.end, =>
         # We need to wrap this in a run-loop otherwise ember-testing will complain
         # about auto run being disabled when we are in testing mode.
-        Ember.run this, @destroy
+        Ember.run.scheduleOnce 'destroy',  this, @destroy
     else
-      @destroy()
+      Ember.run.scheduleOnce 'destroy',  this, @destroy
 
   ###
   Calculate the offset of the given iframe relative to the top window.

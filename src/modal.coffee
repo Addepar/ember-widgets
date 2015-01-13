@@ -138,9 +138,9 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
       # run-loop otherwise ember-testing will complain about auto run being
       # disabled when we are in testing mode.
       @$().one $.support.transition.end, =>
-        Ember.run this, @destroy
+        Ember.run.scheduleOnce 'destroy',  this, @destroy
     else
-      @destroy()
+      Ember.run.scheduleOnce 'destroy',  this, @destroy
 
   _appendBackdrop: ->
     parentLayer = @$().parent()
