@@ -92,6 +92,11 @@ Ember.Widgets.TextEditorComponent = Ember.Component.extend Ember.Widgets.DomHelp
     range.selectNodeContents iframeDocument.body.lastChild
     selection.addRange range
 
+  unselect: ->
+    iframeDocument = @getDocument()
+    selection = iframeDocument.getSelection()
+    selection.removeAllRanges()
+
   didInsertElement: ->
     @_super()
 
