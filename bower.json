@@ -18,7 +18,7 @@
     "qunit": "~1.15.0",
     "lodash": "~2.4.1",
     "bootstrap": "~3.3.1",
-    "jquery-ui": "1.10.1",
+    "jquery-ui": "~1.10.1",
     "modernizr": "2.8.3",
     "font-awesome": "~4.2.0"
   },
