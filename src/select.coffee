@@ -54,7 +54,7 @@ Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
 
 Ember.Widgets.SelectComponent =
 Ember.Component.extend Ember.Widgets.BodyEventListener,
-Ember.AddeparMixins.ResizeHandlerMixin,
+Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.DomHelper,
   layoutName:         'select'
   classNames:         'ember-select'
   attributeBindings:  Ember.A ['tabindex']
@@ -67,7 +67,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   # we need to set tabindex so that div responds to key events
   highlightedIndex: -1
 
-  tabindex: -1
+  tabindex: 0
 
   showDropdown: no
 
@@ -319,6 +319,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     13: 'enterPressed'
     38: 'upArrowPressed'
     40: 'downArrowPressed'
+    9:  'tabPressed'
 
   # All the selectable options - namely everything except for the non-group
   # options that are artificially created.
@@ -331,8 +332,8 @@ Ember.AddeparMixins.ResizeHandlerMixin,
 
   # The option that is currently highlighted.
   highlighted: Ember.computed (key, value) ->
-    content   = @get('selectableOptions') or Ember.A []
-    value     = value or Ember.A []
+    content   = @get('selectableOptions') or Ember.A()
+    value     = value or Ember.A()
     if arguments.length is 1 # getter
       index = @get 'highlightedIndex'
       value = content.objectAt index
@@ -346,7 +347,15 @@ Ember.AddeparMixins.ResizeHandlerMixin,
 
   keyDown: (event) ->
     # show dropdown if dropdown is not already showing
-    return @set('showDropdown', yes) unless @get 'showDropdown'
+    # and the keycode should be one of special keys or common characters
+    # 'A'..'Z', 'a..z','0..9'
+    if event.keyCode in [@KEY_CODES.ENTER, @KEY_CODES.SPACEBAR] or
+    event.keyCode in [@KEY_CODES.DOWN, @KEY_CODES.UP] or
+    event.keyCode in [65..90] or
+    event.keyCode in [97..122] or
+    event.keyCode in [48..57]
+      return @set('showDropdown', yes) if not @get 'showDropdown'
+
     map   = @get 'KEY_EVENTS'
     method = map[event.keyCode]
     @get(method)?.apply(this, arguments) if method
@@ -354,7 +363,14 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   deletePressed: Ember.K
 
   escapePressed: (event) ->
-    @send 'hideDropdown'
+    if @get('showDropdown') is yes
+      @send 'hideDropdown'
+      @$().focus()
+      event.preventDefault()
+
+  tabPressed: (event) ->
+    if @get('showDropdown') is yes
+      @send 'hideDropdown'
 
   enterPressed: (event) ->
     item = @get 'highlighted'
@@ -362,6 +378,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     @userDidSelect(item) unless Ember.isEmpty(item)
     # in case dropdown doesn't close
     @send 'hideDropdown'
+    @$().focus()
     # TODO(Peter): HACK the web app somehow reloads when enter is pressed.
     event.preventDefault()
 

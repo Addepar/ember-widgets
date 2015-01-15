@@ -45,6 +45,10 @@
   display: inline-block;
   outline: none;
 }
+.ember-select:focus .ember-select-choice {
+  border: 1px solid #4d90fe;
+  background-color: transparent;
+}
 .ember-select-choice i {
   position: absolute;
   top: 3px;
