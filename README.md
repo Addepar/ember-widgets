@@ -18,11 +18,7 @@ http://emberjs.jsbin.com/hebexa/1/edit
 
 ## Globals Installation
 
-Add a bower dependency on ember-widgets and include
-```
-bower_components/ember-widgets/packaging/dist/ember-widgets.js
-```
-in your app.
+See the [packaging folder](packaging/README.md)
 
 ## Running
 
@@ -33,11 +29,9 @@ in your app.
 
 * `ember build`
 
-## Building the globals build
+## Globals build for legacy apps
 
-* `cd packaging`
-* `rm -r dist/`
-* `broccoli build dist/`
+See the [packaging folder](packaging/README.md)
 
 ## Dependencies
 * ember

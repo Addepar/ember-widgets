@@ -11,32 +11,49 @@ var filterCoffeeScript = require('broccoli-coffee');
 var registry = require('./registry');
 var wrap = require('./wrap');
 var globals = require('./globals');
-var instrument = require('broccoli-debug').instrument;
 
+// Compile coffeescript
 var appTree = filterCoffeeScript(
   pickFiles('../app', {
     srcDir: '/',
     destDir: 'app'
   }),
+  // Do not remove. Without this the es6 modules transpiler has issues and
+  // generates incorrect code.
   {bare: true}
 );
 
+// compile templates
 var templateTree = templateCompiler('../app/templates', { module: true });
 templateTree = pickFiles(templateTree, {srcDir: '/', destDir: 'app/templates'});
 
 var precompiled = mergeTrees([templateTree, appTree], {overwrite: true});
+
+// Register components, controllers, etc. on the application container.
+// Output goes to registry-output.js
 var registrations = registry(pickFiles(precompiled, {srcDir: '/app', destDir: '/'}));
+
+// Generate global exports for components, mixins, etc. Output goes
+// into globals-output.js
 var globalExports = globals(pickFiles(precompiled, {srcDir: '/app', destDir: '/'}));
-instrument.print(globalExports);
+
+// Require.js module loader
 var loader = pickFiles('../bower_components', {srcDir: '/loader.js', destDir: '/'});
+
+// glue.js contains the code for the application initializer that requires the
+// output from registry-output.js and the global statements that require
+// globals.js
 var glue = new Funnel('.', {
   include: [/^glue\.js$/]
 });
-// var globals = new Funnel('.', {
-//   include: [/^globals\.js$/]
-// });
 
-var jsTree = mergeTrees([glue, mergeTrees([precompiled, registrations, globalExports, loader])]);
+// Order matters here. glue needs to come after globalExports and registrations
+var jsTree = mergeTrees([
+  glue,
+  mergeTrees([precompiled, registrations, globalExports, loader])
+]);
+
+// Transpile modules
 var compiled = compileES6(jsTree, {
   wrapInEval: false,
   loaderFile: 'loader.js',
@@ -47,11 +64,13 @@ var compiled = compileES6(jsTree, {
 });
 compiled = wrap(compiled);
 
+// Compile LESS
 var lessTree = pickFiles('../app/styles', {srcDir: '/', destDir: '/'});
 var lessMain = 'ember-widgets.less';
 var lessOutput = 'css/ember-widgets.css';
 lessTree = less(lessTree, lessMain, lessOutput);
 
+// Compile static files
 var images = pickFiles('../public/images', {srcDir: '/', destDir: '/img'});
 
 module.exports = mergeTrees([es3Safe(compiled), lessTree, images]);

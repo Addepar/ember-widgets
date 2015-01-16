@@ -17,6 +17,7 @@ var AddonRegistry = function ( inputTree, options ) {
   }
   this.inputTree = inputTree;
   this.outputPrefix = 'app';
+  // Only things in these folders will be added to the contianer
   this.topLevels = options.topLevels || [
     'views',
     'templates',
@@ -31,6 +32,10 @@ var AddonRegistry = function ( inputTree, options ) {
 AddonRegistry.prototype = Object.create( Writer.prototype );
 AddonRegistry.prototype.constructor = AddonRegistry;
 
+/*
+ * Build an AMD module that, when required, adds everything in topLevels to
+ * the application container based on their file names
+ */
 AddonRegistry.prototype.write = function (readTree, destDir) {
   var self = this;
   return new Promise(function(resolve) {
@@ -41,7 +46,12 @@ AddonRegistry.prototype.write = function (readTree, destDir) {
       files.forEach(function(filename) {
         var parts = filename.split(path.sep);
         if (self.topLevels.indexOf(parts[0]) !== -1) {
-          var key = parts[0].replace(/s$/, '') + ':' + parts.slice(1).join(path.sep).replace(path.extname(filename), '');
+          var objectType = parts[0].replace(/s$/, '');
+          var objectName = parts
+            .slice(1)
+            .join(path.sep)
+            .replace(path.extname(filename), '');
+          var key =  objectType + ':' + objectName;
           var module = [self.outputPrefix].concat(parts).join(path.sep).replace(path.extname(filename), '');
           output.push("container.register('" + key + "', require('" + module + "')['default']);" );
           output.push("container.register('" + key + "'.camelize(), require('" + module + "')['default']);" );

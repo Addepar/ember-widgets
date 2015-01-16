@@ -14,6 +14,7 @@ var Globals = function ( inputTree, options ) {
   }
   this.inputTree = inputTree;
   this.outputPrefix = 'app';
+  // Generates global objects for files in these folders
   this.topLevels = options.topLevels || [
     'views',
     'components',
@@ -28,6 +29,11 @@ Globals.prototype.constructor = Globals;
 
 Globals.prototype.write = function (readTree, destDir) {
   var self = this;
+
+  capitalize = function(s) {
+    return s.toUpperCase() + s.substring(1);
+  }
+
   return new Promise(function(resolve) {
     readTree( self.inputTree ).then(function (srcDir) {
       var files = walk(srcDir).filter(function(f){return /\.js$/.test(f);});
@@ -35,20 +41,56 @@ Globals.prototype.write = function (readTree, destDir) {
       var modules = [];
       var dependencies = [];
       var objectNames = [];
+      /*
+       * The general idea here is, for all files in the self.topLevels dirs,
+       * generate an AMD module that, when required, will export a global
+       * object with the default export of that file named based on the
+       * filename.
+       *
+       * TODO: see if some of the string manipulation here can be handled by
+       * Ember? Assuming we can import it at this point. I'm not sure we can.
+       */
       files.forEach(function(filename) {
         var parts = filename.split(path.sep);
         if (self.topLevels.indexOf(parts[0]) !== -1) {
-          var module = [self.outputPrefix].concat(parts).join(path.sep).replace(path.extname(filename), '');
+          // the file name minus extension, or, the thing that should
+          // be listed as a module name
+          var module = [self.outputPrefix]
+            .concat(parts)
+            .join(path.sep)
+            .replace(path.extname(filename), '');
+
           modules.push("'" + module + "'");
           dependencies.push('__dependency' + (dependencies.length+1) + '__');
 
-          // Component, View, etc
-          var objectType = parts[0][0].toUpperCase() + parts[0].substring(1);
-          objectType = objectType.replace(/s$/, '');
-          // Assumes dasherized and lower case
-          var objectName = parts[1].replace(/\.js$/, '').split('-').map(function(s) {
-              return s[0].toUpperCase() + s.substring(1);
-          }).join('').replace('-', '');
+           /*
+            * Component, View, etc
+            * Take the folder name, capitalize the first letter, and remove the
+            * pluralization
+            */
+          var objectType = self.capitalize(parts[0]).replace(/s$/, '');
+
+          /*
+           * Converts from foo-bar-baz to FooBarBaz
+           *   Assumes file name is dasherized and lower case
+           *   Take the file name, strip the extension, tokenize by the hyphen,
+           *   for each token capitalize the first character and join.
+           */
+          var objectName = parts[1]
+            .replace(path.extname(filename), '')
+            .split('-')
+            .map(self.capitalize)
+            .join('')
+            .replace('-', '');
+
+          /*
+           * Right now, some file names are like 'select-component', and we
+           * don't want to output SelectComponentComponent, so we strip one
+           * 'Component'.
+           *
+           * The reason they're like this is so that they can have
+           * dashes in the file name as per Ember requirements.
+           */
           var typeRegex = new RegExp(objectType+"$");
           if (typeRegex.test(objectName)) {
             objectNames.push(objectName);
@@ -57,6 +99,7 @@ Globals.prototype.write = function (readTree, destDir) {
           }
         }
       });
+      // build the actual amd module
       var output = ["define('globals', [" + modules.join(",\n") + ", \"exports\"], function(" +
         dependencies.join(",\n") + ", __exports__) {"];
       objectNames.forEach(function(objName, i){
