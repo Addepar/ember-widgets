@@ -78,15 +78,22 @@ DomHelper = Ember.Mixin.create
   convertElementsToString: (elements) ->
     $("<div/>").html(elements).html()
 
+  extractSideNode: (node, left) ->
+    node[if left then 'previousSibling' else 'nextSibling']
+
+  nodeIsEmpty: (node) ->
+    return node?.nodeValue?.trim().length == 0
+
+  notEditDiv: (sideNode, node) ->
+    @nodeIsEmpty(sideNode) and !$(node).hasClass(@EDITOR_CLASS)
+
   # get the node that is beside the current range on either the left or the
   # right. Empty nodes, or nodes containing only whitespace are ignored
   getNonEmptySideNode: (range, left=true, deep) ->
-    nodeIsEmpty = (node) ->
-      return node?.nodeValue?.trim().length == 0
     node = range[if left then 'startContainer' else 'endContainer']
-    while ((sideNode = node[if left then 'previousSibling' else 'nextSibling']) is null or
-    nodeIsEmpty(sideNode)) and !$(node).hasClass(@EDITOR_CLASS)  # not the editor div
-      if nodeIsEmpty(sideNode)
+    while ((sideNode = @extractSideNode(node, left)) is null or
+    @notEditDiv(sideNode, node))
+      if @nodeIsEmpty(sideNode)
         # Ignore this sideNode because it's empty. Go to the next/previous
         # sibling
         node = node[if left then 'previousSibling' else 'nextSibling']
@@ -118,8 +125,12 @@ DomHelper = Ember.Mixin.create
   wrapInDiv: (htmlElements) ->
     isDiv = htmlElements.map (i, el) -> el.tagName?.toLowerCase() == "div"
     isDiv = isDiv.toArray()
+
     return if isDiv.every (elem) -> elem
-    return if htmlElements.length == 1 and htmlElements[0].className == "rangySelectionBoundary"
+
+    return if (htmlElements.length == 1 and
+      htmlElements[0].className == "rangySelectionBoundary")
+
     while htmlElements.length > 0
       endSlice = isDiv.indexOf(true)
       if endSlice == -1

@@ -145,7 +145,8 @@ colorNameToHexMap =
 
 colorToHex = (color) ->
   return color if not color
-  return color.toLowerCase() if color.substr(0, 1) is "#" or color is "transparent"
+  if color.substr(0, 1) is "#" or color is "transparent"
+    return color.toLowerCase
   return colorNameToHexMap[color.toLowerCase()] if color of colorNameToHexMap
   digits = /(.*?)rgb(a)?\((\d+), (\d+), (\d+)(, (\d+))?\)/.exec(color)
   if digits?.length is 8
