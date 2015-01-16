@@ -522,7 +522,7 @@ var define, requireModule, require, requirejs;
         return color;
       }
       if (color.substr(0, 1) === "#" || color === "transparent") {
-        return color.toLowerCase();
+        return color.toLowerCase;
       }
       if (color in colorNameToHexMap) {
         return colorNameToHexMap[color.toLowerCase()];
@@ -1187,7 +1187,10 @@ var define, requireModule, require, requirejs;
         });
         return result;
       }).property('preparedContent', 'optionGroupPath', 'labels.[]'),
-      hasNoResults: Ember.computed.empty('filteredContent'),
+      isLoading: false,
+      isLoaded: Ember.computed.not('isLoading'),
+      filteredContentIsEmpty: Ember.computed.empty('filteredContent'),
+      hasNoResults: Ember.computed.and('isLoaded', 'filteredContentIsEmpty'),
       value: Ember.computed(function(key, value) {
         var selection, valuePath;
         if (arguments.length === 2) {
@@ -2343,6 +2346,24 @@ var define, requireModule, require, requirejs;
         iframe = this.$('iframe.text-editor-frame')[0];
         return iframe.contentDocument || iframe.contentWindow.document;
       },
+      selectLastElement: function() {
+        var iframeDocument, range, selection;
+        iframeDocument = this.getDocument();
+        selection = iframeDocument.getSelection();
+        selection.removeAllRanges();
+        range = iframeDocument.createRange();
+        if (iframeDocument.body.lastChild.innerHTML.length === 0) {
+          iframeDocument.body.lastChild.innerHTML = this.INVISIBLE_CHAR;
+        }
+        range.selectNodeContents(iframeDocument.body.lastChild);
+        return selection.addRange(range);
+      },
+      unselect: function() {
+        var iframeDocument, selection;
+        iframeDocument = this.getDocument();
+        selection = iframeDocument.getSelection();
+        return selection.removeAllRanges();
+      },
       didInsertElement: function() {
         var $body, $head, $iframe, $iframeContents, iframe;
         this._super();
@@ -2522,18 +2543,24 @@ var define, requireModule, require, requirejs;
       convertElementsToString: function(elements) {
         return $("<div/>").html(elements).html();
       },
+      extractSideNode: function(node, left) {
+        return node[left ? 'previousSibling' : 'nextSibling'];
+      },
+      nodeIsEmpty: function(node) {
+        var _ref;
+        return (node != null ? (_ref = node.nodeValue) != null ? _ref.trim().length : void 0 : void 0) === 0;
+      },
+      notEditDiv: function(sideNode, node) {
+        return this.nodeIsEmpty(sideNode) && !$(node).hasClass(this.EDITOR_CLASS);
+      },
       getNonEmptySideNode: function(range, left, deep) {
-        var index, node, nodeIsEmpty, sideNode, _ref;
+        var index, node, sideNode, _ref;
         if (left == null) {
           left = true;
         }
-        nodeIsEmpty = function(node) {
-          var _ref;
-          return (node != null ? (_ref = node.nodeValue) != null ? _ref.trim().length : void 0 : void 0) === 0;
-        };
         node = range[left ? 'startContainer' : 'endContainer'];
-        while (((sideNode = node[left ? 'previousSibling' : 'nextSibling']) === null || nodeIsEmpty(sideNode)) && !$(node).hasClass(this.EDITOR_CLASS)) {
-          if (nodeIsEmpty(sideNode)) {
+        while ((sideNode = this.extractSideNode(node, left)) === null || this.notEditDiv(sideNode, node)) {
+          if (this.nodeIsEmpty(sideNode)) {
             node = node[left ? 'previousSibling' : 'nextSibling'];
           } else {
             node = node.parentNode;
@@ -2780,6 +2807,7 @@ var define, requireModule, require, requirejs;
     TypeaheadComponent = SelectComponent.extend({
       layoutName: 'typeahead',
       searchFieldClass: 'form-control',
+      disabled: false,
       searchView: Ember.TextField.extend({
         "class": 'ember-select-input',
         valueBinding: 'parentView.query',
@@ -3384,12 +3412,21 @@ var define, requireModule, require, requirejs;
         'itemViewClassBinding': ("itemView")
       },hashTypes:{'tagName': "STRING",'classNames': "STRING",'heightBinding': "STRING",'rowHeightBinding': "STRING",'contentBinding': "STRING",'itemViewClassBinding': "STRING"},hashContexts:{'tagName': depth0,'classNames': depth0,'heightBinding': depth0,'rowHeightBinding': depth0,'contentBinding': depth0,'itemViewClassBinding': depth0},contexts:[depth0],types:["ID"],data:data})));
       data.buffer.push("\n    ");
-      stack1 = helpers['if'].call(depth0, "hasNoResults", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(8, program8, data),contexts:[depth0],types:["ID"],data:data});
+      stack1 = helpers['if'].call(depth0, "isLoading", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(8, program8, data),contexts:[depth0],types:["ID"],data:data});
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("\n    ");
+      stack1 = helpers['if'].call(depth0, "hasNoResults", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(10, program10, data),contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
       data.buffer.push("\n  ");
       return buffer;
       }
     function program8(depth0,data) {
+      
+      
+      data.buffer.push("\n      <span class=\"ember-select-loading\">Loading...</span>\n    ");
+      }
+
+    function program10(depth0,data) {
       
       var buffer = '', stack1;
       data.buffer.push("\n      <span class=\"ember-select-no-results\">No results match \"");
@@ -3399,7 +3436,7 @@ var define, requireModule, require, requirejs;
       return buffer;
       }
 
-    function program10(depth0,data) {
+    function program12(depth0,data) {
       
       var buffer = '';
       data.buffer.push("\n    ");
@@ -3428,7 +3465,7 @@ var define, requireModule, require, requirejs;
       stack1 = helpers['if'].call(depth0, "showDropdown", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(7, program7, data),contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
       data.buffer.push("\n  ");
-      stack1 = helpers['if'].call(depth0, "selectMenuView", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(10, program10, data),contexts:[depth0],types:["ID"],data:data});
+      stack1 = helpers['if'].call(depth0, "selectMenuView", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(12, program12, data),contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
       data.buffer.push("\n</div>\n");
       return buffer;
@@ -3814,12 +3851,31 @@ var define, requireModule, require, requirejs;
 
       data.buffer.push("<div>\n  ");
       data.buffer.push(escapeExpression(helpers.view.call(depth0, "searchView", {hash:{
-        'classBinding': ("searchFieldClass")
-      },hashTypes:{'classBinding': "STRING"},hashContexts:{'classBinding': depth0},contexts:[depth0],types:["ID"],data:data})));
+        'classBinding': ("searchFieldClass"),
+        'disabled': ("disabled")
+      },hashTypes:{'classBinding': "STRING",'disabled': "ID"},hashContexts:{'classBinding': depth0,'disabled': depth0},contexts:[depth0],types:["ID"],data:data})));
       data.buffer.push("\n</div>\n");
       stack1 = helpers.unless.call(depth0, "hasNoResults", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
       data.buffer.push("\n");
+      return buffer;
+      
+    });
+  });
+;define("app/templates/license", 
+  ["ember","exports"],
+  function(__dependency1__, __exports__) {
+    "use strict";
+    var Ember = __dependency1__["default"];
+    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+    this.compilerInfo = [4,'>= 1.0.0'];
+    helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
+      var buffer = '', helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+
+
+      data.buffer.push("\n");
+      data.buffer.push(escapeExpression((helper = helpers.partial || (depth0 && depth0.partial),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "navigation", options) : helperMissing.call(depth0, "partial", "navigation", options))));
+      data.buffer.push("\n\n\n<div class=\"hero-container small-hero-container\">\n  <div class=\"hero widgets-hero\">\n    <div class=\"hero-overlay\"></div>\n  </div>\n</div>\n\n\n<div class=\"section\">\n  <div class=\"container main-content-container\">\n    <div class=\"row\">\n      <div class=\"col-md-6 col-md-offset-3 section-title\">\n        <h1>Code &amp; Documentation Licensing</h1>\n      </div>\n      <div class=\"col-md-6 col-md-offset-3\">\n        <p>The majority of open source software exclusively developed by Addepar is licensed under the liberal terms of the Apache License, Version 2.0. The documentation is generally available under the Creative Commons Attribution 3.0 Unported License. In the end, you are free to use, modify and distribute any documentation, source code or examples within our open source projects as long as you adhere to the licensing conditions present within the projects.</p>\n        <p>Also note that our engineers like to hack on their own open source projects in their free time. For code provided by our engineers outside of our official repositories on GitHub, Addepar does not grant any type of license, whether express or implied, to such code.</p>\n     </div>\n    </div>\n  </div>\n</div>\n");
       return buffer;
       
     });
@@ -4233,12 +4289,21 @@ var define, requireModule, require, requirejs;
         'itemViewClassBinding': ("itemView")
       },hashTypes:{'tagName': "STRING",'classNames': "STRING",'heightBinding': "STRING",'rowHeightBinding': "STRING",'contentBinding': "STRING",'itemViewClassBinding': "STRING"},hashContexts:{'tagName': depth0,'classNames': depth0,'heightBinding': depth0,'rowHeightBinding': depth0,'contentBinding': depth0,'itemViewClassBinding': depth0},contexts:[depth0],types:["ID"],data:data})));
       data.buffer.push("\n    ");
-      stack1 = helpers['if'].call(depth0, "hasNoResults", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(8, program8, data),contexts:[depth0],types:["ID"],data:data});
+      stack1 = helpers['if'].call(depth0, "isLoading", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(8, program8, data),contexts:[depth0],types:["ID"],data:data});
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("\n    ");
+      stack1 = helpers['if'].call(depth0, "hasNoResults", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(10, program10, data),contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
       data.buffer.push("\n  ");
       return buffer;
       }
     function program8(depth0,data) {
+      
+      
+      data.buffer.push("\n      <span class=\"ember-select-loading\">Loading...</span>\n    ");
+      }
+
+    function program10(depth0,data) {
       
       var buffer = '', stack1;
       data.buffer.push("\n      <span class=\"ember-select-no-results\">No results match \"");
@@ -4248,7 +4313,7 @@ var define, requireModule, require, requirejs;
       return buffer;
       }
 
-    function program10(depth0,data) {
+    function program12(depth0,data) {
       
       var buffer = '';
       data.buffer.push("\n    ");
@@ -4277,7 +4342,7 @@ var define, requireModule, require, requirejs;
       stack1 = helpers['if'].call(depth0, "showDropdown", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(7, program7, data),contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
       data.buffer.push("\n  ");
-      stack1 = helpers['if'].call(depth0, "selectMenuView", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(10, program10, data),contexts:[depth0],types:["ID"],data:data});
+      stack1 = helpers['if'].call(depth0, "selectMenuView", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(12, program12, data),contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
       data.buffer.push("\n</div>\n");
       return buffer;
@@ -4397,6 +4462,8 @@ container.register('template:components/text-editor', require('app/templates/com
 container.register('template:components/text-editor'.camelize(), require('app/templates/components/text-editor')['default']);
 container.register('template:components/typeahead', require('app/templates/components/typeahead')['default']);
 container.register('template:components/typeahead'.camelize(), require('app/templates/components/typeahead')['default']);
+container.register('template:license', require('app/templates/license')['default']);
+container.register('template:license'.camelize(), require('app/templates/license')['default']);
 container.register('template:modal-footer', require('app/templates/modal-footer')['default']);
 container.register('template:modal-footer'.camelize(), require('app/templates/modal-footer')['default']);
 container.register('template:modal', require('app/templates/modal')['default']);
@@ -4541,12 +4608,17 @@ define('ember', ["exports"], function(__exports__) {
   __exports__['default'] = window.Ember;
 });
 
+// This is where we actually create Ember.Widgets and fill it with the stuff
+// generated by globals.js
 window.Ember.Widgets = {};
 require('globals');
+
 Ember.onLoad('Ember.Application', function(Application) {
   Application.initializer({
     name: 'ember-widgets-standalone',
     initialize: function(container) {
+      // Once the application is loaded, add an initializer to add stuff to
+      // the container using the output from registry.js
       require('ember-widgets-shim').initialize(container);
     }
   });

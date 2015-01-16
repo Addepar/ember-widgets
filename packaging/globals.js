@@ -30,17 +30,14 @@ Globals.prototype.constructor = Globals;
 Globals.prototype.write = function (readTree, destDir) {
   var self = this;
 
-  capitalize = function(s) {
-    return s.toUpperCase() + s.substring(1);
-  }
+  self.capitalize = function(s) {
+    return s[0].toUpperCase() + s.substring(1);
+  };
 
   return new Promise(function(resolve) {
     readTree( self.inputTree ).then(function (srcDir) {
       var files = walk(srcDir).filter(function(f){return /\.js$/.test(f);});
 
-      var modules = [];
-      var dependencies = [];
-      var objectNames = [];
       /*
        * The general idea here is, for all files in the self.topLevels dirs,
        * generate an AMD module that, when required, will export a global
@@ -50,6 +47,10 @@ Globals.prototype.write = function (readTree, destDir) {
        * TODO: see if some of the string manipulation here can be handled by
        * Ember? Assuming we can import it at this point. I'm not sure we can.
        */
+      var modules = [];
+      var dependencies = [];
+      var objectNames = [];
+      console.log(self.capitalize);
       files.forEach(function(filename) {
         var parts = filename.split(path.sep);
         if (self.topLevels.indexOf(parts[0]) !== -1) {
@@ -99,6 +100,7 @@ Globals.prototype.write = function (readTree, destDir) {
           }
         }
       });
+      console.log(modules, dependencies, objectNames);
       // build the actual amd module
       var output = ["define('globals', [" + modules.join(",\n") + ", \"exports\"], function(" +
         dependencies.join(",\n") + ", __exports__) {"];
