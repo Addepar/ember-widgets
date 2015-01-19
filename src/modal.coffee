@@ -159,6 +159,7 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     $(document).off 'modal:hide', @_hideHandler
     @_hideHandler = null
     $(document).off 'keyup', @get('keyHandler')
+    @$().off $.support.transition.end
 
 Ember.Widgets.ModalComponent.reopenClass
   rootElement: '.ember-application'

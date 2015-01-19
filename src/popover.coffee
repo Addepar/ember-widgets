@@ -51,6 +51,10 @@ Ember.Widgets.BodyEventListener,
     @set 'visibility', 'visible'
     @set 'isShowing', yes
 
+  willDestroyElement: ->
+    @$().off $.support.transition.end
+    @_super()
+
   bodyClick: -> @hide()
 
   hide: ->
