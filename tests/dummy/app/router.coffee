@@ -9,6 +9,7 @@ Router.map ->
   @resource 'emberWidgets', path: '/ember-widgets', ->
     @route 'overview'
     @route 'documentation'
+    @route 'migration-guides'
     @route 'accordion'
     @route 'carousel'
     @route 'modal'
