@@ -23,10 +23,10 @@ DomHelper = Ember.Mixin.create
       range = document.createRange()
       # Select the entire contents of the element with the range
       range.selectNodeContents(element)
-      if collapseMode != "none"
+      if collapseMode isnt "none"
         # collapse the range to the end point. false means collapse to end
         # rather than the start
-        range.collapse(if collapseMode == "beginning" then true else false)
+        range.collapse(if collapseMode is "beginning" then true else false)
       @activateRange(document, range)
 
   activateRange: (document, range) ->
@@ -68,9 +68,9 @@ DomHelper = Ember.Mixin.create
   # nodes or one child node with nothing in it. Different from jQuery's
   # .is(':empty'), which thinks some empty nodes are not empty
   isEmpty: (element) ->
-    return element.children.length == 0 &&
+    return element.children.length is 0 &&
            element.childNodes.length <= 1 &&
-           element.childNodes[0]?.length == 0
+           element.childNodes[0]?.length is 0
 
   createElementsFromString: (string) ->
     $("<div/>").html(string).contents()
@@ -82,10 +82,10 @@ DomHelper = Ember.Mixin.create
     node[if left then 'previousSibling' else 'nextSibling']
 
   nodeIsEmpty: (node) ->
-    return node?.nodeValue?.trim().length == 0
+    return node?.nodeValue?.trim().length is 0
 
   notEditDiv: (sideNode, node) ->
-    @nodeIsEmpty(sideNode) and !$(node).hasClass(@EDITOR_CLASS)
+    @nodeIsEmpty(sideNode) and not $(node).hasClass(@EDITOR_CLASS)
 
   # get the node that is beside the current range on either the left or the
   # right. Empty nodes, or nodes containing only whitespace are ignored
@@ -123,17 +123,17 @@ DomHelper = Ember.Mixin.create
     @deleteRange(range, shouldDeleteContainer)
 
   wrapInDiv: (htmlElements) ->
-    isDiv = htmlElements.map (i, el) -> el.tagName?.toLowerCase() == "div"
+    isDiv = htmlElements.map (i, el) -> el.tagName?.toLowerCase() is "div"
     isDiv = isDiv.toArray()
 
     return if isDiv.every (elem) -> elem
 
-    return if (htmlElements.length == 1 and
-      htmlElements[0].className == "rangySelectionBoundary")
+    return if (htmlElements.length is 1 and
+      htmlElements[0].className is "rangySelectionBoundary")
 
     while htmlElements.length > 0
       endSlice = isDiv.indexOf(true)
-      if endSlice == -1
+      if endSlice is -1
         endSlice = isDiv.length
       if endSlice > 0
         slicedElements = htmlElements.slice(0, endSlice)
