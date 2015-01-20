@@ -16,3 +16,6 @@
 npm-debug.log
 testem.log
 .DS_Store
+
+# grunt-release-it
+.stage
