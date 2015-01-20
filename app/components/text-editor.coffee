@@ -88,7 +88,7 @@ TextEditorComponent = Ember.Component.extend DomHelper,
     range = iframeDocument.createRange()
     # Hack to place the caret inside an empty element node
     # which works in FF but not in Webkit
-    # http://bit.ly/1DKnmir
+    # http://stackoverflow.com/questions/5488809
     if iframeDocument.body.lastChild.innerHTML.length is 0
       iframeDocument.body.lastChild.innerHTML = @INVISIBLE_CHAR
     range.selectNodeContents iframeDocument.body.lastChild
