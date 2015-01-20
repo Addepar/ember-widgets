@@ -11,11 +11,11 @@
     "build": "ember build",
     "test": "ember test"
   },
-  "repository": "",
+  "repository": "https://github.com/Addepar/ember-widgets",
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
+  "author": "Addepar",
   "license": "MIT",
   "devDependencies": {
     "broccoli": "^0.13.0",
@@ -45,7 +45,8 @@
     "walk-sync": "^0.1.3"
   },
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "ember-widgets"
   ],
   "ember-addon": {
     "configPath": "tests/dummy/config"
