@@ -38,7 +38,7 @@
     "holder": "holderjs#1.9",
     "jquery-browser": "jquery.browser#~0.0.4",
     "qunit": "~1.12.0",
-    "rangy": "~1.2.3"
+    "rangy": "timdown/rangy#1c7b22ed77aa8a58b4ec817dc806864b8203e039"
   },
   "exportsOverride": {
     "bootstrap": {
@@ -64,7 +64,7 @@
       ]
     },
     "rangy": {
-      ".": [
+      "currentrelease": [
         "rangy-core.js",
         "rangy-selectionsaverestore.js"
       ]

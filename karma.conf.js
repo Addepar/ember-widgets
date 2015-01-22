@@ -14,8 +14,8 @@ module.exports = function(config) {
       'vendor/lodash/lodash.js',
       'vendor/ember/ember.js',
       'dependencies/list-view.js',
-      'vendor/rangy/rangy-core.js',
-      'vendor/rangy/rangy-selectionsaverestore.js',
+      'vendor/currentrelease/rangy/rangy-core.js',
+      'vendor/currentrelease/rangy/rangy-selectionsaverestore.js',
       'vendor/sinonjs/sinon.js',
       'gh_pages/app.js',
 
