@@ -1,4 +1,4 @@
-// Last commit: 4136bc4 (2014-02-27 10:16:32 -0600)
+// Last commit: 278bd97 (2014-08-03 23:35:17 -0400)
 
 
 // ==========================================================================
@@ -90,7 +90,7 @@ function rerender() {
   context = get(this, 'context');
 
   // releases action helpers in contents
-  // this means though that the ListViewItem itself can't use classBindings or attributeBindings
+  // this means though that the ListItemView itself can't use classBindings or attributeBindings
   // need support for rerender contents in ember
   this.triggerRecursively('willClearRender');
 
@@ -125,7 +125,7 @@ function rerender() {
 }
 
 /**
-  The `Ember.ListViewItem` view class renders a
+  The `Ember.ListItemView` view class renders a
   [div](https://developer.mozilla.org/en/HTML/Element/div) HTML element
   with `ember-list-item-view` class. It allows you to specify a custom item
   handlebars template for `Ember.ListView`.
@@ -184,9 +184,13 @@ Ember.ReusableListItemView = Ember.View.extend(Ember.ListItemViewMixin, {
     return !!this.get('context.content');
   }),
   updateContext: function(newContext){
-    var context = get(this._proxyContext, 'content');
+    var context = get(this._proxyContext, 'content'), state;
+
+    // Support old and new Ember versions
+    state = this._state || this.state;
+
     if (context !== newContext) {
-      if (this.state === 'inDOM') {
+      if (state === 'inDOM') {
         this.prepareForReuse(newContext);
       }
 
@@ -690,6 +694,20 @@ Ember.ListViewMixin = Ember.Mixin.create({
   /**
     @private
 
+    Determines whether the emptyView is the current childView.
+
+    @method _isChildEmptyView
+  */
+  _isChildEmptyView: function() {
+    var emptyView = get(this, 'emptyView');
+
+    return emptyView && emptyView instanceof Ember.View &&
+           this._childViews.length === 1 && this._childViews.indexOf(emptyView) === 0;
+  },
+
+  /**
+    @private
+
     Computes the number of views that would fit in the viewport area.
     You must specify `height` and `rowHeight` parameters for the number of
     views to be computed properly.
@@ -808,7 +826,7 @@ Ember.ListViewMixin = Ember.Mixin.create({
     childViewCount = this._childViewCount();
     childViews = this.positionOrderedChildViews();
 
-    if (childViews.indexOf(emptyView) === 0) {
+    if (this._isChildEmptyView()) {
       removeEmptyView.call(this);
     }
 
@@ -921,11 +939,14 @@ Ember.ListViewMixin = Ember.Mixin.create({
   */
   // TODO: refactor
   arrayDidChange: function(content, start, removedCount, addedCount) {
-    var index, contentIndex;
+    var index, contentIndex, state;
 
     removeEmptyView.call(this);
 
-    if (this.state === 'inDOM') {
+    // Support old and new Ember versions
+    state = this._state || this.state;
+
+    if (state === 'inDOM') {
       // ignore if all changes are out of the visible change
       if( start >= this._lastStartingIndex || start < this._lastEndingIndex) {
         index = 0;
@@ -1062,7 +1083,7 @@ var get = Ember.get, set = Ember.set;
 Ember.ListView = Ember.ContainerView.extend(Ember.ListViewMixin, {
   css: {
     position: 'relative',
-    overflow: 'scroll',
+    overflow: 'auto',
     '-webkit-overflow-scrolling': 'touch',
     'overflow-scrolling': 'touch'
   },
@@ -1109,9 +1130,21 @@ Ember.ListView = Ember.ContainerView.extend(Ember.ListViewMixin, {
   }, 'totalHeight'),
 
   _updateScrollableHeight: function () {
-    if (this.state === 'inDOM') {
+    var height, state;
+
+    // Support old and new Ember versions
+    state = this._state || this.state;
+
+    if (state === 'inDOM') {
+      // if the list is currently displaying the emptyView, remove the height
+      if (this._isChildEmptyView()) {
+          height = '';
+      } else {
+          height = get(this, 'totalHeight');
+      }
+
       this.$('.ember-list-container').css({
-        height: get(this, 'totalHeight')
+        height: height
       });
     }
   }
@@ -1309,7 +1342,10 @@ Ember.VirtualListView = Ember.ContainerView.extend(Ember.ListViewMixin, Ember.Vi
     view = this;
 
     view.scroller = new Scroller(function(left, top, zoom) {
-      if (view.state !== 'inDOM') { return; }
+      // Support old and new Ember versions
+      var state = view._state || view.state;
+
+      if (state !== 'inDOM') { return; }
 
       if (view.listContainerElement) {
         view._scrollerTop = top;
@@ -1440,6 +1476,7 @@ Ember.VirtualListView = Ember.ContainerView.extend(Ember.ListViewMixin, Ember.Vi
 
     if ((candidatePosition >= 0) && (candidatePosition <= this.scroller.__maxScrollTop)) {
       this.scroller.scrollBy(0, delta, true);
+      e.stopPropagation();
     }
 
     return false;

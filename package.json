@@ -24,7 +24,7 @@
     "grunt-contrib-uglify": "*",
     "grunt-contrib-watch": "*",
     "grunt-browserify2": "~0.1.8",
-    "grunt-ember-templates": "~0.4.10",
+    "grunt-ember-templates": "0.5.0-alpha",
     "grunt-jsdoc": "*",
     "grunt-neuter": "~0.4.0",
     "grunt-shell": "*",
@@ -37,7 +37,6 @@
     "node-static": "*",
     "grunt-banner": "~0.2.3",
     "grunt-text-replace": "~0.3.12",
-    "grunt-release-it": "~0.2.0",
-    "ember-template-compiler": ">=1 <1.9"
+    "grunt-release-it": "~0.2.0"
   }
 }
