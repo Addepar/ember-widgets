@@ -1,5 +1,10 @@
 rgbToHex = (r, g, b) ->
   "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)
+
+expandHexColor = (color) ->
+  # expand 3-digit hex codes to 6-digit, otherwise don't modify
+  color.replace(/^#([0-9A-F])([0-9A-F])([0-9A-F])$/i, '#$1$1$2$2$3$3')
+
 colorNameToHexMap =
   aliceblue: "#f0f8ff"
   antiquewhite: "#faebd7"
@@ -205,9 +210,16 @@ Ember.Widgets.ColorPicker = Ember.Component.extend
       ])
     ])
 
+  setupCustomColor: Ember.observer(->
+    selectedColor = colorToHex(@get('selectedColor'))
+    return if @get('colorRows').find (row) ->
+      selectedColor in row.invoke 'toLowerCase'
+    @set 'customColor', @get('selectedColor')
+  ).on 'init'
+
   setCustomColor: Ember.observer ->
     if @get('isCustomColorValid') is true
-      @set 'selectedColor', @get 'customColor'
+      @set 'selectedColor', expandHexColor(@get('customColor'))
   , 'customColor', 'isCustomColorValid'
 
   isCustomColorValid: Ember.computed ->
