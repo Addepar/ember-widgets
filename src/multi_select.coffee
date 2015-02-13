@@ -50,7 +50,16 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
   searchView: Ember.TextField.extend
     class: 'ember-select-input'
     valueBinding: 'parentView.query'
-    focusIn: (event) -> @set 'parentView.showDropdown', yes
+    # we want to focus on search input when dropdown is opened. We need to put
+    # this in a run loop to wait for the event that triggers the showDropdown
+    # to finishes before trying to focus the input. Otherwise, focus when be
+    # "stolen" from us.
+    showDropdownDidChange: Ember.observer ->
+      # when closing, don't need to focus the now-hidden search box
+      if @get('parentView.showDropdown')
+        Ember.run.schedule 'afterRender', this, ->
+          @$().focus() if (@get('_state') or @get('state')) is 'inDOM'
+    , 'parentView.showDropdown'
     placeholder: Ember.computed ->
       if @get('parentView.selections.length')
         return @get('parentView.persistentPlaceholder')
