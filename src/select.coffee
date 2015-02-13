@@ -64,9 +64,9 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.DomHelper,
   placeholder:        undefined
   disabled: no
 
-  # we need to set tabindex so that div responds to key events
   highlightedIndex: -1
 
+  # we need to set tabindex so that div responds to key events
   tabindex: 0
 
   showDropdown: no
@@ -363,7 +363,7 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.DomHelper,
   deletePressed: Ember.K
 
   escapePressed: (event) ->
-    if @get('showDropdown') is yes
+    if @get('showDropdown')
       @send 'hideDropdown'
       @$().focus()
       event.preventDefault()
