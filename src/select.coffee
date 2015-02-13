@@ -230,7 +230,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
       sortedFilteredContent: Ember.computed ->
         _.sortBy @get('filteredContent'), (item) =>
           Ember.get(item, optionLabelPath)?.toLowerCase()
-      .property 'filteredContent'
+      .property 'filteredContent.[]'
 
     ContentProxy.create
       _select: this
@@ -256,7 +256,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
       result.pushObject  Ember.Object.create isGroupOption: yes, name:key
       result.pushObjects groups[key]
     result
-  .property 'preparedContent', 'optionGroupPath', 'labels.[]'
+  .property 'preparedContent.[]', 'optionGroupPath', 'labels.[]'
 
   isLoading: no
   isLoaded: Ember.computed.not('isLoading')
