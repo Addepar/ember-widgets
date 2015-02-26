@@ -45,9 +45,13 @@
   display: inline-block;
   outline: none;
 }
-.ember-select:focus .ember-select-choice {
+.ember-select:focus .ember-select-choice,
+.ember-select:focus .ember-select-multi {
   border: 1px solid #4d90fe;
   background-color: transparent;
+}
+.ember-select .ember-select-multi-focus {
+  border-color: #4d90fe;
 }
 .ember-select-choice i {
   position: absolute;
@@ -125,6 +129,8 @@
 /* Ember Multi-Select
 -------------------------------------------------- */
 .ember-select-multi {
+  border: 1px solid #cccccc;
+  background-color: transparent;
   /* Small Version */
 
   /* XS version */
