@@ -50,7 +50,7 @@
   border: 1px solid #4d90fe;
   background-color: transparent;
 }
-.ember-select .ember-select-focus {
+.ember-select .ember-select-multi-focus {
   border-color: #4d90fe;
 }
 .ember-select-choice i {
