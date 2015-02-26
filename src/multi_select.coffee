@@ -47,6 +47,12 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
     @get('placeholder') or @get('persistentPlaceholder')
   .property 'query', 'placeholder', 'persistentPlaceholder', 'selections.length'
 
+  addBorderMultiSelectContainer: ->
+    @$('.ember-select-multi').addClass('ember-select-multi-focus')
+
+  removeBorderMultiSelectContainer: ->
+    @$('.ember-select-multi').removeClass('ember-select-multi-focus')
+
   searchView: Ember.TextField.extend
     class: 'ember-select-input'
     valueBinding: 'parentView.query'
@@ -110,11 +116,25 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
     @set 'values', Ember.A [] unless @get('values')
 
   deletePressed: (event) ->
-    if event.target.selectionStart == 0
+    if event.target.selectionStart == 0 and event.target.selectionEnd == 0
       @removeSelectItem(@get('selections.lastObject'))
 
   removeSelectItem: (item) ->
     @get('selections').removeObject item
+
+  focusIn: (event) ->
+    @addBorderMultiSelectContainer()
+
+  focusOut: (event) ->
+    @removeBorderMultiSelectContainer()
+
+  keyDown: (event) ->
+    @_super(event)
+    activeElement = $(document.activeElement)[0]
+    if @$()[0].contains(activeElement) or @$()[0]==activeElement
+      @addBorderMultiSelectContainer()
+    else
+      @removeBorderMultiSelectContainer()
 
   actions:
     removeSelectItem: (item) ->

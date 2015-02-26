@@ -7,6 +7,7 @@
 // Note: Important that this is synchronized with the list-view rowHeight
 @rowHeight: 26px;
 @input-border-focus: #4d90fe;
+@input-border: #cccccc;
 
 /* List View - Note: Required for list-view to work
 -------------------------------------------------- */
@@ -25,9 +26,15 @@
   display: inline-block;
   outline: none;
 
-  &:focus .ember-select-choice {
+  &:focus {
+    .ember-select-choice, .ember-select-multi {
       border: 1px solid @input-border-focus;
       background-color: transparent;
+    }
+  }
+
+  .ember-select-multi-focus {
+    border-color: @input-border-focus;
   }
 }
 
@@ -123,6 +130,9 @@
 /* Ember Multi-Select
 -------------------------------------------------- */
 .ember-select-multi {
+  border: 1px solid @input-border;
+  background-color: transparent;
+
   .ember-select-choices {
     min-height: 28px;
     min-width: 160px;
