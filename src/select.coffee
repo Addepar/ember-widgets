@@ -213,6 +213,10 @@ Ember.AddeparMixins.ResizeHandlerMixin,
 
   contentProxy: Ember.computed ->
     optionLabelPath = @get('optionLabelPath')
+    if optionLabelPath is ''
+      observableString = 'content.@each'
+    else
+      observableString = "content.@each.#{optionLabelPath}"
 
     ContentProxy = Ember.ObjectProxy.extend
       _select: null
@@ -225,7 +229,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
 
         (@get('content') or []).filter (item) ->
           selectComponent.matcher(query, item)
-      .property "content.@each.#{optionLabelPath}", 'query'
+      .property observableString, 'query'
 
       sortedFilteredContent: Ember.computed ->
         _.sortBy @get('filteredContent'), (item) =>
