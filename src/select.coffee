@@ -107,6 +107,21 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.DomHelper,
   # possibly says 'create item' or something along that line
   selectMenuView: null
 
+  # a map of accepted keys to show dropdown when being pressed
+  acceptedKeys: null
+
+  # set up a map for accepted keys from multiple ranges of them
+  # these are keys to show dropdown when being pressed
+  createAcceptedKeySet: ->
+    acceptedKeys = Ember.Map.create()
+    # create a set of accepted keys from 'A'..'Z', 'a'..'z', '0'..'9'
+    # and some special keys Enter, Spacebar, Up, Down
+    keySet = _.union([@KEY_CODES.ENTER, @KEY_CODES.SPACEBAR],
+      [@KEY_CODES.DOWN, @KEY_CODES.UP],[65..90],[97..122],[48..57])
+    keySet.forEach (key) ->
+      acceptedKeys[key] = true
+    @set 'acceptedKeys', acceptedKeys
+
   # This doesn't clean correctly if `optionLabelPath` changes
   willDestroy: ->
     propertyName = 'contentProxy'
@@ -288,6 +303,7 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.DomHelper,
   didInsertElement: ->
     @_super()
     @setDefaultSelection()
+    @createAcceptedKeySet()
 
   # It matches the item label with the query. This can be overrideen for better
   matcher: (searchText, item) ->
@@ -352,12 +368,8 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.DomHelper,
   keyDown: (event) ->
     # show dropdown if dropdown is not already showing
     # and the keycode should be one of special keys or common characters
-    # 'A'..'Z', 'a..z','0..9'
-    if event.keyCode in [@KEY_CODES.ENTER, @KEY_CODES.SPACEBAR] or
-    event.keyCode in [@KEY_CODES.DOWN, @KEY_CODES.UP] or
-    event.keyCode in [65..90] or
-    event.keyCode in [97..122] or
-    event.keyCode in [48..57]
+    acceptedKeys = @get 'acceptedKeys'
+    if acceptedKeys[event.keyCode]
       return @set('showDropdown', yes) if not @get 'showDropdown'
 
     map   = @get 'KEY_EVENTS'
