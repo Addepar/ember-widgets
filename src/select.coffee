@@ -213,10 +213,10 @@ Ember.AddeparMixins.ResizeHandlerMixin,
 
   contentProxy: Ember.computed ->
     optionLabelPath = @get('optionLabelPath')
-    if optionLabelPath is ''
-      observableString = 'content.@each'
-    else
+    if optionLabelPath
       observableString = "content.@each.#{optionLabelPath}"
+    else
+      observableString = 'content.@each'
 
     ContentProxy = Ember.ObjectProxy.extend
       _select: null
