@@ -210,6 +210,8 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.DomHelper,
       if @get('parentView.showDropdown')
         Ember.run.schedule 'afterRender', this, ->
           @$().focus() if (@get('_state') or @get('state')) is 'inDOM'
+      else
+        @set 'parentView.query', ''
     , 'parentView.showDropdown'
 
   # This is a hack. Ember.ListView doesn't handle case when total height
