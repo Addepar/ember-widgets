@@ -47,9 +47,11 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
     @get('placeholder') or @get('persistentPlaceholder')
   .property 'query', 'placeholder', 'persistentPlaceholder', 'selections.length'
 
+  # add css class to multiselect to highlight border
   addBorderMultiSelectContainer: ->
     @$('.ember-select-multi').addClass('ember-select-multi-focus')
 
+  # remove highlight border css class
   removeBorderMultiSelectContainer: ->
     @$('.ember-select-multi').removeClass('ember-select-multi-focus')
 
@@ -113,6 +115,7 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
     @set 'values', Ember.A [] unless @get('values')
 
   deletePressed: (event) ->
+    # check if the cursor is at the beginning and no text is selected
     if event.target.selectionStart == 0 and event.target.selectionEnd == 0
       @removeSelectItem(@get('selections.lastObject'))
 
@@ -128,6 +131,9 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
   keyDown: (event) ->
     @_super(event)
     activeElement = $(document.activeElement)[0]
+
+    # dynamically add css style to highlight the border if any elements inside
+    # the multiselect is focused
     if @$()[0].contains(activeElement) or @$()[0]==activeElement
       @addBorderMultiSelectContainer()
     else

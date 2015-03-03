@@ -210,6 +210,7 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.DomHelper,
       if @get('parentView.showDropdown')
         Ember.run.schedule 'afterRender', this, ->
           @$().focus() if (@get('_state') or @get('state')) is 'inDOM'
+      # clear the query string when dropdown is hidden
       else
         @set 'parentView.query', ''
     , 'parentView.showDropdown'
@@ -364,8 +365,9 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.DomHelper,
   bodyClick: -> @send 'hideDropdown'
 
   keyDown: (event) ->
-    # show dropdown if dropdown is not already showing
-    # and the keycode should be one of special keys or common characters
+    # show dropdown if it is not already showing
+    # and the keycode should be in the list of accepted keys to show dropdown
+    # [Spacebar, Enter, Up, Down, 'A'..'Z','a..z','0..9']
     acceptedKeys = @get 'acceptedKeys'
     if acceptedKeys[event.keyCode]
       return @set('showDropdown', yes) if not @get 'showDropdown'
