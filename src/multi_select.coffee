@@ -21,6 +21,7 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
   choicesFieldClass: ''
   placeholder: undefined
   persistentPlaceholder: undefined
+  tabindex: -1
 
   values: Ember.computed (key, value) ->
     if arguments.length is 2 # setter
@@ -47,13 +48,11 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
     @get('placeholder') or @get('persistentPlaceholder')
   .property 'query', 'placeholder', 'persistentPlaceholder', 'selections.length'
 
-  # add css class to multiselect to highlight border
-  addBorderMultiSelectContainer: ->
-    @$('.ember-select-multi').addClass('ember-select-multi-focus')
+  addBorderToSelectContainer: ->
+    @$('.ember-select-multi').addClass('ember-select-focus')
 
-  # remove highlight border css class
-  removeBorderMultiSelectContainer: ->
-    @$('.ember-select-multi').removeClass('ember-select-multi-focus')
+  removeBorderFromSelectContainer: ->
+    @$('.ember-select-multi').removeClass('ember-select-focus')
 
   searchView: Ember.TextField.extend
     class: 'ember-select-input'
@@ -64,10 +63,10 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
     # "stolen" from us.
     showDropdownDidChange: Ember.observer ->
       # when closing, don't need to focus the now-hidden search box
-      if @get('parentView.showDropdown')
-        Ember.run.schedule 'afterRender', this, ->
-          @$().focus() if (@get('_state') or @get('state')) is 'inDOM'
+      Ember.run.schedule 'afterRender', this, ->
+        @$().focus() if (@get('_state') or @get('state')) is 'inDOM'
     , 'parentView.showDropdown'
+
     placeholder: Ember.computed ->
       if @get('parentView.selections.length')
         return @get('parentView.persistentPlaceholder')
@@ -116,28 +115,11 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
 
   deletePressed: (event) ->
     # check if the cursor is at the beginning and no text is selected
-    if event.target.selectionStart == 0 and event.target.selectionEnd == 0
+    if event.target.selectionStart is 0 and event.target.selectionEnd is 0
       @removeSelectItem(@get('selections.lastObject'))
 
   removeSelectItem: (item) ->
     @get('selections').removeObject item
-
-  focusIn: (event) ->
-    @addBorderMultiSelectContainer()
-
-  focusOut: (event) ->
-    @removeBorderMultiSelectContainer()
-
-  keyDown: (event) ->
-    @_super(event)
-    activeElement = $(document.activeElement)[0]
-
-    # dynamically add css style to highlight the border if any elements inside
-    # the multiselect is focused
-    if @$()[0].contains(activeElement) or @$()[0]==activeElement
-      @addBorderMultiSelectContainer()
-    else
-      @removeBorderMultiSelectContainer()
 
   actions:
     removeSelectItem: (item) ->

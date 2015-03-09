@@ -107,20 +107,24 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.DomHelper,
   # possibly says 'create item' or something along that line
   selectMenuView: null
 
-  # a map of accepted keys to show dropdown when being pressed
-  acceptedKeys: null
+  addBorderToSelectContainer: ->
+    @$('.ember-select-choice').addClass('ember-select-focus')
 
-  # set up a map for accepted keys from multiple ranges of them
+  removeBorderFromSelectContainer: ->
+    @$('.ember-select-choice').removeClass('ember-select-focus')
+
+  # a map of accepted keys to show dropdown when being pressed
   # these are keys to show dropdown when being pressed
-  createAcceptedKeySet: ->
-    acceptedKeys = Ember.Map.create()
+  acceptedKeys: Ember.computed ->
+    mappedKeys = Ember.Map.create()
     # create a set of accepted keys from 'A'..'Z', 'a'..'z', '0'..'9'
     # and some special keys Enter, Spacebar, Up, Down
     keySet = _.union([@KEY_CODES.ENTER, @KEY_CODES.SPACEBAR],
       [@KEY_CODES.DOWN, @KEY_CODES.UP],[65..90],[97..122],[48..57])
     keySet.forEach (key) ->
-      acceptedKeys[key] = true
-    @set 'acceptedKeys', acceptedKeys
+      mappedKeys[key] = true
+    return mappedKeys
+  .property()
 
   # This doesn't clean correctly if `optionLabelPath` changes
   willDestroy: ->
@@ -302,7 +306,6 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.DomHelper,
   didInsertElement: ->
     @_super()
     @setDefaultSelection()
-    @createAcceptedKeySet()
 
   # It matches the item label with the query. This can be overrideen for better
   matcher: (searchText, item) ->
@@ -370,7 +373,7 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.DomHelper,
     # [Spacebar, Enter, Up, Down, 'A'..'Z','a..z','0..9']
     acceptedKeys = @get 'acceptedKeys'
     if acceptedKeys[event.keyCode]
-      return @set('showDropdown', yes) if not @get 'showDropdown'
+      return @set('showDropdown', yes) unless @get 'showDropdown'
 
     map   = @get 'KEY_EVENTS'
     method = map[event.keyCode]
@@ -442,6 +445,12 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.DomHelper,
   #TODO Refactor other parts to use this method to set selection
   userDidSelect: (selection) ->
     @sendAction 'userSelected', selection
+
+  focusIn: (event) ->
+    @addBorderToSelectContainer()
+
+  focusOut: (event) ->
+    @removeBorderFromSelectContainer()
 
   actions:
     toggleDropdown: (event) ->
