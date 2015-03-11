@@ -1,17 +1,21 @@
-colorPicker = null
+colorPicker = undefined
+dispatcher = undefined
 
 module "Color picker unit tests",
   setup: ->
+    dispatcher = Ember.EventDispatcher.create()
+    dispatcher.setup()
     colorPicker = Ember.Widgets.ColorPicker.create()
 
   teardown: ->
     Ember.run ->
+      dispatcher.destroy()
       colorPicker.destroy()
 
 testHexConversion = (color, hex) ->
-  colorPicker.set 'selectedColor', color
+  Ember.run ->
+    colorPicker.set 'selectedColor', color
   equal colorPicker.get('selectedColorRGB'), hex
-
 
 test 'Color picker converts color to hex when color is undefined', ->
   expect 3
@@ -48,3 +52,33 @@ test 'Color picker converts color to hex when color is invalid', ->
   testHexConversion "foo", undefined
   testHexConversion "rgb(a, b, c)", undefined
   testHexConversion "rgb(1,2,3)", undefined
+
+test 'Custom color is set as selected color', ->
+  customColor = '#addec0'
+  append(colorPicker)
+
+  openColorChooser().then ->
+    fillInCustomColor customColor
+  .then ->
+    click '.input-group-addon'
+  .then ->
+    closeColorChooser()
+  .then ->
+    openColorChooser()
+  .then ->
+    equal getSelectedColor(), customColor, 'Custom color in dropdown should remain after reopening'
+    equal colorPicker.get('customColor'), customColor, 'Custom color is set correctly'
+
+test 'Selecting a color sends an action', ->
+  customColor = '#addec0'
+  color = '#01FF70'
+  sinon.spy(colorPicker, 'userDidSelect')
+  append(colorPicker)
+
+  selectColor(color).then ->
+    ok(colorPicker.userDidSelect.calledWithExactly(color), 'Clicking color picker cell sends action')
+    fillInCustomColor customColor
+  .then ->
+    click '.input-group-addon'
+  .then ->
+    ok(colorPicker.userDidSelect.calledWithExactly(customColor), 'Clicking custom color sends action')
