@@ -34,15 +34,15 @@ module.exports = (grunt) ->
       unit:
         configFile: 'karma.conf.js'
         singleRun: false
-        exclude: ['build/src/ember_widgets.js', 'tests/functional/*.js', 'tests/integration/*.js'],
+        exclude: ['build/src/ember_widgets.js', 'build/tests/functional/*.js', 'build/tests/integration/*.js'],
       functional:
         configFile: 'karma.conf.js'
         singleRun: false
-        exclude: ['build/src/ember_widgets.js', 'tests/unit/*.js', 'tests/integration/*.js'],
+        exclude: ['build/src/ember_widgets.js', 'build/tests/unit/*.js', 'build/tests/integration/*.js'],
       integration:
         configFile: 'karma.conf.js'
         singleRun: false
-        exclude: ['build/src/ember_widgets.js', 'tests/unit/*.js', 'tests/functional/*.js'],
+        exclude: ['build/src/ember_widgets.js', 'build/tests/unit/*.js', 'build/tests/functional/*.js'],
       default:
         configFile: 'karma.conf.js'
         singleRun: false
@@ -83,7 +83,7 @@ module.exports = (grunt) ->
         expand: true
         cwd: "tests/"
         src: ["**/*.coffee" ]
-        dest: "tests/"
+        dest: "build/tests/"
         ext: ".js"
 
     emberTemplates:
@@ -183,7 +183,7 @@ module.exports = (grunt) ->
         tasks: [ "coffee:srcs", "neuter", "uglify", "usebanner:js" ]
       test:
         files: [ "tests/**/*.coffee"]
-        tasks: [ "coffee:tests", "neuter", "uglify", "usebanner:js" ]
+        tasks: [ "coffee:tests" ]
       src_handlebars:
         files: [ "src/**/*.hbs" ]
         tasks: [ "emberTemplates", "neuter", "uglify", "usebanner:js" ]
@@ -211,7 +211,7 @@ module.exports = (grunt) ->
       Prints the report in your terminal.
     ###
     qunit:
-      all: [ "tests/**/*.html" ]
+      all: [ "build/tests/**/*.html" ]
 
     ###
       Reads the projects .jshintrc file and applies coding
@@ -230,7 +230,7 @@ module.exports = (grunt) ->
       below.
     ###
     build_test_runner_file:
-      all: [ "tests/**/*_test.js" ]
+      all: [ "build/tests/**/*_test.js" ]
 
     "release-it":
       options:
@@ -255,8 +255,8 @@ module.exports = (grunt) ->
   grunt.registerMultiTask "build_test_runner_file", "Creates a test runner file.", ->
     tmpl = grunt.file.read("tests/support/runner.html.tmpl")
     renderingContext = data:
-      files: @filesSrc.map (fileSrc) -> fileSrc.replace "tests/", ""
-    grunt.file.write "tests/runner.html", grunt.template.process(tmpl, renderingContext)
+      files: @filesSrc.map (fileSrc) -> fileSrc.replace "build/tests/", ""
+    grunt.file.write "build/tests/runner.html", grunt.template.process(tmpl, renderingContext)
 
   grunt.registerTask "build_srcs", [ "coffee:srcs", "emberTemplates", "neuter" ]
   grunt.registerTask "build_app", [ "coffee:app", "emberTemplates", "neuter" ]
