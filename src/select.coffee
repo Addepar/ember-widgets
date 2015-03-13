@@ -231,7 +231,7 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
   # in the textbox
   preparedContent: Ember.computed ->
     if @get('sortLabels') then @get('sortedFilteredContent') else @get('filteredContent')
-  .property 'sortLabels', 'filteredContent', 'sortedFilteredContent'
+  .property 'sortLabels', 'filteredContent.[]', 'sortedFilteredContent.[]'
 
   contentProxy: Ember.computed ->
     optionLabelPath = @get('optionLabelPath')
