@@ -330,7 +330,7 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
       highlighted = @get('highlighted')
       if not @get('selectableOptions').contains(highlighted)
         @set 'highlighted', @get('selectableOptions.firstObject')
-  , 'selectableOptions', 'showDropdown'
+  , 'selectableOptions.[]', 'showDropdown'
 
   ###
   # SELECTION RELATED
@@ -350,7 +350,7 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
       (@get('groupedContent') or []).filter (item) ->
         not Ember.get(item, 'isGroupOption')
     )
-  .property 'groupedContent'
+  .property 'groupedContent.[]'
 
   # The option that is currently highlighted.
   highlighted: Ember.computed (key, value) ->
@@ -363,7 +363,7 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
       index = content.indexOf value
       @setHighlightedIndex index, yes
     value
-  .property 'selectableOptions', 'highlightedIndex'
+  .property 'selectableOptions.[]', 'highlightedIndex'
 
   bodyClick: -> @send 'hideDropdown'
 
