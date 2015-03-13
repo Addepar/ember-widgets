@@ -54,7 +54,7 @@ Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
 
 Ember.Widgets.SelectComponent =
 Ember.Component.extend Ember.Widgets.BodyEventListener,
-Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.DomHelper,
+Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
   layoutName:         'select'
   classNames:         'ember-select'
   attributeBindings:  Ember.A ['tabindex']
