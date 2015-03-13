@@ -100,7 +100,7 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
     @set 'query', ''
     if not Ember.isEmpty(selection) and not selections.contains selection
       selections.pushObject selection
-  , 'selection'
+  , 'selection', 'selections.@each'
 
   didInsertElement: ->
     # We want to initialize selections to []. This SHOULD NOT be done through
