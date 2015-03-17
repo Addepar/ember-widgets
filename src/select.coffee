@@ -229,9 +229,13 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
 
   # the list of content that is filtered down based on the query entered
   # in the textbox
+  # Other than observing the changes on each elements, we need to observe the
+  # `filteredContent`, and `sortedFilteredContent` because when the `content`
+  # is overridden by a DS.PromiseArray, somehow it never triggers this function
   preparedContent: Ember.computed ->
     if @get('sortLabels') then @get('sortedFilteredContent') else @get('filteredContent')
-  .property 'sortLabels', 'filteredContent.[]', 'sortedFilteredContent.[]'
+  .property 'sortLabels', 'filteredContent.[]', 'sortedFilteredContent.[]',
+    'filteredContent','sortedFilteredContent'
 
   contentProxy: Ember.computed ->
     optionLabelPath = @get('optionLabelPath')
@@ -323,7 +327,7 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
     defaultPath = @get 'optionDefaultPath'
     return unless content and defaultPath
     @set 'selection', content.findProperty(defaultPath)
-  , 'content.@each'
+  , 'content.[]'
 
   selectableOptionsDidChange: Ember.observer ->
     if @get('showDropdown')
