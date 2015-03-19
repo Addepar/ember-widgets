@@ -1,16 +1,3 @@
-Ember.Widgets.KeyboardHelper = Ember.Mixin.create
-  KEY_CODES:
-    BACKSPACE: 8,
-    DELETE: 46,
-    DOWN: 40,
-    ENTER: 13,
-    LEFT: 37,
-    RIGHT: 39,
-    SPACEBAR: 32,
-    TAB: 9,
-    UP: 38,
-    ESCAPE: 27
-
 Ember.Widgets.StyleBindingsMixin = Ember.Mixin.create
   concatenatedProperties: ['styleBindings']
   attributeBindings: ['style']

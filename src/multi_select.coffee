@@ -21,7 +21,6 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
   choicesFieldClass: ''
   placeholder: undefined
   persistentPlaceholder: undefined
-  tabindex: -1
 
   values: Ember.computed (key, value) ->
     if arguments.length is 2 # setter
@@ -48,25 +47,10 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
     @get('placeholder') or @get('persistentPlaceholder')
   .property 'query', 'placeholder', 'persistentPlaceholder', 'selections.length'
 
-  addBorderToSelectContainer: ->
-    @$('.ember-select-multi').addClass('ember-select-focus')
-
-  removeBorderFromSelectContainer: ->
-    @$('.ember-select-multi').removeClass('ember-select-focus')
-
   searchView: Ember.TextField.extend
     class: 'ember-select-input'
     valueBinding: 'parentView.query'
-    # we want to focus on search input when dropdown is opened. We need to put
-    # this in a run loop to wait for the event that triggers the showDropdown
-    # to finishes before trying to focus the input. Otherwise, focus when be
-    # "stolen" from us.
-    showDropdownDidChange: Ember.observer ->
-      # when closing, don't need to focus the now-hidden search box
-      Ember.run.schedule 'afterRender', this, ->
-        @$().focus() if (@get('_state') or @get('state')) is 'inDOM'
-    , 'parentView.showDropdown'
-
+    focusIn: (event) -> @set 'parentView.showDropdown', yes
     placeholder: Ember.computed ->
       if @get('parentView.selections.length')
         return @get('parentView.persistentPlaceholder')
@@ -114,8 +98,7 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
     @set 'values', Ember.A [] unless @get('values')
 
   deletePressed: (event) ->
-    # check if the cursor is at the beginning and no text is selected
-    if event.target.selectionStart is 0 and event.target.selectionEnd is 0
+    if event.target.selectionStart == 0
       @removeSelectItem(@get('selections.lastObject'))
 
   removeSelectItem: (item) ->
