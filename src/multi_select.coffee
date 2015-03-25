@@ -35,7 +35,7 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
       valuePath = @get 'optionValuePath'
       selections = @get 'selections'
       if valuePath then selections.getEach(valuePath) else selections
-  .property 'selections.@each'
+  .property 'selections.[]'
 
   selectionItemView: Ember.Widgets.MultiSelectOptionView
 
@@ -60,6 +60,9 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
 
   # the list of content that is filtered down based on the query entered
   # in the textbox
+  # Other than observing the changes on each elements, we need to observe the
+  # `filteredContent`, and `sortedFilteredContent` because when the `content`
+  # is overridden by a DS.PromiseArray, somehow it never triggers this function
   preparedContent: Ember.computed ->
     content = @get 'content'
     selections = @get 'selections'
@@ -72,8 +75,8 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
     else
       @get('filteredContent').filter (item) ->
         not selections.contains(item)
-  .property('content.@each', 'filteredContent.[]', 'sortedFilteredContent.[]',
-    'selections.@each', 'sortLabels')
+  .property('content.[]', 'filteredContent.[]', 'sortedFilteredContent.[]',
+    'selections.[]', 'sortLabels', 'filteredContent', 'sortedFilteredContent')
 
   # uses single select's "selection" value - adds it to selections and
   # then clears the selection value so that it can be re-selected
@@ -84,7 +87,7 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
     @set 'query', ''
     if not Ember.isEmpty(selection) and not selections.contains selection
       selections.pushObject selection
-  , 'selection'
+  , 'selection', 'selections.[]'
 
   didInsertElement: ->
     # We want to initialize selections to []. This SHOULD NOT be done through
