@@ -7,37 +7,44 @@ module "[Unit] Select unit tests",
       dispatcher = Ember.EventDispatcher.create()
       dispatcher.setup()
       select = Ember.Widgets.SelectComponent.create
-        content: ['foo', 'bar', 'baz']
+        content: ['foo', 'bar', 'barca', 'baz']
 
   teardown: ->
     Ember.run ->
       dispatcher.destroy()
       select.destroy()
 
-test 'Test using just function calls (preferred)', ->
-  expect 2
+test 'Test continuous queries in a row', ->
+  expect 5
 
   select.set 'query', 'ba'
   equal(select.get('filteredContent')[0], 'bar')
-  equal(select.get('filteredContent')[1], 'baz')
+  equal(select.get('filteredContent')[1], 'barca')
+  equal(select.get('filteredContent')[2], 'baz')
 
-test 'Testing using user interaction', ->
+  select.set 'query', 'bar'
+  equal(select.get('filteredContent')[0],'bar')
+  equal(select.get('filteredContent')[1],'barca')
+
+test 'Test using array proxy', ->
   expect 2
 
+  data = Ember.ArrayProxy.create({
+    content: ['red', 'reddit', 'green', 'blue']
+  });
+  select.set 'content', data
 
-  dropdownToggle = find '.dropdown-toggle', select
-  searchBox = find '.ember-select-search input', select
+  select.set 'query', 're'
+  equal(select.get('filteredContent')[0], 'red')
+  equal(select.get('filteredContent')[1], 'reddit')
 
-  Ember.run ->
-    # Could make this select stuff into a helper. See
-    # tests/helpers/test_helpers.coffee.
-    append(select).then ->
-      click('.dropdown-toggle')
-    .then ->
-      click searchBox
-    .then ->
-      fillIn searchBox
-    .then ->
-      equal(select.get('filteredContent')[0], 'bar')
-      equal(select.get('filteredContent')[1], 'baz')
+test 'Test sorted filter', ->
+  expect 3
 
+  data = ['reddit', 'red', 'green', 'blue']
+  select.set 'content', data
+
+  select.set 'query', 'r'
+  equal(select.get('sortedFilteredContent')[0], 'green')
+  equal(select.get('sortedFilteredContent')[1], 'red')
+  equal(select.get('sortedFilteredContent')[2], 'reddit')
