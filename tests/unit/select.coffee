@@ -48,3 +48,60 @@ test 'Test sorted filter', ->
   equal(select.get('sortedFilteredContent')[0], 'green')
   equal(select.get('sortedFilteredContent')[1], 'red')
   equal(select.get('sortedFilteredContent')[2], 'reddit')
+
+test 'Test keyboard interaction', ->
+  expect 10
+  selectedText = null
+
+  Ember.run ->
+    append(select)
+
+  Ember.run ->
+    selectComponent = select.$()
+
+    ok isHidden(find '.ember-select-results', selectComponent, 'Dropdown list should not exist')
+    selectComponent.focus()
+    wait().then ->
+      # test pressing ENTER key to open dropdown
+      keyEvent(selectComponent, 'keydown', 13)
+    wait().then ->
+      ok isVisible(find '.ember-select-results', selectComponent, 'Dropdown list should appear')
+
+      # test pressing DOWN arrowkey to navigate selection down
+      keyEvent(selectComponent, 'keydown', 40)
+
+    wait().then ->
+      resultItems = find '.ember-select-result-item', selectComponent
+      ok $(resultItems[1]).hasClass('highlighted'), 'The second option should be highlighted'
+
+      # test pressing UP arrowkey to navigate selection down
+      keyEvent(selectComponent, 'keydown', 38)
+
+    wait().then ->
+      resultItems = find '.ember-select-result-item', selectComponent
+      ok $(resultItems[0]).hasClass('highlighted'), 'The first option should be highlighted'
+
+      # test selecting option using ENTER key
+      selectedText = $(resultItems[0]).text()
+      keyEvent(selectComponent, 'keydown', 13)
+
+    wait().then ->
+      ok isFocus(selectComponent,selectComponent, 'Select component should be focused')
+      ok isHidden(find '.ember-select-results', selectComponent, 'Dropdown list should be hidden')
+
+      # test if selected Item is actually selected
+      resultItems = find '.ember-select-result-item', selectComponent
+      currentText = $(resultItems[0]).text()
+      equal(selectedText, currentText)
+
+      # test if dropdown appears when we start typing letter ('a' is input here)
+      keyEvent(selectComponent, 'keydown', 97)
+
+    wait().then ->
+      ok isVisible(find '.ember-select-results', selectComponent, 'Dropdown list should appear')
+
+      keyEvent(selectComponent, 'keydown', 27)
+
+    wait().then ->
+      ok isHidden(find '.ember-select-results', selectComponent, 'Dropdown list should be hidden')
+      ok isFocus(selectComponent, selectComponent, 'Select component should be focused')
