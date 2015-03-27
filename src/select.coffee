@@ -388,7 +388,7 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
   escapePressed: (event) ->
     if @get('showDropdown')
       @send 'hideDropdown'
-      @$().focus()
+      @$()?.focus()
       event.preventDefault()
 
   tabPressed: (event) ->
@@ -399,6 +399,7 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
     item = @get 'highlighted'
     @set 'selection', item unless Ember.isEmpty(item)
     @userDidSelect(item) unless Ember.isEmpty(item)
+    @$()?.focus()
     # in case dropdown doesn't close
     @send 'hideDropdown'
     @$().focus()
