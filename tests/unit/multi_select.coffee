@@ -33,20 +33,20 @@ test 'Test keyboard interaction', ->
     highlightedComponent = find '.ember-select-multi', multiSelectComponent
 
     multiSelectComponent.focus()
-    wait().then ->
+    .then ->
       # test pressing ENTER key to open dropdown
       keyEvent(multiSelectComponent, 'keydown', 13)
-    wait().then ->
+    .then ->
       ok isVisible(find '.ember-select-results', multiSelectComponent, 'Dropdown list should appear')
 
-    wait().then ->
+    .then ->
       resultItems = find '.ember-select-result-item', multiSelectComponent
       ok $(resultItems[0]).hasClass('highlighted'), 'The first option should be highlighted'
       # test selecting option using ENTER key
       selectedText = $(resultItems[0]).text().trim()
       keyEvent(multiSelectComponent, 'keydown', 13)
 
-    wait().then ->
+    .then ->
       ok isHidden(find '.ember-select-results', multiSelectComponent, 'Dropdown list should be hidden')
 
       # test if selected Item is actually selected
@@ -58,10 +58,10 @@ test 'Test keyboard interaction', ->
       # test if dropdown appears when we start typing letter ('a' is input here)
       keyEvent(multiSelectComponent, 'keydown', 97)
 
-    wait().then ->
+    .then ->
       ok isVisible(find '.ember-select-results', multiSelectComponent, 'Dropdown list should appear')
 
       keyEvent(multiSelectComponent, 'keydown', 27)
 
-    wait().then ->
+    .then ->
       ok isHidden(find '.ember-select-results', multiSelectComponent, 'Dropdown list should be hidden')
