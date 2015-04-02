@@ -33,7 +33,7 @@ test 'Test keyboard interaction', ->
     highlightedComponent = find '.ember-select-multi', multiSelectComponent
 
     multiSelectComponent.focus()
-    .then ->
+    wait().then ->
       # test pressing ENTER key to open dropdown
       keyEvent(multiSelectComponent, 'keydown', 13)
     .then ->

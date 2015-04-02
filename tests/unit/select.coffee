@@ -61,7 +61,7 @@ test 'Test keyboard interaction', ->
 
     ok isHidden(find '.ember-select-results', selectComponent, 'Dropdown list should not exist')
     selectComponent.focus()
-    .then ->
+    wait().then ->
       # test pressing ENTER key to open dropdown
       keyEvent(selectComponent, 'keydown', 13)
     .then ->
