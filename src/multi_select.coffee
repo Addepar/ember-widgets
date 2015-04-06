@@ -107,7 +107,7 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
     @set 'values', Ember.A [] unless @get('values')
 
   deletePressed: (event) ->
-    if event.target.selectionStart == 0 and event.target.selectionEnd == 0
+    if event.target.selectionStart is 0 and event.target.selectionEnd is 0
       @removeSelectItem(@get('selections.lastObject'))
 
   removeSelectItem: (item) ->
@@ -122,7 +122,8 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
   keyDown: (event) ->
     @_super(event)
     activeElement = $(document.activeElement)[0]
-    if @$()[0].contains(activeElement) or @$()[0]==activeElement
+    selectComponent = @$()[0]
+    if selectComponent.contains(activeElement) or selectComponent is activeElement
       @addBorderMultiSelectContainer()
     else
       @removeBorderMultiSelectContainer()
