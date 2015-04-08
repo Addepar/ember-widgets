@@ -48,3 +48,16 @@ test 'Test sorted filter', ->
   equal(select.get('sortedFilteredContent')[0], 'green')
   equal(select.get('sortedFilteredContent')[1], 'red')
   equal(select.get('sortedFilteredContent')[2], 'reddit')
+
+test 'Test selection label', ->
+  expect 2
+
+  data = [{name: 'reddit'}, {name: 'red'}]
+  select.set 'content', data
+  select.set 'selection', data[0]
+  select.set 'optionLabelPath', 'name'
+
+  equal(select.get('selectedLabel'), 'reddit')
+  select.set 'selection.name', 'blues'
+  equal(select.get('selectedLabel'), 'blues')
+

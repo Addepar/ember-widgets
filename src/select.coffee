@@ -179,9 +179,11 @@ Ember.AddeparMixins.ResizeHandlerMixin,
       context: Ember.computed.alias 'controller.selection'
   .property 'itemView'
 
-  selectedLabel: Ember.computed ->
-    Ember.get @get('selection'), @get('optionLabelPath')
-  .property 'selection', 'optionLabelPath'
+  optionLabelPathChanges: Ember.on 'init', Ember.observer ->
+    labelPath = @get 'optionLabelPath'
+    path = if labelPath then "selection.#{labelPath}" else 'selection'
+    Ember.defineProperty(this, 'selectedLabel', Ember.computed.alias(path))
+  , 'selection', 'optionLabelPath'
 
   searchView: Ember.TextField.extend
     placeholder: Ember.computed.alias 'parentView.placeholder'
