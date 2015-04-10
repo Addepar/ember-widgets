@@ -44,7 +44,12 @@ Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
     # propagate the click event
     # if the dropdown is expanded and we select something, don't propagate
     if @get('controller.showDropdown')
-      @get('controller').send 'hideDropdown'
+      # Keep showing dropdown if it is multi select component
+      unless @get('controller.layoutName') is 'multi-select'
+        @get('controller').send 'hideDropdown'
+      else
+        # Keep the focus on the text field
+        @get('controller').focusTextField()
       # return false to prevent propagation
       return no
 
@@ -375,6 +380,7 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
   bodyClick: -> @send 'hideDropdown'
 
   keyDown: (event) ->
+    return if @get('isDestroyed') or @get('isDestroying')
     @setFocus()
     # show dropdown if it is not already showing
     # and the keycode should be in the list of accepted keys to show dropdown
@@ -403,7 +409,7 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
     item = @get 'highlighted'
     @set 'selection', item unless Ember.isEmpty(item)
     @userDidSelect(item) unless Ember.isEmpty(item)
-    @$()?.focus()
+    @$().focus()
     # in case dropdown doesn't close
     if @get('showDropdown')
       @send 'hideDropdown'

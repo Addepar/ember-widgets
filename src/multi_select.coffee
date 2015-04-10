@@ -22,6 +22,11 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
   placeholder: undefined
   persistentPlaceholder: undefined
 
+  # disable tabindex of the component container to set focus directly to
+  # the input field, which is always visible. This helps reducing one tab
+  # step to navigate back to the previous component
+  tabindex: -1
+
   values: Ember.computed (key, value) ->
     if arguments.length is 2 # setter
       return unless value
@@ -56,7 +61,6 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
   searchView: Ember.TextField.extend
     class: 'ember-select-input'
     valueBinding: 'parentView.query'
-    focusIn: (event) -> @set 'parentView.showDropdown', yes
     placeholder: Ember.computed ->
       if @get('parentView.selections.length')
         return @get('parentView.persistentPlaceholder')
@@ -95,6 +99,9 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
       selections.pushObject selection
   , 'selection', 'selections.[]'
 
+  focusTextField: ->
+    @$('.ember-text-field').focus()
+
   didInsertElement: ->
     # We want to initialize selections to []. This SHOULD NOT be done through
     # computed properties, because we would run into the following situation.
@@ -113,23 +120,27 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
 
   removeSelectItem: (item) ->
     # set the focus back to the searchView because this item will be removed
-    @$('.ember-text-field')?.focus()
-    if @get('showDropdown')
-      @send 'hideDropdown'
+    currentDropDownState = @get('showDropdown')
+    @focusTextField()
+    @send 'hideDropdown' unless currentDropDownState
     @get('selections').removeObject item
 
   escapePressed: (event) ->
     if @get('showDropdown')
-      @$('.ember-text-field')?.focus()
+      @focusTextField()
       @send 'hideDropdown'
       event.preventDefault()
 
   enterPressed: (event) ->
     @_super(event)
-    @$('.ember-text-field').focus()
-    # in case dropdown doesn't close
-    if @get('showDropdown')
-      @send 'hideDropdown'
+    @focusTextField()
+    @set('showDropdown', yes) unless @get('showDropdown')
+
+  click: (event) ->
+    @_super(event)
+    @set('showDropdown', yes) unless @get('showDropdown')
+    # return false to prevent propagation
+    return no
 
   actions:
     removeSelectItem: (item) ->
