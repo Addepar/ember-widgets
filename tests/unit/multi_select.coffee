@@ -37,9 +37,7 @@ test 'Test keyboard interaction', ->
       # test pressing ENTER key to open dropdown
       keyEvent(multiSelectComponent, 'keydown', 13)
     .then ->
-      ok isVisible(find '.ember-select-results', multiSelectComponent, 'Dropdown list should appear')
-
-    .then ->
+      ok isVisible(find '.ember-select-results', multiSelectComponent, 'Dropdown list should appear after pressing Enter')
       resultItems = find '.ember-select-result-item', multiSelectComponent
       ok $(resultItems[0]).hasClass('highlighted'), 'The first option should be highlighted'
       # test selecting option using ENTER key
@@ -47,21 +45,22 @@ test 'Test keyboard interaction', ->
       keyEvent(multiSelectComponent, 'keydown', 13)
 
     .then ->
-      ok isHidden(find '.ember-select-results', multiSelectComponent, 'Dropdown list should be hidden')
+      ok isHidden(find '.ember-select-results', multiSelectComponent, 'Dropdown list should be hidden after selecting an option')
 
       # test if selected Item is actually selected
       resultItems = find '.ember-select-search-choice', multiSelectComponent
       currentText = $(resultItems[resultItems.length - 1]).text().trim()
       # trim the special character "x" at the end of the select choice text
-      equal(currentText.substring(0, currentText.length - 2), selectedText)
+      equal(currentText.substring(0, currentText.length - 2), selectedText,'the current highlighted option should be the last choice pill in the list')
 
       # test if dropdown appears when we start typing letter ('a' is input here)
       keyEvent(multiSelectComponent, 'keydown', 97)
 
     .then ->
-      ok isVisible(find '.ember-select-results', multiSelectComponent, 'Dropdown list should appear')
+      ok isVisible(find '.ember-select-results', multiSelectComponent, 'Dropdown list should appear after pressing a letter')
 
+      # test hitting ESC will close the dropdown
       keyEvent(multiSelectComponent, 'keydown', 27)
 
     .then ->
-      ok isHidden(find '.ember-select-results', multiSelectComponent, 'Dropdown list should be hidden')
+      ok isHidden(find '.ember-select-results', multiSelectComponent, 'Dropdown list should be hidden after pressing ESC')

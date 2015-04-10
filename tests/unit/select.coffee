@@ -59,13 +59,13 @@ test 'Test keyboard interaction', ->
   Ember.run ->
     selectComponent = select.$()
 
-    ok isHidden(find '.ember-select-results', selectComponent, 'Dropdown list should not exist')
+    ok isHidden(find '.ember-select-results', selectComponent, 'Dropdown list should not exist at the beginning')
     selectComponent.focus()
     wait().then ->
       # test pressing ENTER key to open dropdown
       keyEvent(selectComponent, 'keydown', 13)
     .then ->
-      ok isVisible(find '.ember-select-results', selectComponent, 'Dropdown list should appear')
+      ok isVisible(find '.ember-select-results', selectComponent, 'Dropdown list should appear after pressing Enter')
 
       # test pressing DOWN arrowkey to navigate selection down
       keyEvent(selectComponent, 'keydown', 40)
@@ -86,8 +86,8 @@ test 'Test keyboard interaction', ->
       keyEvent(selectComponent, 'keydown', 13)
 
     .then ->
-      ok isFocus(selectComponent,selectComponent, 'Select component should be focused')
-      ok isHidden(find '.ember-select-results', selectComponent, 'Dropdown list should be hidden')
+      ok isFocus(selectComponent,selectComponent, 'Select component should be focused after selecting one option')
+      ok isHidden(find '.ember-select-results', selectComponent, 'Dropdown list should be hidden after selecting an option')
 
       # test if selected Item is actually selected
       resultItems = find '.ember-select-result-item', selectComponent
@@ -98,10 +98,11 @@ test 'Test keyboard interaction', ->
       keyEvent(selectComponent, 'keydown', 97)
 
     .then ->
-      ok isVisible(find '.ember-select-results', selectComponent, 'Dropdown list should appear')
+      ok isVisible(find '.ember-select-results', selectComponent, 'Dropdown list should appear after pressing a letter')
 
+      # test if dropdown disappears after pressing ESC
       keyEvent(selectComponent, 'keydown', 27)
 
     .then ->
-      ok isHidden(find '.ember-select-results', selectComponent, 'Dropdown list should be hidden')
-      ok isFocus(selectComponent, selectComponent, 'Select component should be focused')
+      ok isHidden(find '.ember-select-results', selectComponent, 'Dropdown list should be hidden after pressing ESC')
+      ok isFocus(selectComponent, selectComponent, 'Select component should be focused after pressing ESC')
