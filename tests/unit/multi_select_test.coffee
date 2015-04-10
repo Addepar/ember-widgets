@@ -20,3 +20,9 @@ test 'Test preparedContent after some options are already selected', ->
   multiselect.set 'query', 'ba'
   equal(multiselect.get('preparedContent').length, 1)
   equal(multiselect.get('preparedContent')[0], 'barca')
+
+test 'Query should not be reset when selections are made', ->
+  expect 1
+  multiselect.set 'query', 'ba'
+  multiselect.set 'selections', ['bar', 'baz']
+  equal(multiselect.get('query'), 'ba')
