@@ -63,6 +63,7 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
   prompt:             'Select a Value'
   placeholder:        undefined
   disabled: no
+  hasFocus: no
 
   highlightedIndex: -1
 
@@ -106,12 +107,6 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
   # This augments the dropdown to provide a place for adding a select menu that
   # possibly says 'create item' or something along that line
   selectMenuView: null
-
-  addBorderToSelectContainer: ->
-    @$('.ember-select-choice').addClass('ember-select-focus')
-
-  removeBorderFromSelectContainer: ->
-    @$('.ember-select-choice').removeClass('ember-select-focus')
 
   # a map of accepted keys to show dropdown when being pressed
   # these are keys to show dropdown when being pressed
@@ -216,7 +211,7 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
           @$().focus() if (@get('_state') or @get('state')) is 'inDOM'
       # clear the query string when dropdown is hidden
       else
-        @set 'parentView.query', ''
+        @set 'value', ''
     , 'parentView.showDropdown'
 
   # This is a hack. Ember.ListView doesn't handle case when total height
@@ -369,15 +364,24 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
     value
   .property 'selectableOptions.[]', 'highlightedIndex'
 
+  setFocus: ->
+    activeElement = $(document.activeElement)[0]
+    selectComponent = @$()[0]
+    if selectComponent.contains(activeElement) or selectComponent is activeElement
+      @set 'hasFocus', yes
+    else
+      @set 'hasFocus', no
+
   bodyClick: -> @send 'hideDropdown'
 
   keyDown: (event) ->
+    @setFocus()
     # show dropdown if it is not already showing
     # and the keycode should be in the list of accepted keys to show dropdown
     # [Spacebar, Enter, Up, Down, 'A'..'Z','a..z','0..9']
     acceptedKeys = @get 'acceptedKeys'
-    if acceptedKeys[event.keyCode]
-      return @set('showDropdown', yes) unless @get 'showDropdown'
+    if acceptedKeys[event.keyCode] and not @get 'showDropdown'
+      return @set('showDropdown', yes)
 
     map   = @get 'KEY_EVENTS'
     method = map[event.keyCode]
@@ -401,7 +405,8 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
     @userDidSelect(item) unless Ember.isEmpty(item)
     @$()?.focus()
     # in case dropdown doesn't close
-    @send 'hideDropdown'
+    if @get('showDropdown')
+      @send 'hideDropdown'
     # TODO(Peter): HACK the web app somehow reloads when enter is pressed.
     event.preventDefault()
 
@@ -451,10 +456,10 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
     @sendAction 'userSelected', selection
 
   focusIn: (event) ->
-    @addBorderToSelectContainer()
+    @set 'hasFocus', yes
 
   focusOut: (event) ->
-    @removeBorderFromSelectContainer()
+    @set 'hasFocus', no
 
   actions:
     toggleDropdown: (event) ->

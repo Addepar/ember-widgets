@@ -47,12 +47,6 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
     @get('placeholder') or @get('persistentPlaceholder')
   .property 'query', 'placeholder', 'persistentPlaceholder', 'selections.length'
 
-  addBorderMultiSelectContainer: ->
-    @$('.ember-select-multi').addClass('ember-select-multi-focus')
-
-  removeBorderMultiSelectContainer: ->
-    @$('.ember-select-multi').removeClass('ember-select-multi-focus')
-
   searchView: Ember.TextField.extend
     class: 'ember-select-input'
     valueBinding: 'parentView.query'
@@ -109,24 +103,27 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
   deletePressed: (event) ->
     if event.target.selectionStart is 0 and event.target.selectionEnd is 0
       @removeSelectItem(@get('selections.lastObject'))
+      event.preventDefault()
 
   removeSelectItem: (item) ->
+    # set the focus back to the searchView because this item will be removed
+    @$('.ember-text-field')?.focus()
+    if @get('showDropdown')
+      @send 'hideDropdown'
     @get('selections').removeObject item
 
-  focusIn: (event) ->
-    @addBorderMultiSelectContainer()
+  escapePressed: (event) ->
+    if @get('showDropdown')
+      @$('.ember-text-field')?.focus()
+      @send 'hideDropdown'
+      event.preventDefault()
 
-  focusOut: (event) ->
-    @removeBorderMultiSelectContainer()
-
-  keyDown: (event) ->
+  enterPressed: (event) ->
     @_super(event)
-    activeElement = $(document.activeElement)[0]
-    selectComponent = @$()[0]
-    if selectComponent.contains(activeElement) or selectComponent is activeElement
-      @addBorderMultiSelectContainer()
-    else
-      @removeBorderMultiSelectContainer()
+    @$('.ember-text-field').focus()
+    # in case dropdown doesn't close
+    if @get('showDropdown')
+      @send 'hideDropdown'
 
   actions:
     removeSelectItem: (item) ->
