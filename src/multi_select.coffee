@@ -138,9 +138,8 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
 
   click: (event) ->
     @_super(event)
-    @set('showDropdown', yes) unless @get('showDropdown')
-    # return false to prevent propagation
-    return no
+    unless @get('showDropdown')
+      @set('showDropdown', yes)
 
   actions:
     removeSelectItem: (item) ->
