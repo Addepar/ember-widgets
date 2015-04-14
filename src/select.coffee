@@ -400,7 +400,7 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
   escapePressed: (event) ->
     if @get('showDropdown')
       @send 'hideDropdown'
-      @$()?.focus()
+      @$().focus()
       event.preventDefault()
 
   tabPressed: (event) ->
