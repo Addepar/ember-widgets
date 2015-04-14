@@ -5,7 +5,7 @@ content = [
   {name: 'Bob', code: 'BOB'},
 ]
 
-module "Multi select component functional tests",
+module "[Functional] Multi select component functional tests",
   setup: ->
     dispatcher = Ember.EventDispatcher.create()
     dispatcher.setup()

@@ -46,7 +46,7 @@ _findInMultiChosen = (app, element, itemText) ->
   click searchBox
   fillIn(searchBox, itemText).then ->
     #Need to use filter to get an exact match
-    $('li', element).filter -> $.text([this]).trim() is itemText
+    $('.js-dropdown-menu li', element).filter -> $.text([this]).trim() is itemText
 
 _selectInMultiChosen = (app, element, itemText) ->
   findInMultiChosen(element, itemText).then (item) ->
