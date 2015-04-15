@@ -205,7 +205,8 @@ Ember.Component.extend BodyEventListener, ResizeHandlerMixin,
     if arguments.length is 2 # setter
       valuePath = @get 'optionValuePath'
       selection = value
-      selection = @get('content').findProperty(valuePath, value) if valuePath
+      if valuePath and @get('content')
+        selection = @get('content').findProperty(valuePath, value)
       @set 'selection', selection
       value
     else # getter
