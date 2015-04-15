@@ -170,15 +170,15 @@ Ember.Component.extend BodyEventListener, ResizeHandlerMixin,
     query = @get('query')
 
     ContentProxy = Ember.ObjectProxy.extend
-      filteredContent:  Ember.computed ->
+      filteredContent:  Ember.computed( ->
         (@get('content') or []).filter (item) ->
           matcher(query, item)
-      .property observableString, 'query'
+      ).property observableString, 'query'
 
-      sortedFilteredContent: Ember.computed ->
+      sortedFilteredContent: Ember.computed( ->
         _.sortBy @get('filteredContent'), (item) ->
           Ember.get(item, optionLabelPath)?.toLowerCase()
-      .property 'filteredContent.[]'
+      ).property 'filteredContent.[]'
 
     ContentProxy.create
       content: @get('content')
