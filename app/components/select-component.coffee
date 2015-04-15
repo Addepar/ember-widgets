@@ -148,10 +148,14 @@ Ember.Component.extend BodyEventListener, ResizeHandlerMixin,
 
   # the list of content that is filtered down based on the query entered
   # in the textbox
+  # Other than observing the changes on each elements, we need to observe the
+  # `filteredContent`, and `sortedFilteredContent` because when the `content`
+  # is overridden by a DS.PromiseArray, somehow it never triggers this function
   preparedContent: Ember.computed ->
     if @get('sortLabels') then @get('sortedFilteredContent') else
       @get('filteredContent')
-  .property 'sortLabels', 'filteredContent', 'sortedFilteredContent'
+  .property 'sortLabels', 'filteredContent.[]', 'sortedFilteredContent.[]',
+    'filteredContent', 'sortedFilteredContent'
 
   contentProxy: Ember.computed ->
     matcher = (searchText, item) => @matcher(searchText, item)
@@ -159,7 +163,7 @@ Ember.Component.extend BodyEventListener, ResizeHandlerMixin,
     if optionLabelPath
       observableString = "content.@each.#{optionLabelPath}"
     else
-      observableString = 'content.@each'
+      observableString = 'content.[]'
     query = @get('query')
 
     ContentProxy = Ember.ObjectProxy.extend
@@ -246,7 +250,7 @@ Ember.Component.extend BodyEventListener, ResizeHandlerMixin,
       highlighted = @get('highlighted')
       if not @get('selectableOptions').contains(highlighted)
         @set 'highlighted', @get('selectableOptions.firstObject')
-  , 'selectableOptions', 'showDropdown'
+  , 'selectableOptions.[]', 'showDropdown'
 
   ###
   # SELECTION RELATED
@@ -265,7 +269,7 @@ Ember.Component.extend BodyEventListener, ResizeHandlerMixin,
       (@get('groupedContent') or []).filter (item) ->
         not Ember.get(item, 'isGroupOption')
     )
-  .property 'groupedContent'
+  .property 'groupedContent.[]'
 
   # The option that is currently highlighted.
   highlighted: Ember.computed (key, value) ->
