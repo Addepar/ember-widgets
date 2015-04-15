@@ -110,7 +110,7 @@ var define, requireModule, require, requirejs;
   };
 })();
 
-;define("app/components/accordion-component", 
+;define("ember-widgets/components/accordion-component", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -124,8 +124,8 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = AccordionComponent;
   });
-;define("app/components/accordion-item", 
-  ["ember","app/utils/css-transitions","exports"],
+;define("ember-widgets/components/accordion-item", 
+  ["ember","ember-widgets/utils/css-transitions","exports"],
   function(__dependency1__, __dependency2__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
@@ -194,7 +194,7 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = AccordionItem;
   });
-;define("app/utils/css-transitions", 
+;define("ember-widgets/utils/css-transitions", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -213,8 +213,8 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = transitionend;
   });
-;define("app/components/carousel-component", 
-  ["ember","app/utils/css-transitions","app/components/carousel-indicator","exports"],
+;define("ember-widgets/components/carousel-component", 
+  ["ember","ember-widgets/utils/css-transitions","ember-widgets/components/carousel-indicator","exports"],
   function(__dependency1__, __dependency2__, __dependency3__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
@@ -269,7 +269,8 @@ var define, requireModule, require, requirejs;
         return this.slide(direction, pos);
       },
       slide: function(type, nextIndex) {
-        var $active, $next, direction;
+        var $active, $next, direction,
+          _this = this;
         if (this.get('activeIndex') === nextIndex) {
           return;
         }
@@ -283,16 +284,14 @@ var define, requireModule, require, requirejs;
           $active.addClass(direction);
           $next.addClass(direction);
         }
-        return this._onTransitionEnd($next, (function(_this) {
-          return function() {
-            return Ember.run(_this, function() {
-              this.set('activeIndex', nextIndex);
-              $next.removeClass([type, direction].join(' ')).addClass('active');
-              $active.removeClass(['active', direction].join(' '));
-              return this.set('sliding', false);
-            });
-          };
-        })(this));
+        return this._onTransitionEnd($next, function() {
+          return Ember.run(_this, function() {
+            this.set('activeIndex', nextIndex);
+            $next.removeClass([type, direction].join(' ')).addClass('active');
+            $active.removeClass(['active', direction].join(' '));
+            return this.set('sliding', false);
+          });
+        });
       },
       _onTransitionEnd: function($el, callback) {
         if (this.get('emberWidgetsConfig.DISABLE_ANIMATIONS')) {
@@ -305,7 +304,7 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = CarouselComponent;
   });
-;define("app/components/carousel-indicator", 
+;define("ember-widgets/components/carousel-indicator", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -324,7 +323,7 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = CarouselIndicator;
   });
-;define("app/components/carousel-item", 
+;define("ember-widgets/components/carousel-item", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -337,8 +336,8 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = CarouselItem;
   });
-;define("app/components/color-picker-cell", 
-  ["ember","app/utils/color-utils","app/mixins/style-bindings","exports"],
+;define("ember-widgets/components/color-picker-cell", 
+  ["ember","ember-widgets/utils/color-utils","ember-widgets/mixins/style-bindings","exports"],
   function(__dependency1__, __dependency2__, __dependency3__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
@@ -363,7 +362,7 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = ColorPickerCell;
   });
-;define("app/utils/color-utils", 
+;define("ember-widgets/utils/color-utils", 
   ["exports"],
   function(__exports__) {
     "use strict";
@@ -543,7 +542,7 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = colorToHex;
   });
-;define("app/mixins/style-bindings", 
+;define("ember-widgets/mixins/style-bindings", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -566,7 +565,8 @@ var define, requireModule, require, requirejs;
         return "" + styleName + ":" + value + ";";
       },
       applyStyleBindings: function() {
-        var lookup, properties, styleBindings, styleComputed, styles;
+        var lookup, properties, styleBindings, styleComputed, styles,
+          _this = this;
         styleBindings = this.styleBindings;
         if (!styleBindings) {
           return;
@@ -579,18 +579,16 @@ var define, requireModule, require, requirejs;
         });
         styles = _.keys(lookup);
         properties = _.values(lookup);
-        styleComputed = Ember.computed((function(_this) {
-          return function() {
-            var styleString, styleTokens;
-            styleTokens = styles.map(function(style) {
-              return _this.createStyleString(style, lookup[style]);
-            });
-            styleString = styleTokens.join('');
-            if (styleString.length !== 0) {
-              return styleString;
-            }
-          };
-        })(this));
+        styleComputed = Ember.computed(function() {
+          var styleString, styleTokens;
+          styleTokens = styles.map(function(style) {
+            return _this.createStyleString(style, lookup[style]);
+          });
+          styleString = styleTokens.join('');
+          if (styleString.length !== 0) {
+            return styleString;
+          }
+        });
         styleComputed.property.apply(styleComputed, properties);
         return Ember.defineProperty(this, 'style', styleComputed);
       },
@@ -602,8 +600,8 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = StyleBindingsMixin;
   });
-;define("app/components/color-picker", 
-  ["ember","app/utils/color-utils","exports"],
+;define("ember-widgets/components/color-picker", 
+  ["ember","ember-widgets/utils/color-utils","exports"],
   function(__dependency1__, __dependency2__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
@@ -647,7 +645,7 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = ColorPicker;
   });
-;define("app/components/editable-label-component", 
+;define("ember-widgets/components/editable-label-component", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -684,8 +682,8 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = EditableLabel;
   });
-;define("app/components/modal-component", 
-  ["ember","app/mixins/style-bindings","app/utils/css-transitions","exports"],
+;define("ember-widgets/components/modal-component", 
+  ["ember","ember-widgets/mixins/style-bindings","ember-widgets/utils/css-transitions","exports"],
   function(__dependency1__, __dependency2__, __dependency3__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
@@ -831,13 +829,12 @@ var define, requireModule, require, requirejs;
         }
       },
       keyHandler: Ember.computed(function() {
-        return (function(_this) {
-          return function(event) {
-            if (event.which === 27 && _this.get('escToCancel')) {
-              return _this.send('sendCancel');
-            }
-          };
-        })(this);
+        var _this = this;
+        return function(event) {
+          if (event.which === 27 && _this.get('escToCancel')) {
+            return _this.send('sendCancel');
+          }
+        };
       }),
       click: function(event) {
         if (event.target !== event.currentTarget) {
@@ -848,17 +845,16 @@ var define, requireModule, require, requirejs;
         }
       },
       hide: function() {
+        var _this = this;
         this.set('isShowing', false);
         $(document.body).removeClass('modal-open');
         if (this._backdrop) {
           this._backdrop.removeClass('in');
         }
         if (this.get('fadeEnabled')) {
-          return this.$().one(transitionend, (function(_this) {
-            return function() {
-              return Ember.run(_this, _this.destroy);
-            };
-          })(this));
+          return this.$().one(transitionend, function() {
+            return Ember.run(_this, _this.destroy);
+          });
         } else {
           return Ember.run(this, this.destroy);
         }
@@ -874,13 +870,12 @@ var define, requireModule, require, requirejs;
         });
       },
       _setupDocumentHandlers: function() {
+        var _this = this;
         this._super();
         if (!this._hideHandler) {
-          this._hideHandler = (function(_this) {
-            return function() {
-              return _this.hide();
-            };
-          })(this);
+          this._hideHandler = function() {
+            return _this.hide();
+          };
           $(document).on('modal:hide', this._hideHandler);
         }
         return $(document).on('keyup', this.get('keyHandler'));
@@ -917,8 +912,8 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = ModalComponent;
   });
-;define("app/components/multi-select-component", 
-  ["ember","app/components/select-component","app/views/multi-select-option","exports"],
+;define("ember-widgets/components/multi-select-component", 
+  ["ember","ember-widgets/components/select-component","ember-widgets/views/multi-select-option","exports"],
   function(__dependency1__, __dependency2__, __dependency3__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
@@ -1029,8 +1024,8 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = MultiSelectComponent;
   });
-;define("app/components/select-component", 
-  ["ember","app/mixins/body-event-listener","app/mixins/resize-handler","app/views/select-option","exports"],
+;define("ember-widgets/components/select-component", 
+  ["ember","ember-widgets/mixins/body-event-listener","ember-widgets/mixins/resize-handler","ember-widgets/views/select-option","exports"],
   function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
@@ -1140,12 +1135,11 @@ var define, requireModule, require, requirejs;
         }
       }).property('sortLabels', 'filteredContent', 'sortedFilteredContent'),
       contentProxy: Ember.computed(function() {
-        var ContentProxy, matcher, optionLabelPath, query;
-        matcher = (function(_this) {
-          return function(searchText, item) {
-            return _this.matcher(searchText, item);
-          };
-        })(this);
+        var ContentProxy, matcher, optionLabelPath, query,
+          _this = this;
+        matcher = function(searchText, item) {
+          return _this.matcher(searchText, item);
+        };
         optionLabelPath = this.get('optionLabelPath');
         query = this.get('query');
         ContentProxy = Ember.ObjectProxy.extend({
@@ -1246,10 +1240,10 @@ var define, requireModule, require, requirejs;
           }
         }
       }, 'selectableOptions', 'showDropdown'),
-
       /*
-       * SELECTION RELATED
-       */
+      # SELECTION RELATED
+      */
+
       KEY_EVENTS: {
         8: 'deletePressed',
         27: 'escapePressed',
@@ -1375,7 +1369,7 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = SelectComponent;
   });
-;define("app/mixins/body-event-listener", 
+;define("ember-widgets/mixins/body-event-listener", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -1394,18 +1388,17 @@ var define, requireModule, require, requirejs;
         return this._removeDocumentHandlers();
       },
       _setupDocumentHandlers: function() {
+        var _this = this;
         if (this._clickHandler || this.isDestroying) {
           return;
         }
-        this._clickHandler = (function(_this) {
-          return function(event) {
-            return Ember.run(function() {
-              if ((_this.get('_state') || _this.get('state')) === 'inDOM' && Ember.isEmpty(_this.$().has($(event.target)))) {
-                return _this.bodyClick();
-              }
-            });
-          };
-        })(this);
+        this._clickHandler = function(event) {
+          return Ember.run(function() {
+            if ((_this.get('_state') || _this.get('state')) === 'inDOM' && Ember.isEmpty(_this.$().has($(event.target)))) {
+              return _this.bodyClick();
+            }
+          });
+        };
         return $(this.get('bodyElementSelector')).on("click", this._clickHandler);
       },
       _removeDocumentHandlers: function() {
@@ -1416,7 +1409,7 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = BodyEventListener;
   });
-;define("app/mixins/resize-handler", 
+;define("ember-widgets/mixins/resize-handler", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -1475,7 +1468,7 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = ResizeHandlerMixin;
   });
-;define("app/views/select-option", 
+;define("ember-widgets/views/select-option", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -1528,7 +1521,7 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = SelectOptionView;
   });
-;define("app/views/multi-select-option", 
+;define("ember-widgets/views/multi-select-option", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -1555,8 +1548,8 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = MultiSelectOptionView;
   });
-;define("app/components/pill-select", 
-  ["ember","app/components/select-component","exports"],
+;define("ember-widgets/components/pill-select", 
+  ["ember","ember-widgets/components/select-component","exports"],
   function(__dependency1__, __dependency2__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
@@ -1571,8 +1564,8 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = PillSelect;
   });
-;define("app/components/popover-component", 
-  ["ember","app/mixins/popover","exports"],
+;define("ember-widgets/components/popover-component", 
+  ["ember","ember-widgets/mixins/popover","exports"],
   function(__dependency1__, __dependency2__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
@@ -1601,8 +1594,8 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = PopoverComponent;
   });
-;define("app/mixins/popover", 
-  ["ember","app/mixins/style-bindings","app/mixins/body-event-listener","app/utils/css-transitions","exports"],
+;define("ember-widgets/mixins/popover", 
+  ["ember","ember-widgets/mixins/style-bindings","ember-widgets/mixins/body-event-listener","ember-widgets/utils/css-transitions","exports"],
   function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
@@ -1659,21 +1652,19 @@ var define, requireModule, require, requirejs;
         return this.hide();
       },
       hide: function() {
+        var _this = this;
         if (this.get('isDestroyed')) {
           return;
         }
         this.set('isShowing', false);
         if (this.get('fadeEnabled')) {
-          return this.$().one(transitionend, (function(_this) {
-            return function() {
-              return Ember.run(_this, _this.destroy);
-            };
-          })(this));
+          return this.$().one(transitionend, function() {
+            return Ember.run(_this, _this.destroy);
+          });
         } else {
           return Ember.run(this, this.destroy);
         }
       },
-
       /*
       Calculate the offset of the given iframe relative to the top window.
       - Walks up the iframe chain, checking the offset of each one till it reaches
@@ -1689,7 +1680,8 @@ var define, requireModule, require, requirejs;
       @return pos object above
       
       via http://stackoverflow.com/a/9676655
-       */
+      */
+
       computeFrameOffset: function(win, pos) {
         var found, frame, frames, rect, _i, _len;
         if (pos == null) {
@@ -1821,29 +1813,26 @@ var define, requireModule, require, requirejs;
         }
       },
       keyHandler: Ember.computed(function() {
-        return (function(_this) {
-          return function(event) {
-            if (event.keyCode === 27 && _this.get('escToCancel')) {
-              return _this.hide();
-            }
-          };
-        })(this);
+        var _this = this;
+        return function(event) {
+          if (event.keyCode === 27 && _this.get('escToCancel')) {
+            return _this.hide();
+          }
+        };
       }),
       debounceSnapToPosition: Ember.computed(function() {
-        return (function(_this) {
-          return function() {
-            return Ember.run.debounce(_this, _this.snapToPosition, _this.get('debounceTime'));
-          };
-        })(this);
+        var _this = this;
+        return function() {
+          return Ember.run.debounce(_this, _this.snapToPosition, _this.get('debounceTime'));
+        };
       }),
       _setupDocumentHandlers: function() {
+        var _this = this;
         this._super();
         if (!this._hideHandler) {
-          this._hideHandler = (function(_this) {
-            return function() {
-              return _this.hide();
-            };
-          })(this);
+          this._hideHandler = function() {
+            return _this.hide();
+          };
           $(document).on('popover:hide', this._hideHandler);
         }
         if (!this._resizeHandler) {
@@ -1870,8 +1859,8 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = PopoverMixin;
   });
-;define("app/components/popover-link-component", 
-  ["ember","app/mixins/popover","exports"],
+;define("ember-widgets/components/popover-link-component", 
+  ["ember","ember-widgets/mixins/popover","exports"],
   function(__dependency1__, __dependency2__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
@@ -1926,7 +1915,7 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = PopoverLinkComponent;
   });
-;define("app/components/radio-button-component", 
+;define("ember-widgets/components/radio-button-component", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -1944,7 +1933,7 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = RadioButtonComponent;
   });
-;define("app/components/radio-button-group-component", 
+;define("ember-widgets/components/radio-button-group-component", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -1959,7 +1948,7 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = RadioButtonGroupComponent;
   });
-;define("app/components/radio-button-wrapper", 
+;define("ember-widgets/components/radio-button-wrapper", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -1994,7 +1983,7 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = RadioButtonWrapperComponent;
   });
-;define("app/components/radio-button", 
+;define("ember-widgets/components/radio-button", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -2029,8 +2018,8 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = RadioButtonWrapperComponent;
   });
-;define("app/components/text-editor-config-component", 
-  ["ember","app/views/select-option","exports"],
+;define("ember-widgets/components/text-editor-config-component", 
+  ["ember","ember-widgets/views/select-option","exports"],
   function(__dependency1__, __dependency2__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
@@ -2137,8 +2126,8 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = TextEditorConfigComponent;
   });
-;define("app/components/text-editor-with-non-editable-component", 
-  ["ember","app/components/text-editor","app/mixins/pill-insert","app/controllers/todays-date-pill","app/controllers/non-editable-text-pill","exports"],
+;define("ember-widgets/components/text-editor-with-non-editable-component", 
+  ["ember","ember-widgets/components/text-editor","ember-widgets/mixins/pill-insert","ember-widgets/controllers/todays-date-pill","ember-widgets/controllers/non-editable-text-pill","exports"],
   function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
@@ -2315,8 +2304,8 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = TextEditorWithNonEditableComponent;
   });
-;define("app/components/text-editor", 
-  ["ember","app/mixins/dom-helper","exports"],
+;define("ember-widgets/components/text-editor", 
+  ["ember","ember-widgets/mixins/dom-helper","exports"],
   function(__dependency1__, __dependency2__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
@@ -2365,7 +2354,8 @@ var define, requireModule, require, requirejs;
         return selection.removeAllRanges();
       },
       didInsertElement: function() {
-        var $body, $head, $iframe, $iframeContents, iframe;
+        var $body, $head, $iframe, $iframeContents, iframe,
+          _this = this;
         this._super();
         $iframe = this.$('iframe.text-editor-frame');
         $iframeContents = $iframe.contents();
@@ -2376,39 +2366,27 @@ var define, requireModule, require, requirejs;
         $body.attr('contentEditable', true);
         $body.append(this.get('iframeBodyContents'));
         iframe = $iframe[0];
-        iframe.contentWindow.onkeyup = (function(_this) {
-          return function(event) {
-            return _this.keyUp(event);
-          };
-        })(this);
-        iframe.contentWindow.onkeydown = (function(_this) {
-          return function(event) {
-            return _this.keyDown(event);
-          };
-        })(this);
-        iframe.contentWindow.onmouseup = (function(_this) {
-          return function(event) {
-            return _this.mouseUp(event);
-          };
-        })(this);
-        iframe.contentWindow.onmousedown = (function(_this) {
-          return function(event) {
-            return _this.mouseDown(event);
-          };
-        })(this);
-        iframe.contentWindow.onclick = (function(_this) {
-          return function(event) {
-            return _this.click(event);
-          };
-        })(this);
-        return this.get('commands').forEach((function(_this) {
-          return function(command) {
-            return _this.set(command, function(arg) {
-              _this.getDocument().execCommand(command, true, arg);
-              return _this.queryCommandState();
-            });
-          };
-        })(this));
+        iframe.contentWindow.onkeyup = function(event) {
+          return _this.keyUp(event);
+        };
+        iframe.contentWindow.onkeydown = function(event) {
+          return _this.keyDown(event);
+        };
+        iframe.contentWindow.onmouseup = function(event) {
+          return _this.mouseUp(event);
+        };
+        iframe.contentWindow.onmousedown = function(event) {
+          return _this.mouseDown(event);
+        };
+        iframe.contentWindow.onclick = function(event) {
+          return _this.click(event);
+        };
+        return this.get('commands').forEach(function(command) {
+          return _this.set(command, function(arg) {
+            _this.getDocument().execCommand(command, true, arg);
+            return _this.queryCommandState();
+          });
+        });
       },
       keyUp: function(event) {
         var $body, $iframe, $iframeContents, iframeDocument, range, selection;
@@ -2459,7 +2437,7 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = TextEditorComponent;
   });
-;define("app/mixins/dom-helper", 
+;define("ember-widgets/mixins/dom-helper", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -2635,8 +2613,8 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = DomHelper;
   });
-;define("app/mixins/pill-insert", 
-  ["ember","app/controllers/todays-date-pill","app/controllers/non-editable-text-pill","exports"],
+;define("ember-widgets/mixins/pill-insert", 
+  ["ember","ember-widgets/controllers/todays-date-pill","ember-widgets/controllers/non-editable-text-pill","exports"],
   function(__dependency1__, __dependency2__, __dependency3__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
@@ -2668,8 +2646,8 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = PillInsertMixin;
   });
-;define("app/controllers/todays-date-pill", 
-  ["ember","app/controllers/base-non-editable-pill","exports"],
+;define("ember-widgets/controllers/todays-date-pill", 
+  ["ember","ember-widgets/controllers/base-non-editable-pill","exports"],
   function(__dependency1__, __dependency2__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
@@ -2685,8 +2663,8 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = TodaysDatePill;
   });
-;define("app/controllers/base-non-editable-pill", 
-  ["ember","app/mixins/dom-helper","exports"],
+;define("ember-widgets/controllers/base-non-editable-pill", 
+  ["ember","ember-widgets/mixins/dom-helper","exports"],
   function(__dependency1__, __dependency2__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
@@ -2747,8 +2725,8 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = BaseNonEditablePill;
   });
-;define("app/controllers/non-editable-text-pill", 
-  ["ember","app/controllers/base-non-editable-pill","app/components/modal-component","exports"],
+;define("ember-widgets/controllers/non-editable-text-pill", 
+  ["ember","ember-widgets/controllers/base-non-editable-pill","ember-widgets/components/modal-component","exports"],
   function(__dependency1__, __dependency2__, __dependency3__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
@@ -2781,8 +2759,8 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = NonEditableTextPill;
   });
-;define("app/components/text-editor-with-noneditable-config-component", 
-  ["ember","app/components/text-editor-config-component","app/mixins/pill-insert","exports"],
+;define("ember-widgets/components/text-editor-with-non-editable-config-component", 
+  ["ember","ember-widgets/components/text-editor-config-component","ember-widgets/mixins/pill-insert","exports"],
   function(__dependency1__, __dependency2__, __dependency3__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
@@ -2796,8 +2774,8 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = TextEditorWithNonEditableConfigComponent;
   });
-;define("app/components/typeahead-component", 
-  ["ember","app/components/select-component","exports"],
+;define("ember-widgets/components/typeahead-component", 
+  ["ember","ember-widgets/components/select-component","exports"],
   function(__dependency1__, __dependency2__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
@@ -2823,7 +2801,7 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = TypeaheadComponent;
   });
-;define("app/initializers/ember-widgets-config", 
+;define("ember-widgets/initializers/ember-widgets-config", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -2846,7 +2824,7 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = EmberWidgetsConfigInitializer;
   });
-;define("app/templates/accordion-group-layout", 
+;define("ember-widgets/templates/accordion-group-layout", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -2868,7 +2846,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/carousel", 
+;define("ember-widgets/templates/carousel", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -2897,7 +2875,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/color-picker", 
+;define("ember-widgets/templates/color-picker", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -2981,7 +2959,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/component-default-content", 
+;define("ember-widgets/templates/component-default-content", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -3000,7 +2978,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/components/color-picker-cell", 
+;define("ember-widgets/templates/components/color-picker-cell", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -3015,7 +2993,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/components/color-picker", 
+;define("ember-widgets/templates/components/color-picker", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -3099,7 +3077,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/components/editable-label", 
+;define("ember-widgets/templates/components/editable-label", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -3139,7 +3117,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/components/font-chooser-item", 
+;define("ember-widgets/templates/components/font-chooser-item", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -3162,7 +3140,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/components/modal", 
+;define("ember-widgets/templates/components/modal", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -3184,7 +3162,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/components/multi-select-item", 
+;define("ember-widgets/templates/components/multi-select-item", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -3205,7 +3183,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/components/multi-select", 
+;define("ember-widgets/templates/components/multi-select", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -3255,7 +3233,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/components/non-editable-text-pill-configuration", 
+;define("ember-widgets/templates/components/non-editable-text-pill-configuration", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -3276,7 +3254,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/components/popover", 
+;define("ember-widgets/templates/components/popover", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -3310,7 +3288,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/components/select-item", 
+;define("ember-widgets/templates/components/select-item", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -3351,7 +3329,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/components/select", 
+;define("ember-widgets/templates/components/select", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -3472,7 +3450,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/components/text-editor-config", 
+;define("ember-widgets/templates/components/text-editor-config", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -3561,7 +3539,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/components/text-editor-pill-menu", 
+;define("ember-widgets/templates/components/text-editor-pill-menu", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -3672,7 +3650,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/components/text-editor-with-non-editable-config", 
+;define("ember-widgets/templates/components/text-editor-with-non-editable-config", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -3776,7 +3754,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/components/text-editor-with-non-editable", 
+;define("ember-widgets/templates/components/text-editor-with-non-editable", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -3808,7 +3786,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/components/text-editor", 
+;define("ember-widgets/templates/components/text-editor", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -3823,7 +3801,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/components/typeahead", 
+;define("ember-widgets/templates/components/typeahead", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -3862,7 +3840,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/license", 
+;define("ember-widgets/templates/license", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -3880,7 +3858,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/modal-footer", 
+;define("ember-widgets/templates/modal-footer", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -3943,7 +3921,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/modal", 
+;define("ember-widgets/templates/modal", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -3969,7 +3947,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/modal_header", 
+;define("ember-widgets/templates/modal_header", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -3990,7 +3968,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/multi-select-item", 
+;define("ember-widgets/templates/multi-select-item", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -4011,7 +3989,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/multi-select", 
+;define("ember-widgets/templates/multi-select", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -4061,7 +4039,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/popover-link-popover", 
+;define("ember-widgets/templates/popover-link-popover", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -4095,7 +4073,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/popover", 
+;define("ember-widgets/templates/popover", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -4129,7 +4107,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/radio-button-layout", 
+;define("ember-widgets/templates/radio-button-layout", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -4150,7 +4128,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/select-item-layout", 
+;define("ember-widgets/templates/select-item-layout", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -4187,7 +4165,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/select-item", 
+;define("ember-widgets/templates/select-item", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -4228,7 +4206,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/select", 
+;define("ember-widgets/templates/select", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -4349,7 +4327,7 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define("app/templates/view-parent-view-content", 
+;define("ember-widgets/templates/view-parent-view-content", 
   ["ember","exports"],
   function(__dependency1__, __exports__) {
     "use strict";
@@ -4367,260 +4345,92 @@ var define, requireModule, require, requirejs;
       
     });
   });
-;define('ember-widgets-shim', ["exports"], function(__exports__) {__exports__.initialize = function(container){
-container.register('component:accordion-component', require('app/components/accordion-component')['default']);
-container.register('component:accordion-component'.camelize(), require('app/components/accordion-component')['default']);
-container.register('component:accordion-item', require('app/components/accordion-item')['default']);
-container.register('component:accordion-item'.camelize(), require('app/components/accordion-item')['default']);
-container.register('component:carousel-component', require('app/components/carousel-component')['default']);
-container.register('component:carousel-component'.camelize(), require('app/components/carousel-component')['default']);
-container.register('component:carousel-indicator', require('app/components/carousel-indicator')['default']);
-container.register('component:carousel-indicator'.camelize(), require('app/components/carousel-indicator')['default']);
-container.register('component:carousel-item', require('app/components/carousel-item')['default']);
-container.register('component:carousel-item'.camelize(), require('app/components/carousel-item')['default']);
-container.register('component:color-picker-cell', require('app/components/color-picker-cell')['default']);
-container.register('component:color-picker-cell'.camelize(), require('app/components/color-picker-cell')['default']);
-container.register('component:color-picker', require('app/components/color-picker')['default']);
-container.register('component:color-picker'.camelize(), require('app/components/color-picker')['default']);
-container.register('component:editable-label-component', require('app/components/editable-label-component')['default']);
-container.register('component:editable-label-component'.camelize(), require('app/components/editable-label-component')['default']);
-container.register('component:modal-component', require('app/components/modal-component')['default']);
-container.register('component:modal-component'.camelize(), require('app/components/modal-component')['default']);
-container.register('component:multi-select-component', require('app/components/multi-select-component')['default']);
-container.register('component:multi-select-component'.camelize(), require('app/components/multi-select-component')['default']);
-container.register('component:pill-select', require('app/components/pill-select')['default']);
-container.register('component:pill-select'.camelize(), require('app/components/pill-select')['default']);
-container.register('component:popover-component', require('app/components/popover-component')['default']);
-container.register('component:popover-component'.camelize(), require('app/components/popover-component')['default']);
-container.register('component:popover-link-component', require('app/components/popover-link-component')['default']);
-container.register('component:popover-link-component'.camelize(), require('app/components/popover-link-component')['default']);
-container.register('component:radio-button-component', require('app/components/radio-button-component')['default']);
-container.register('component:radio-button-component'.camelize(), require('app/components/radio-button-component')['default']);
-container.register('component:radio-button-group-component', require('app/components/radio-button-group-component')['default']);
-container.register('component:radio-button-group-component'.camelize(), require('app/components/radio-button-group-component')['default']);
-container.register('component:radio-button-wrapper', require('app/components/radio-button-wrapper')['default']);
-container.register('component:radio-button-wrapper'.camelize(), require('app/components/radio-button-wrapper')['default']);
-container.register('component:radio-button', require('app/components/radio-button')['default']);
-container.register('component:radio-button'.camelize(), require('app/components/radio-button')['default']);
-container.register('component:select-component', require('app/components/select-component')['default']);
-container.register('component:select-component'.camelize(), require('app/components/select-component')['default']);
-container.register('component:text-editor-config-component', require('app/components/text-editor-config-component')['default']);
-container.register('component:text-editor-config-component'.camelize(), require('app/components/text-editor-config-component')['default']);
-container.register('component:text-editor-with-non-editable-component', require('app/components/text-editor-with-non-editable-component')['default']);
-container.register('component:text-editor-with-non-editable-component'.camelize(), require('app/components/text-editor-with-non-editable-component')['default']);
-container.register('component:text-editor-with-noneditable-config-component', require('app/components/text-editor-with-noneditable-config-component')['default']);
-container.register('component:text-editor-with-noneditable-config-component'.camelize(), require('app/components/text-editor-with-noneditable-config-component')['default']);
-container.register('component:text-editor', require('app/components/text-editor')['default']);
-container.register('component:text-editor'.camelize(), require('app/components/text-editor')['default']);
-container.register('component:typeahead-component', require('app/components/typeahead-component')['default']);
-container.register('component:typeahead-component'.camelize(), require('app/components/typeahead-component')['default']);
-container.register('controller:base-non-editable-pill', require('app/controllers/base-non-editable-pill')['default']);
-container.register('controller:base-non-editable-pill'.camelize(), require('app/controllers/base-non-editable-pill')['default']);
-container.register('controller:non-editable-text-pill', require('app/controllers/non-editable-text-pill')['default']);
-container.register('controller:non-editable-text-pill'.camelize(), require('app/controllers/non-editable-text-pill')['default']);
-container.register('controller:todays-date-pill', require('app/controllers/todays-date-pill')['default']);
-container.register('controller:todays-date-pill'.camelize(), require('app/controllers/todays-date-pill')['default']);
-container.register('template:accordion-group-layout', require('app/templates/accordion-group-layout')['default']);
-container.register('template:accordion-group-layout'.camelize(), require('app/templates/accordion-group-layout')['default']);
-container.register('template:carousel', require('app/templates/carousel')['default']);
-container.register('template:carousel'.camelize(), require('app/templates/carousel')['default']);
-container.register('template:color-picker', require('app/templates/color-picker')['default']);
-container.register('template:color-picker'.camelize(), require('app/templates/color-picker')['default']);
-container.register('template:component-default-content', require('app/templates/component-default-content')['default']);
-container.register('template:component-default-content'.camelize(), require('app/templates/component-default-content')['default']);
-container.register('template:components/color-picker-cell', require('app/templates/components/color-picker-cell')['default']);
-container.register('template:components/color-picker-cell'.camelize(), require('app/templates/components/color-picker-cell')['default']);
-container.register('template:components/color-picker', require('app/templates/components/color-picker')['default']);
-container.register('template:components/color-picker'.camelize(), require('app/templates/components/color-picker')['default']);
-container.register('template:components/editable-label', require('app/templates/components/editable-label')['default']);
-container.register('template:components/editable-label'.camelize(), require('app/templates/components/editable-label')['default']);
-container.register('template:components/font-chooser-item', require('app/templates/components/font-chooser-item')['default']);
-container.register('template:components/font-chooser-item'.camelize(), require('app/templates/components/font-chooser-item')['default']);
-container.register('template:components/modal', require('app/templates/components/modal')['default']);
-container.register('template:components/modal'.camelize(), require('app/templates/components/modal')['default']);
-container.register('template:components/multi-select-item', require('app/templates/components/multi-select-item')['default']);
-container.register('template:components/multi-select-item'.camelize(), require('app/templates/components/multi-select-item')['default']);
-container.register('template:components/multi-select', require('app/templates/components/multi-select')['default']);
-container.register('template:components/multi-select'.camelize(), require('app/templates/components/multi-select')['default']);
-container.register('template:components/non-editable-text-pill-configuration', require('app/templates/components/non-editable-text-pill-configuration')['default']);
-container.register('template:components/non-editable-text-pill-configuration'.camelize(), require('app/templates/components/non-editable-text-pill-configuration')['default']);
-container.register('template:components/popover', require('app/templates/components/popover')['default']);
-container.register('template:components/popover'.camelize(), require('app/templates/components/popover')['default']);
-container.register('template:components/select-item', require('app/templates/components/select-item')['default']);
-container.register('template:components/select-item'.camelize(), require('app/templates/components/select-item')['default']);
-container.register('template:components/select', require('app/templates/components/select')['default']);
-container.register('template:components/select'.camelize(), require('app/templates/components/select')['default']);
-container.register('template:components/text-editor-config', require('app/templates/components/text-editor-config')['default']);
-container.register('template:components/text-editor-config'.camelize(), require('app/templates/components/text-editor-config')['default']);
-container.register('template:components/text-editor-pill-menu', require('app/templates/components/text-editor-pill-menu')['default']);
-container.register('template:components/text-editor-pill-menu'.camelize(), require('app/templates/components/text-editor-pill-menu')['default']);
-container.register('template:components/text-editor-with-non-editable-config', require('app/templates/components/text-editor-with-non-editable-config')['default']);
-container.register('template:components/text-editor-with-non-editable-config'.camelize(), require('app/templates/components/text-editor-with-non-editable-config')['default']);
-container.register('template:components/text-editor-with-non-editable', require('app/templates/components/text-editor-with-non-editable')['default']);
-container.register('template:components/text-editor-with-non-editable'.camelize(), require('app/templates/components/text-editor-with-non-editable')['default']);
-container.register('template:components/text-editor', require('app/templates/components/text-editor')['default']);
-container.register('template:components/text-editor'.camelize(), require('app/templates/components/text-editor')['default']);
-container.register('template:components/typeahead', require('app/templates/components/typeahead')['default']);
-container.register('template:components/typeahead'.camelize(), require('app/templates/components/typeahead')['default']);
-container.register('template:license', require('app/templates/license')['default']);
-container.register('template:license'.camelize(), require('app/templates/license')['default']);
-container.register('template:modal-footer', require('app/templates/modal-footer')['default']);
-container.register('template:modal-footer'.camelize(), require('app/templates/modal-footer')['default']);
-container.register('template:modal', require('app/templates/modal')['default']);
-container.register('template:modal'.camelize(), require('app/templates/modal')['default']);
-container.register('template:modal_header', require('app/templates/modal_header')['default']);
-container.register('template:modal_header'.camelize(), require('app/templates/modal_header')['default']);
-container.register('template:multi-select-item', require('app/templates/multi-select-item')['default']);
-container.register('template:multi-select-item'.camelize(), require('app/templates/multi-select-item')['default']);
-container.register('template:multi-select', require('app/templates/multi-select')['default']);
-container.register('template:multi-select'.camelize(), require('app/templates/multi-select')['default']);
-container.register('template:popover-link-popover', require('app/templates/popover-link-popover')['default']);
-container.register('template:popover-link-popover'.camelize(), require('app/templates/popover-link-popover')['default']);
-container.register('template:popover', require('app/templates/popover')['default']);
-container.register('template:popover'.camelize(), require('app/templates/popover')['default']);
-container.register('template:radio-button-layout', require('app/templates/radio-button-layout')['default']);
-container.register('template:radio-button-layout'.camelize(), require('app/templates/radio-button-layout')['default']);
-container.register('template:select-item-layout', require('app/templates/select-item-layout')['default']);
-container.register('template:select-item-layout'.camelize(), require('app/templates/select-item-layout')['default']);
-container.register('template:select-item', require('app/templates/select-item')['default']);
-container.register('template:select-item'.camelize(), require('app/templates/select-item')['default']);
-container.register('template:select', require('app/templates/select')['default']);
-container.register('template:select'.camelize(), require('app/templates/select')['default']);
-container.register('template:view-parent-view-content', require('app/templates/view-parent-view-content')['default']);
-container.register('template:view-parent-view-content'.camelize(), require('app/templates/view-parent-view-content')['default']);
-container.register('view:multi-select-option', require('app/views/multi-select-option')['default']);
-container.register('view:multi-select-option'.camelize(), require('app/views/multi-select-option')['default']);
-container.register('view:select-option', require('app/views/select-option')['default']);
-container.register('view:select-option'.camelize(), require('app/views/select-option')['default']);
-};});
-;define('globals', ['app/components/accordion-component',
-'app/components/accordion-item',
-'app/components/carousel-component',
-'app/components/carousel-indicator',
-'app/components/carousel-item',
-'app/components/color-picker-cell',
-'app/components/color-picker',
-'app/components/editable-label-component',
-'app/components/modal-component',
-'app/components/multi-select-component',
-'app/components/pill-select',
-'app/components/popover-component',
-'app/components/popover-link-component',
-'app/components/radio-button-component',
-'app/components/radio-button-group-component',
-'app/components/radio-button-wrapper',
-'app/components/radio-button',
-'app/components/select-component',
-'app/components/text-editor-config-component',
-'app/components/text-editor-with-non-editable-component',
-'app/components/text-editor-with-noneditable-config-component',
-'app/components/text-editor',
-'app/components/typeahead-component',
-'app/controllers/base-non-editable-pill',
-'app/controllers/non-editable-text-pill',
-'app/controllers/todays-date-pill',
-'app/mixins/body-event-listener',
-'app/mixins/dom-helper',
-'app/mixins/pill-insert',
-'app/mixins/popover',
-'app/mixins/resize-handler',
-'app/mixins/style-bindings',
-'app/utils/color-utils',
-'app/utils/css-transitions',
-'app/views/multi-select-option',
-'app/views/select-option', "exports"], function(__dependency1__,
-__dependency2__,
-__dependency3__,
-__dependency4__,
-__dependency5__,
-__dependency6__,
-__dependency7__,
-__dependency8__,
-__dependency9__,
-__dependency10__,
-__dependency11__,
-__dependency12__,
-__dependency13__,
-__dependency14__,
-__dependency15__,
-__dependency16__,
-__dependency17__,
-__dependency18__,
-__dependency19__,
-__dependency20__,
-__dependency21__,
-__dependency22__,
-__dependency23__,
-__dependency24__,
-__dependency25__,
-__dependency26__,
-__dependency27__,
-__dependency28__,
-__dependency29__,
-__dependency30__,
-__dependency31__,
-__dependency32__,
-__dependency33__,
-__dependency34__,
-__dependency35__,
-__dependency36__, __exports__) {
-window.Ember.Widgets.AccordionComponent = __dependency1__['default'];
-window.Ember.Widgets.AccordionItemComponent = __dependency2__['default'];
-window.Ember.Widgets.CarouselComponent = __dependency3__['default'];
-window.Ember.Widgets.CarouselIndicatorComponent = __dependency4__['default'];
-window.Ember.Widgets.CarouselItemComponent = __dependency5__['default'];
-window.Ember.Widgets.ColorPickerCellComponent = __dependency6__['default'];
-window.Ember.Widgets.ColorPickerComponent = __dependency7__['default'];
-window.Ember.Widgets.EditableLabelComponent = __dependency8__['default'];
-window.Ember.Widgets.ModalComponent = __dependency9__['default'];
-window.Ember.Widgets.MultiSelectComponent = __dependency10__['default'];
-window.Ember.Widgets.PillSelectComponent = __dependency11__['default'];
-window.Ember.Widgets.PopoverComponent = __dependency12__['default'];
-window.Ember.Widgets.PopoverLinkComponent = __dependency13__['default'];
-window.Ember.Widgets.RadioButtonComponent = __dependency14__['default'];
-window.Ember.Widgets.RadioButtonGroupComponent = __dependency15__['default'];
-window.Ember.Widgets.RadioButtonWrapperComponent = __dependency16__['default'];
-window.Ember.Widgets.RadioButtonComponent = __dependency17__['default'];
-window.Ember.Widgets.SelectComponent = __dependency18__['default'];
-window.Ember.Widgets.TextEditorConfigComponent = __dependency19__['default'];
-window.Ember.Widgets.TextEditorWithNonEditableComponent = __dependency20__['default'];
-window.Ember.Widgets.TextEditorWithNoneditableConfigComponent = __dependency21__['default'];
-window.Ember.Widgets.TextEditorComponent = __dependency22__['default'];
-window.Ember.Widgets.TypeaheadComponent = __dependency23__['default'];
-window.Ember.Widgets.BaseNonEditablePillController = __dependency24__['default'];
-window.Ember.Widgets.NonEditableTextPillController = __dependency25__['default'];
-window.Ember.Widgets.TodaysDatePillController = __dependency26__['default'];
-window.Ember.Widgets.BodyEventListenerMixin = __dependency27__['default'];
-window.Ember.Widgets.DomHelperMixin = __dependency28__['default'];
-window.Ember.Widgets.PillInsertMixin = __dependency29__['default'];
-window.Ember.Widgets.PopoverMixin = __dependency30__['default'];
-window.Ember.Widgets.ResizeHandlerMixin = __dependency31__['default'];
-window.Ember.Widgets.StyleBindingsMixin = __dependency32__['default'];
-window.Ember.Widgets.ColorUtilsUtil = __dependency33__['default'];
-window.Ember.Widgets.CssTransitionsUtil = __dependency34__['default'];
-window.Ember.Widgets.MultiSelectOptionView = __dependency35__['default'];
-window.Ember.Widgets.SelectOptionView = __dependency36__['default'];
-__exports__['default'] = window.Ember.Widgets;
-});
-;/* global define, require */
-
-define('ember', ["exports"], function(__exports__) {
+;define('ember', ['exports'], function(__exports__) {
   __exports__['default'] = window.Ember;
 });
 
-// This is where we actually create Ember.Widgets and fill it with the stuff
-// generated by globals.js
-window.Ember.Widgets = {};
-require('globals');
-
+window.Ember.Widgets = Ember.Namespace.create();
+window.Ember.AddeparMixins = {};
+window.Ember.TEMPLATES['accordion-group-layout'] = require('ember-widgets/templates/accordion-group-layout')['default'];
+window.Ember.TEMPLATES['carousel'] = require('ember-widgets/templates/carousel')['default'];
+window.Ember.TEMPLATES['color-picker'] = require('ember-widgets/templates/color-picker')['default'];
+window.Ember.TEMPLATES['component-default-content'] = require('ember-widgets/templates/component-default-content')['default'];
+window.Ember.TEMPLATES['components/color-picker-cell'] = require('ember-widgets/templates/components/color-picker-cell')['default'];
+window.Ember.TEMPLATES['components/color-picker'] = require('ember-widgets/templates/components/color-picker')['default'];
+window.Ember.TEMPLATES['components/editable-label'] = require('ember-widgets/templates/components/editable-label')['default'];
+window.Ember.TEMPLATES['components/font-chooser-item'] = require('ember-widgets/templates/components/font-chooser-item')['default'];
+window.Ember.TEMPLATES['components/modal'] = require('ember-widgets/templates/components/modal')['default'];
+window.Ember.TEMPLATES['components/multi-select-item'] = require('ember-widgets/templates/components/multi-select-item')['default'];
+window.Ember.TEMPLATES['components/multi-select'] = require('ember-widgets/templates/components/multi-select')['default'];
+window.Ember.TEMPLATES['components/non-editable-text-pill-configuration'] = require('ember-widgets/templates/components/non-editable-text-pill-configuration')['default'];
+window.Ember.TEMPLATES['components/popover'] = require('ember-widgets/templates/components/popover')['default'];
+window.Ember.TEMPLATES['components/select-item'] = require('ember-widgets/templates/components/select-item')['default'];
+window.Ember.TEMPLATES['components/select'] = require('ember-widgets/templates/components/select')['default'];
+window.Ember.TEMPLATES['components/text-editor-config'] = require('ember-widgets/templates/components/text-editor-config')['default'];
+window.Ember.TEMPLATES['components/text-editor-pill-menu'] = require('ember-widgets/templates/components/text-editor-pill-menu')['default'];
+window.Ember.TEMPLATES['components/text-editor-with-non-editable-config'] = require('ember-widgets/templates/components/text-editor-with-non-editable-config')['default'];
+window.Ember.TEMPLATES['components/text-editor-with-non-editable'] = require('ember-widgets/templates/components/text-editor-with-non-editable')['default'];
+window.Ember.TEMPLATES['components/text-editor'] = require('ember-widgets/templates/components/text-editor')['default'];
+window.Ember.TEMPLATES['components/typeahead'] = require('ember-widgets/templates/components/typeahead')['default'];
+window.Ember.TEMPLATES['license'] = require('ember-widgets/templates/license')['default'];
+window.Ember.TEMPLATES['modal-footer'] = require('ember-widgets/templates/modal-footer')['default'];
+window.Ember.TEMPLATES['modal'] = require('ember-widgets/templates/modal')['default'];
+window.Ember.TEMPLATES['modal_header'] = require('ember-widgets/templates/modal_header')['default'];
+window.Ember.TEMPLATES['multi-select-item'] = require('ember-widgets/templates/multi-select-item')['default'];
+window.Ember.TEMPLATES['multi-select'] = require('ember-widgets/templates/multi-select')['default'];
+window.Ember.TEMPLATES['popover-link-popover'] = require('ember-widgets/templates/popover-link-popover')['default'];
+window.Ember.TEMPLATES['popover'] = require('ember-widgets/templates/popover')['default'];
+window.Ember.TEMPLATES['radio-button-layout'] = require('ember-widgets/templates/radio-button-layout')['default'];
+window.Ember.TEMPLATES['select-item-layout'] = require('ember-widgets/templates/select-item-layout')['default'];
+window.Ember.TEMPLATES['select-item'] = require('ember-widgets/templates/select-item')['default'];
+window.Ember.TEMPLATES['select'] = require('ember-widgets/templates/select')['default'];
+window.Ember.TEMPLATES['view-parent-view-content'] = require('ember-widgets/templates/view-parent-view-content')['default'];
+window.Ember.Widgets.AccordionComponent = require('ember-widgets/components/accordion-component')['default'];
+window.Ember.Widgets.AccordionItem = require('ember-widgets/components/accordion-item')['default'];
+window.Ember.Widgets.CarouselComponent = require('ember-widgets/components/carousel-component')['default'];
+window.Ember.Widgets.CarouselIndicator = require('ember-widgets/components/carousel-indicator')['default'];
+window.Ember.Widgets.CarouselItem = require('ember-widgets/components/carousel-item')['default'];
+window.Ember.Widgets.ColorPicker = require('ember-widgets/components/color-picker')['default'];
+window.Ember.Widgets.ColorPickerCell = require('ember-widgets/components/color-picker-cell')['default'];
+window.Ember.Widgets.EditableLabel = require('ember-widgets/components/editable-label-component')['default'];
+window.Ember.Widgets.ModalComponent = require('ember-widgets/components/modal-component')['default'];
+window.Ember.Widgets.MultiSelectComponent = require('ember-widgets/components/multi-select-component')['default'];
+window.Ember.Widgets.PopoverComponent = require('ember-widgets/components/popover-component')['default'];
+window.Ember.Widgets.PopoverLinkComponent = require('ember-widgets/components/popover-link-component')['default'];
+window.Ember.Widgets.RadioButtonComponent = require('ember-widgets/components/radio-button-component')['default'];
+window.Ember.Widgets.RadioButtonGroupComponent = require('ember-widgets/components/radio-button-group-component')['default'];
+window.Ember.Widgets.RadioButtonWrapperComponent = require('ember-widgets/components/radio-button-wrapper-component')['default'];
+window.Ember.Widgets.SelectComponent = require('ember-widgets/components/select-component')['default'];
+window.Ember.Widgets.TypeaheadComponent = require('ember-widgets/components/typeahead-component')['default'];
+window.Ember.Widgets.StyleBindingsMixin = require('ember-widgets/mixins/style-bindings')['default'];
+window.Ember.Widgets.BodyEventListener = require('ember-widgets/mixins/body-event-listener')['default'];
+window.Ember.Widgets.PopoverMixin = require('ember-widgets/mixins/popover')['default'];
+window.Ember.AddeparMixins.ResizeHandlerMixin = require('ember-widgets/mixins/resize-handler')['default'];
+window.Ember.Widgets.MultiSelectOptionView = require('ember-widgets/views/multi-select-option')['default'];
+window.Ember.Widgets.SelectOptionView = require('ember-widgets/views/select-option')['default'];
 Ember.onLoad('Ember.Application', function(Application) {
-  Application.initializer({
-    name: 'ember-widgets-standalone',
-    initialize: function(container) {
-      // Once the application is loaded, add an initializer to add stuff to
-      // the container using the output from registry.js
-      require('ember-widgets-shim').initialize(container);
-    }
-  });
+Application.initializer({
+name: 'ember-widgets',
+initialize: function(container) {
+container.register('component:accordion-component', require('ember-widgets/components/accordion-component')['default']);
+container.register('component:accordion-item', require('ember-widgets/components/accordion-item')['default']);
+container.register('component:carousel-component', require('ember-widgets/components/carousel-component')['default']);
+container.register('component:carousel-indicator', require('ember-widgets/components/carousel-indicator')['default']);
+container.register('component:carousel-item', require('ember-widgets/components/carousel-item')['default']);
+container.register('component:color-picker', require('ember-widgets/components/color-picker')['default']);
+container.register('component:color-picker-cell', require('ember-widgets/components/color-picker-cell')['default']);
+container.register('component:editable-label-component', require('ember-widgets/components/editable-label-component')['default']);
+container.register('component:modal-component', require('ember-widgets/components/modal-component')['default']);
+container.register('component:multi-select-component', require('ember-widgets/components/multi-select-component')['default']);
+container.register('component:popover-component', require('ember-widgets/components/popover-component')['default']);
+container.register('component:popover-link-component', require('ember-widgets/components/popover-link-component')['default']);
+container.register('component:radio-button-component', require('ember-widgets/components/radio-button-component')['default']);
+container.register('component:radio-button-group-component', require('ember-widgets/components/radio-button-group-component')['default']);
+container.register('component:radio-button-wrapper-component', require('ember-widgets/components/radio-button-wrapper-component')['default']);
+container.register('component:select-component', require('ember-widgets/components/select-component')['default']);
+container.register('component:typeahead-component', require('ember-widgets/components/typeahead-component')['default']);
+container.register('view:multi-select-option', require('ember-widgets/views/multi-select-option')['default']);
+container.register('view:select-option', require('ember-widgets/views/select-option')['default']);
+}
 });
-})();
+});})();

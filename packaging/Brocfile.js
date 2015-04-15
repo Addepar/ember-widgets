@@ -9,11 +9,12 @@ var compileES6 = require('broccoli-es6-concatenator');
 var es3Safe = require('broccoli-es3-safe-recast');
 var templateCompiler = require('broccoli-ember-hbs-template-compiler');
 var less = require('broccoli-less-single');
+var filterCoffeeScript = require('broccoli-coffee');
 var wrap = require('./wrap');
 var globals = require('./globals');
 
 var addonTree = filterCoffeeScript(
-  pickFiles('../addon', {
+  pickFiles('../app', {
     srcDir: '/',
     destDir: 'ember-widgets'
   }),
@@ -49,7 +50,7 @@ var globalExports = globals(pickFiles(sourceTree, {
 }));
 
 // Require.js module loader
-var loader = pickFiles('bower_components', {srcDir: '/loader.js', destDir: '/'});
+var loader = pickFiles('../bower_components', {srcDir: '/loader.js', destDir: '/'});
 
 var jsTree = mergeTrees([sourceTree, globalExports, loader]);
 
@@ -67,11 +68,12 @@ var compiled = compileES6(jsTree, {
 compiled = wrap(compiled);
 
 // Compile LESS
-var lessTree = pickFiles('addon/styles', {
+var lessTree = pickFiles('../app/styles', {
   srcDir: '/',
   destDir: '/'
 });
-var lessMain = 'addon.less';
+// FIXME(igillis): Rename to addon.less
+var lessMain = 'ember-widgets.less';
 var lessOutput = 'css/ember-widgets.css';
 lessTree = less(lessTree, lessMain, lessOutput);
 
