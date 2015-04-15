@@ -187,7 +187,7 @@ Ember.Component.extend BodyEventListener, ResizeHandlerMixin,
   groupedContent: Ember.computed ->
     path    = @get 'optionGroupPath'
     content = @get 'preparedContent'
-    return content unless path
+    return Ember.A(content) unless path
     groups  = _.groupBy content, (item) -> Ember.get(item, path)
     result  = Ember.A()
     _.keys(groups).sort().forEach (key) ->

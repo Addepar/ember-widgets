@@ -49,12 +49,11 @@ ColorPicker = Ember.Component.extend
       ])
     ])
 
-  setupCustomColor: Ember.observer(->
+  setupCustomColor: Ember.on 'init', ->
     selectedColor = colorToHex(@get('selectedColor'))
     return if @get('colorRows').find (row) ->
       selectedColor in row.invoke 'toLowerCase'
     @set 'customColor', @get('selectedColor')
-  ).on 'init'
 
   setCustomColor: Ember.observer ->
     if @get('isCustomColorValid') is true

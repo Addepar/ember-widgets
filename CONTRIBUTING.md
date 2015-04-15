@@ -69,6 +69,11 @@ code and should not be directly modified but instead generated using
 ```bash
 cd packaging/ && rm -r dist && broccoli build dist/
 ```
+We believe it's good practice to write Ember code that runs correctly when
+prototype prototype extensions are disabled. To that end, we've disabled them
+in the demo app included in this repository. Please read
+[the documentation](http://emberjs.com/guides/configuring-ember/disabling-prototype-extensions/#toc_life-without-prototype-extension)
+about writing compatible Ember code.
 
 ## Pull requests
 
