@@ -14,7 +14,7 @@ var wrap = require('./wrap');
 var globals = require('./globals');
 
 var addonTree = filterCoffeeScript(
-  pickFiles('../app', {
+  pickFiles('app', {
     srcDir: '/',
     destDir: 'ember-widgets'
   }),
@@ -24,7 +24,7 @@ var addonTree = filterCoffeeScript(
 );
 
 var viewsTree = filterCoffeeScript(
-  pickFiles('../app/views', {
+  pickFiles('app/views', {
     srcDir: '/',
     destDir: 'ember-widgets/views'
   }),
@@ -34,7 +34,7 @@ var viewsTree = filterCoffeeScript(
 );
 
 // Compile templates
-var templateTree = templateCompiler('../app/templates', { module: true });
+var templateTree = templateCompiler('app/templates', { module: true });
 templateTree = pickFiles(templateTree, {srcDir: '/', destDir: 'ember-widgets/templates'});
 
 var sourceTree = mergeTrees([templateTree, viewsTree, addonTree], {overwrite: true});
@@ -50,7 +50,7 @@ var globalExports = globals(pickFiles(sourceTree, {
 }));
 
 // Require.js module loader
-var loader = pickFiles('../bower_components', {srcDir: '/loader.js', destDir: '/'});
+var loader = pickFiles('bower_components', {srcDir: '/loader.js', destDir: '/'});
 
 var jsTree = mergeTrees([sourceTree, globalExports, loader]);
 
@@ -68,7 +68,7 @@ var compiled = compileES6(jsTree, {
 compiled = wrap(compiled);
 
 // Compile LESS
-var lessTree = pickFiles('../app/styles', {
+var lessTree = pickFiles('app/styles', {
   srcDir: '/',
   destDir: '/'
 });
@@ -78,7 +78,7 @@ var lessOutput = 'css/ember-widgets.css';
 lessTree = less(lessTree, lessMain, lessOutput);
 
 // Compile static files
-var images = pickFiles('../public/images', {
+var images = pickFiles('public/images', {
   srcDir: '/',
   destDir: '/img'
 });
