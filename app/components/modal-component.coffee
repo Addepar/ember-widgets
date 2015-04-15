@@ -150,8 +150,8 @@ ModalComponent = Ember.Component.extend StyleBindingsMixin,
   _appendBackdrop: ->
     parentLayer = @$().parent()
     modalPaneBackdrop = @get 'modalPaneBackdrop'
-    @_backdrop =
-      jQuery(modalPaneBackdrop).addClass('fade') if @get('fadeEnabled')
+    @_backdrop = jQuery(modalPaneBackdrop)
+    @_backdrop.addClass('fade') if @get('fadeEnabled')
     @_backdrop.appendTo(parentLayer)
     # show backdrop in next run loop so that it can fade in
     Ember.run.next this, -> @_backdrop.addClass('in')
