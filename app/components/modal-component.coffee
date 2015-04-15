@@ -33,9 +33,9 @@ ModalComponent = Ember.Component.extend StyleBindingsMixin,
     @get('fade')
   .property 'fade'
 
-  confirm: Ember.K
-  cancel: Ember.K
-  close: Ember.K
+  confirm: null
+  cancel: null
+  close: null
 
   headerViewClass: Ember.View.extend
     templateName: 'modal_header'
