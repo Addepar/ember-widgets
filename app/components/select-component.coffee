@@ -156,10 +156,10 @@ Ember.Component.extend BodyEventListener, ResizeHandlerMixin,
   contentProxy: Ember.computed ->
     matcher = (searchText, item) => @matcher(searchText, item)
     optionLabelPath = @get('optionLabelPath')
-    if optionLabelPath is ''
-      observableString = 'content.@each'
-    else
+    if optionLabelPath
       observableString = "content.@each.#{optionLabelPath}"
+    else
+      observableString = 'content.@each'
     query = @get('query')
 
     ContentProxy = Ember.ObjectProxy.extend
