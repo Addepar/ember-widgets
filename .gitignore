@@ -1,18 +1,21 @@
-node_modules/
-gh_pages/
-build/
-dependencies/compiled/*.*
-test/runner.html
-.DS_Store
-.stage
-*.swo
-*.swp
+# See http://help.github.com/ignore-files/ for more about ignoring files.
 
-# Bower dependencies
-vendor/
+# compiled output
+/dist
+/tmp
 
-tests/**/*.js
+# dependencies
+/node_modules
+/bower_components
 
+# misc
+/.sass-cache
+/connect.lock
+/coverage/*
+/libpeerconnection.log
 npm-debug.log
+testem.log
+.DS_Store
 
-tests/integration_test_helper.js
+# grunt-release-it
+.stage

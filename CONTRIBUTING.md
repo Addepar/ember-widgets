@@ -56,16 +56,24 @@ provide as much detail and context as possible.
 ## Writing Code in Ember Widgets
 
 Ember-widgets is written in [CoffeeScript](http://coffeescript.org/) and
-compiled into JavaScript using [Grunt](http://gruntjs.com/). Contributing to
-ember-widgets requires that you have grunt and NPM (for pulling in
-dependencies) locally installed.
+compiled using [ember-cli](http://www.ember-cli.com/).
 
-The `src` folder contains all the source code for the ember-widgets project
-itself. The `app` folder contains the sample app and documentation, and should
-be updated whenever changes will add functionality, modify or remove existing
-functionality, or change public APIs. The `dist` folder contains the compiled
-ember-widgets code and should not be directly modified but instead generated
-using `grunt dist`.
+The `app` folder contains all the source code for the ember-widgets project
+itself. The `tests/dummy` folder contains the sample app and documentation, and
+should be updated whenever changes will add functionality, modify or remove existing
+functionality, or change public APIs. This is the app that is run when you
+`ember server`.
+
+The `packaging/dist` folder contains the compiled [global ember-widgets build](packaging/README.md)
+code and should not be directly modified but instead generated using
+```bash
+cd packaging/ && rm -r dist && broccoli build dist/
+```
+We believe it's good practice to write Ember code that runs correctly when
+prototype prototype extensions are disabled. To that end, we've disabled them
+in the demo app included in this repository. Please read
+[the documentation](http://emberjs.com/guides/configuring-ember/disabling-prototype-extensions/#toc_life-without-prototype-extension)
+about writing compatible Ember code.
 
 We believe it's good practice to write Ember code that runs correctly when
 prototype prototype extensions are disabled. To that end, we've disabled them
@@ -117,10 +125,10 @@ included in the project:
    git checkout -b <topic-branch-name>
    ```
 
-4. Before committing changes, make sure to compile modified CoffeeScript files.
+4. Before committing changes, make sure to compile the [globals build](packaging/README.md)
 
    ```bash
-   grunt dist
+   cd packaging/ && rm -r dist && broccoli build dist/
    ```
 
 5. Commit your changes in logical chunks. Please adhere to these [git commit
@@ -148,10 +156,10 @@ included in the project:
 license your work under the terms of the [BSD License](LICENSE).
 
 
-## Running tests
+## Running tests (WIP -- do not use!)
 
 ```bash
-grunt karma:default
+ember test
 ```
 
 

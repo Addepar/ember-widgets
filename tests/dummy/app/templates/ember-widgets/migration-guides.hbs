@@ -1,0 +1,45 @@
+{{!-- To add shadow main-content-container-shadow --}}
+<div class="col-md-10 col-md-offset-2 left-border main-content-container">
+  <h1>Migration Guides</h1>
+  <div class="row">
+    <div class="col-md-9">
+      <h2>Migrating to version 0.3.0 </h2>
+      <p>
+        <p>
+          With version 0.3.0, ember widgets has adopted the
+          <a target="_BLANK" href="http://www.ember-cli.com/">ember-cli</a>
+          infrastructure.<br>
+        </p>
+
+        <p>
+          Going forward, we recommend that all consumers of
+          ember-widgets use the addon build. We maintain a largely backwards compatible
+          globals build, and the migration details for that build are below.
+        </p>
+      </p>
+      <h3>Upgrade steps for globals build users</h3>
+      <ol class="styled styled-spacious">
+        <li>
+          Replace any paths referencing '{some-path}/ember-widgets/dist' with
+          '{some-path}/ember-widgets/packaging/dist'.
+        </li>
+        <li>
+          Update references to Ember Widgets classes to append the superclass where
+          it is not already present. For example,
+          <code>App.MyComponent = Ember.Component.extend(Ember.Widgets.BodyEventListener, {}) </code>
+          becomes
+          <code>App.MyComponent = Ember.Component.extend(Ember.Widgets.BodyEventListenerMixin, {})</code>
+        </li>
+        <li>
+          Replace <code>Ember.Widgets.DISABLE_ANIMATIONS = yes</code> with
+          <code>this.set('emberWidgetsConfig.DISABLE_ANIMATIONS', yes)</code>
+        </li>
+        <li>
+          <b>(Optional)</b> Replace instances of view helper with component syntax. For example,
+          <code>&#123;&#123;view Ember.Widgets.ColorPicker...&#125;&#125;</code> becomes
+          <code>&#123;&#123;color-picker...&#125;&#125;</code>
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>

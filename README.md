@@ -6,40 +6,32 @@ A collection of small widgets, easy to drop into place as Ember Components.
 ## Demo and Documentation
 http://addepar.github.com/ember-widgets/
 
-
-## Getting started
-
 ### JS Bin Starter Kit
 
 http://emberjs.jsbin.com/hebexa/1/edit
 
-### Installation
+## Ember-CLI Installation
 
-With bower: `bower install ember-widgets --save`
+* `git clone` this repository
+* `npm install`
+* `bower install`
 
-Or, just include `dist/js/ember-widgets.js` and `dist/css/ember-widgets.css` in your app.
+## Globals Installation
 
-Once it's installed, you can customize the look of ember-widgets with CSS.
+See the [packaging folder](packaging/README.md)
 
+## Running
 
-#### Developing or Testing
+* `ember server`
+* Visit your app at http://0.0.0.0:4200/.
 
-```bash
-$ npm install -g grunt-cli
-$ npm install
-$ grunt
-```
+## Building for Ember-CLI
 
-To view examples, start the node server. From the root directory:
+* `ember build`
 
-`$ node examples.js`.
+## Globals build for legacy apps
 
-You can view the examples at http://localhost:8000/gh_pages.
-
-For developing, install pre-commit hooks to run tests in PhantomJS:
-
-`./bin/create-hook-symlinks`
-
+See the [packaging folder](packaging/README.md)
 
 ## Dependencies
 * ember
@@ -47,7 +39,6 @@ For developing, install pre-commit hooks to run tests in PhantomJS:
 * bootstrap v3
 * lodash
 * ember list-view
-
 
 ## Contributing
 
@@ -57,7 +48,6 @@ without lots of help from the community.
 
 Please read the [contribution guidelines](CONTRIBUTING.md) for directions on
 opening issues and working on the project.
-
 
 ## Versioning
 
