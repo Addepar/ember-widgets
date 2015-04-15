@@ -15,7 +15,7 @@ var Globals = function (inputTree) {
   // The old global names aren't consistent: some are on Ember.Widgets, some on
   // Ember.AddeparMixins, and some just on Ember. For backwards-compatibility
   // we need to maintain the same old names.
-  // FIXME(igillis): Need to remove the "-component" from some names.
+  // FIXME(igillis): Need to remove the "-component" from some file names.
   this.globalNameMapping = {
     'ember-widgets/components/accordion-component': 'Ember.Widgets.AccordionComponent',
     'ember-widgets/components/accordion-item': 'Ember.Widgets.AccordionItem',
@@ -46,6 +46,22 @@ var Globals = function (inputTree) {
     'ember-widgets/views/multi-select-option': 'Ember.Widgets.MultiSelectOptionView',
     'ember-widgets/views/select-option': 'Ember.Widgets.SelectOptionView'
   };
+
+  this.templateNameMapping = {
+    'accordion-component': 'Ember.Widgets.AccordionComponent',
+    'accordion-item': 'Ember.Widgets.AccordionItem',
+    'carousel-component': 'Ember.Widgets.CarouselComponent',
+    'carousel-item': 'Ember.Widgets.CarouselItem',
+    'editable-label-component': 'Ember.Widgets.EditableLabel',
+    'modal-component': 'Ember.Widgets.ModalComponent',
+    'multi-select-component': 'Ember.Widgets.MultiSelectComponent',
+    'popover-component': 'Ember.Widgets.PopoverComponent',
+    'popover-link-component': 'Ember.Widgets.PopoverLinkComponent',
+    'radio-button-group-component': 'Ember.Widgets.RadioButtonGroupComponent',
+    'radio-button': 'Ember.Widgets.RadioButtonWrapperComponent',
+    'select-component': 'Ember.Widgets.SelectComponent',
+    'typeahead-component': 'Ember.Widgets.TypeaheadComponent'
+  };
 };
 
 Globals.prototype = Object.create(Writer.prototype);
@@ -58,6 +74,15 @@ Globals.prototype.write = function(readTree, destDir) {
     lines.forEach(function(line) {
       output.push(line);
     });
+  };
+
+  // helpersToAdd should be a dictionary:
+  // 'helper-name' : 'Ember.Widgets.GlobalName'
+  this.addHandlebarsHelpersToOutput = function(output, helpersToAdd) {
+    for (helperName in helpersToAdd) {
+      output.push("Ember.Handlebars.helper('" + helperName +
+          "', " + helpersToAdd[helperName] + ");");
+    };
   };
 
   return new Promise(function(resolve) {
@@ -130,20 +155,17 @@ Globals.prototype.write = function(readTree, destDir) {
 
       // For backwards compatibility, set a layoutName so the component
       // actually renders
-      // FIXME(azirbel): We need this. Revisit and add it for all components
-      // who have a `layoutName`.
+      // FIXME(igillis): In Ember-Table, we removed `layoutName` from the
+      // files. We then had to re-define it for the globals build using code
+      // like that below. Do we have to do it here?
       // _this.addLinesToOutput(output, [
-      //   "Ember.Widgets.EmberTableComponent.reopen({",
+      //   "Ember.Table.EmberTableComponent.reopen({",
       //   "layoutName: 'components/ember-table'",
       //   "});"
       // ]);
 
-      // Register table-component with handlebars so users can just use
-      // {{table-component}}
-      // FIXME(azirbel): We need this too. Revisit and add all handlebars
-      // helpers with correct names.
-      // output.push("Ember.Handlebars.helper('table-component', " +
-      //             "Ember.Table.EmberTableComponent);");
+      // Register helpers so users can just use e.g. {{modal-component}}
+      _this.addHandlebarsHelpersToOutput(output, _this.templateNameMapping);
 
       fs.writeFileSync(path.join(destDir, 'globals-output.js'),
           output.join("\n"));
