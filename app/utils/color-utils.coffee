@@ -1,6 +1,10 @@
 rgbToHex = (r, g, b) ->
   "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)
 
+expandHexColor = (color) ->
+  # expand 3-digit hex codes to 6-digit, otherwise don't modify
+  color.replace(/^#([0-9A-F])([0-9A-F])([0-9A-F])$/i, '#$1$1$2$2$3$3')
+
 colorNameToHexMap =
   aliceblue: "#f0f8ff"
   antiquewhite: "#faebd7"
