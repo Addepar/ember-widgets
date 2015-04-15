@@ -450,45 +450,6 @@
   -moz-border-radius: 0;
   border-radius: 0;
 }
-.ember-text-editor-toolbar {
-  border: 1px solid #ddd;
-  border-bottom: none;
-  background-color: #fff;
-  padding: 5px;
-}
-.ember-text-editor-toolbar .font,
-.ember-text-editor-toolbar .font-size {
-  display: inline-block;
-  vertical-align: top;
-  line-height: 20px;
-}
-.ember-text-editor-toolbar .ember-text-editor-font-family-select .btn-sm,
-.ember-text-editor-toolbar .ember-text-editor-font-size-select .btn-sm,
-.ember-text-editor-toolbar .insert-non-editable-btn .btn-sm {
-  margin-top: -1px;
-}
-.ember-text-editor-font-family-select .btn {
-  width: 150px;
-}
-.ember-text-editor-font-size-select .ember-select-choice.btn {
-  width: 50px;
-}
-.ember-text-editor-font-size-select.ember-select .dropdown-menu {
-  min-width: 48px;
-}
-/* iFrame */
-.text-editor-frame {
-  display: block;
-  width: 100%;
-  min-height: 20px;
-  border: 1px solid #ddd;
-}
-/* .text-editor => Text Editor
-   Note: This has to be copied into iframeHeadContents
-   in Ember.Widgets.TextEditorComponent */
-/* .non-editable => Non-Editable Pills
-   Note: This has to be copied into iframeHeadContents
-   in Ember.Widgets.TextEditorComponent */
 .color-picker-button {
   display: inline-block;
   padding: 0 !important;

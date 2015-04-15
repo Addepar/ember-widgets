@@ -246,7 +246,7 @@ Ember.Component.extend BodyEventListener, ResizeHandlerMixin,
     defaultPath = @get 'optionDefaultPath'
     return unless content and defaultPath
     @set 'selection', content.findProperty(defaultPath)
-  , 'content.@each'
+  , 'content.[]'
 
   selectableOptionsDidChange: Ember.observer ->
     if @get('showDropdown')
@@ -285,7 +285,7 @@ Ember.Component.extend BodyEventListener, ResizeHandlerMixin,
       index = content.indexOf value
       @setHighlightedIndex index, yes
     value
-  .property 'selectableOptions', 'highlightedIndex'
+  .property 'selectableOptions.[]', 'highlightedIndex'
 
   bodyClick: -> @send 'hideDropdown'
 
