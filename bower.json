@@ -24,7 +24,7 @@
   ],
   "dependencies": {
     "bootstrap": "~3.2.0",
-    "ember": "1.10.0",
+    "ember": "1.10.1",
     "jquery": "~1.10.2",
     "jquery-ui": "~1.10.1",
     "handlebars": "2.0.0",
