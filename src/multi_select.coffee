@@ -1,4 +1,4 @@
-Ember.Widgets.MultiSelectOptionView = Ember.View.extend
+Ember.Widgets.MultiSelectSelectedItemView = Ember.View.extend
   tagName: 'li'
   templateName: 'multi-select-item'
   classNames:   'ember-select-search-choice'
@@ -15,12 +15,29 @@ Ember.Widgets.MultiSelectOptionView = Ember.View.extend
     @notifyPropertyChange 'label'
   , 'context', 'labelPath'
 
+Ember.Widgets.MultiSelectOptionView = Ember.Widgets.SelectOptionView.extend
+  correctHighlight: ->
+    content   = @get('controller.selectableOptions') or Ember.A()
+    if content.length > 0
+      index = @get 'controller.highlightedIndex'
+      if index < content.length - 1
+        value = content.objectAt index + 1
+      else
+        value = content.objectAt index - 1
+    @set 'controller.highlighted', value
+    # @set 'controller.highlighted', @get('content')
+
+  processDropDownShown: ->
+    @get('controller').focusTextField()
+    # @correctHighlight()
+
 Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
   layoutName: 'multi-select'
   selections: undefined
   choicesFieldClass: ''
   placeholder: undefined
   persistentPlaceholder: undefined
+  itemViewClass:      'Ember.Widgets.MultiSelectOptionView'
 
   # disable tabindex of the component container to set focus directly to
   # the input field, which is always visible. This helps reducing one tab
@@ -42,7 +59,7 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
       if valuePath then selections.getEach(valuePath) else selections
   .property 'selections.[]'
 
-  selectionItemView: Ember.Widgets.MultiSelectOptionView
+  selectionItemView: Ember.Widgets.MultiSelectSelectedItemView
 
   # Invisible span used to make sure there is a good amount of room for either
   # the placeholder values, or for the query the user has entered.
@@ -115,14 +132,14 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
 
   deletePressed: (event) ->
     if event.target.selectionStart is 0 and event.target.selectionEnd is 0
-      @removeSelectItem(@get('selections.lastObject'))
+      @removeSelectedItem(@get('selections.lastObject'))
       event.preventDefault()
 
-  removeSelectItem: (item) ->
+  removeSelectedItem: (item) ->
     # set the focus back to the searchView because this item will be removed
-    currentDropDownState = @get('showDropdown')
+    dropdownIsShowing = @get('showDropdown')
     @focusTextField()
-    @send 'hideDropdown' unless currentDropDownState
+    @send 'hideDropdown' unless dropdownIsShowing
     @get('selections').removeObject item
 
   escapePressed: (event) ->
@@ -134,16 +151,7 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
   enterPressed: (event) ->
     @_super(event)
     @focusTextField()
-    @set('showDropdown', yes) unless @get('showDropdown')
-
-  click: (event) ->
-    @_super(event)
-    unless @get('showDropdown')
-      @set('showDropdown', yes)
-
-  actions:
-    removeSelectItem: (item) ->
-      @removeSelectItem(item)
+    @set('showDropdown', yes)
 
 Ember.Handlebars.helper(
   'multi-select-component'

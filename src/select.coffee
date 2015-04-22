@@ -12,7 +12,7 @@ Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
 
   isHighlighted: Ember.computed ->
     @get('controller.highlighted') is @get('content')
-  .property 'controller.highlighted', 'content'
+  .property 'controller.highlighted'
 
   labelPathDidChange: Ember.observer ->
     labelPath = @get 'labelPath'
@@ -36,6 +36,9 @@ Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
     @_super context
     @set 'content', context
 
+  processDropDownShown: ->
+    @get('controller').send 'hideDropdown'
+
   click: ->
     return if @get('content.isGroupOption')
     @set 'controller.selection', @get('content')
@@ -44,13 +47,7 @@ Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
     # propagate the click event
     # if the dropdown is expanded and we select something, don't propagate
     if @get('controller.showDropdown')
-      # Keep showing dropdown if it is multi select component
-      unless @get('controller.layoutName') is 'multi-select'
-        @get('controller').send 'hideDropdown'
-      else
-        # Keep the focus on the text field
-        @get('controller').focusTextField()
-      # return false to prevent propagation
+      @processDropDownShown()
       return no
 
   mouseEnter: ->
@@ -389,7 +386,8 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
     # [Spacebar, Enter, Up, Down, 'A'..'Z','a..z','0..9']
     acceptedKeys = @get 'acceptedKeys'
     if acceptedKeys[event.keyCode] and not @get 'showDropdown'
-      return @set('showDropdown', yes)
+      @set('showDropdown', yes)
+      return
 
     map   = @get 'KEY_EVENTS'
     method = map[event.keyCode]

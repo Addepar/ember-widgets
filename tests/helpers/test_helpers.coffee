@@ -19,7 +19,7 @@ _isVisible = (app, selector, context) ->
   $element = _find app, selector, context
   $element.is(':visible')
 
-_isFocus = (app, selector, context) ->
+_isFocused = (app, selector, context) ->
   $element = _find app, selector, context
   $element.is(':focus')
 
@@ -121,7 +121,7 @@ Ember.Test.registerHelper 'mouseDown', _mouseDown
 Ember.Test.registerHelper 'isPresent', _isPresent
 Ember.Test.registerHelper 'isNotPresent', _isNotPresent
 Ember.Test.registerHelper 'isVisible', _isVisible
-Ember.Test.registerHelper 'isFocus', _isFocus
+Ember.Test.registerHelper 'isFocused', _isFocused
 Ember.Test.registerHelper 'isHidden', _isHidden
 
 Ember.Test.registerHelper 'append', _append

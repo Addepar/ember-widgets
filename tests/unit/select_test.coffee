@@ -86,7 +86,7 @@ test 'Test keyboard interaction', ->
       keyEvent(selectComponent, 'keydown', 13)
 
     .then ->
-      ok isFocus(selectComponent,selectComponent, 'Select component should be focused after selecting one option')
+      ok isFocused(selectComponent,selectComponent, 'Select component should be focused after selecting one option')
       ok isHidden(find '.ember-select-results', selectComponent, 'Dropdown list should be hidden after selecting an option')
 
       # test if selected Item is actually selected
@@ -105,7 +105,7 @@ test 'Test keyboard interaction', ->
 
     .then ->
       ok isHidden(find '.ember-select-results', selectComponent, 'Dropdown list should be hidden after pressing ESC')
-      ok isFocus(selectComponent, selectComponent, 'Select component should be focused after pressing ESC')
+      ok isFocused(selectComponent, selectComponent, 'Select component should be focused after pressing ESC')
 
 test 'Test selection label', ->
   expect 2
