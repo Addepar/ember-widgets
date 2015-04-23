@@ -44,7 +44,7 @@ Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
     # propagate the click event
     # if the dropdown is expanded and we select something, don't propagate
     if @get('controller.showDropdown')
-      @get('controller').send 'hideDropdown'
+      # @get('controller').send 'hideDropdown'
       # return false to prevent propagation
       return no
 
@@ -367,7 +367,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     @set 'selection', item unless Ember.isEmpty(item)
     @userDidSelect(item) unless Ember.isEmpty(item)
     # in case dropdown doesn't close
-    @send 'hideDropdown'
+    # @send 'hideDropdown'
     # TODO(Peter): HACK the web app somehow reloads when enter is pressed.
     event.preventDefault()
 
