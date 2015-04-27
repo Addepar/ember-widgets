@@ -2,5 +2,5 @@
 'use strict';
 
 module.exports = {
-  name: 'ember-widgets',
+  name: 'ember-widgets'
 };
