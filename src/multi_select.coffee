@@ -84,6 +84,7 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
     selections = @get 'selections'
     selection  = @get 'selection'
     @set 'selection', null
+    @set 'query', ''
     if not Ember.isEmpty(selection) and not selections.contains selection
       selections.pushObject selection
   , 'selection', 'selections.[]'
