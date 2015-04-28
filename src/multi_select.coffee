@@ -21,6 +21,7 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
   choicesFieldClass: ''
   placeholder: undefined
   persistentPlaceholder: undefined
+  resetQueryOnSelect: true
 
   values: Ember.computed (key, value) ->
     if arguments.length is 2 # setter
@@ -83,6 +84,8 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
   selectionDidChange: Ember.observer ->
     selections = @get 'selections'
     selection  = @get 'selection'
+    if @get 'resetQueryOnSelect'
+      @set 'query', ''
     @set 'selection', null
     if not Ember.isEmpty(selection) and not selections.contains selection
       selections.pushObject selection
