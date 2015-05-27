@@ -8,6 +8,24 @@ _mouseDown = (app, selector, context) ->
     $element.mousedown()
   wait app
 
+_pressEnter = (app, element) ->
+  keyEvent(element, 'keydown', 13)
+
+_pressSpacebar = (app, element) ->
+  keyEvent(element, 'keydown', 32)
+
+_pressESC = (app, element) ->
+  keyEvent(element, 'keydown', 27)
+
+_pressUpArrow = (app, element) ->
+  keyEvent(element, 'keydown', 38)
+
+_pressDownArrow = (app, element) ->
+  keyEvent(element, 'keydown', 40)
+
+_pressBackspace = (app, element) ->
+  keyEvent(element, 'keydown', 8)
+
 _isPresent = (app, selector, context) ->
   $element = _find app, selector, context
   $element.length > 0
@@ -18,6 +36,10 @@ _isNotPresent = (app, selector, context) ->
 _isVisible = (app, selector, context) ->
   $element = _find app, selector, context
   $element.is(':visible')
+
+_isFocused = (app, selector, context) ->
+  $element = _find app, selector, context
+  $element.is(':focus')
 
 _isHidden = (app, selector, context) ->
   not _isVisible(app, selector, context)
@@ -107,9 +129,16 @@ Ember.Test.registerHelper 'selectInChosen', _selectInChosen
 Ember.Test.registerHelper 'findInSelect', _findInSelect
 
 Ember.Test.registerHelper 'mouseDown', _mouseDown
+Ember.Test.registerHelper 'pressEnter', _pressEnter
+Ember.Test.registerHelper 'pressSpacebar', _pressSpacebar
+Ember.Test.registerHelper 'pressESC', _pressESC
+Ember.Test.registerHelper 'pressUpArrow', _pressUpArrow
+Ember.Test.registerHelper 'pressDownArrow', _pressDownArrow
+Ember.Test.registerHelper 'pressBackspace', _pressBackspace
 Ember.Test.registerHelper 'isPresent', _isPresent
 Ember.Test.registerHelper 'isNotPresent', _isNotPresent
 Ember.Test.registerHelper 'isVisible', _isVisible
+Ember.Test.registerHelper 'isFocused', _isFocused
 Ember.Test.registerHelper 'isHidden', _isHidden
 
 Ember.Test.registerAsyncHelper 'openColorChooser', _openColorChooser
