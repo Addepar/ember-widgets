@@ -9,7 +9,7 @@ module.exports = function(config) {
     files: [
       'dependencies/google-code-prettify/prettify.js',
       'vendor/jquery/jquery.js',
-      'dependencies/jquery-ui/jquery-ui-1.10.1.custom.min.js',
+      'vendor/jquery-ui/ui/jquery-ui.custom.js',
       'vendor/handlebars/handlebars.js',
       'vendor/lodash/lodash.js',
       'vendor/ember/ember.js',
