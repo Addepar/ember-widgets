@@ -129,12 +129,12 @@ Ember.Test.registerHelper 'selectInChosen', _selectInChosen
 Ember.Test.registerHelper 'findInSelect', _findInSelect
 
 Ember.Test.registerHelper 'mouseDown', _mouseDown
-Ember.Test.registerHelper 'pressEnter', _pressEnter
-Ember.Test.registerHelper 'pressSpacebar', _pressSpacebar
-Ember.Test.registerHelper 'pressESC', _pressESC
-Ember.Test.registerHelper 'pressUpArrow', _pressUpArrow
-Ember.Test.registerHelper 'pressDownArrow', _pressDownArrow
-Ember.Test.registerHelper 'pressBackspace', _pressBackspace
+Ember.Test.registerAsyncHelper 'pressEnter', _pressEnter
+Ember.Test.registerAsyncHelper 'pressSpacebar', _pressSpacebar
+Ember.Test.registerAsyncHelper 'pressESC', _pressESC
+Ember.Test.registerAsyncHelper 'pressUpArrow', _pressUpArrow
+Ember.Test.registerAsyncHelper 'pressDownArrow', _pressDownArrow
+Ember.Test.registerAsyncHelper 'pressBackspace', _pressBackspace
 Ember.Test.registerHelper 'isPresent', _isPresent
 Ember.Test.registerHelper 'isNotPresent', _isNotPresent
 Ember.Test.registerHelper 'isVisible', _isVisible

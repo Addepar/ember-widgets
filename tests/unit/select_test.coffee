@@ -1,4 +1,10 @@
-moduleForComponent 'select', '[Unit] Select component'
+moduleForComponent 'select', '[Unit] Select component',
+  needs: [
+    'template:select'
+    'template:select-item'
+    'template:select-item-layout'
+    'template:select-item'
+  ]
 
 test 'Test continuous queries in a row', ->
   expect 5
@@ -42,7 +48,9 @@ test 'Test keyboard interaction', ->
   expect 10
   selectedText = null
 
-  append(select)
+  select = @subject
+    content: ['foo', 'bar', 'barca', 'baz']
+  @append()
 
   selectComponent = select.$()
 
@@ -59,30 +67,30 @@ test 'Test keyboard interaction', ->
 
   validateDropdownHidden('Dropdown list should not exist at the beginning')
   selectComponent.focus()
-  wait().then ->
-    # test pressing ENTER key to open dropdown
-    pressEnter(selectComponent)
-  .then ->
+
+  # test pressing ENTER key to open dropdown
+  pressEnter(selectComponent)
+  andThen ->
     validateDropdownVisible('Dropdown list should appear after pressing Enter')
 
     # test pressing DOWN arrowkey to navigate selection down
-    pressDown(selectComponent)
-  .then ->
+  pressDownArrow(selectComponent)
+  andThen ->
     resultItems = find '.ember-select-result-item', selectComponent
     ok $(resultItems[1]).hasClass('highlighted'),
       'The second option should be highlighted'
 
     # test pressing UP arrowkey to navigate selection up
-    pressUp(selectComponent)
-  .then ->
+  pressUpArrow(selectComponent)
+  andThen ->
     resultItems = find '.ember-select-result-item', selectComponent
     ok $(resultItems[0]).hasClass('highlighted'),
       'The first option should be highlighted'
 
     # test selecting option using ENTER key
     selectedText = $(resultItems[0]).text()
-    pressEnter(selectComponent)
-  .then ->
+  pressEnter(selectComponent)
+  andThen ->
     validateFocus('Select component should be focused after selecting
       one option')
     validateDropdownHidden('Dropdown list should be hidden after selecting
@@ -91,18 +99,19 @@ test 'Test keyboard interaction', ->
     # test if selected Item is actually selected
     resultItems = find '.ember-select-result-item', selectComponent
     currentText = $(resultItems[0]).text()
-    equal(selectedText, find('.ember-select-result-item:eq(0)',
-      selectComponent), 'The selected item is not the one was Enter pressed')
+    equal(selectedText,
+      find('.ember-select-result-item:eq(0)',selectComponent).text(),
+      'The selected item is not the one was Enter pressed')
 
     # test if dropdown appears when we start typing letter ('a' is input here)
-    keyEvent(selectComponent, 'keydown', 97)
-  .then ->
-    validateDropdownVisible('Dropdown list should appear after pressing a
-      letter')
+  keyEvent(selectComponent, 'keydown', 97)
+  andThen ->
+    validateDropdownVisible('Dropdown list should appear after pressing
+     a letter')
 
     # test if dropdown disappears after pressing ESC
-    pressESC(selectComponent)
-  .then ->
+  pressESC(selectComponent)
+  andThen ->
     validateDropdownHidden('Dropdown list should be hidden after
       pressing ESC')
     validateFocus('Select component should be focused after pressing ESC')
