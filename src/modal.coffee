@@ -1,5 +1,5 @@
 Ember.Widgets.ModalComponent =
-Ember.Component.extend Ember.Widgets.StyleBindingsMixin, Ember.Widgets.TabbableModal, Ember.Widgets.DomHelper,
+Ember.Component.extend Ember.Widgets.StyleBindingsMixin, Ember.Widgets.TabbableModal,
   layoutName: 'modal'
   classNames: ['modal']
   classNameBindings: ['isShowing:in', 'hasCloseButton::has-no-close-button', 'fadeEnabled:fade']
@@ -19,6 +19,12 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin, Ember.Widgets.TabbableM
   content:          ""
   size:             "normal"
   isValid:          true
+
+  confirm: Ember.K
+  cancel: Ember.K
+  close: Ember.K
+
+  isDisabled: Ember.computed.not('isValid')
 
   fadeEnabled: Ember.computed ->
     return false if Ember.Widgets.DISABLE_ANIMATIONS
@@ -118,10 +124,6 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin, Ember.Widgets.TabbableM
     @_removeDocumentHandlers()
     # remove backdrop
     @_backdrop.remove() if @_backdrop
-
-  click: (event) ->
-    return unless event.target is event.currentTarget
-    @send 'sendCancel' unless @get('enforceModality')
 
   hide: ->
     @set 'isShowing', no
