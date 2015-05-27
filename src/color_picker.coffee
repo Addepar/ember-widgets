@@ -162,7 +162,7 @@ colorToHex = (color) ->
     return rgbToHex(red, green, blue)
   return undefined
 
-Ember.Widgets.ColorPicker = Ember.Component.extend
+Ember.Widgets.ColorPickerComponent = Ember.Component.extend
   layoutName: 'color-picker'
   classNames: ['color-picker-button']
   colorPickerPlacement: 'right'
@@ -238,6 +238,9 @@ Ember.Widgets.ColorPicker = Ember.Component.extend
 
   userDidSelect: (selection) ->
     @sendAction 'userSelected', selection
+
+# To maintain compatibility
+Ember.Widgets.ColorPicker = Ember.Widgets.ColorPickerComponent
 
 Ember.Widgets.ColorPickerCell = Ember.View.extend Ember.Widgets.StyleBindingsMixin,
   templateName: 'color-picker-cell'
