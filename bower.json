@@ -70,5 +70,8 @@
         "rangy-selectionsaverestore.js"
       ]
     }
+  },
+  "resolutions": {
+    "ember": "~1.5.0"
   }
 }
