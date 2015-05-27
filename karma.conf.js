@@ -13,7 +13,7 @@ module.exports = function(config) {
       'vendor/handlebars/handlebars.js',
       'vendor/lodash/lodash.js',
       'vendor/ember/ember.js',
-      'dependencies/list-view.js',
+      'vendor/ember-list-view/list-view.js',
       'vendor/currentrelease/rangy/rangy-core.js',
       'vendor/currentrelease/rangy/rangy-selectionsaverestore.js',
       'vendor/sinonjs/sinon.js',
