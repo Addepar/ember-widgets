@@ -1,21 +1,10 @@
-select = null
-dispatcher = null
-
-module "[Unit] Select unit tests",
-  setup: ->
-    Ember.run ->
-      dispatcher = Ember.EventDispatcher.create()
-      dispatcher.setup()
-      select = Ember.Widgets.SelectComponent.create
-        content: ['foo', 'bar', 'barca', 'baz']
-
-  teardown: ->
-    Ember.run ->
-      dispatcher.destroy()
-      select.destroy()
+moduleForComponent 'select', '[Unit] Select component'
 
 test 'Test continuous queries in a row', ->
   expect 5
+
+  select = @subject
+    content: ['foo', 'bar', 'barca', 'baz']
 
   select.set 'query', 'ba'
   equal(select.get('filteredContent')[0], 'bar')
@@ -29,10 +18,10 @@ test 'Test continuous queries in a row', ->
 test 'Test using array proxy', ->
   expect 2
 
-  data = Ember.ArrayProxy.create({
+  data = Ember.ArrayProxy.create
     content: ['red', 'reddit', 'green', 'blue']
-  });
-  select.set 'content', data
+  select = @subject
+    content: data
 
   select.set 'query', 're'
   equal(select.get('filteredContent')[0], 'red')
@@ -41,8 +30,8 @@ test 'Test using array proxy', ->
 test 'Test sorted filter', ->
   expect 3
 
-  data = ['reddit', 'red', 'green', 'blue']
-  select.set 'content', data
+  select = @subject
+    content: ['reddit', 'red', 'green', 'blue']
 
   select.set 'query', 'r'
   equal(select.get('sortedFilteredContent')[0], 'green')
@@ -53,9 +42,10 @@ test 'Test selection label', ->
   expect 2
 
   data = [{name: 'reddit'}, {name: 'red'}]
-  select.set 'content', data
-  select.set 'selection', data[0]
-  select.set 'optionLabelPath', 'name'
+  select = @subject
+    content: data
+    selection: data[0]
+    optionLabelPath: 'name'
 
   equal(select.get('selectedLabel'), 'reddit')
   select.set 'selection.name', 'blues'

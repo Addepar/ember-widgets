@@ -66,11 +66,6 @@ _findInSelect = (app, element, itemText) ->
     item = $('li', element).filter -> $.text([this]).trim() is itemText
     click item
 
-_append = (app, item) ->
-  Ember.run ->
-    item.appendTo(Ember.$('#ember-testing')[0])
-  wait app
-
 _openColorChooser = (app, element = 'body') ->
   dropdown = find '.color-picker-button .dropdown', element
   if dropdown.hasClass 'open'
@@ -84,8 +79,6 @@ _closeColorChooser = (app, element = 'body') ->
   if dropdown.hasClass 'open'
     dropdownButton = find '.color-picker-button', element
     click dropdownButton
-  else
-    wait()
 
 _getSelectedColor = (app) ->
   active = find '.color-picker-dropdown .active'
@@ -119,12 +112,14 @@ Ember.Test.registerHelper 'isNotPresent', _isNotPresent
 Ember.Test.registerHelper 'isVisible', _isVisible
 Ember.Test.registerHelper 'isHidden', _isHidden
 
-Ember.Test.registerHelper 'append', _append
-
-Ember.Test.registerHelper 'openColorChooser', _openColorChooser
-Ember.Test.registerHelper 'closeColorChooser', _closeColorChooser
+Ember.Test.registerAsyncHelper 'openColorChooser', _openColorChooser
+Ember.Test.registerAsyncHelper 'closeColorChooser', _closeColorChooser
 Ember.Test.registerHelper 'getSelectedColor', _getSelectedColor
-Ember.Test.registerHelper 'selectColor', _selectColor
-Ember.Test.registerHelper 'fillInCustomColor', _fillInCustomColor
+Ember.Test.registerAsyncHelper 'selectColor', _selectColor
+Ember.Test.registerAsyncHelper 'fillInCustomColor', _fillInCustomColor
 
 App.injectTestHelpers()
+
+# Ember QUnit settings
+emq.globalize()
+setResolver(Ember.DefaultResolver.create({namespace: Ember.Widgets}));

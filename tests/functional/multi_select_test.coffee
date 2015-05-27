@@ -1,27 +1,20 @@
-dispatcher = undefined
-multiSelect = undefined
 content = [
   {name: 'Alice', code: 'ALICE'},
   {name: 'Bob', code: 'BOB'},
 ]
 
-module "[Functional] Multi select component functional tests",
-  setup: ->
-    dispatcher = Ember.EventDispatcher.create()
-    dispatcher.setup()
-    multiSelect = Ember.Widgets.MultiSelectComponent.create
-      content: content
-      optionLabelPath: 'name'
-      optionValuePath: 'code'
-      classNames: 'some-class-name'
-    append(multiSelect)
-  teardown: ->
-    Ember.run ->
-      dispatcher.destroy()
-      multiSelect.destroy()
-
+moduleForComponent 'multi-select', '[Functional] Multi select component',
+  needs: [
+    'template:multi-select'
+    'template:multi-select-item'
+    'template:select-item-layout'
+    'template:select-item'
+  ]
 
 test "Multi select component has correct CSS classes", ->
+  multiSelect = @subject
+    classNames: 'some-class-name'
+
   deepEqual multiSelect.get("classNames"), [
     "ember-view"
     "ember-select"
@@ -32,6 +25,13 @@ test "Multi select component has correct CSS classes", ->
 test "Can add item via click", ->
   expect 2
 
+  multiSelect = @subject
+    content: content
+    optionLabelPath: 'name'
+    optionValuePath: 'code'
+    classNames: 'some-class-name'
+
+  @append()
   $multiSelect = find('.some-class-name')
   selectInMultiChosen($multiSelect, 'Alice').then ->
     $multiSelect = find('.some-class-name')
@@ -42,9 +42,17 @@ test "Can add item via click", ->
 test "Invalid item cannot be selected", ->
   expect 2
 
+  multiSelect = @subject
+    content: content
+    optionLabelPath: 'name'
+    optionValuePath: 'code'
+    classNames: 'some-class-name'
+
+  @append()
   $multiSelect = find('.some-class-name')
   userDidSelectStub = sinon.stub multiSelect, 'userDidSelect'
-  item = findInMultiChosen($multiSelect, 'textThatWontMatch').then (item) ->
+  item = findInMultiChosen($multiSelect, 'textThatWontMatch')
+  .then (item) ->
     ok isNotPresent(item), 'List item was matched unexpectedly'
     enterEvent = Ember.$.Event('keyPressed', keyCode: 13)
     multiSelect.enterPressed(enterEvent)
@@ -55,9 +63,17 @@ test "Invalid item cannot be selected", ->
 test "Valid item can be selected via enter", ->
   expect 2
 
+  multiSelect = @subject
+    content: content
+    optionLabelPath: 'name'
+    optionValuePath: 'code'
+    classNames: 'some-class-name'
+
+  @append()
   $multiSelect = find('.some-class-name')
   userDidSelectStub = sinon.stub multiSelect, 'userDidSelect'
-  item = findInMultiChosen($multiSelect, 'Alice').then (item) ->
+  item = findInMultiChosen($multiSelect, 'Alice')
+  .then (item) ->
     ok isPresent(item), 'List item was not matched'
     enterEvent = Ember.$.Event('keyPressed', keyCode: 13)
     multiSelect.enterPressed(enterEvent)
