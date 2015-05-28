@@ -311,9 +311,14 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
 
   # It matches the item label with the query. This can be overrideen for better
   matcher: (searchText, item) ->
-    return yes unless searchText
+    # trim the query text to avoid unintended spaces
+    standardizedSearchText = searchText.trim()
+    return yes unless standardizedSearchText
     label = Ember.get(item, @get('optionLabelPath'))
-    escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
+    # eliminate duplicated spaces
+    standardizedSearchText = standardizedSearchText.replace(/\s{2,}/g, ' ')
+    # adding escapes to special characters to put it into RegEx
+    escapedSearchText = standardizedSearchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
     regex = new RegExp(escapedSearchText, 'i')
     regex.test(label)
 

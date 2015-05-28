@@ -128,3 +128,27 @@ test 'Test selection label', ->
   equal(select.get('selectedLabel'), 'reddit')
   select.set 'selection.name', 'blues'
   equal(select.get('selectedLabel'), 'blues')
+
+test 'Test query matching', ->
+  expect 6
+
+  select = @subject
+    content: ['foo', 'bana$ na', 'bar ca', 'baz']
+
+  select.set 'query', '   '
+  equal(select.get('filteredContent').length, 4)
+
+  select.set 'query', ' a '
+  equal(select.get('filteredContent').length, 3)
+
+  select.set 'query', 'bar  ca'
+  equal(select.get('filteredContent').length, 1)
+
+  select.set 'query', 'barca'
+  equal(select.get('filteredContent').length, 0)
+
+  select.set 'query', 'bana$'
+  equal(select.get('filteredContent').length, 1)
+
+  select.set 'query', 'bana[ na'
+  equal(select.get('filteredContent').length, 0)
