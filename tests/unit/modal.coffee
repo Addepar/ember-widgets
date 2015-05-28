@@ -1,7 +1,7 @@
 modal = null
 dispatcher = null
 
-module "[Unit] Modal unit tests",
+module "[Unit] Modal component",
   setup: ->
     Ember.run ->
       dispatcher = Ember.EventDispatcher.create()
@@ -27,12 +27,14 @@ test 'Test tab loop only inside modal', ->
 
   # press Shift+TAB on the first tabbable element, the last one
   # should be focused
-  jQueryKeyEvent(buttonConfirm, 'keydown', 9, true, false, false)
-  validateFocus buttonCancel, 'Button Cancel should be focused'
+  triggerEvent(buttonConfirm, null, 'keydown', {keyCode: 9, which: 9, shiftKey: true})
+  andThen ->
+    validateFocus buttonCancel, 'Button Cancel should be focused'
 
   # press TAB on the last tabbable element, the first one should be focused
   keyEvent(buttonCancel, 'keydown',9)
-  validateFocus buttonConfirm, 'Button Confirm should be focused'
+  andThen ->
+    validateFocus buttonConfirm, 'Button Confirm should be focused'
 
 test 'Test preserving the focus when clicking on non-focusable element', ->
   expect 2
