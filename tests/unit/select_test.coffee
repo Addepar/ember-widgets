@@ -130,25 +130,39 @@ test 'Test selection label', ->
   equal(select.get('selectedLabel'), 'blues')
 
 test 'Test query matching', ->
-  expect 6
+  expect 8
 
   select = @subject
-    content: ['foo', 'bana$ na', 'bar ca', 'baz']
+    content: ['foo', 'bana$  na', 'bar ca', 'baz']
+
+  select.set 'query', null
+  equal(select.get('filteredContent').length, 4,
+    'null queries should return the full list of options')
 
   select.set 'query', '   '
-  equal(select.get('filteredContent').length, 4)
+  equal(select.get('filteredContent').length, 4,
+    'queries containing all spaces should return the full list of options')
 
   select.set 'query', ' a '
-  equal(select.get('filteredContent').length, 3)
+  equal(select.get('filteredContent').length, 3,
+    'queries containing spaces at two ends should be trimmed')
 
   select.set 'query', 'bar  ca'
-  equal(select.get('filteredContent').length, 1)
+  equal(select.get('filteredContent').length, 1,
+    'queries containing duplicated spaces should be removed')
 
   select.set 'query', 'barca'
-  equal(select.get('filteredContent').length, 0)
+  equal(select.get('filteredContent').length, 0,
+    'correct spaces should be considered when matching')
 
   select.set 'query', 'bana$'
-  equal(select.get('filteredContent').length, 1)
+  equal(select.get('filteredContent').length, 1,
+    'special characters should be considered when matching')
 
-  select.set 'query', 'bana[ na'
-  equal(select.get('filteredContent').length, 0)
+  select.set 'query', 'bana[  na'
+  equal(select.get('filteredContent').length, 0,
+    'special characters should be considered when matching')
+
+  select.set 'query', 'bana$ n'
+  equal(select.get('filteredContent').length, 1,
+    'duplicated spaces in the source string should be removed before matching')
