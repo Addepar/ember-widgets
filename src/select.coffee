@@ -119,7 +119,7 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
     keySet = _.union([@KEY_CODES.ENTER, @KEY_CODES.SPACEBAR],
       [@KEY_CODES.DOWN, @KEY_CODES.UP],[65..90],[97..122],[48..57])
     keySet.forEach (key) ->
-      mappedKeys[key] = true
+      mappedKeys[key] = yes
     return mappedKeys
   .property()
 

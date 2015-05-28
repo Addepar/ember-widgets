@@ -63,6 +63,7 @@ test 'Test keyboard and mouse interaction', ->
     ok isFocused(textField,multiSelectComponent), messageFocus
 
   multiSelectComponent.focus()
+
   # test pressing ENTER key to open dropdown
   pressEnter(multiSelectComponent)
   andThen ->
@@ -76,8 +77,8 @@ test 'Test keyboard and mouse interaction', ->
 
   pressEnter(multiSelectComponent)
   andThen ->
-    validateTextFieldFocus('Text field should still be focused after
-      selecting using Enter')
+    validateTextFieldFocus(
+      'Text field should still be focused after selecting using Enter')
     # test if selected Item is actually selected
     resultItems = find '.ember-select-search-choice', multiSelectComponent
     currentText = $(resultItems[resultItems.length - 1]).text().trim()
@@ -89,60 +90,60 @@ test 'Test keyboard and mouse interaction', ->
       'The current highlighted option should be the last choice pill in
       the list')
 
-    # open dropdown when clicking on the text field
+  # open dropdown when clicking on the text field
   click(textField)
   andThen ->
-    validateDropdownVisible('Dropdown list should appear after clicking
-      on the input field')
+    validateDropdownVisible(
+      'Dropdown list should appear after clicking on the input field')
 
-    # make one more selection
+  # make one more selection
   pressEnter(multiSelectComponent)
   andThen ->
     resultItems = find '.ember-select-search-choice', multiSelectComponent
     equal(resultItems.length, 2, 'There should be 2 selected items')
 
-    # test deleting using keyboard
+  # test deleting using keyboard
   pressBackspace(textField)
   andThen ->
     resultItems = find '.ember-select-search-choice', multiSelectComponent
     equal(resultItems.length, 1,
       'There should be 1 selected item after deleting one')
-    validateTextFieldFocus('Dropdown list should still be shown after
-      deleting using keyboard','Text field should be focused after
-      pressing delete')
+    validateTextFieldFocus(
+      'Dropdown list should still be shown after deleting using keyboard',
+      'Text field should be focused after pressing delete')
 
-    # test pressing Spacebar to open the dropdown
+  # test pressing Spacebar to open the dropdown
   pressSpacebar(multiSelectComponent)
   andThen ->
-    validateDropdownVisible('Dropdown list should appear after pressing
-      Spacebar')
+    validateDropdownVisible(
+      'Dropdown list should appear after pressing Spacebar')
 
-    # test adding using mouse
+  # test adding using mouse
   click('.ember-select-result-item:eq(0)', multiSelectComponent)
   andThen ->
     resultItems = find '.ember-select-search-choice', multiSelectComponent
     equal(resultItems.length, 2, 'There should be 2 selected items after
       selecting one item using mouse')
-    validateTextFieldFocus('Text field should be focused after selecting
-      using mouse')
+    validateTextFieldFocus(
+      'Text field should be focused after selecting using mouse')
 
-    # test deleting one selected item using mouse
+  # test deleting one selected item using mouse
   click('.ember-select-search-choice-close:eq(0)', multiSelectComponent)
   andThen ->
     resultItems = find '.ember-select-search-choice', multiSelectComponent
     equal(resultItems.length, 1,
       'There should be 1 selected item after deleting one item using mouse')
-    validateTextFieldFocus('Text field should be focused after deleting
-      using mouse')
+    validateTextFieldFocus(
+      'Text field should be focused after deleting using mouse')
 
-    # test if dropdown appears when we start typing letter ('a' is input here)
+  # test if dropdown appears when we start typing letter ('a' is input here)
   keyEvent(multiSelectComponent, 'keydown', 97)
   andThen ->
-    validateDropdownVisible('Dropdown list should appear after pressing
-      a letter')
+    validateDropdownVisible(
+      'Dropdown list should appear after pressing a letter')
 
-    # test hitting ESC will close the dropdown
+  # test hitting ESC will close the dropdown
   pressESC(multiSelectComponent)
   andThen ->
-    validateDropdownHidden('Dropdown list should be hidden after pressing
-      ESC')
+    validateDropdownHidden(
+      'Dropdown list should be hidden after pressing ESC')
