@@ -9,7 +9,7 @@ Ember.Widgets.TypeaheadComponent = Ember.Widgets.SelectComponent.extend
     focusIn: (event) -> @set 'parentView.showDropdown', yes
 
   userDidSelect: (selection) ->
-    @_super
+    @_super(selection)
     @set 'query', @get 'selection'
 
 Ember.Handlebars.helper('typeahead-component', Ember.Widgets.TypeaheadComponent)
