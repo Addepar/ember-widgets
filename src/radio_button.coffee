@@ -42,7 +42,7 @@ Ember.Widgets.RadioButtonGroupComponent = Ember.Component.extend
   disabled: false
 
   selectedValueChanged: Ember.on 'init', Ember.observer(->
-    @sendAction()
+    @sendAction('action', @get('selectedValue'))
   , 'selectedValue')
 
 Ember.Handlebars.helper('radio-button-group-component', Ember.Widgets.RadioButtonGroupComponent)
