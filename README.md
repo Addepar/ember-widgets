@@ -30,6 +30,12 @@ $ npm install
 $ grunt
 ```
 
+You can also run tests in the console by running:
+```bash
+$ grunt karma:unit
+$ grunt karma:functional
+```
+
 To view examples, start the node server. From the root directory:
 
 `$ node examples.js`.

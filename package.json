@@ -4,7 +4,7 @@
   "main": "Gruntfile.js",
   "scripts": {
     "postinstall": "grunt bower",
-    "test": "grunt build_tests && grunt karma:continuous"
+    "test": "grunt build_tests && grunt build_app && grunt karma:continuous"
   },
   "repository": {
     "type": "git",

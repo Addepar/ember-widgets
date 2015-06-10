@@ -91,17 +91,25 @@ module.exports = (grunt) ->
         templateName: (sourceFile) ->
           sourceFile.replace(/src\/templates\//, '')
                     .replace(/app\/templates\//, '')
-      'build/src/templates.js':   ["src/templates/**/*.hbs"]
-      'build/app/templates.js':  ["app/templates/**/*.hbs"]
+      srcs:
+        files:
+          'build/src/templates.js': ["src/templates/**/*.hbs"]
+      app:
+        files:
+          'build/app/templates.js': ["app/templates/**/*.hbs"]
 
     neuter:
       options:
         includeSourceURL: yes
-      "dist/js/ember-widgets.js":  "build/src/ember_widgets.js"
-      "gh_pages/app.js":           "build/app/app.js"
+      srcs:
+        files:
+          "dist/js/ember-widgets.js": "build/src/ember_widgets.js"
+      app:
+        files:
+          "gh_pages/app.js": "build/app/app.js"
 
     less:
-      development:
+      srcs:
         options:
           yuicompress: no
         files:
@@ -132,14 +140,14 @@ module.exports = (grunt) ->
           from: /.*\..*\..*/
           to: '<%=pkg.version%>'
         }]
-      main_coffee_version:
+      srcs:
         src: ['src/ember_widgets.coffee']
         overwrite: true
         replacements: [{
           from: /Ember.Widgets.VERSION = '.*\..*\..*'/
           to: "Ember.Widgets.VERSION = '<%=pkg.version%>'"
         }]
-      overview_page:
+      app:
         src: ['app/templates/ember_widgets/overview.hbs']
         overwrite: true,
         replacements: [{
@@ -149,7 +157,7 @@ module.exports = (grunt) ->
 
     # Copy build/app/assets/css into gh_pages/asset and other assets from app
     copy:
-      gh_pages:
+      app:
         files: [
           {src: ['dist/css/ember-widgets.css'], dest: 'gh_pages/css/ember-widgets.css'},
           {src: ['app/index.html'], dest: 'gh_pages/index.html'},
@@ -180,19 +188,19 @@ module.exports = (grunt) ->
         tasks: [ "default" ]
       src:
         files: [ "src/**/*.coffee"]
-        tasks: [ "coffee:srcs", "neuter", "uglify", "usebanner:js" ]
+        tasks: [ "coffee:srcs", "neuter:srcs", "uglify", "usebanner:js" ]
       test:
         files: [ "tests/**/*.coffee"]
         tasks: [ "coffee:tests" ]
       src_handlebars:
         files: [ "src/**/*.hbs" ]
-        tasks: [ "emberTemplates", "neuter", "uglify", "usebanner:js" ]
+        tasks: [ "emberTemplates:srcs", "neuter:srcs", "uglify", "usebanner:js" ]
       app:
         files: [ "app/**/*.coffee", "dependencies/**/*.js", "vendor/**/*.js" ]
-        tasks: [ "coffee:app", "neuter", "uglify", "usebanner:js" ]
+        tasks: [ "coffee:app", "neuter:app" ]
       app_handlebars:
         files: [ "app/**/*.hbs"]
-        tasks: [ "emberTemplates", "neuter", "uglify", "usebanner:js" ]
+        tasks: [ "emberTemplates:app", "neuter:app" ]
       less:
         files: [ "src/**/*.less", "src/**/*.css",
                  "dependencies/**/*.less", "dependencies/**/*.css",
@@ -258,12 +266,12 @@ module.exports = (grunt) ->
       files: @filesSrc.map (fileSrc) -> fileSrc.replace "build/tests/", ""
     grunt.file.write "build/tests/runner.html", grunt.template.process(tmpl, renderingContext)
 
-  grunt.registerTask "build_srcs", [ "coffee:srcs", "emberTemplates", "neuter" ]
-  grunt.registerTask "build_app", [ "coffee:app", "emberTemplates", "neuter" ]
-  grunt.registerTask "build_tests", [ "coffee:tests", "emberTemplates", "neuter" ]
+  grunt.registerTask "build_srcs", [ "coffee:srcs", "emberTemplates:srcs", "neuter:srcs" ]
+  grunt.registerTask "build_app", [ "replace:app", "coffee:app", "emberTemplates:app", "neuter:app", "copy:app" ]
+  grunt.registerTask "build_tests", [ "coffee:tests" ]
 
   # build dist files: same as default but no bower or watch
-  grunt.registerTask "dist", [ "clean", "bower", "replace", "build_srcs", "build_app", "build_tests", "less", "copy", "uglify", "usebanner" ]
+  grunt.registerTask "dist", [ "clean", "bower", "replace:srcs", "build_srcs", "less:srcs", "uglify", "usebanner" ]
 
-  grunt.registerTask "default", [ "dist", "watch" ]
+  grunt.registerTask "default", [ "dist", "build_app", "build_tests", "watch" ]
 
