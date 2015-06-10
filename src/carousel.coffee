@@ -12,12 +12,18 @@ Ember.Widgets.CarouselComponent = Ember.Component.extend
   classNames: ['carousel', 'slide']
   classNameBindings: Ember.A ['sliding']
   activeIndex: 0
+  $nextItem: null
 
   didInsertElement: ->
+    @_super()
     # suppose a content array is not specified in use case 1, we use jquery to
     # figure out how many carousel items are there. This allows us to generate
     # the correct number of carousel indicator
     @set 'content', Ember.A new Array(@$('.item').length) if not @get('content')
+
+  willDestroyElement: ->
+    @$nextItem?.off $.support.transition.end
+    @_super()
 
   actions:
     prev: ->
@@ -53,25 +59,29 @@ Ember.Widgets.CarouselComponent = Ember.Component.extend
     return if @get('activeIndex') is nextIndex
     direction = if type == 'next' then 'left' else 'right'
     $active = $(@$('.item').get(@get('activeIndex')))
-    $next = $(@$('.item').get(nextIndex))
+    @$nextItem?.off $.support.transition.end
+    @$nextItem = $(@$('.item').get(nextIndex))
 
     unless Ember.Widgets.DISABLE_ANIMATIONS
       @set 'sliding', yes
-      $next.addClass(type)
+      @$nextItem.addClass(type)
       # force reflow
-      $next[0].offsetWidth
+      @$nextItem[0].offsetWidth
       $active.addClass(direction)
-      $next.addClass(direction)
+      @$nextItem.addClass(direction)
 
     # Bootstrap has this method for listening on end of transition
-    @_onTransitionEnd $next, =>
+    @_onTransitionEnd @$nextItem, =>
+      @$nextItem.off $.support.transition.end
       # This code is async and ember-testing requires us to wrap any code with
       # asynchronous side-effects in an Ember.run
       Ember.run this, ->
         @set 'activeIndex', nextIndex
-        $next.removeClass([type, direction].join(' ')).addClass('active')
+        @$nextItem.removeClass([type, direction].join(' ')).addClass('active')
         $active.removeClass(['active', direction].join(' '))
         @set 'sliding', no
+
+      @$nextItem = null
 
   _onTransitionEnd: ($el, callback) ->
     if Ember.Widgets.DISABLE_ANIMATIONS
