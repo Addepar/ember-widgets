@@ -1,4 +1,4 @@
-# Ember Widgets by Addepar
+# Ember Widgets by Addepar [![Build Status](https://secure.travis-ci.org/Addepar/ember-widgets.svg?branch=master)](http://travis-ci.org/Addepar/ember-widgets)
 
 A collection of small widgets, easy to drop into place as Ember Components.
 

@@ -3,7 +3,8 @@
   "version": "0.2.0",
   "main": "Gruntfile.js",
   "scripts": {
-    "test": "grunt"
+    "postinstall": "grunt bower",
+    "test": "grunt build_tests && grunt karma:continuous"
   },
   "repository": {
     "type": "git",
@@ -11,7 +12,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "bower": "1.2.7",
+    "bower": "~1.4.0",
     "grunt": "~0.4.1",
     "grunt-bower-task": "~0.4.0",
     "grunt-contrib-copy": "~0.4.1",
