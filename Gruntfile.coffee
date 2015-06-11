@@ -169,6 +169,9 @@ module.exports = (grunt) ->
           {expand: true, cwd: 'app/assets/font/', src: ['**'], dest: 'gh_pages/fonts'},
           {expand: true, cwd: 'app/assets/img/', src: ['**'],  dest: 'gh_pages/img'},
           {expand: true, cwd: 'src/img/', src: ['**'], dest: 'gh_pages/img'}
+        ]
+      srcs:
+        files: [
           {expand: true, cwd: 'src/img/', src: ['**'], dest: 'dist/img'}
         ]
 
@@ -271,7 +274,7 @@ module.exports = (grunt) ->
   grunt.registerTask "build_tests", [ "coffee:tests" ]
 
   # build dist files: same as default but no bower or watch
-  grunt.registerTask "dist", [ "clean", "bower", "replace:srcs", "build_srcs", "less:srcs", "uglify", "usebanner" ]
+  grunt.registerTask "dist", [ "clean", "bower", "replace:srcs", "build_srcs", "less:srcs", "copy:srcs", "uglify", "usebanner" ]
 
   grunt.registerTask "default", [ "dist", "build_app", "build_tests", "watch" ]
 
