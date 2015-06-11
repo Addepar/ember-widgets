@@ -66,6 +66,8 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
       else ''
   .property 'size'
 
+  _didInsertElementCallback: null
+
   actions:
     # Important: we do not want to send cancel after modal is closed.
     # It turns out that this happens sometimes which leads to undesire
@@ -103,13 +105,14 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     @_appendBackdrop() if @get('backdrop')
     # show modal in next run loop so that it will fade in instead of appearing
     # abruptly on the screen
-    Ember.run.next this, -> @set 'isShowing', yes
+    @_didInsertElementCallback = Ember.run.next this, -> @set 'isShowing', yes
     # bootstrap modal adds this class to the body when the modal opens to
     # transfer scroll behavior to the modal
     $(document.body).addClass('modal-open')
     @_setupDocumentHandlers()
 
   willDestroyElement: ->
+    Ember.run.cancel @_didInsertElementCallback
     @_super()
     @_removeDocumentHandlers()
     # remove backdrop
