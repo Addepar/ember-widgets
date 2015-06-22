@@ -15,13 +15,24 @@ Ember.Widgets.MultiSelectOptionView = Ember.View.extend
     @notifyPropertyChange 'label'
   , 'context', 'labelPath'
 
+Ember.Widgets.MultiSelectItemView = Ember.Widgets.SelectOptionView.extend
+  processDropDownShown: ->
+    @_super()
+    @get('controller').focusTextField()
+
 Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
   layoutName: 'multi-select'
   selections: undefined
   choicesFieldClass: ''
   placeholder: undefined
   persistentPlaceholder: undefined
-  resetQueryOnSelect: true
+  resetQueryOnSelect: yes
+  itemViewClass: 'Ember.Widgets.MultiSelectItemView'
+
+  # disable tabindex of the component container to set focus directly to
+  # the input field, which is always visible. This helps reducing one tab
+  # step to navigate back to the previous component
+  tabindex: -1
 
   values: Ember.computed (key, value) ->
     if arguments.length is 2 # setter
@@ -51,13 +62,14 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
   searchView: Ember.TextField.extend
     class: 'ember-select-input'
     valueBinding: 'parentView.query'
-    focusIn: (event) -> @set 'parentView.showDropdown', yes
     placeholder: Ember.computed ->
       if @get('parentView.selections.length')
         return @get('parentView.persistentPlaceholder')
       @get('parentView.placeholder') or @get('parentView.persistentPlaceholder')
     .property('parentView.placeholder', 'parentView.persistentPlaceholder',
       'parentView.selections.length')
+    click: (event) ->
+      return @set('parentView.showDropdown', yes)
 
   # the list of content that is filtered down based on the query entered
   # in the textbox
@@ -91,6 +103,9 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
       selections.pushObject selection
   , 'selection', 'selections.[]'
 
+  focusTextField: ->
+    @$('.ember-text-field').focus()
+
   didInsertElement: ->
     # We want to initialize selections to []. This SHOULD NOT be done through
     # computed properties, because we would run into the following situation.
@@ -103,11 +118,26 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
     @set 'values', Ember.A [] unless @get('values')
 
   deletePressed: (event) ->
-    if event.target.selectionStart == 0
+    if event.target.selectionStart is 0 and event.target.selectionEnd is 0
       @removeSelectItem(@get('selections.lastObject'))
+      event.preventDefault()
 
   removeSelectItem: (item) ->
+    # set the focus back to the searchView because this item will be removed
+    dropdownIsShowing = @get('showDropdown')
+    @focusTextField()
+    @send 'hideDropdown' unless dropdownIsShowing
     @get('selections').removeObject item
+
+  escapePressed: (event) ->
+    if @get('showDropdown')
+      @focusTextField()
+      @send 'hideDropdown'
+      event.preventDefault()
+
+  enterPressed: (event) ->
+    @_super(event)
+    @focusTextField()
 
   actions:
     removeSelectItem: (item) ->
