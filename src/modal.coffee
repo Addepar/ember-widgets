@@ -103,7 +103,9 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     @_appendBackdrop() if @get('backdrop')
     # show modal in next run loop so that it will fade in instead of appearing
     # abruptly on the screen
-    Ember.run.next this, -> @set 'isShowing', yes
+    Ember.run.next this, ->
+      return if @isDestroying
+      @set 'isShowing', yes
     # bootstrap modal adds this class to the body when the modal opens to
     # transfer scroll behavior to the modal
     $(document.body).addClass('modal-open')
@@ -125,6 +127,7 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     @send 'sendCancel' unless @get('enforceModality')
 
   hide: ->
+    return if @isDestroying
     @set 'isShowing', no
     # bootstrap modal removes this class from the body when the modal closes
     # to transfer scroll behavior back to the app
