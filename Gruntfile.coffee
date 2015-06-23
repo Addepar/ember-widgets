@@ -270,7 +270,7 @@ module.exports = (grunt) ->
     grunt.file.write "build/tests/runner.html", grunt.template.process(tmpl, renderingContext)
 
   grunt.registerTask "build_srcs", [ "coffee:srcs", "emberTemplates:srcs", "neuter:srcs" ]
-  grunt.registerTask "build_app", [ "replace:app", "coffee:app", "emberTemplates:app", "neuter:app", "copy:app" ]
+  grunt.registerTask "build_app", [ "replace:app", "coffee:app", "emberTemplates:app", "neuter:app", "copy:app", "less:app" ]
   grunt.registerTask "build_tests", [ "coffee:tests" ]
 
   # build dist files: same as default but no bower or watch
