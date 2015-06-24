@@ -44,6 +44,9 @@ _isFocused = (app, selector, context) ->
 _isHidden = (app, selector, context) ->
   not _isVisible(app, selector, context)
 
+_openDropdown = (app, element) ->
+  click '.dropdown-toggle', element
+
 # find the first item with the exact matching itemText from a chosen
 _findInChosen = (app, element, itemText) ->
   toggleButton = find '.dropdown-toggle', element
@@ -121,6 +124,7 @@ _fillInCustomColor = (app, value) ->
 
 
 Ember.Test.registerHelper 'find', _find
+Ember.Test.registerHelper 'openDropdown', _openDropdown
 Ember.Test.registerHelper 'findInChosen', _findInChosen
 Ember.Test.registerHelper 'findInMultiChosen', _findInMultiChosen
 Ember.Test.registerHelper 'selectInMultiChosen', _selectInMultiChosen

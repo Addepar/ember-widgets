@@ -1,4 +1,6 @@
 select = null
+emptyContentSelector = '.ember-select-empty-content'
+noResultSelector = '.ember-select-no-results'
 
 moduleForComponent 'select', '[Unit] Select component',
   needs: [
@@ -131,7 +133,7 @@ test 'Test userSelected action', ->
   @append()
 
   selectElement = select.$()
-  click '.dropdown-toggle', selectElement
+  openDropdown(selectElement)
   andThen ->
     ok not spy.calledWith('userSelected'),
       'userSelected action should not be fired when first open the dropdown'
@@ -197,3 +199,62 @@ test 'Test query matching', ->
   select.set 'query', 'bana$ n'
   equal(select.get('filteredContent').length, 1,
     'duplicated spaces in the source string should be removed before matching')
+
+test "Show empty content view if content is empty", ->
+  expect 5
+
+  EmptyContentView = Ember.View.extend
+    layout: Ember.Handlebars.compile(
+      "<div class='empty-content-view'>No Content</div>"
+    )
+
+  select = @subject
+    content: []
+    optionLabelPath: 'name'
+    optionValuePath: 'code'
+    classNames: 'select-class-name'
+
+  @append()
+
+  selectElement = select.$()
+  openDropdown(selectElement)
+  andThen ->
+    ok isPresent(emptyContentSelector, selectElement),
+      'Empty content block displayed'
+    ok isNotPresent('.empty-content-view', selectElement),
+      'Empty content view not displayed before specified'
+    ok isNotPresent(noResultSelector, selectElement),
+      '"No result" message not displayed'
+  andThen ->
+    Ember.run ->
+      select.set 'emptyContentView', EmptyContentView
+  andThen ->
+    ok isPresent('.empty-content-view', selectElement),
+      'Empty content view displayed'
+  andThen ->
+    Ember.run ->
+      select.set 'emptyContentView', null
+  andThen ->
+    ok isNotPresent('.empty-content-view', selectElement),
+      'Empty content view no longer displayed'
+
+
+test "Show no-result message if has content but filtered content is empty", ->
+  expect 2
+
+  data = [{name: 'reddit'}, {name: 'red'}]
+  select = @subject
+    content: data
+    query: 'Non-existing Name'
+    optionLabelPath: 'name'
+    classNames: 'select-class-name'
+
+  @append()
+
+  selectElement = select.$()
+  openDropdown(selectElement)
+  andThen ->
+    ok isNotPresent(emptyContentSelector, selectElement),
+      'Empty content block not displayed'
+    ok isPresent(noResultSelector, selectElement),
+      '"No result" message displayed'

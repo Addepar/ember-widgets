@@ -140,6 +140,9 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
       @get('originalItemViewClass')
   .property 'showTooltip'
 
+  # The view shown inside the dropdown when there is no content to show
+  emptyContentView: null
+
   # This doesn't clean correctly if `optionLabelPath` changes
   willDestroy: ->
     propertyName = 'contentProxy'
@@ -317,6 +320,7 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
   isLoading: no
   isLoaded: Ember.computed.not('isLoading')
   filteredContentIsEmpty: Ember.computed.empty 'filteredContent'
+  contentIsEmpty: Ember.computed.empty 'content'
   hasNoResults: Ember.computed.and('isLoaded', 'filteredContentIsEmpty')
 
   value: Ember.computed (key, value) ->
