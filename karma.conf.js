@@ -20,6 +20,7 @@ module.exports = function(config) {
       'vendor/sinonjs/sinon.js',
 
       'gh_pages/app.js',
+      'gh_pages/css/app.css',
 
       'build/tests/*.js',  // order matters!
       'build/tests/helpers/*.js',
