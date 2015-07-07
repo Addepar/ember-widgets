@@ -1,6 +1,6 @@
 {{#if confirmText}}
   <button type="button"
-    {{bind-attr class=":btn :btn-primary :btn-confirm isValid::disabled"}}
+    {{bind-attr class=":btn :btn-primary :btn-confirm isDisabled:disabled" disabled="isDisabled"}}
     {{action 'sendConfirm'}}>{{confirmText}}
   </button>
 {{/if}}

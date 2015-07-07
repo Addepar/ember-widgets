@@ -1,5 +1,5 @@
 Ember.Widgets.ModalComponent =
-Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
+Ember.Component.extend Ember.Widgets.StyleBindingsMixin, Ember.Widgets.TabbableModal,
   layoutName: 'modal'
   classNames: ['modal']
   classNameBindings: ['isShowing:in', 'hasCloseButton::has-no-close-button', 'fadeEnabled:fade']
@@ -18,7 +18,13 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   closeText:        null
   content:          ""
   size:             "normal"
-  isValid: true
+  isValid:          true
+
+  confirm: Ember.K
+  cancel: Ember.K
+  close: Ember.K
+
+  isDisabled: Ember.computed.not('isValid')
 
   fadeEnabled: Ember.computed ->
     return false if Ember.Widgets.DISABLE_ANIMATIONS
@@ -28,6 +34,8 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
   confirm: null
   cancel: null
   close: null
+
+  _runFocusTabbable: null
 
   headerViewClass: Ember.View.extend
     templateName: 'modal_header'
@@ -96,6 +104,10 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
 
   didInsertElement: ->
     @_super()
+    # Make sure that after the modal is rendered, set focus to the first
+    # tabbable element
+    @_runFocusTabbable = Ember.run.schedule 'afterRender', this, ->
+      @_focusTabbable()
     # See force reflow at http://stackoverflow.com/questions/9016307/
     # force-reflow-in-css-transitions-in-bootstrap
     @$()[0].offsetWidth if @get('fade')
@@ -112,19 +124,22 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     @_setupDocumentHandlers()
 
   willDestroyElement: ->
+    if @_runFocusTabbable
+      Ember.run.cancel @_runFocusTabbable
     @_super()
     @_removeDocumentHandlers()
     # remove backdrop
     @_backdrop.remove() if @_backdrop
 
-  keyHandler: Ember.computed ->
-    (event) =>
-      if event.which is 27 and @get('escToCancel') # ESC
-        @send 'sendCancel'
-
   click: (event) ->
-    return unless event.target is event.currentTarget
-    @send 'sendCancel' unless @get('enforceModality')
+    @_super(event)
+    # our modal component is a container. When we click on
+    # the modal (currentTarget), inside the dialog,
+    # some child element (target) will receive the event.
+    # Instead, if we click outside the dialog, the event will stay
+    # on the modal (currentTarget) because there is no child element there.
+    if event.target is event.currentTarget
+      @send 'sendCancel' unless @get('enforceModality')
 
   hide: ->
     return if @isDestroying
@@ -156,7 +171,6 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin,
     unless @_hideHandler
       @_hideHandler = => @hide()
       $(document).on 'modal:hide', @_hideHandler
-    $(document).on 'keyup', @get('keyHandler')
 
   _removeDocumentHandlers: ->
     @_super()

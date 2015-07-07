@@ -8,6 +8,14 @@ _mouseDown = (app, selector, context) ->
     $element.mousedown()
   wait app
 
+_jQueryKeyEvent = (app, element, event, keyCode, shiftKey, altKey, ctrlKey) ->
+  e = jQuery.Event(event)
+  e.keyCode = keyCode
+  e.shiftKey = shiftKey
+  e.altKey = altKey
+  e.ctrlKey = ctrlKey
+  element.trigger(e)
+
 _isPresent = (app, selector, context) ->
   $element = _find app, selector, context
   $element.length > 0
@@ -18,6 +26,10 @@ _isNotPresent = (app, selector, context) ->
 _isVisible = (app, selector, context) ->
   $element = _find app, selector, context
   $element.is(':visible')
+
+_isFocused = (app, selector, context) ->
+  $element = _find app, selector, context
+  $element.is(':focus')
 
 _isHidden = (app, selector, context) ->
   not _isVisible(app, selector, context)
@@ -107,9 +119,11 @@ Ember.Test.registerHelper 'selectInChosen', _selectInChosen
 Ember.Test.registerHelper 'findInSelect', _findInSelect
 
 Ember.Test.registerHelper 'mouseDown', _mouseDown
+Ember.Test.registerHelper 'jQueryKeyEvent', _jQueryKeyEvent
 Ember.Test.registerHelper 'isPresent', _isPresent
 Ember.Test.registerHelper 'isNotPresent', _isNotPresent
 Ember.Test.registerHelper 'isVisible', _isVisible
+Ember.Test.registerHelper 'isFocused', _isFocused
 Ember.Test.registerHelper 'isHidden', _isHidden
 
 Ember.Test.registerAsyncHelper 'openColorChooser', _openColorChooser
