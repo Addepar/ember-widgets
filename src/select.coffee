@@ -25,6 +25,9 @@ Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
     @notifyPropertyChange 'label'
   , 'content', 'labelPath'
 
+  processDropDownShown: ->
+    @get('controller').send 'hideDropdown'
+
   didInsertElement: ->
     @_super()
     @labelPathDidChange()
@@ -44,8 +47,7 @@ Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
     # propagate the click event
     # if the dropdown is expanded and we select something, don't propagate
     if @get('controller.showDropdown')
-      @get('controller').send 'hideDropdown'
-      # return false to prevent propagation
+      @processDropDownShown()
       return no
 
   mouseEnter: ->
@@ -54,7 +56,7 @@ Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
 
 Ember.Widgets.SelectComponent =
 Ember.Component.extend Ember.Widgets.BodyEventListener,
-Ember.AddeparMixins.ResizeHandlerMixin,
+Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
   layoutName:         'select'
   classNames:         'ember-select'
   attributeBindings:  Ember.A ['tabindex']
@@ -63,11 +65,12 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   prompt:             'Select a Value'
   placeholder:        undefined
   disabled: no
+  hasFocus: no
 
-  # we need to set tabindex so that div responds to key events
   highlightedIndex: -1
 
-  tabindex: -1
+  # we need to set tabindex so that div responds to key events
+  tabindex: 0
 
   showDropdown: no
 
@@ -106,6 +109,19 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   # This augments the dropdown to provide a place for adding a select menu that
   # possibly says 'create item' or something along that line
   selectMenuView: null
+
+  # a map of accepted keys to show dropdown when being pressed
+  # these are keys to show dropdown when being pressed
+  acceptedKeys: Ember.computed ->
+    mappedKeys = Ember.Map.create()
+    # create a set of accepted keys from 'A'..'Z', 'a'..'z', '0'..'9'
+    # and some special keys Enter, Spacebar, Up, Down
+    keySet = _.union([@KEY_CODES.ENTER, @KEY_CODES.SPACEBAR],
+      [@KEY_CODES.DOWN, @KEY_CODES.UP],[65..90],[97..122],[48..57])
+    keySet.forEach (key) ->
+      mappedKeys[key] = yes
+    return mappedKeys
+  .property()
 
   # This doesn't clean correctly if `optionLabelPath` changes
   willDestroy: ->
@@ -166,8 +182,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   # TODO(Peter): consider calling this optionViewClass?
   itemView: Ember.computed ->
     itemViewClass = @get 'itemViewClass'
-    if typeof itemViewClass is 'string'
-      return Ember.get itemViewClass
+    return Ember.get itemViewClass if typeof itemViewClass is 'string'
     itemViewClass
   .property 'itemViewClass'
 
@@ -197,6 +212,9 @@ Ember.AddeparMixins.ResizeHandlerMixin,
       if @get('parentView.showDropdown')
         Ember.run.schedule 'afterRender', this, ->
           @$().focus() if (@get('_state') or @get('state')) is 'inDOM'
+      # clear the query string when dropdown is hidden
+      else
+        @set 'value', ''
     , 'parentView.showDropdown'
 
   # This is a hack. Ember.ListView doesn't handle case when total height
@@ -295,9 +313,14 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   matcher: (searchText, item) ->
     return yes unless searchText
     label = Ember.get(item, @get('optionLabelPath'))
-    escapedSearchText = searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
+    return no unless label
+    trimmedLabel = label.trim().replace(/\s{2,}/g, ' ')
+    # trim and eliminate duplicated spaces to avoid unintended spaces
+    trimmedSearchText = searchText.trim().replace(/\s{2,}/g, ' ')
+    # adding escapes to special characters to put it into RegEx
+    escapedSearchText = trimmedSearchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
     regex = new RegExp(escapedSearchText, 'i')
-    regex.test(label)
+    regex.test(trimmedLabel)
 
   # TODO(Peter): This needs to be rethought
   setDefaultSelection: Ember.observer ->
@@ -325,6 +348,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     13: 'enterPressed'
     38: 'upArrowPressed'
     40: 'downArrowPressed'
+    9:  'tabPressed'
 
   # All the selectable options - namely everything except for the non-group
   # options that are artificially created.
@@ -337,8 +361,8 @@ Ember.AddeparMixins.ResizeHandlerMixin,
 
   # The option that is currently highlighted.
   highlighted: Ember.computed (key, value) ->
-    content   = @get('selectableOptions') or Ember.A []
-    value     = value or Ember.A []
+    content   = @get('selectableOptions') or Ember.A()
+    value     = value or Ember.A()
     if arguments.length is 1 # getter
       index = @get 'highlightedIndex'
       value = content.objectAt index
@@ -348,11 +372,27 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     value
   .property 'selectableOptions.[]', 'highlightedIndex'
 
+  setFocus: ->
+    activeElem = document.activeElement
+    selectComponent = @$()[0]
+    if selectComponent.contains(activeElem) or selectComponent is activeElem
+      @set 'hasFocus', yes
+    else
+      @set 'hasFocus', no
+
   bodyClick: -> @send 'hideDropdown'
 
   keyDown: (event) ->
-    # show dropdown if dropdown is not already showing
-    return @set('showDropdown', yes) unless @get 'showDropdown'
+    return if @get('isDestroyed') or @get('isDestroying')
+    @setFocus()
+    # show dropdown if it is not already showing
+    # and the keycode should be in the list of accepted keys to show dropdown
+    # [Spacebar, Enter, Up, Down, 'A'..'Z','a..z','0..9']
+    acceptedKeys = @get 'acceptedKeys'
+    if acceptedKeys[event.keyCode] and not @get 'showDropdown'
+      @set('showDropdown', yes)
+      return
+
     map   = @get 'KEY_EVENTS'
     method = map[event.keyCode]
     @get(method)?.apply(this, arguments) if method
@@ -360,14 +400,22 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   deletePressed: Ember.K
 
   escapePressed: (event) ->
-    @send 'hideDropdown'
+    if @get('showDropdown')
+      @send 'hideDropdown'
+      @$().focus()
+      event.preventDefault()
+
+  tabPressed: (event) ->
+    @send 'hideDropdown' if @get('showDropdown')
+
 
   enterPressed: (event) ->
     item = @get 'highlighted'
     @set 'selection', item unless Ember.isEmpty(item)
     @userDidSelect(item) unless Ember.isEmpty(item)
+    @$().focus()
     # in case dropdown doesn't close
-    @send 'hideDropdown'
+    @send 'hideDropdown' if @get('showDropdown')
     # TODO(Peter): HACK the web app somehow reloads when enter is pressed.
     event.preventDefault()
 
@@ -415,6 +463,12 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   #TODO Refactor other parts to use this method to set selection
   userDidSelect: (selection) ->
     @sendAction 'userSelected', selection
+
+  focusIn: (event) ->
+    @set 'hasFocus', yes
+
+  focusOut: (event) ->
+    @set 'hasFocus', no
 
   actions:
     toggleDropdown: (event) ->

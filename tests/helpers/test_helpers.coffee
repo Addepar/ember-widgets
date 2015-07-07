@@ -8,13 +8,23 @@ _mouseDown = (app, selector, context) ->
     $element.mousedown()
   wait app
 
-_jQueryKeyEvent = (app, element, event, keyCode, shiftKey, altKey, ctrlKey) ->
-  e = jQuery.Event(event)
-  e.keyCode = keyCode
-  e.shiftKey = shiftKey
-  e.altKey = altKey
-  e.ctrlKey = ctrlKey
-  element.trigger(e)
+_pressEnter = (app, element) ->
+  keyEvent(element, 'keydown', 13)
+
+_pressSpacebar = (app, element) ->
+  keyEvent(element, 'keydown', 32)
+
+_pressESC = (app, element) ->
+  keyEvent(element, 'keydown', 27)
+
+_pressUpArrow = (app, element) ->
+  keyEvent(element, 'keydown', 38)
+
+_pressDownArrow = (app, element) ->
+  keyEvent(element, 'keydown', 40)
+
+_pressBackspace = (app, element) ->
+  keyEvent(element, 'keydown', 8)
 
 _isPresent = (app, selector, context) ->
   $element = _find app, selector, context
@@ -119,7 +129,12 @@ Ember.Test.registerHelper 'selectInChosen', _selectInChosen
 Ember.Test.registerHelper 'findInSelect', _findInSelect
 
 Ember.Test.registerHelper 'mouseDown', _mouseDown
-Ember.Test.registerHelper 'jQueryKeyEvent', _jQueryKeyEvent
+Ember.Test.registerAsyncHelper 'pressEnter', _pressEnter
+Ember.Test.registerAsyncHelper 'pressSpacebar', _pressSpacebar
+Ember.Test.registerAsyncHelper 'pressESC', _pressESC
+Ember.Test.registerAsyncHelper 'pressUpArrow', _pressUpArrow
+Ember.Test.registerAsyncHelper 'pressDownArrow', _pressDownArrow
+Ember.Test.registerAsyncHelper 'pressBackspace', _pressBackspace
 Ember.Test.registerHelper 'isPresent', _isPresent
 Ember.Test.registerHelper 'isNotPresent', _isNotPresent
 Ember.Test.registerHelper 'isVisible', _isVisible
