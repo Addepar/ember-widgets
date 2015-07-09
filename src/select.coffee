@@ -413,7 +413,10 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
     item = @get 'highlighted'
     @set 'selection', item unless Ember.isEmpty(item)
     @userDidSelect(item) unless Ember.isEmpty(item)
-    @$().focus()
+    # we want to set focus back the the component.
+    # However, in some use cases, the select component is closed
+    # depending on how the userDidSelect action is implemented.
+    @$()?.focus()
     # in case dropdown doesn't close
     @send 'hideDropdown' if @get('showDropdown')
     # TODO(Peter): HACK the web app somehow reloads when enter is pressed.

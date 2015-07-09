@@ -104,7 +104,7 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
   , 'selection', 'selections.[]'
 
   focusTextField: ->
-    @$('.ember-text-field').focus()
+    @$('.ember-text-field')?.focus()
 
   didInsertElement: ->
     # We want to initialize selections to []. This SHOULD NOT be done through
