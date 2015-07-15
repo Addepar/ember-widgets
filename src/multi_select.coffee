@@ -15,6 +15,11 @@ Ember.Widgets.MultiSelectOptionView = Ember.View.extend
     @notifyPropertyChange 'label'
   , 'context', 'labelPath'
 
+Ember.Widgets.MultiSelectTooltipItemView = Ember.Widgets.SelectTooltipOptionView.extend
+  processDropDownShown: ->
+    @_super()
+    @get('controller').focusTextField()
+
 Ember.Widgets.MultiSelectItemView = Ember.Widgets.SelectOptionView.extend
   processDropDownShown: ->
     @_super()
@@ -27,7 +32,9 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
   placeholder: undefined
   persistentPlaceholder: undefined
   resetQueryOnSelect: yes
-  itemViewClass: 'Ember.Widgets.MultiSelectItemView'
+  showTooltip: yes
+  tooltipItemViewClass: 'Ember.Widgets.MultiSelectTooltipItemView'
+  originalItemViewClass: 'Ember.Widgets.MultiSelectItemView'
 
   # disable tabindex of the component container to set focus directly to
   # the input field, which is always visible. This helps reducing one tab
