@@ -582,6 +582,9 @@
   display: block !important;
   overflow-y: auto;
 }
+.modal-dialog:focus {
+  outline: none;
+}
 .modal-sm .modal-dialog {
   width: 400px;
 }
