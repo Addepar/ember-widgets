@@ -117,20 +117,16 @@ Ember.Widgets.TabbableModal = Ember.Mixin.create Ember.Widgets.KeyboardHelper,
         return yes
     no
 
-  click: (event) ->
+  mouseDown: (event) ->
     @_super(event)
 
-    # in some cases, when the app remove the DOM element and replace it with
-    # another one for styling purpose, we have to check and drive the focus
-    # back to the modal
-    unless document.contains(event.target)
-      @_focusTabbable()
-    # if we click on a not-focusable elemnt, we should guide the focus back
-    # to a focusable element, otherwise we will lose the TAB loop
-    else unless @_checkContainingElement(@$(':focusable'), event.target)
-      @_focusTabbable()
-    else
+    if @_checkContainingElement(@$(':tabbable'), event.target)
       @set 'currentFocus', event.target
+    else
+      # if we click on a non-tabbable element, we should just set the focus back
+      # to the modal and reset the tab loop
+      @set 'currentFocus', null
+      @$().focus()
 
   # capture the TAB key and make a cycle tab loop among the tabbable elements
   # inside the modal. Remove the close button from the loop
@@ -152,7 +148,7 @@ Ember.Widgets.TabbableModal = Ember.Mixin.create Ember.Widgets.KeyboardHelper,
       # we need to guide the focus back to a tabbable element
       if _index == -1
         @_focusTabbable()
-
+        return no
       # process the tab loop by checking two ends to construct the loop
       if tabbableObjects.length > 0
         first = tabbableObjects[0]

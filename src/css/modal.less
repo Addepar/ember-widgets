@@ -12,6 +12,13 @@
   overflow-y: auto;
 }
 
+// modal-dialog will be a fall-back focusing element where there is no
+// sub-element is in focus. We remove the outline for not making it look
+// awkward when it is in focus
+.modal-dialog:focus {
+  outline: none;
+}
+
 // Sizes
 .modal-sm .modal-dialog {
   width: 400px;
