@@ -73,7 +73,12 @@ Ember.Widgets.BodyEventListener = Ember.Mixin.create
         if (@get('_state') or @get('state')) is 'inDOM' and Ember.isEmpty(@$().has($(event.target)))
           # check if event.target still exists in DOM
           if document.contains(event.target)
-            @bodyClick()
+            # bodyClick starts taking parameter "event" to make room to control
+            # some special cases where there is a component added to the body
+            # instead of the app (such as bootstrap date-picker).
+            # If it is the case, we can check for the event target to prevent
+            # the popover from being closed.
+            @bodyClick(event)
     $(@get('bodyElementSelector')).on "click", @_clickHandler
 
   _removeDocumentHandlers: ->
