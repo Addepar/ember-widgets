@@ -72,7 +72,7 @@ Ember.Widgets.BodyEventListener = Ember.Mixin.create
       Ember.run =>
         if (@get('_state') or @get('state')) is 'inDOM' and Ember.isEmpty(@$().has($(event.target)))
           # check if event.target still exists in DOM
-          if document.contains(event.target)
+          if $.contains(document.body, event.target)
             # bodyClick starts taking parameter "event" to make room to control
             # some special cases where there is a component added to the body
             # instead of the app (such as bootstrap date-picker).
