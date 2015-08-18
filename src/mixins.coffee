@@ -113,7 +113,7 @@ Ember.Widgets.TabbableModal = Ember.Mixin.create Ember.Widgets.KeyboardHelper,
         # while if we do not have any choice, the close button is chosen
         if hasFocus.length > 1
           focusElement = hasFocus[1]
-      focusElement.focus()
+      focusElement?.focus()
       @set 'currentFocus', focusElement
 
   _checkContainingElement: (containers, element) ->
