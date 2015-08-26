@@ -45,12 +45,7 @@ Ember.Widgets.BodyEventListener, Ember.Widgets.TabbableModal,
 
   didInsertElement: ->
     @_super()
-
-    # Make sure that after the popover is rendered, set focus to the first
-    # tabbable element
-    Ember.run.schedule 'afterRender', this, ->
-      @_focusTabbable()
-
+    @setInitialFocus()
     # we want the view to render first and then we snap to position after
     # it is renered
     @snapToPosition()
@@ -58,6 +53,7 @@ Ember.Widgets.BodyEventListener, Ember.Widgets.TabbableModal,
     @set 'isShowing', yes
 
   willDestroyElement: ->
+    @cancelScheduledRun()
     @$().off $.support.transition.end
     @_super()
 
