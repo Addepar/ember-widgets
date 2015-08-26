@@ -1,6 +1,6 @@
 Ember.Widgets.PopoverMixin =
 Ember.Mixin.create Ember.Widgets.StyleBindingsMixin,
-Ember.Widgets.BodyEventListener,
+Ember.Widgets.BodyEventListener, Ember.Widgets.TabbableModal,
   layoutName: 'popover'
   classNames: ['popover']
   classNameBindings: ['isShowing:in', 'fadeEnabled:fade', 'placement']
@@ -45,6 +45,7 @@ Ember.Widgets.BodyEventListener,
 
   didInsertElement: ->
     @_super()
+    @setInitialFocus()
     # we want the view to render first and then we snap to position after
     # it is renered
     @snapToPosition()
@@ -52,12 +53,17 @@ Ember.Widgets.BodyEventListener,
     @set 'isShowing', yes
 
   willDestroyElement: ->
+    @cancelScheduledRun()
     @$().off $.support.transition.end
     @_super()
 
   bodyClick: -> @hide()
 
   hide: ->
+    # return the focus back to the target element when the popover is hidden
+    target = @get 'targetElement'
+    if target?
+      $(target).focus()
     return if @get('isDestroyed')
     @set('isShowing', no)
     if @get('fadeEnabled')
@@ -193,11 +199,6 @@ Ember.Widgets.BodyEventListener,
     if @get('top') < 0
       @set 'top', @get('marginTop')
 
-  keyHandler: Ember.computed ->
-    (event) =>
-      if event.keyCode is 27 and @get('escToCancel') # ESC
-        @hide()
-
   # We need to put this in a computed because this is attached to the
   # resize and scroll events before snapToPosition is defined. We
   # throttle for 100 ms because that looks nice.
@@ -216,7 +217,6 @@ Ember.Widgets.BodyEventListener,
     unless @_scrollHandler
       @_scrollHandler = @get('debounceSnapToPosition')
       $(document).on 'scroll', @_scrollHandler
-    $(document).on 'keyup', @get('keyHandler')
 
   _removeDocumentHandlers: ->
     @_super()
@@ -226,7 +226,11 @@ Ember.Widgets.BodyEventListener,
     @_resizeHandler = null
     $(document).off 'scroll', @_scrollHandler
     @_scrollHandler = null
-    $(document).off 'keyup', @get('keyHandler')
+
+  actions:
+    # to hide popover when hitting ESC (called from tabbableModal mixin)
+    sendCancel: ->
+      @hide()
 
 Ember.Widgets.PopoverComponent = Ember.Component.extend(Ember.Widgets.PopoverMixin)
 

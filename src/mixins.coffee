@@ -94,6 +94,18 @@ Ember.Widgets.TabbableModal = Ember.Mixin.create Ember.Widgets.KeyboardHelper,
   escToCancel:      yes
 
   currentFocus: null
+  _runFocusTabbable: null
+
+  setInitialFocus: ->
+    # Make sure that after the modal is rendered, set focus to the first
+    # tabbable element
+    @_runFocusTabbable = Ember.run.schedule 'afterRender', this, ->
+      @_focusTabbable()
+
+  cancelScheduledRun: ->
+    # we need to cancel scheduled run loop
+    if @_runFocusTabbable
+      Ember.run.cancel @_runFocusTabbable
 
   _focusTabbable: ->
      # Set focus to the first match:
@@ -113,7 +125,7 @@ Ember.Widgets.TabbableModal = Ember.Mixin.create Ember.Widgets.KeyboardHelper,
         # while if we do not have any choice, the close button is chosen
         if hasFocus.length > 1
           focusElement = hasFocus[1]
-      focusElement.focus()
+      focusElement?.focus()
       @set 'currentFocus', focusElement
 
   _checkContainingElement: (containers, element) ->

@@ -35,8 +35,6 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin, Ember.Widgets.TabbableM
   cancel: null
   close: null
 
-  _runFocusTabbable: null
-
   headerViewClass: Ember.View.extend
     templateName: 'modal_header'
 
@@ -104,10 +102,7 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin, Ember.Widgets.TabbableM
 
   didInsertElement: ->
     @_super()
-    # Make sure that after the modal is rendered, set focus to the first
-    # tabbable element
-    @_runFocusTabbable = Ember.run.schedule 'afterRender', this, ->
-      @_focusTabbable()
+    @setInitialFocus()
     # See force reflow at http://stackoverflow.com/questions/9016307/
     # force-reflow-in-css-transitions-in-bootstrap
     @$()[0].offsetWidth if @get('fade')
@@ -124,8 +119,7 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin, Ember.Widgets.TabbableM
     @_setupDocumentHandlers()
 
   willDestroyElement: ->
-    if @_runFocusTabbable
-      Ember.run.cancel @_runFocusTabbable
+    @cancelScheduledRun()
     @_super()
     @_removeDocumentHandlers()
     # remove backdrop
