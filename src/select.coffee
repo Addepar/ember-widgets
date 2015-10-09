@@ -42,7 +42,10 @@ Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
   click: ->
     return if @get('content.isGroupOption')
     @set 'controller.selection', @get('content')
-    @get('controller').userDidSelect @get 'content'
+    # Check if the dropdown is currently shown to make sure that we has clicked
+    # on a new selection item, not on the button to open the dropdown.
+    if @get('controller.showDropdown')
+      @get('controller').userDidSelect @get 'content'
     # if there's a selection and the dropdown is unexpanded, we want to
     # propagate the click event
     # if the dropdown is expanded and we select something, don't propagate
