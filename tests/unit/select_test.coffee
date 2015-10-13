@@ -129,6 +129,42 @@ test 'Test selection label', ->
   select.set 'selection.name', 'blues'
   equal(select.get('selectedLabel'), 'blues')
 
+test 'Test alwaysShowDropdown', ->
+  expect 4
+
+  data = [{name: 'reddit'}, {name: 'red'}]
+  select = @subject
+    content: data
+    selection: data[0]
+    optionLabelPath: 'name'
+    showDropdown: true
+    alwaysShowDropdown: true
+
+  @append()
+
+  selectComponent = select.$()
+
+  validateDropdownVisible = (messageVisible) ->
+    ok isVisible(find '.ember-select-results', selectComponent),
+      messageVisible
+
+  validateDropdownVisible('Dropdown should be shown at the beginning')
+
+  pressESC(selectComponent)
+  andThen ->
+    validateDropdownVisible('Dropdown should still be there after pressing ESC')
+
+  click('li:eq(0)', '.ember-select-results')
+  andThen ->
+    validateDropdownVisible('Dropdown should still be there after clicking on
+      one option')
+
+  pressDownArrow(selectComponent)
+  pressEnter(selectComponent)
+  andThen ->
+    validateDropdownVisible('Dropdown should still be there after clicking on
+      one option')
+
 test 'Test query matching', ->
   expect 8
 
