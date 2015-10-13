@@ -158,6 +158,9 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
     # update the layout to show the dropdown
     @updateDropdownLayout()
 
+    # Set the highlighted item when dropdown is shown
+    @updateHighlightedItem()
+
     # Set the focus to the search field so that users can start typing their
     # query right away.
     @_setSearchFieldFocus = Ember.run.schedule 'afterRender', this, ->
@@ -339,9 +342,8 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
   didInsertElement: ->
     @_super()
     @setDefaultSelection()
-    # Set the highlighted item in case the dropdown is set to be open at the
-    # beginning
-    @updateHighlightedItem()
+    if @get 'showDropdown'
+      @openDropdown()
 
   # It matches the item label with the query. This can be overrideen for better
   matcher: (searchText, item) ->
