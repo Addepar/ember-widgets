@@ -384,7 +384,7 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
         @set 'highlighted', @get('selectableOptions.firstObject')
 
   selectableOptionsDidChange: Ember.observer ->
-    @updatetHighlightedItem()
+    @updateHighlightedItem()
   , 'selectableOptions.[]', 'showDropdown'
 
   ###
