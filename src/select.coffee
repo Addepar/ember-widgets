@@ -46,10 +46,7 @@ Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
     # on a new selection item, not on the button to open the dropdown.
     if @get('controller.showDropdown')
       @get('controller').userDidSelect @get 'content'
-    # if there's a selection and the dropdown is unexpanded, we want to
-    # propagate the click event
-    # if the dropdown is expanded and we select something, don't propagate
-    if @get('controller.showDropdown')
+      # if the dropdown is expanded and we select something, don't propagate
       @processDropDownShown()
       return no
 
@@ -83,6 +80,10 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
   # we need to set tabindex so that div responds to key events
   tabindex: 0
 
+  ###*
+  * Flag controlling the dropdown's appearance of the select component
+  * @type {Boolean}
+  ###
   showDropdown: no
 
   dropdownHeight: 300
@@ -143,16 +144,40 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
       @get('originalItemViewClass')
   .property 'showTooltip'
 
+  ###*
+  * Function to be called when we want to open the dropdown, i.e. to
+  * clean up the query, render the dropdown...
+  * @function
+  ###
+  openDropdown: ->
+    @set 'showDropdown', yes
+    # Clear the query content when users open the dropdown so that users can
+    # start typing their new query right away.
+    @set 'query', ''
+
+    # update the layout to show the dropdown
+    @updateDropdownLayout()
+
+    # Set the focus to the search field so that users can start typing their
+    # query right away.
+    @_setSearchFieldFocus = Ember.run.schedule 'afterRender', this, ->
+      if (@get('_state') or @get('state')) is 'inDOM'
+        @$('.ember-select-search input').focus()
+
   # This doesn't clean correctly if `optionLabelPath` changes
   willDestroy: ->
     propertyName = 'contentProxy'
     if @cacheFor propertyName
       contentProxy = @get propertyName
       contentProxy.destroy()
+
+    # cancel the set focus schedule if we have it set up in openDropdown
+    Ember.run.cancel @_setSearchFieldFocus if @_setSearchFieldFocus
+
     @_super()
 
-  updateDropdownLayout: Ember.observer ->
-    return if (@get('_state') or @get('state')) isnt 'inDOM' or @get('showDropdown') is no
+  updateDropdownLayout: ->
+    return if (@get('_state') or @get('state')) isnt 'inDOM'
 
     # Render the dropdown in a hidden state to get the size
     @$('.js-dropdown-menu').css('visibility', 'hidden');
@@ -190,7 +215,6 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
       dropdownMenuWidth + dropdownMargin > window.innerWidth
 
     @$('.js-dropdown-menu').css('visibility', 'visible');
-  , 'showDropdown'
 
   onResizeEnd: ->
     # We need to put this on the run loop, because the resize event came from
@@ -222,20 +246,7 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
 
   searchView: Ember.TextField.extend
     placeholder: Ember.computed.alias 'parentView.placeholder'
-    valueBinding: 'parentView.query'
-    # we want to focus on search input when dropdown is opened. We need to put
-    # this in a run loop to wait for the event that triggers the showDropdown
-    # to finishes before trying to focus the input. Otherwise, focus when be
-    # "stolen" from us.
-    showDropdownDidChange: Ember.observer ->
-      # when closing, don't need to focus the now-hidden search box
-      if @get('parentView.showDropdown')
-        Ember.run.schedule 'afterRender', this, ->
-          @$().focus() if (@get('_state') or @get('state')) is 'inDOM'
-      # clear the query string when dropdown is hidden
-      else
-        @set 'value', ''
-    , 'parentView.showDropdown'
+    value: Ember.computed.alias 'parentView.query'
 
   # This is a hack. Ember.ListView doesn't handle case when total height
   # is less than height properly
@@ -328,6 +339,9 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
   didInsertElement: ->
     @_super()
     @setDefaultSelection()
+    # Set the highlighted item in case the dropdown is set to be open at the
+    # beginning
+    @updateHighlightedItem()
 
   # It matches the item label with the query. This can be overrideen for better
   matcher: (searchText, item) ->
@@ -352,11 +366,19 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
     @set 'selection', content.findProperty(defaultPath)
   , 'content.[]'
 
-  selectableOptionsDidChange: Ember.observer ->
+  ###*
+  * Update highlighted item to the first option when the current highlighted
+  * item does not exist.
+  * @function
+  ###
+  updateHighlightedItem: ->
     if @get('showDropdown')
       highlighted = @get('highlighted')
       if not @get('selectableOptions').contains(highlighted)
         @set 'highlighted', @get('selectableOptions.firstObject')
+
+  selectableOptionsDidChange: Ember.observer ->
+    @updateHighlightedItem()
   , 'selectableOptions.[]', 'showDropdown'
 
   ###
@@ -496,7 +518,10 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
   actions:
     toggleDropdown: (event) ->
       return if @get('disabled')
-      @toggleProperty 'showDropdown'
+      if @get 'showDropdown'
+        @send 'hideDropdown'
+      else
+        @openDropdown()
 
     hideDropdown: (event) ->
       return if @get('isDestroyed') or @get('isDestroying')
