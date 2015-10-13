@@ -116,6 +116,33 @@ test 'Test keyboard interaction', ->
       pressing ESC')
     validateFocus('Select component should be focused after pressing ESC')
 
+test 'Test click interaction', ->
+  expect 2
+
+  select = @subject
+    content: ['foo', 'bar', 'barca', 'baz']
+  @append()
+
+  selectComponent = select.$()
+
+  validateDropdownVisible = (messageVisible) ->
+    ok isVisible(find '.ember-select-results', selectComponent),
+      messageVisible
+
+  validateDropdownHidden = (messageHidden) ->
+    ok isHidden(find '.ember-select-results', selectComponent),
+      messageHidden
+
+  click '.dropdown-toggle', selectComponent
+  andThen ->
+    validateDropdownVisible('Dropdown list should appear after click on the
+      dropdown toggle of the select component for the first time')
+
+  click('li:eq(0)', '.ember-select-results')
+  andThen ->
+    validateDropdownHidden('Dropdown should be hidden after we click on one
+      option')
+
 test 'Test selection label', ->
   expect 2
 
@@ -128,6 +155,42 @@ test 'Test selection label', ->
   equal(select.get('selectedLabel'), 'reddit')
   select.set 'selection.name', 'blues'
   equal(select.get('selectedLabel'), 'blues')
+
+test 'Test alwaysShowDropdown', ->
+  expect 4
+
+  data = [{name: 'reddit'}, {name: 'red'}]
+  select = @subject
+    content: data
+    selection: data[0]
+    optionLabelPath: 'name'
+    showDropdown: true
+    alwaysShowDropdown: true
+
+  @append()
+
+  selectComponent = select.$()
+
+  validateDropdownVisible = (messageVisible) ->
+    ok isVisible(find '.ember-select-results', selectComponent),
+      messageVisible
+
+  validateDropdownVisible('Dropdown should be shown at the beginning')
+
+  pressESC(selectComponent)
+  andThen ->
+    validateDropdownVisible('Dropdown should still be there after pressing ESC')
+
+  click('li:eq(0)', '.ember-select-results')
+  andThen ->
+    validateDropdownVisible('Dropdown should still be there after clicking on
+      one option')
+
+  pressDownArrow(selectComponent)
+  pressEnter(selectComponent)
+  andThen ->
+    validateDropdownVisible('Dropdown should still be there after clicking on
+      one option')
 
 test 'Test query matching', ->
   expect 8
