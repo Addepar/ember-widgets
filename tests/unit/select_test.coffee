@@ -116,6 +116,94 @@ test 'Test keyboard interaction', ->
       pressing ESC')
     validateFocus('Select component should be focused after pressing ESC')
 
+test 'Test click interaction', ->
+  expect 3
+
+  select = @subject
+    content: ['foo', 'bar', 'barca', 'baz']
+  @append()
+
+  selectComponent = select.$()
+
+  validateDropdownVisible = (messageVisible) ->
+    ok isVisible(find '.ember-select-results', selectComponent),
+      messageVisible
+
+  validateDropdownHidden = (messageHidden) ->
+    ok isHidden(find '.ember-select-results', selectComponent),
+      messageHidden
+
+  validateFocus = (messageFocus) ->
+    ok isFocused('.ember-select-search input',selectComponent), messageFocus
+
+  click '.dropdown-toggle', selectComponent
+  andThen ->
+    validateDropdownVisible('Dropdown list should appear after click on the
+      dropdown toggle of the select component for the first time')
+    validateFocus('Search field should be focused when dropdown is shown')
+
+  click('li:eq(0)', '.ember-select-results')
+  andThen ->
+    validateDropdownHidden('Dropdown should be hidden after we click on one
+      option')
+
+test 'Test ShowDropdown at the beginning', ->
+  expect 2
+
+  select = @subject
+    content: ['foo', 'bar', 'barca', 'baz']
+    showDropdown: true
+  @append()
+
+  selectComponent = select.$()
+
+  validateDropdownVisible = (messageVisible) ->
+    ok isVisible(find '.ember-select-results', selectComponent),
+      messageVisible
+
+  validateDropdownHidden = (messageHidden) ->
+    ok isHidden(find '.ember-select-results', selectComponent),
+      messageHidden
+
+  validateFocus = (messageFocus) ->
+    ok isFocused('.ember-select-search input',selectComponent), messageFocus
+
+  validateDropdownVisible('Dropdown should be shown at the beginning when
+    ShowDropdown is set to true')
+  validateFocus('Search field should be focused when dropdown is shown')
+
+test 'Test lockDropdownOnShow=true behavior', ->
+  expect 2
+
+  select = @subject
+    content: ['foo', 'bar', 'barca', 'baz']
+    showDropdown: true
+    lockDropdownOnShow: true
+  @append()
+
+  selectComponent = select.$()
+
+  validateDropdownVisible = (messageVisible) ->
+    ok isVisible(find '.ember-select-results', selectComponent),
+      messageVisible
+
+  validateDropdownHidden = (messageHidden) ->
+    ok isHidden(find '.ember-select-results', selectComponent),
+      messageHidden
+
+  validateFocus = (messageFocus) ->
+    ok isFocused('.ember-select-search input',selectComponent), messageFocus
+
+  validateDropdownVisible('Dropdown should be shown at the beginning when
+    ShowDropdown is set to true')
+
+  click('li:eq(0)', '.ember-select-results')
+  andThen ->
+    validateDropdownVisible('Dropdown should be still visible after we select
+      an item')
+
+
+
 test 'Test selection label', ->
   expect 2
 
