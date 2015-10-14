@@ -26,7 +26,8 @@ Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
   , 'content', 'labelPath'
 
   processDropDownShown: ->
-    @get('controller').send 'hideDropdown'
+    if not @get('controller.lockDropdownOnShow')
+      @get('controller').send 'hideDropdown'
 
   didInsertElement: ->
     @_super()
@@ -85,6 +86,13 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
   * @type {Boolean}
   ###
   showDropdown: no
+
+  ###*
+  * Flag indicating that dropdown will always appear as part of the select
+  * component
+  * @type {Boolean}
+  ###
+  lockDropdownOnShow: no
 
   dropdownHeight: 300
   # Important: rowHeight must be synched with the CSS
@@ -424,7 +432,9 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
     else
       @set 'hasFocus', no
 
-  bodyClick: -> @send 'hideDropdown'
+  bodyClick: ->
+    if not @get('lockDropdownOnShow')
+      @send 'hideDropdown'
 
   keyDown: (event) ->
     return if @get('isDestroyed') or @get('isDestroying')
@@ -444,13 +454,14 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
   deletePressed: Ember.K
 
   escapePressed: (event) ->
-    if @get('showDropdown')
+    if @get('showDropdown') and not @get('lockDropdownOnShow')
       @send 'hideDropdown'
       @$().focus()
       event.preventDefault()
 
   tabPressed: (event) ->
-    @send 'hideDropdown' if @get('showDropdown')
+    if @get('showDropdown') and not @get('lockDropdownOnShow')
+      @send 'hideDropdown'
 
 
   enterPressed: (event) ->
@@ -462,7 +473,8 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
     # depending on how the userDidSelect action is implemented.
     @$()?.focus()
     # in case dropdown doesn't close
-    @send 'hideDropdown' if @get('showDropdown')
+    if @get('showDropdown') and not @get('lockDropdownOnShow')
+      @send 'hideDropdown'
     # TODO(Peter): HACK the web app somehow reloads when enter is pressed.
     event.preventDefault()
 
@@ -519,9 +531,8 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
 
   actions:
     toggleDropdown: (event) ->
-      return if @get('disabled')
       if @get 'showDropdown'
-        @send 'hideDropdown'
+        @send 'hideDropdown' if not @get('lockDropdownOnShow')
       else
         @openDropdown()
 
