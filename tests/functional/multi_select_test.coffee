@@ -3,6 +3,8 @@ content = [
   {name: 'Bob', code: 'BOB'},
 ]
 
+multiSelect = null
+
 moduleForComponent 'multi-select', '[Functional] Multi select component',
   needs: [
     'template:multi-select'
@@ -10,6 +12,10 @@ moduleForComponent 'multi-select', '[Functional] Multi select component',
     'template:select-item-layout'
     'template:select-item'
   ]
+  teardown: ->
+    Ember.run ->
+      multiSelect.destroy()
+    multiSelect = null
 
 test "Multi select component has correct CSS classes", ->
   multiSelect = @subject

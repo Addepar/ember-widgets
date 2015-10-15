@@ -1,3 +1,5 @@
+multiSelect = null
+
 moduleForComponent 'multi-select', '[Unit] Multi select component',
   needs: [
     'template:multi-select'
@@ -5,39 +7,43 @@ moduleForComponent 'multi-select', '[Unit] Multi select component',
     'template:select-item-layout'
     'template:select-item'
   ]
+  teardown: ->
+    Ember.run ->
+      multiSelect.destroy()
+    multiSelect = null
 
 test 'Test preparedContent after some options are already selected', ->
   expect 2
-  multiselect = @subject
+  multiSelect = @subject
     content: ['foo', 'bar', 'barca', 'baz']
 
-  multiselect.set 'selections', ['bar', 'baz']
-  multiselect.set 'query', 'ba'
+  multiSelect.set 'selections', ['bar', 'baz']
+  multiSelect.set 'query', 'ba'
 
-  equal(multiselect.get('preparedContent').length, 1)
-  equal(multiselect.get('preparedContent')[0], 'barca')
+  equal(multiSelect.get('preparedContent').length, 1)
+  equal(multiSelect.get('preparedContent')[0], 'barca')
 
 test 'Query should not be reset on select if resetQueryOnSelect is false', ->
   expect 1
-  multiselect = @subject
+  multiSelect = @subject
     content: ['foo', 'bar', 'barca', 'baz']
 
-  multiselect.set 'resetQueryOnSelect', false
-  multiselect.set 'query', 'ba'
-  multiselect.set 'selections', ['bar', 'baz']
+  multiSelect.set 'resetQueryOnSelect', false
+  multiSelect.set 'query', 'ba'
+  multiSelect.set 'selections', ['bar', 'baz']
 
-  equal(multiselect.get('query'), 'ba')
+  equal(multiSelect.get('query'), 'ba')
 
 test 'Query should be reset on select if resetQueryOnSelect is true', ->
   expect 1
-  multiselect = @subject
+  multiSelect = @subject
     content: ['foo', 'bar', 'barca', 'baz']
 
-  multiselect.set 'resetQueryOnSelect', true
-  multiselect.set 'query', 'ba'
-  multiselect.set 'selections', ['bar', 'baz']
+  multiSelect.set 'resetQueryOnSelect', true
+  multiSelect.set 'query', 'ba'
+  multiSelect.set 'selections', ['bar', 'baz']
 
-  equal(multiselect.get('query'), '')
+  equal(multiSelect.get('query'), '')
 
 test 'Test keyboard and mouse interaction', ->
   expect 15

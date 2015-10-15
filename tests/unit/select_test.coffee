@@ -1,3 +1,5 @@
+select = null
+
 moduleForComponent 'select', '[Unit] Select component',
   needs: [
     'template:select'
@@ -5,6 +7,10 @@ moduleForComponent 'select', '[Unit] Select component',
     'template:select-item-layout'
     'template:select-item'
   ]
+  teardown: ->
+    Ember.run ->
+      select.destroy()
+    select = null
 
 test 'Test continuous queries in a row', ->
   expect 5
