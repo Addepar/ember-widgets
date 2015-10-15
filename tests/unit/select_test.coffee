@@ -5,7 +5,6 @@ moduleForComponent 'select', '[Unit] Select component',
     'template:select'
     'template:select-item'
     'template:select-item-layout'
-    'template:select-item'
   ]
   teardown: ->
     Ember.run ->
@@ -121,6 +120,32 @@ test 'Test keyboard interaction', ->
     validateDropdownHidden('Dropdown list should be hidden after
       pressing ESC')
     validateFocus('Select component should be focused after pressing ESC')
+
+test 'Test userSelected action', ->
+  expect 3
+
+  select = @subject
+    content: ['bar', 'baz']
+  spy = sinon.spy select, "sendAction"
+
+  @append()
+
+  selectElement = select.$()
+  click '.dropdown-toggle', selectElement
+  andThen ->
+    ok not spy.calledWith('userSelected'),
+      'userSelected action should not be fired when first open the dropdown'
+    spy.reset()
+  click('li:eq(0)', '.ember-select-results')
+  andThen ->
+    ok spy.calledWithExactly('userSelected', 'bar'),
+      'userSelected action is fired when select one item in the dropdown'
+    spy.reset()
+  click('.ember-select-result-item', '.dropdown-toggle')
+  andThen ->
+    ok not spy.calledWith('userSelected'),
+      'userSelected action should not be fired when click on the dropdown
+      containing highlighted item'
 
 test 'Test selection label', ->
   expect 2

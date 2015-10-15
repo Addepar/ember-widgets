@@ -209,6 +209,17 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
       tagName: 'span'
       labelPath: Ember.computed.alias 'controller.optionLabelPath'
       context: Ember.computed.alias 'controller.selection'
+      ###*
+      * Note: This view is an extension of the view used to display
+      * each option in the dropdown list.
+      * We would like to override the click event in the SelectOptionView
+      * so that we can make sure that only when we click on a new option in the
+      * list, the click event in the SelectOptionView is fired, not when we open
+      * the dropdown. It will allow us to trigger the change item event when we
+      * click to select a new option in the dropdown.
+      * @override
+      ###
+      click: Ember.K
   .property 'itemView'
 
   optionLabelPathChanges: Ember.on 'init', Ember.observer ->
