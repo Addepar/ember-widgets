@@ -81,6 +81,9 @@ Ember.Widgets.CarouselComponent = Ember.Component.extend
         $active.removeClass(['active', direction].join(' '))
         @set 'sliding', no
 
+        # Send an action out to signal that the sliding transition has ended
+        @send 'transitionEnded'
+
       @$nextItem = null
 
   _onTransitionEnd: ($el, callback) ->
