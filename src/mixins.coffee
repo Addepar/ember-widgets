@@ -142,6 +142,10 @@ Ember.Widgets.TabbableModal = Ember.Mixin.create Ember.Widgets.KeyboardHelper,
     if event.keyCode == @KEY_CODES.ESCAPE and @get 'escToCancel'
       @send 'sendCancel'
       event.preventDefault()
+    else if event.keyCode == @KEY_CODES.ENTER and @get('enterToConfirm')
+      unless @get('isDisabled')
+        @send 'sendConfirm'
+        event.preventDefault()
     else if event.keyCode == @KEY_CODES.TAB
       # tabbable objects list without close button
       tabbableObjects = @$(":tabbable").not('.close')

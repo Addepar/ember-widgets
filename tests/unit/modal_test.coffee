@@ -74,3 +74,16 @@ test 'Test preserving the focus when clicking on non-focusable element', ->
   click(modalBody)
   .then ->
     validateFocus buttonCancel, 'The focus should stay on the Cancel button'
+
+test 'Test pressing Enter to confirm', ->
+  expect 1
+
+  modal = @subject
+    enterToConfirm: yes
+  spy = sinon.spy modal, "send"
+
+  @append()
+  modalComponent = modal.$()
+  keyEvent(modalComponent, 'keydown', 13)
+  andThen ->
+    ok spy.calledWith('sendConfirm'), "sendConfirm gets called when hitting enter"

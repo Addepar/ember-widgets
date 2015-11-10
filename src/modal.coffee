@@ -8,6 +8,7 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin, Ember.Widgets.TabbableM
 
   enforceModality:  no
   escToCancel:      yes
+  enterToConfirm:   no
   backdrop:         yes
   isShowing:        no
   hasCloseButton:   yes
