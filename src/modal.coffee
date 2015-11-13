@@ -21,10 +21,6 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin, Ember.Widgets.TabbableM
   size:             "normal"
   isValid:          true
 
-  confirm: Ember.K
-  cancel: Ember.K
-  close: Ember.K
-
   isDisabled: Ember.computed.not('isValid')
 
   fadeEnabled: Ember.computed ->
