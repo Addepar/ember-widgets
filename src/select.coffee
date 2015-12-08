@@ -271,7 +271,7 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
     if optionLabelPath
       observableString = "content.@each.#{optionLabelPath}"
     else
-      observableString = 'content.@each'
+      observableString = 'content.[]'
 
     ContentProxy = Ember.ObjectProxy.extend
       _select: null
@@ -287,7 +287,7 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
       .property observableString, 'query'
 
       sortedFilteredContent: Ember.computed ->
-        _.sortBy @get('filteredContent'), (item) =>
+        _.sortBy @get('filteredContent'), (item) ->
           Ember.get(item, optionLabelPath)?.toLowerCase()
       .property 'filteredContent.[]'
 
@@ -328,7 +328,7 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
       valuePath = @get 'optionValuePath'
       selection = value
       if valuePath and @get('content')
-        selection = @get('content').findProperty(valuePath, value)
+        selection = _.find @get('content'), valuePath, value
       @set 'selection', selection
       value
     else # getter
