@@ -4,8 +4,12 @@
 
 .color-picker-button {
   display: inline-block;
-  // Let the color-picker-cell within it flood the whole button
+  // These settings for backward-compatibility. We used to style it here but now
+  // we move the style to the "color-picker-dropdown-button" so that it's easier
+  // to customize the dropdown button in 3rd party apps.
+  // TODO (Thang): Will be deprecated in version 1.0
   padding: 0 !important;
+  border: none; // (Hack) Removed the duplicated border because 2 ".btn" styling
 
   .color-picker-cell {
     width: @colorpicker-cell-height - 2px;
@@ -19,7 +23,10 @@
 }
 
 // Depending on the size of the button
-.color-picker-button.btn {
+.color-picker-dropdown-button {
+  // Let the color-picker-cell within it flood the whole button
+  padding: 0;
+
   .color-picker-dropdown-caret {
     .button-size(@padding-base-vertical; @padding-button-horizontal - 5px; @font-size-base; @line-height-base; @border-radius-base);
   }
@@ -30,7 +37,7 @@
   }
 }
 
-.color-picker-button.btn-lg {
+.color-picker-dropdown-button.btn-lg {
   .color-picker-dropdown-caret {
     // line-height: ensure even-numbered height of button next to large input
     .button-size(@padding-large-vertical; @padding-large-horizontal; @font-size-large; @line-height-large; @border-radius-large);
@@ -41,7 +48,7 @@
   }
 }
 
-.color-picker-button.btn-sm {
+.color-picker-dropdown-button.btn-sm {
   .color-picker-dropdown-caret {
     // line-height: ensure proper height of button next to small input
     .button-size(@padding-small-vertical; @padding-small-horizontal; @font-size-small; @line-height-small; @border-radius-small);
@@ -53,7 +60,7 @@
   }
 }
 
-.color-picker-button.btn-xs {
+.color-picker-dropdown-button.btn-xs {
   .color-picker-dropdown-caret {
     .button-size(@padding-xs-vertical; @padding-xs-horizontal; @font-size-small; @line-height-small; @border-radius-small);
   }

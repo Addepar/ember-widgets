@@ -168,6 +168,8 @@ Ember.Widgets.ColorPickerComponent = Ember.Component.extend
   colorPickerPlacement: 'right'
   dropdownClass: null
 
+  colorPickerButtonPartial: 'color-picker-button-partial'
+
   INITIAL_COLOR: '#0074D9'
 
   selectedColor: '#0074D9'
