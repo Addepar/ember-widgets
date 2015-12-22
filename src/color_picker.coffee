@@ -172,6 +172,8 @@ Ember.Widgets.ColorPickerComponent = Ember.Component.extend
 
   INITIAL_COLOR: '#0074D9'
 
+  shouldOpenPicker: false
+
   selectedColor: '#0074D9'
   selectedColorRGB: Ember.computed ->
     colorToHex(@get('selectedColor'))
@@ -237,6 +239,10 @@ Ember.Widgets.ColorPickerComponent = Ember.Component.extend
       color = @get 'customColor'
       @set 'selectedColor', color
       @userDidSelect(color)
+
+    toggleDropdown: ->
+      shouldOpenPicker = @get 'shouldOpenPicker'
+      @set 'shouldOpenPicker', not(shouldOpenPicker)
 
   userDidSelect: (selection) ->
     @sendAction 'userSelected', selection

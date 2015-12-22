@@ -1,4 +1,6 @@
-<button class="btn btn-default color-picker-dropdown-button" data-toggle="dropdown">
+<button class="btn btn-default color-picker-dropdown-button"
+        {{action 'toggleDropdown'}}
+>
   {{#if isColorTransparent}}
     {{view Ember.Widgets.ColorPickerCell
       colorBinding="selectedColor"
