@@ -17,7 +17,8 @@
           <div class="input-group">
             <span {{bind-attr class=":input-group-addon
               :color-picker-custom-preview isCustomColor:active"
-              style="customColorCSS"}} {{action "sendCustomColor"}}></span>
+              style="customColorCSS"}} {{action "sendCustomColor"}} tabindex="0">
+            </span>
             {{view Ember.TextField valueBinding="customColor"
               class="form-control input-sm"
               type="text"

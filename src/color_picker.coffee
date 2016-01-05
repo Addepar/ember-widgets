@@ -230,6 +230,23 @@ Ember.Widgets.ColorPickerComponent = Ember.Component.extend
     "background-color: #{@get('customColor')}"
   .property 'customColor'
 
+  ###*
+   * Hide the color picker dropdown when focusing out of the component
+   * Check if the relatedTarget, the one that will get focus, is outside the
+   * component or not.
+   * Note: when relatedTarget is null, the focus is lost and it
+   * will be set to the default one, which is the document's body.
+   *
+   * @param {event} event DOM event
+   * @return none
+  ###
+  hideColorPickerDropdown: Ember.on 'focusOut', (event) ->
+    relatedTarget = event.relatedTarget
+    isTargetOutside = @$().has(relatedTarget).length is 0
+    isFocusedOut =  isTargetOutside || Ember.isNone(relatedTarget)
+    if isFocusedOut
+      @set 'shouldOpenPicker', false
+
   actions:
     setColor: (color) ->
       @set 'customColor', ''
@@ -246,6 +263,8 @@ Ember.Widgets.ColorPickerComponent = Ember.Component.extend
 
   userDidSelect: (selection) ->
     @sendAction 'userSelected', selection
+    # After user selects a color, the color picker dropdown will be hidden
+    @set 'shouldOpenPicker', false
 
 # To maintain compatibility
 Ember.Widgets.ColorPicker = Ember.Widgets.ColorPickerComponent
@@ -254,8 +273,14 @@ Ember.Widgets.ColorPickerCell = Ember.View.extend Ember.Widgets.StyleBindingsMix
   templateName: 'color-picker-cell'
   classNames: ['pull-left', 'color-picker-cell']
   classNameBindings: Ember.A ['isActive:active:inactive']
+  attributeBindings:  Ember.A ['tabindex']
   styleBindings:  'color:background-color'
+
   color: null
+
+  # To enable the focusing on the colorPickerCell, which is a div, we have to
+  # enable the tabindex.
+  tabindex: 0
 
   isActive: Ember.computed ->
     colorToHex(@get('controller.selectedColor')) is colorToHex(@get('color'))
