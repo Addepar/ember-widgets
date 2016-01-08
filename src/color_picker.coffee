@@ -170,17 +170,53 @@ Ember.Widgets.ColorPickerComponent = Ember.Component.extend
 
   colorPickerButtonPartial: 'color-picker-button-partial'
 
-  INITIAL_COLOR: '#0074D9'
-
   shouldOpenPicker: false
-
   selectedColor: '#0074D9'
-  selectedColorRGB: Ember.computed ->
-    colorToHex(@get('selectedColor'))
-  .property 'selectedColor'
-  customColor: ''
+  customColor: '#00ff00'
 
-  isColorTransparent: Ember.computed.equal 'selectedColorRGB', 'transparent'
+  actions:
+    toggleDropdown: ->
+      shouldOpenPicker = @get 'shouldOpenPicker'
+      @set 'shouldOpenPicker', not(shouldOpenPicker)
+
+    userSelected: (selection) ->
+      @sendAction 'userSelected', selection
+      # After user selects a color, the color picker dropdown will be hidden
+      @set 'shouldOpenPicker', false
+
+    setSelectedColor: (color, isCustomColor) ->
+      @set 'selectedColor', color
+      if isCustomColor
+        @set 'customColor', color
+      else
+        @set 'customColor', ''
+
+
+# To maintain compatibility
+Ember.Widgets.ColorPicker = Ember.Widgets.ColorPickerComponent
+
+Ember.Widgets.ColorPickerCell = Ember.View.extend Ember.Widgets.StyleBindingsMixin,
+  templateName: 'color-picker-cell'
+  classNames: ['pull-left', 'color-picker-cell']
+  classNameBindings: Ember.A ['isActive:active:inactive']
+  styleBindings:  'color:background-color'
+
+  color: null
+
+  isActive: Ember.computed ->
+    colorToHex(@get('controller.selectedColor')) is colorToHex(@get('color'))
+  .property 'controller.selectedColor', 'color'
+
+  click: (event) ->
+    @get('controller').send 'setColor', @get 'color'
+
+Ember.Widgets.ColorPickerDropdownComponent = Ember.Component.extend
+  layoutName: 'color-picker-dropdown'
+  dropdownClass: null
+
+  selectedColor: ''
+
+  customColor: ''
 
   colorRows:
     Ember.A([
@@ -214,6 +250,8 @@ Ember.Widgets.ColorPickerComponent = Ember.Component.extend
       ])
     ])
 
+  isColorTransparent: Ember.computed.equal 'selectedColorRGB', 'transparent'
+
   setCustomColor: Ember.on 'init', Ember.observer ->
     selectedColor = @get 'selectedColor'
     selectedColor = colorToHex(selectedColor)
@@ -222,70 +260,45 @@ Ember.Widgets.ColorPickerComponent = Ember.Component.extend
     @set 'customColor', selectedColor
   , 'selectedColor', 'colorRows'
 
+  formattedCustomColor: Ember.computed ->
+    customColor = @get 'customColor'
+    if customColor.charAt(0) isnt '#'
+      customColor = '#' + customColor
+    return customColor
+  .property 'customColor'
+
   isCustomColorValid: Ember.computed ->
-    /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test("#{@get('customColor')}")
+    /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test("#{@get('formattedCustomColor')}")
   .property 'customColor'
 
   customColorCSS: Ember.computed ->
-    "background-color: #{@get('customColor')}"
-  .property 'customColor'
+    "background-color: #{@get('formattedCustomColor')}"
+  .property 'formattedCustomColor'
 
-  ###*
-   * Hide the color picker dropdown when focusing out of the component
-   * Check if the relatedTarget, the one that will get focus, is outside the
-   * component or not.
-   * Note: when relatedTarget is null, the focus is lost and it
-   * will be set to the default one, which is the document's body.
-   *
-   * @param {event} event DOM event
-   * @return none
-  ###
-  hideColorPickerDropdown: Ember.on 'focusOut', (event) ->
-    relatedTarget = event.relatedTarget
-    isTargetOutside = @$().has(relatedTarget).length is 0
-    isFocusedOut =  isTargetOutside || Ember.isNone(relatedTarget)
-    if isFocusedOut
-      @set 'shouldOpenPicker', false
+  selectedColorRGB: Ember.computed ->
+    colorToHex(@get('selectedColor'))
+  .property 'selectedColor'
+
+  userDidSelect: (selection) ->
+    @sendAction 'userSelected', selection
 
   actions:
     setColor: (color) ->
       @set 'customColor', ''
       @set 'selectedColor', color
-
-    sendCustomColor: ->
-      color = @get 'customColor'
-      @set 'selectedColor', color
+      @sendAction 'setSelectedColor', color, false
       @userDidSelect(color)
 
-    toggleDropdown: ->
-      shouldOpenPicker = @get 'shouldOpenPicker'
-      @set 'shouldOpenPicker', not(shouldOpenPicker)
+    setCustomColor: ->
+      color = @get 'formattedCustomColor'
+      @sendAction 'setSelectedColor', color, true
+      @userDidSelect(color)
 
-  userDidSelect: (selection) ->
-    @sendAction 'userSelected', selection
-    # After user selects a color, the color picker dropdown will be hidden
-    @set 'shouldOpenPicker', false
-
-# To maintain compatibility
-Ember.Widgets.ColorPicker = Ember.Widgets.ColorPickerComponent
-
-Ember.Widgets.ColorPickerCell = Ember.View.extend Ember.Widgets.StyleBindingsMixin,
-  templateName: 'color-picker-cell'
-  classNames: ['pull-left', 'color-picker-cell']
-  classNameBindings: Ember.A ['isActive:active:inactive']
-  attributeBindings:  Ember.A ['tabindex']
-  styleBindings:  'color:background-color'
-
-  color: null
-
-  # To enable the focusing on the colorPickerCell, which is a div, we have to
-  # enable the tabindex.
-  tabindex: 0
-
-  isActive: Ember.computed ->
-    colorToHex(@get('controller.selectedColor')) is colorToHex(@get('color'))
-  .property 'controller.selectedColor', 'color'
-
-  click: (event) ->
-    @get('controller').send 'setColor', @get 'color'
-    @get('controller').userDidSelect @get 'color'
+Ember.onLoad 'Ember.Application', (application) ->
+  name = 'ember-widgets'
+  return if application.initializers[name]
+  application.initializer
+    name: name
+    initialize: (container, application) ->
+      application.register 'component:color-picker', Ember.Widgets.ColorPickerComponent
+      application.register 'component:color-picker-dropdown', Ember.Widgets.ColorPickerDropdownComponent
