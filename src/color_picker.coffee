@@ -261,7 +261,7 @@ Ember.Widgets.ColorPickerDropdownComponent = Ember.Component.extend
   , 'selectedColor', 'colorRows'
 
   formattedCustomColor: Ember.computed ->
-    customColor = @get 'customColor'
+    customColor = @get('customColor').trim()
     if customColor.charAt(0) isnt '#'
       customColor = '#' + customColor
     return customColor
@@ -290,15 +290,7 @@ Ember.Widgets.ColorPickerDropdownComponent = Ember.Component.extend
       @userDidSelect(color)
 
     setCustomColor: ->
-      color = @get 'formattedCustomColor'
-      @sendAction 'setSelectedColor', color, true
-      @userDidSelect(color)
-
-Ember.onLoad 'Ember.Application', (application) ->
-  name = 'ember-widgets'
-  return if application.initializers[name]
-  application.initializer
-    name: name
-    initialize: (container, application) ->
-      application.register 'component:color-picker', Ember.Widgets.ColorPickerComponent
-      application.register 'component:color-picker-dropdown', Ember.Widgets.ColorPickerDropdownComponent
+      if @get('isCustomColorValid')
+        color = @get 'formattedCustomColor'
+        @sendAction 'setSelectedColor', color, true
+        @userDidSelect(color)
