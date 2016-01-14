@@ -56,18 +56,18 @@ Ember.Widgets.BodyEventListener = Ember.Mixin.create
   didInsertElement: ->
     @_super()
     # It is important to setup document handlers in the next run loop.
-    # Otherwise we run in to situation whenre the click that causes a popover
+    # Otherwise we run in to situation where the click that causes a popover
     # to appears will be handled right away when we attach a click handler.
     # This very same click will trigger the bodyClick to fire and thus
     # causing us to hide the popover right away
     Ember.run.next this, @_setupDocumentHandlers
 
   willDestroyElement: ->
-    @_super()
     @_removeDocumentHandlers()
+    @_super()
 
   _setupDocumentHandlers: ->
-    return if @_clickHandler or @isDestroying
+    return if Ember.isNone(@_clickHandler) or @isDestroying
     @_clickHandler = (event) =>
       Ember.run =>
         if (@get('_state') or @get('state')) is 'inDOM' and Ember.isEmpty(@$().has($(event.target)))

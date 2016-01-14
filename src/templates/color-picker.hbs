@@ -1,8 +1,9 @@
 {{partial colorPickerButtonPartial}}
-{{#if shouldOpenPicker}}
+{{#if shouldOpenDropdown}}
   {{color-picker-dropdown
     dropdownClass=dropdownClass
     userSelected="userSelected"
+    hideDropdown="hideDropdown"
     setSelectedColor="setSelectedColor"
     customColor=customColor
     selectedColor=selectedColor

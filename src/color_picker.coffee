@@ -170,19 +170,28 @@ Ember.Widgets.ColorPickerComponent = Ember.Component.extend
 
   colorPickerButtonPartial: 'color-picker-button-partial'
 
-  shouldOpenPicker: false
+  shouldOpenDropdown: false
   selectedColor: '#0074D9'
   customColor: '#00ff00'
 
+  isCustomColor: Ember.computed.notEmpty 'customColor'
+
+  selectedColorRGB: Ember.computed ->
+    colorToHex(@get('selectedColor'))
+  .property 'selectedColor'
+
   actions:
     toggleDropdown: ->
-      shouldOpenPicker = @get 'shouldOpenPicker'
-      @set 'shouldOpenPicker', not(shouldOpenPicker)
+      shouldOpenDropdown = @get 'shouldOpenDropdown'
+      @set 'shouldOpenDropdown', not(shouldOpenDropdown)
 
     userSelected: (selection) ->
       @sendAction 'userSelected', selection
       # After user selects a color, the color picker dropdown will be hidden
-      @set 'shouldOpenPicker', false
+      @set 'shouldOpenDropdown', false
+
+    hideDropdown: ->
+      @set 'shouldOpenDropdown', false
 
     setSelectedColor: (color, isCustomColor) ->
       @set 'selectedColor', color
@@ -210,7 +219,7 @@ Ember.Widgets.ColorPickerCell = Ember.View.extend Ember.Widgets.StyleBindingsMix
   click: (event) ->
     @get('controller').send 'setColor', @get 'color'
 
-Ember.Widgets.ColorPickerDropdownComponent = Ember.Component.extend
+Ember.Widgets.ColorPickerDropdownComponent = Ember.Component.extend Ember.Widgets.BodyEventListener,
   layoutName: 'color-picker-dropdown'
   dropdownClass: null
 
@@ -275,12 +284,11 @@ Ember.Widgets.ColorPickerDropdownComponent = Ember.Component.extend
     "background-color: #{@get('formattedCustomColor')}"
   .property 'formattedCustomColor'
 
-  selectedColorRGB: Ember.computed ->
-    colorToHex(@get('selectedColor'))
-  .property 'selectedColor'
-
   userDidSelect: (selection) ->
     @sendAction 'userSelected', selection
+
+  bodyClick: ->
+    @sendAction 'hideDropdown'
 
   actions:
     setColor: (color) ->
