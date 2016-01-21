@@ -1,14 +1,20 @@
-popover = null;
+popover = null
 
-module "Popover unit tests",
+moduleForComponent 'popover', "[Unit] Popover component",
+  needs: [
+    'template:popover'
+    'template:view-parent-view-content'
+  ]
+
   setup: ->
     Ember.run ->
       popover = Ember.Widgets.PopoverComponent.popup
         rootElement: '#ember-testing'
-  ,
+
   teardown: ->
     Ember.run ->
       popover.destroy()
+    popover = null
 
 test 'The popover removes itself properly from the DOM', ->
   sinon.spy(popover, "hide")

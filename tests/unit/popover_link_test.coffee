@@ -20,7 +20,7 @@ test 'Destroying a popover link destroys the associated popover', ->
   popoverLink = @subject
     rootElement: "#ember-testing"
 
-  @append()
+  @render()
 
   click '.popover-link'
 

@@ -57,7 +57,7 @@ test 'Test keyboard interaction', ->
 
   select = @subject
     content: ['foo', 'bar', 'barca', 'baz']
-  @append()
+  @render()
 
   selectComponent = select.$()
 
@@ -130,7 +130,7 @@ test 'Test userSelected action', ->
     content: ['bar', 'baz']
   spy = sinon.spy select, "sendAction"
 
-  @append()
+  @render()
 
   selectElement = select.$()
   openDropdown(selectElement)
@@ -214,7 +214,7 @@ test "Show empty content view if content is empty", ->
     optionValuePath: 'code'
     classNames: 'select-class-name'
 
-  @append()
+  @render()
 
   selectElement = select.$()
   openDropdown(selectElement)
@@ -249,7 +249,7 @@ test "Show no-result message if has content but filtered content is empty", ->
     optionLabelPath: 'name'
     classNames: 'select-class-name'
 
-  @append()
+  @render()
 
   selectElement = select.$()
   openDropdown(selectElement)
