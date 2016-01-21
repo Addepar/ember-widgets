@@ -21,6 +21,7 @@ module.exports = function(config) {
       'vendor/sinonjs/sinon.js',
 
       'dist/js/ember-widgets.js',
+      'dist/css/ember-widgets.css',
 
       'build/tests/*.js',  // order matters!
       'build/tests/helpers/*.js',
