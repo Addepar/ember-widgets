@@ -14,19 +14,18 @@ module.exports = function(config) {
       'vendor/lodash/lodash.js',
       'vendor/ember/ember.js',
       'vendor/ember-list-view/list-view.js',
+      'vendor/bootstrap/js/transition.js',
       'vendor/rangy/currentrelease/rangy-core.js',
       'vendor/rangy/currentrelease/rangy-selectionsaverestore.js',
       'vendor/ember-qunit-builds/ember-qunit.js',
       'vendor/sinonjs/sinon.js',
 
-      'gh_pages/app.js',
-      'gh_pages/css/app.css',
+      'dist/js/ember-widgets.js',
 
       'build/tests/*.js',  // order matters!
       'build/tests/helpers/*.js',
       'build/tests/unit/*.js',
       'build/tests/functional/*.js',
-      'build/tests/integration/*.js',
     ],
     // list of files to exclude
     exclude: ['build/src/ember_widgets.js'],

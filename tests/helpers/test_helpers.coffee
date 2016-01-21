@@ -151,7 +151,17 @@ Ember.Test.registerHelper 'getSelectedColor', _getSelectedColor
 Ember.Test.registerAsyncHelper 'selectColor', _selectColor
 Ember.Test.registerAsyncHelper 'fillInCustomColor', _fillInCustomColor
 
-App.injectTestHelpers()
+document.write("""
+  <div id="ember-testing-container">
+    <div id="ember-testing"></div>
+  </div>
+  """)
 
 # Ember QUnit settings
 setResolver(Ember.DefaultResolver.create({namespace: Ember.Widgets}));
+
+App = Ember.Application.create(
+  rootElement: '#ember-testing'
+)
+App.setupForTesting()
+App.injectTestHelpers()
