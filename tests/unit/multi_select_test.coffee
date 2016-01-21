@@ -51,7 +51,7 @@ test 'Test keyboard and mouse interaction', ->
 
   multiSelect = @subject
     content: ['foo', 'bar', 'barca', 'baz']
-  @append()
+  @render()
 
   multiSelectComponent = multiSelect.$()
   highlightedComponent = find '.ember-select-multi', multiSelectComponent

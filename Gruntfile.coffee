@@ -34,15 +34,11 @@ module.exports = (grunt) ->
       unit:
         configFile: 'karma.conf.js'
         singleRun: false
-        exclude: ['build/src/ember_widgets.js', 'build/tests/functional/*.js', 'build/tests/integration/*.js'],
+        exclude: ['build/src/ember_widgets.js', 'build/tests/functional/*.js'],
       functional:
         configFile: 'karma.conf.js'
         singleRun: false
-        exclude: ['build/src/ember_widgets.js', 'build/tests/unit/*.js', 'build/tests/integration/*.js'],
-      integration:
-        configFile: 'karma.conf.js'
-        singleRun: false
-        exclude: ['build/src/ember_widgets.js', 'build/tests/unit/*.js', 'build/tests/functional/*.js'],
+        exclude: ['build/src/ember_widgets.js', 'build/tests/unit/*.js'],
       default:
         configFile: 'karma.conf.js'
         singleRun: false
@@ -276,5 +272,5 @@ module.exports = (grunt) ->
   # build dist files: same as default but no bower or watch
   grunt.registerTask "dist", [ "clean", "bower", "replace:srcs", "build_srcs", "less:srcs", "copy:srcs", "uglify", "usebanner" ]
 
-  grunt.registerTask "default", [ "dist", "build_app", "build_tests", "watch" ]
+  grunt.registerTask "default", [ "dist", "build_tests", "watch" ]
 

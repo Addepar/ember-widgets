@@ -19,7 +19,7 @@ test 'With DISABLE_ANIMATIONS=true, hide can be called several times', ->
   Ember.Widgets.DISABLE_ANIMATIONS = yes
   modal = @subject()
 
-  @append()
+  @render()
   andThen ->
     modal.hide()
     modal.hide()
@@ -29,7 +29,7 @@ test 'Test tab loop only inside modal', ->
   expect 3
 
   modal = @subject()
-  @append()
+  @render()
 
   modalComponent = modal.$()
   modal.set('enforceModality', yes)
@@ -56,7 +56,7 @@ test 'Test preserving the focus when clicking on non-focusable element', ->
   expect 1
 
   modal = @subject()
-  @append()
+  @render()
 
   modalComponent = modal.$()
   buttonConfirm = find '.btn-confirm', modalComponent
@@ -82,7 +82,7 @@ test 'Test pressing Enter to confirm', ->
     enterToConfirm: yes
   spy = sinon.spy modal, "send"
 
-  @append()
+  @render()
   modalComponent = modal.$()
   keyEvent(modalComponent, 'keydown', 13)
   andThen ->

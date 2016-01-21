@@ -37,7 +37,7 @@ test "Can add item via click", ->
     optionValuePath: 'code'
     classNames: 'some-class-name'
 
-  @append()
+  @render()
   $multiSelect = find('.some-class-name')
   selectInMultiChosen($multiSelect, 'Alice').then ->
     $multiSelect = find('.some-class-name')
@@ -54,7 +54,7 @@ test "Invalid item cannot be selected", ->
     optionValuePath: 'code'
     classNames: 'some-class-name'
 
-  @append()
+  @render()
   $multiSelect = find('.some-class-name')
   userDidSelectStub = sinon.stub multiSelect, 'userDidSelect'
   item = findInMultiChosen($multiSelect, 'textThatWontMatch')
@@ -75,7 +75,7 @@ test "Valid item can be selected via enter", ->
     optionValuePath: 'code'
     classNames: 'some-class-name'
 
-  @append()
+  @render()
   $multiSelect = find('.some-class-name')
   userDidSelectStub = sinon.stub multiSelect, 'userDidSelect'
   item = findInMultiChosen($multiSelect, 'Alice')
