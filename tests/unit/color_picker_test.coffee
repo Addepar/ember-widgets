@@ -47,7 +47,7 @@ test 'Color picker converts color to hex when color is invalid', ->
 
 test 'Custom color is set as selected color', ->
   customColor = '#addec0'
-  @append()
+  @render()
 
   openColorChooser()
   fillInCustomColor customColor
@@ -63,7 +63,7 @@ test 'Selecting a color sends an action', ->
   customColor = '#addec0'
   color = '#01FF70'
   sinon.spy(colorPicker, 'userDidSelect')
-  @append()
+  @render()
 
   selectColor(color)
   andThen ->

@@ -32,7 +32,7 @@
     "ember-list-view": "0.0.4"
   },
   "devDependencies": {
-    "ember-qunit-builds": "0.1.8",
+    "ember-qunit-builds": "0.4.18",
     "font-awesome": "~4.0.3",
     "sinonjs": "~1.7.3",
     "sinon-qunit": "~1.0.0",

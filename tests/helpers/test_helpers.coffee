@@ -154,5 +154,4 @@ Ember.Test.registerAsyncHelper 'fillInCustomColor', _fillInCustomColor
 App.injectTestHelpers()
 
 # Ember QUnit settings
-emq.globalize()
 setResolver(Ember.DefaultResolver.create({namespace: Ember.Widgets}));
