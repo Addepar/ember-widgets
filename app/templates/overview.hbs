@@ -1,0 +1,121 @@
+{{!-- Content Column --}}
+<div class="col-md-10 col-md-offset-2 left-border main-content-container">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Ember Widgets</h1>
+      <p class="elevated">A component library built with the <a
+        target="_BLANK" href="http://emberjs.com/">Ember.js</a>
+      framework. Includes easy to extend components such as select,
+      popover, modal, carousel, and accordion. This library is built on
+      bootstrap 3.0 CSS and represents our ideas about component best
+      practices.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <h3>Features</h3>
+      <ul class="styled">
+        <li>{{#link-to 'accordion'}}Accordion{{/link-to}}</li>
+        <li>{{#link-to 'carousel'}}Carousel{{/link-to}}</li>
+        <li>{{#link-to 'modal'}}Modal{{/link-to}}</li>
+        <li>{{#link-to 'popover'}}Popover{{/link-to}}</li>
+        <li>{{#link-to 'select'}}Select &amp; Multi-Select{{/link-to}}</li>
+        <li>{{#link-to 'colorPicker'}}Color Picker{{/link-to}}</li>
+        <li>{{#link-to 'radioButton'}}Radio Button{{/link-to}}</li>
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <h3>Dependencies</h3>
+      <ul class="styled">
+        <li><a target="_BLANK" href="http://emberjs.com/">Ember.js</a></li>
+        <li><a target="_BLANK" href="http://emberjs.com/list-view/">List-View</a></li>
+        <li><a target="_BLANK" href="http://getbootstrap.com/">Bootstrap (V3)</a></li>
+        <li><a target="_BLANK" href="http://lodash.com/">Lo-Dash</a></li>
+        <li><a target="_BLANK" href="http://jquery.com/">jQuery</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <hr>
+      <h1>Widgets</h1>
+      <p class="elevated">The examples below demonstrate how you can extend and customize the widgets.</p>
+      <div class="row ember-widgets-examples">
+        {{#link-to 'accordion'}}
+          <div class="col-md-4">
+            <h4>Accordion</h4>
+            <img class="preview-box" src="img/preview_widgets_accordion.png" />
+          </div>
+        {{/link-to}}
+        {{#link-to 'carousel'}}
+          <div class="col-md-4">
+            <h4>Carousel</h4>
+            <img class="preview-box" src="img/preview_widgets_carousel.png" />
+          </div>
+        {{/link-to}}
+        {{#link-to 'modal'}}
+          <div class="col-md-4">
+            <h4>Modal</h4>
+            <img class="preview-box" src="img/preview_widgets_modal.png" />
+          </div>
+        {{/link-to}}
+        {{#link-to 'popover'}}
+          <div class="col-md-4">
+            <h4>Popover</h4>
+            <img class="preview-box" src="img/preview_widgets_popover.png" />
+          </div>
+        {{/link-to}}
+        {{#link-to 'select'}}
+          <div class="col-md-4">
+            <h4>Select &amp; Multi-Select</h4>
+            <img class="preview-box" src="img/preview_widgets_select.png" />
+          </div>
+        {{/link-to}}
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <hr>
+      <h1>Getting Started</h1>
+      <p>You will need <a target="_BLANK" href="http://nodejs.org/">node</a> installed as a development dependency.</p>
+      <p><a target="_BLANK" href="https://github.com/Addepar/ember-widgets/">Clone it from Github</a> or <a target="_BLANK" href="https://github.com/Addepar/ember-widgets/releases">download the ZIP repo</a></p>
+      <div class="highlight">
+<pre><code>$ npm install -g grunt-cli
+$ npm install
+$ grunt
+$ node examples.js</code></pre>
+      <p>Go to your browser and navigate to localhost:8000/gh_pages</p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <hr>
+      <h1>Contributing</h1>
+      <p>You can contribute to this project in one of two ways:
+      <ul class="styled">
+        <li>Browse the ember-widgets <a target="_BLANK" href="https://github.com/Addepar/ember-widgets/issues?state=open">issues</a> and report bugs</li>
+        <li>Clone the ember-widgets repo, make some changes according to our development guidelines and issue a pull-request with your changes.</li>
+      </ul>
+      <p>We keep the ember-widgets.js code to the minimum necessary, giving users as much control as possible.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <hr>
+      <h1>Changelog</h1>
+      <p>The current version is 0.2.0.
+      <p>For the full list of changes, please see <a target="_BLANK" href="https://github.com/Addepar/ember-widgets/blob/master/CHANGELOG.md">CHANGELOG.md</a>.</p>
+    </div>
+    <div class="col-md-6">
+      <hr>
+      <h1>Acknowledgements</h1>
+      <p><a target="_BLANK" href="https://github.com/Addepar/ember-widgets/graphs/contributors">List of Contributors on Github</a></p>
+      <p>With lots of help from the Ember.js team</p>
+      <p><a target="_BLANK" href="https://twitter.com/wycats">wycats</a>, <a target="_BLANK" href="https://twitter.com/tomdale">tomdale</a>, <a target="_BLANK" href="https://twitter.com/ebryn">ebryn</a></p>
+    </div>
+  </div>
+</div>

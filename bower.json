@@ -1,0 +1,25 @@
+{
+  "name": "ember-widgets-demo",
+  "dependencies": {
+    "bootstrap": "~3.2.0",
+    "font-awesome": "~4.0.3",
+    "handlebars": "~1.3.0",
+    "jquery": "~1.11.1",
+    "jquery-ui": "~1.10.1",
+    "ember": "1.8.1",
+    "ember-resolver": "~0.1.11",
+    "loader.js": "ember-cli/loader.js#1.0.1",
+    "ember-cli-shims": "ember-cli/ember-cli-shims#0.0.3",
+    "ember-cli-test-loader": "ember-cli/ember-cli-test-loader#0.1.0",
+    "ember-load-initializers": "ember-cli/ember-load-initializers#0.0.2",
+    "ember-qunit": "0.1.8",
+    "ember-qunit-notifications": "0.0.5",
+    "qunit": "~1.17.1",
+    "ember-list-view": "0.0.5",
+    "lodash": "~3.10.0",
+    "ember-widgets": "Addepar/ember-widgets#fefdbd87736669e390786d1adbfeeeed8ed52018"
+  },
+  "resolutions": {
+    "ember": "1.8.1"
+  }
+}
