@@ -1,0 +1,29 @@
+<div class="col-md-10 col-md-offset-2 left-border main-content-container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Carousel <small> Ember.Widgets.Carousel</small></h2>
+      <p class="elevated">The slideshow below shows a generic plugin and component for cycling through elements like a carousel.</p>
+
+      <div class="example-container">
+        {{#carousel-component}}
+          {{#carousel-item class="active"}}
+            <img src="img/bootstrap-mdo-sfmoma-01.jpg" alt="">
+          {{/carousel-item}}
+          {{#carousel-item}}
+            <img src="img/bootstrap-mdo-sfmoma-02.jpg" alt="">
+          {{/carousel-item}}
+          {{#carousel-item}}
+            <img src="img/bootstrap-mdo-sfmoma-03.jpg" alt="">
+          {{/carousel-item}}
+        {{/carousel-component}}
+      </div>
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h4>Application.hbs</h4>
+      <div class="highlight">
+<pre class="prettyprint lang-html">&#123;&#123;#carousel-component&#125;&#125;<br/>  &#123;&#123;#carousel-item class=&quot;active&quot;&#125;&#125;<br/>    &lt;img src=&quot;/gh_pages/img/bootstrap-mdo-sfmoma-01.jpg&quot; alt=&quot;&quot;&gt;<br/>  &#123;&#123;/carousel-item&#125;&#125;<br/>  &#123;&#123;#carousel-item&#125;&#125;<br/>    &lt;img src=&quot;/gh_pages/img/bootstrap-mdo-sfmoma-02.jpg&quot; alt=&quot;&quot;&gt;<br/>  &#123;&#123;/carousel-item&#125;&#125;<br/>  &#123;&#123;#carousel-item&#125;&#125;<br/>    &lt;img src=&quot;/gh_pages/img/bootstrap-mdo-sfmoma-03.jpg&quot; alt=&quot;&quot;&gt;<br/>  &#123;&#123;/carousel-item&#125;&#125;<br/>&#123;&#123;/carousel-component&#125;&#125;</pre>
+      </div>
+    </div>
+  </div>
+</div>
