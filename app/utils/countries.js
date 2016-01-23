@@ -1,4 +1,6 @@
-var countries = Ember.A [
+import Ember from 'ember';
+
+var countries = Ember.A([
     {name: 'Afghanistan', code: 'AF'},
     {name: 'Aland Islands', code: 'AX'},
     {name: 'Albania', code: 'AL'},
@@ -242,6 +244,6 @@ var countries = Ember.A [
     {name: 'Yemen', code: 'YE'},
     {name: 'Zambia', code: 'ZM'},
     {name: 'Zimbabwe', code: 'ZW'}
-];
+]);
 
 export default countries;
