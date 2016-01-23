@@ -14,7 +14,7 @@
     "ember-load-initializers": "ember-cli/ember-load-initializers#0.0.2",
     "ember-qunit": "0.1.8",
     "ember-qunit-notifications": "0.0.5",
-    "qunit": "~1.17.1",
+    "qunit": "~1.20.0",
     "ember-list-view": "0.0.5",
     "lodash": "~3.10.0",
     "ember-widgets": "Addepar/ember-widgets#fefdbd87736669e390786d1adbfeeeed8ed52018"
