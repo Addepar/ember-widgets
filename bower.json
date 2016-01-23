@@ -20,6 +20,8 @@
     "ember-widgets": "Addepar/ember-widgets#fefdbd87736669e390786d1adbfeeeed8ed52018"
   },
   "resolutions": {
-    "ember": "1.8.1"
+    "ember": "1.8.1",
+    "ember-list-view": "0.0.5",
+    "jquery": "~1.11.1"
   }
 }
