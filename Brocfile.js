@@ -26,4 +26,11 @@ app.import('bower_components/lodash/lodash.js');
 app.import('bower_components/ember-list-view/list-view.js');
 app.import('bower_components/ember-widgets/dist/js/ember-widgets.js');
 
+app.import('bower_components/ember-widgets/dist/img/select2.png', {
+  destDir: 'img'
+});
+app.import('bower_components/font-awesome/fonts/fontawesome-webfont.woff', {
+  destDir: 'fonts'
+});
+
 module.exports = app.toTree();
