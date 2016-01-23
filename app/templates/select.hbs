@@ -1,0 +1,83 @@
+<div class="col-md-10 col-md-offset-2 left-border main-content-container">
+  <h2>Select <small> Ember.Widgets.Select</small></h2>
+  <p class="elevated">Ember select is a Ember.js based replacement for select boxes. It supports searching, remote data sets, and infinite scrolling of results. This component&#39;s design was inspired by the excellent <a target="_BLANK" href="http://harvesthq.github.io/chosen/">Chosen</a> jquery plugin and <a target="_BLANK" href="http://ivaynberg.github.io/select2/">Select2</a>. Uses the <a target="_BLANK" href="https://github.com/emberjs/list-view">ember list view</a> for lazily rendering large arrays of content.</p>
+
+  <div class="row">
+    <div class="col-md-6">
+      <h3>Select with Selection Binding</h3>
+      <div class="example-container">
+        {{select-component
+          contentBinding="model"
+          prompt="Select a Country"
+          optionLabelPath="name"
+          optionValuePath="name"
+          selectionBinding="selection"
+          placeholder="Search"
+        }}
+      </div>
+
+      <h4 class="bumper-30">Application.hbs</h4>
+      <div class="highlight">
+<pre class="prettyprint lang-html">&#123;&#123;select-component
+  contentBinding="model"
+  prompt="Select a Country"
+  optionLabelPath="name"
+  optionValuePath="name"
+  selectionBinding="selection"
+  placeholder="Search"
+&#125;&#125;</pre>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <h3>Multi-Select</h3>
+      <div class="example-container">
+        {{multi-select-component
+          contentBinding="model"
+          optionLabelPath="name"
+          optionValuePath="code"
+          classNames="multi-select-example"
+          placeholder="Select a country..."
+        }}
+      </div>
+
+      <h4 class="bumper-30">Application.hbs</h4>
+      <div class="highlight">
+<pre class="prettyprint lang-html">&#123;&#123;multi-select-component
+  contentBinding="model"
+  optionLabelPath="name"
+  optionValuePath="code"
+  classNames="multi-select-example"
+  placeholder="Select a country..."
+&#125;&#125;</pre>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+    </div>
+    <div class="col-md-6">
+      <h3>Multi-Select <small>Small</small></h3>
+      <div class="example-container">
+        {{multi-select-component
+          contentBinding="model"
+          optionLabelPath="name"
+          optionValuePath="code"
+          classNames="multi-select-example"
+          choicesFieldClass="input-xs"
+        }}
+      </div>
+
+      <h4 class="bumper-30">Application.hbs</h4>
+      <div class="highlight">
+<pre class="prettyprint lang-html">&#123;&#123;multi-select-component
+  contentBinding="model"
+  optionLabelPath="name"
+  optionValuePath="code"
+  classNames="multi-select-example"
+  choicesFieldClass="input-xs"
+&#125;&#125;</pre>
+      </div>
+    </div>
+  </div>
+</div>
