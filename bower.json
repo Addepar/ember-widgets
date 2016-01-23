@@ -17,7 +17,7 @@
     "qunit": "~1.20.0",
     "ember-list-view": "0.0.5",
     "lodash": "~3.10.0",
-    "ember-widgets": "Addepar/ember-widgets#fefdbd87736669e390786d1adbfeeeed8ed52018"
+    "ember-widgets": "Addepar/ember-widgets#94c627fd179a2f226fdb8affccabe8f00516fab3"
   },
   "resolutions": {
     "ember": "1.8.1",
