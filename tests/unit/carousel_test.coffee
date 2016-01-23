@@ -2,7 +2,7 @@ carousel = null
 
 moduleForComponent 'carousel', '[Unit] Carousel component',
   needs: [
-    'template:carousel'
+    'template:ember-widgets-carousel'
   ]
 
   setup: ->

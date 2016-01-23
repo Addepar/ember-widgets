@@ -1,7 +1,7 @@
 moduleForComponent 'color-picker', '[Unit] Color picker unit tests',
   needs: [
-    'template:color-picker'
-    'template:color-picker-cell'
+    'template:ember-widgets-color-picker'
+    'template:ember-widgets-color-picker-cell'
   ]
 
 testHexConversion = (colorPicker, color, hex) ->

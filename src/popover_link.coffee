@@ -31,7 +31,7 @@ Ember.Widgets.PopoverLinkComponent = Ember.Component.extend
       popover.hide()
     else
       popoverView = Ember.View.extend Ember.Widgets.PopoverMixin,
-        layoutName: 'popover-link-popover'
+        layoutName: 'ember-widgets-popover-link-popover'
         classNames: @get('popoverClassNames')
         controller: this
         targetElement: @get('element')

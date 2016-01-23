@@ -3,7 +3,7 @@ animationsDisabled = false
 
 moduleForComponent 'popover-link', "Popover link unit tests",
   needs: [
-    'template:popover-link-popover'
+    'template:ember-widgets-popover-link-popover'
     'template:view-parent-view-content'
   ]
   setup: ->

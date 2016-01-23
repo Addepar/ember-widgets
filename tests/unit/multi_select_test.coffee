@@ -4,8 +4,8 @@ moduleForComponent 'multi-select', '[Unit] Multi select component',
   needs: [
     'template:multi-select'
     'template:multi-select-item'
-    'template:select-item-layout'
-    'template:select-item'
+    'template:ember-widgets-select-item-layout'
+    'template:ember-widgets-select-item'
   ]
   teardown: ->
     Ember.run ->

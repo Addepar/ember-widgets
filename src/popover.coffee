@@ -1,7 +1,7 @@
 Ember.Widgets.PopoverMixin =
 Ember.Mixin.create Ember.Widgets.StyleBindingsMixin,
 Ember.Widgets.BodyEventListener,
-  layoutName: 'popover'
+  layoutName: 'ember-widgets-popover'
   classNames: ['popover']
   classNameBindings: ['isShowing:in', 'fadeEnabled:fade', 'placement']
   styleBindings: ['left', 'top', 'display', 'visibility']

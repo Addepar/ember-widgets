@@ -163,7 +163,7 @@ colorToHex = (color) ->
   return undefined
 
 Ember.Widgets.ColorPickerComponent = Ember.Component.extend
-  layoutName: 'color-picker'
+  layoutName: 'ember-widgets-color-picker'
   classNames: ['color-picker-button']
   colorPickerPlacement: 'right'
   dropdownClass: null
@@ -243,7 +243,7 @@ Ember.Widgets.ColorPickerComponent = Ember.Component.extend
 Ember.Widgets.ColorPicker = Ember.Widgets.ColorPickerComponent
 
 Ember.Widgets.ColorPickerCell = Ember.View.extend Ember.Widgets.StyleBindingsMixin,
-  templateName: 'color-picker-cell'
+  templateName: 'ember-widgets-color-picker-cell'
   classNames: ['pull-left', 'color-picker-cell']
   classNameBindings: Ember.A ['isActive:active:inactive']
   styleBindings:  'color:background-color'

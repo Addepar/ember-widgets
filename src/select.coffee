@@ -1,8 +1,8 @@
 # The view for each item in the select.
 Ember.Widgets.SelectOptionView = Ember.ListItemView.extend
   tagName: 'li'
-  templateName: 'select-item'
-  layoutName: 'select-item-layout'
+  templateName: 'ember-widgets-select-item'
+  layoutName: 'ember-widgets-select-item-layout'
   classNames: 'ember-select-result-item'
   classNameBindings: Ember.A [
     'content.isGroupOption:ember-select-group'
@@ -65,7 +65,7 @@ Ember.Widgets.SelectTooltipOptionView = Ember.Widgets.SelectOptionView.extend
 Ember.Widgets.SelectComponent =
 Ember.Component.extend Ember.Widgets.BodyEventListener,
 Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
-  layoutName:         'select'
+  layoutName:         'ember-widgets-select'
   classNames:         'ember-select'
   attributeBindings:  Ember.A ['tabindex']
   classNameBindings:  Ember.A ['showDropdown:open', 'isDropup:dropup']

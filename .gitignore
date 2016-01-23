@@ -16,3 +16,6 @@ tests/**/*.js
 npm-debug.log
 
 tests/integration_test_helper.js
+
+bower_components/
+tmp/

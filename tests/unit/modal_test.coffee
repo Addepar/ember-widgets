@@ -2,9 +2,9 @@ modal = null
 
 moduleForComponent 'modal', "[Unit] Modal component",
   needs: [
-    'template:modal'
-    'template:modal_header'
-    'template:modal-footer'
+    'template:ember-widgets-modal'
+    'template:ember-widgets-modal-header'
+    'template:ember-widgets-modal-footer'
   ],
 
   teardown: ->

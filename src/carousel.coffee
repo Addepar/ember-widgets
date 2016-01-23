@@ -8,7 +8,7 @@
 # same wizard it should seem like it is the next step, not that you are going
 # backwards.
 Ember.Widgets.CarouselComponent = Ember.Component.extend
-  layoutName: 'carousel'
+  layoutName: 'ember-widgets-carousel'
   classNames: ['carousel', 'slide']
   classNameBindings: Ember.A ['sliding']
   activeIndex: 0

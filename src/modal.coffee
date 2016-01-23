@@ -1,6 +1,6 @@
 Ember.Widgets.ModalComponent =
 Ember.Component.extend Ember.Widgets.StyleBindingsMixin, Ember.Widgets.TabbableModal,
-  layoutName: 'modal'
+  layoutName: 'ember-widgets-modal'
   classNames: ['modal']
   classNameBindings: ['isShowing:in', 'hasCloseButton::has-no-close-button', 'fadeEnabled:fade']
   modalPaneBackdrop: '<div class="modal-backdrop"></div>'
@@ -35,13 +35,13 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin, Ember.Widgets.TabbableM
   _runFocusTabbable: null
 
   headerViewClass: Ember.View.extend
-    templateName: 'modal_header'
+    templateName: 'ember-widgets-modal-header'
 
   contentViewClass: Ember.View.extend
     template: Ember.Handlebars.compile("<p>{{content}}</p>")
 
   footerViewClass:  Ember.View.extend
-    templateName: 'modal-footer'
+    templateName: 'ember-widgets-modal-footer'
 
   _headerViewClass: Ember.computed ->
     headerViewClass = @get 'headerViewClass'

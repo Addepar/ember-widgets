@@ -4,9 +4,9 @@ noResultSelector = '.ember-select-no-results'
 
 moduleForComponent 'select', '[Unit] Select component',
   needs: [
-    'template:select'
-    'template:select-item'
-    'template:select-item-layout'
+    'template:ember-widgets-select'
+    'template:ember-widgets-select-item'
+    'template:ember-widgets-select-item-layout'
   ]
   teardown: ->
     Ember.run ->
