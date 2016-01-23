@@ -15,8 +15,8 @@ Router.map(function() {
   this.route('modal');
   this.route('popover');
   this.route('select');
-  this.route('colorPicker');
-  this.route('radioButton');
+  this.route('color-picker');
+  this.route('radio-button');
 });
 
 export default Router;
