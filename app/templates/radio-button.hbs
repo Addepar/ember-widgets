@@ -1,0 +1,39 @@
+<div class="col-md-10 col-md-offset-2 left-border main-content-container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Radio Button <small>Ember.Widgets.RadioButton</small></h2>
+      <p class="elevated">Allows selection of one choice from multiple possibilities.</p>
+      <div class="example-container">
+        {{#radio-button-group-component}}
+          <div class="radio-row">
+            {{#radio-button value=true}}
+              <span class="form-label radio-label">True</span>
+            {{/radio-button}}
+          </div>
+          <div class="radio-row">
+            {{#radio-button value=false}}
+              <span class="form-label radio-label">False</span>
+            {{/radio-button}}
+          </div>
+        {{/radio-button-group-component}}
+      </div>
+    </div>
+    <div class="col-md-12 bumper-30">
+      <h4>Application.hbs</h4>
+      <div class="highlight">
+<pre class="prettyprint lang-html">&#123;&#123;#radio-button-group-component&#125;&#125;
+  &lt;div class=&quot;radio-row&quot;&gt;
+    &#123;&#123;#radio-button value=true&#125;&#125;
+      &lt;span class=&quot;form-label radio-label&quot;&gt;True&lt;/span&gt;
+    &#123;&#123;/radio-button&#125;&#125;
+  &lt;/div&gt;
+  &lt;div class=&quot;radio-row&quot;&gt;
+    &#123;&#123;#radio-button value=false&#125;&#125;
+      &lt;span class=&quot;form-label radio-label&quot;&gt;False&lt;/span&gt;
+    &#123;&#123;/radio-button&#125;&#125;
+  &lt;/div&gt;
+&#123;&#123;/radio-button-group-component&#125;&#125;</pre>
+      </div>
+    </div>
+  </div>
+</div>
