@@ -92,18 +92,16 @@ _findInSelect = (app, element, itemText) ->
     click item
 
 _openColorChooser = (app, element = 'body') ->
-  dropdown = find '.color-picker-button .dropdown', element
-  if dropdown.hasClass 'open'
-    wait()
-  else
-    dropdownButton = find '.color-picker-button', element
-    click dropdownButton
+  andThen ->
+    dropdown = find '.color-picker-button .dropdown', element
+    if not dropdown.hasClass('open')
+      click '.color-picker-dropdown-button', element
 
 _closeColorChooser = (app, element = 'body') ->
-  dropdown = find '.color-picker-button .dropdown', element
-  if dropdown.hasClass 'open'
-    dropdownButton = find '.color-picker-button', element
-    click dropdownButton
+  andThen ->
+    dropdown = find '.color-picker-button .dropdown', element
+    if dropdown.hasClass 'open'
+      click dropdownButton, element
 
 _getSelectedColor = (app) ->
   active = find '.color-picker-dropdown .active'
@@ -115,8 +113,9 @@ _getSelectedColor = (app) ->
     find('.color-picker-dropdown .input-sm').val()
 
 _selectColor = (app, colorInHex) ->
-  _openColorChooser().then ->
-    click '.color-picker-dropdown .color-picker-cell[style*=' + colorInHex + ']'
+  _openColorChooser()
+  colorCellSelector = ".color-picker-cell[style*=#{colorInHex}]"
+  click(colorCellSelector, '.color-picker-dropdown')
 
 _fillInCustomColor = (app, value) ->
   textBox = find '.color-picker-dropdown .input-sm'

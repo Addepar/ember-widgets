@@ -1,6 +1,6 @@
 /*!
 * ember-widgets v0.2.0
-* Copyright 2013-2015 Addepar Inc.
+* Copyright 2013-2016 Addepar Inc.
 * See LICENSE.
 */
 .clearfix {
@@ -470,6 +470,7 @@
 .color-picker-button {
   display: inline-block;
   padding: 0 !important;
+  border: none;
 }
 .color-picker-button .color-picker-cell {
   width: 28px;
@@ -478,40 +479,43 @@
 .color-picker-dropdown-caret {
   margin-left: 0 !important;
 }
-.color-picker-button.btn .color-picker-dropdown-caret {
+.color-picker-dropdown-button {
+  padding: 0;
+}
+.color-picker-dropdown-button .color-picker-dropdown-caret {
   padding: 6px 11px;
   font-size: 13px;
   line-height: 1.6796875;
   border-radius: 0;
 }
-.color-picker-button.btn .color-picker-cell {
+.color-picker-dropdown-button .color-picker-cell {
   height: 28px;
 }
-.color-picker-button.btn-lg .color-picker-dropdown-caret {
+.color-picker-dropdown-button.btn-lg .color-picker-dropdown-caret {
   padding: 10px 20px;
   font-size: 17px;
   line-height: 1.33;
   border-radius: 0;
 }
-.color-picker-button.btn-lg .color-picker-cell {
+.color-picker-dropdown-button.btn-lg .color-picker-cell {
   height: 1.33;
 }
-.color-picker-button.btn-sm .color-picker-dropdown-caret {
+.color-picker-dropdown-button.btn-sm .color-picker-dropdown-caret {
   padding: 5px 10px;
   font-size: 12px;
   line-height: 1.5;
   border-radius: 0;
 }
-.color-picker-button.btn-sm .color-picker-cell {
+.color-picker-dropdown-button.btn-sm .color-picker-cell {
   height: 22px;
 }
-.color-picker-button.btn-xs .color-picker-dropdown-caret {
+.color-picker-dropdown-button.btn-xs .color-picker-dropdown-caret {
   padding: 1px 5px;
   font-size: 12px;
   line-height: 1.5;
   border-radius: 0;
 }
-.color-picker-button.btn-xs .color-picker-cell {
+.color-picker-dropdown-button.btn-xs .color-picker-cell {
   height: 1.5;
 }
 .color-picker-button .color-picker-dropdown-caret {

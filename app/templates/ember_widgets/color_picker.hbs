@@ -4,26 +4,31 @@
       <h2>Color Picker <small> Ember.Widgets.ColorPicker </small></h2>
       <p class="elevated">A simple component to select color from a given palette and the option to define a custom HEX.</p>
     </div>
-
     <div class="col-md-3">
-      {{view Ember.Widgets.ColorPicker class="btn btn-default"}}
-      <button type="button" class="btn btn-default">Comparison</button>
+      {{color-picker dropdownClass="pull-right"}}
     </div>
 
-    <div class="col-md-3">
-      {{view Ember.Widgets.ColorPicker class="btn btn-default" dropdownClass="pull-right"}}
-      <button type="button" class="btn btn-default">Comparison</button>
-    </div>
-
-    <div class="col-md-6">
+    <div class="col-md-9">
       <div class="highlight">
-<pre class="prettyprint lang-html">&#123;&#123;view Ember.Widgets.ColorPicker&#125;&#125;
-</pre>
+        <pre class="prettyprint lang-html">
+          &#123;&#123;color-picker
+            dropdownClass="pull-right"
+          &#125;&#125;</pre>
       </div>
     </div>
 
-    <div class="col-md-2">
-      {{view Ember.Widgets.ColorPicker class="btn btn-default btn-expand"}}
+    <div class="col-md-3">
+      {{color-picker dropdownClass="pull-left"}}
     </div>
+
+    <div class="col-md-9">
+      <div class="highlight">
+        <pre class="prettyprint lang-html">
+          &#123;&#123;color-picker
+            dropdownClass="pull-left"
+          &#125;&#125;</pre>
+      </div>
+    </div>
+
   </div>
 </div>
