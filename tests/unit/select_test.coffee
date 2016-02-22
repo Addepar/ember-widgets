@@ -28,11 +28,11 @@ test 'Test continuous queries in a row', ->
   equal(select.get('filteredContent')[0],'bar')
   equal(select.get('filteredContent')[1],'barca')
 
-test 'Test using array proxy', ->
+test 'Test filtered content using array proxy', ->
   expect 2
 
   data = Ember.ArrayProxy.create
-    content: ['red', 'reddit', 'green', 'blue']
+    content: Ember.A(['red', 'reddit', 'green', 'blue'])
   select = @subject
     content: data
 
@@ -40,7 +40,7 @@ test 'Test using array proxy', ->
   equal(select.get('filteredContent')[0], 'red')
   equal(select.get('filteredContent')[1], 'reddit')
 
-test 'Test sorted filter', ->
+test 'Test sorted filter content', ->
   expect 3
 
   select = @subject
@@ -258,3 +258,89 @@ test "Show no-result message if has content but filtered content is empty", ->
       'Empty content block not displayed'
     ok isPresent(noResultSelector, selectElement),
       '"No result" message displayed'
+
+test 'optionValuePath with POJOs', ->
+  expect 1
+
+  obj1 = {name: 'reddit', value: 1}
+  obj2 = {name: 'red', value: 2}
+  data = [obj1, obj2]
+  select = @subject
+    content: data
+    optionLabelPath: 'name'
+    optionValuePath: 'value'
+
+  @append()
+
+  Ember.run ->
+    select.set 'value', 2
+
+  equal obj2, select.get('selection'),
+    'The right selection is retrieved'
+
+test 'optionValuePath with Ember Objects', ->
+  expect 1
+
+  Klass = Ember.Object.extend
+    name: null
+    value: null
+  obj1 = Klass.create {name: 'reddit', value: 1}
+  obj2 = Klass.create {name: 'red', value: 2}
+  data = [obj1, obj2]
+
+  select = @subject
+    content: data
+    optionLabelPath: 'name'
+    optionValuePath: 'value'
+
+  @append()
+
+  Ember.run ->
+    select.set 'value', 2
+
+  equal obj2, select.get('selection'),
+    'The right selection is retrieved'
+
+test 'optionValuePath with ArrayProxy', ->
+  expect 1
+
+  Klass = Ember.Object.extend
+    name: null
+    value: null
+  obj1 = Klass.create {name: 'reddit', value: 1}
+  obj2 = Klass.create {name: 'red', value: 2}
+  data = [obj1, obj2]
+
+  arrData = Ember.ArrayProxy.create({content: Ember.A(data)})
+
+  select = @subject
+    content: arrData
+    optionLabelPath: 'name'
+    optionValuePath: 'value'
+
+  @append()
+
+  Ember.run ->
+    select.set 'value', 2
+
+  equal obj2, select.get('selection'),
+    'The right selection is retrieved'
+
+test 'optionValuePath with nested valuePath', ->
+  expect 1
+  value1 = Ember.Object.create()
+  value1.set('subvalue', 1)
+  obj1 = {name: 'reddit', value: value1}
+  obj2 = {name: 'red', value: {subvalue: 2}}
+  data = [obj1, obj2]
+  select = @subject
+    content: Ember.A(data)
+    optionLabelPath: 'name'
+    optionValuePath: 'value.subvalue'
+
+  @append()
+  Ember.run ->
+    select.set 'value', 2
+
+  equal obj2, select.get('selection'),
+    'The right selection is retrieved'

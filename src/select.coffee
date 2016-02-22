@@ -327,8 +327,17 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
     if arguments.length is 2 # setter
       valuePath = @get 'optionValuePath'
       selection = value
-      if valuePath and @get('content')
-        selection = _.find @get('content'), valuePath, value
+      content = @get('content')
+      if valuePath and content
+        # If content is a wrapper of an Ember.Array or Ember.MutableArray such
+        # as ArrayProxy, ArrayController, DS.ManyArray), we have to use
+        # findProperty to get to the valuePath because it is nested inside
+        # the content property of the array.
+        if typeof content.findProperty is 'function'
+          selection = content.findProperty(valuePath, value)
+        # if content is a POJO or a normal Ember.Array
+        else
+          selection = _.find(content, valuePath, value)
       @set 'selection', selection
       value
     else # getter

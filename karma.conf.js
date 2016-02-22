@@ -7,6 +7,7 @@ module.exports = function(config) {
     frameworks: ['qunit'],
     // list of files / patterns to load in the browser
     files: [
+      'build/tests/helpers/ember_config.js',
       'dependencies/google-code-prettify/prettify.js',
       'vendor/jquery/jquery.js',
       'vendor/jquery-ui/ui/jquery-ui.custom.js',

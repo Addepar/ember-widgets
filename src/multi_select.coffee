@@ -89,12 +89,17 @@ Ember.Widgets.MultiSelectComponent = Ember.Widgets.SelectComponent.extend
     return Ember.A [] unless content and selections
     # excludes items that are already selected
 
+    emberArray = Em.A()
+    sortFn = (item) ->
+      not emberArray.contains.call selections, item
+
     if @get('sortLabels')
-      @get('sortedFilteredContent').filter (item) ->
-        not selections.contains(item)
+      basedArray = @get('sortedFilteredContent')
     else
-      @get('filteredContent').filter (item) ->
-        not selections.contains(item)
+      basedArray = @get('filteredContent')
+
+    emberArray.filter.call basedArray, sortFn
+
   .property('content.[]', 'filteredContent.[]', 'sortedFilteredContent.[]',
     'selections.[]', 'sortLabels', 'filteredContent', 'sortedFilteredContent')
 
