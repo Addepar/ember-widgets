@@ -12,14 +12,14 @@
       </div>
       <hr>
     {{/each}}
-      <form {{bind-attr class=":color-picker-custom-form isCustomColorValid:valid:invalid"}}>
+      <form {{action "setCustomColor" on="submit"}}
+      {{bind-attr class=":color-picker-custom-form isCustomColorValid:valid:invalid"}}>
         <div class="input-group">
           <span {{bind-attr class=":input-group-addon
             :color-picker-custom-preview isCustomColor:active"
             style="customColorCSS"}} {{action "setCustomColor"}}>
           </span>
           {{input valueBinding="customColor"
-            action="setCustomColor" on="insert-newline"
             class="form-control input-sm"
             type="text"
             placeholder="HEX code"

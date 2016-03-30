@@ -68,8 +68,8 @@ ember-widgets code and should not be directly modified but instead generated
 using `grunt dist`.
 
 We believe it's good practice to write Ember code that runs correctly when
-prototype prototype extensions are disabled. To that end, we've disabled them
-in the demo app included in this repository. Please read
+prototype extensions are disabled. To that end, we've disabled them in the demo
+app included in this repository. Please read
 [the documentation](http://emberjs.com/guides/configuring-ember/disabling-prototype-extensions/#toc_life-without-prototype-extension)
 about writing compatible Ember code.
 

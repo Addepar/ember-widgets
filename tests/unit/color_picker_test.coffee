@@ -130,3 +130,18 @@ test 'Click outside of the component should close the dropdown', ->
     $('body').trigger('click')
     ok isNotPresent(getColorPickerDropdown()),
       'The dropdown should disappear when clicking outside'
+
+test 'Submitting custom color form updates color and does not reload page', ->
+  colorPicker = @subject()
+  customColor = "#abc123"
+  @append()
+
+  openColorChooser()
+  fillInCustomColor(customColor)
+  andThen ->
+    # We have to trigger form submit with jQuery instead of pressing enter,
+    # because form submission by means of an 'enter' keypress is handled by
+    # browser and not by the form. setCustomColor action is triggered on submit.
+    $(".color-picker-custom-form").submit()
+    equal colorPicker.get('selectedColor'), customColor, "Custom color gets
+      set correctly and page doesn't refresh"
