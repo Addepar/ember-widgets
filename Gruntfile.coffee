@@ -154,6 +154,13 @@ module.exports = (grunt) ->
           from: /The current version is .*\..*\..*./
           to: "The current version is <%=pkg.version%>."
         }]
+      sourceMap:
+        src: ['dist/js/ember-widgets.min.js', 'dist/js/ember-widgets.js'],
+        overwrite: true,
+        replacements: [{
+          from: '//@ sourceURL',
+          to: '//# sourceMappingURL'
+        }]
 
     # Copy build/app/assets/css into gh_pages/asset and other assets from app
     copy:
@@ -274,7 +281,7 @@ module.exports = (grunt) ->
   grunt.registerTask "build_tests", [ "coffee:tests" ]
 
   # build dist files: same as default but no bower or watch
-  grunt.registerTask "dist", [ "clean", "bower", "replace:srcs", "build_srcs", "less:srcs", "copy:srcs", "uglify", "usebanner" ]
+  grunt.registerTask "dist", [ "clean", "bower", "replace:srcs", "build_srcs", "less:srcs", "copy:srcs", "uglify", "replace:sourceMap", "usebanner" ]
 
   grunt.registerTask "default", [ "dist", "build_app", "build_tests", "watch" ]
 
