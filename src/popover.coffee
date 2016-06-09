@@ -17,6 +17,11 @@ Ember.Widgets.BodyEventListener,
   visibility: 'hidden'
   debounceTime: 100
 
+  ###*
+   * Whether launching this popover should hide other popovers on the screen
+  ###
+  hideOthers: yes
+
   fadeEnabled: Ember.computed ->
     return false if Ember.Widgets.DISABLE_ANIMATIONS
     @get('fade')
@@ -235,7 +240,8 @@ Ember.Widgets.PopoverComponent.reopenClass
   hideAll: -> $(document).trigger('popover:hide')
 
   popup: (options) ->
-    @hideAll()
+    if options.hideOthers
+      @hideAll()
     rootElement = options.rootElement or @rootElement
     popover = this.create options
     if popover.get('targetObject.container')
