@@ -234,8 +234,15 @@ Ember.Widgets.PopoverComponent.reopenClass
   rootElement: '.ember-application'
   hideAll: -> $(document).trigger('popover:hide')
 
-  popup: (options) ->
-    @hideAll()
+  ###*
+   * Shows a popup with options used for PopoverComponent.
+   * @param {Object} options All options used for PopoverComponent.
+   * @param {boolean} [hideOthers=true] Indicates if other popover should be hidden when a new one
+   *    is shown. By default, it's set to true.
+  ###
+  popup: (options, hideOthers = true) ->
+    if hideOthers
+      @hideAll()
     rootElement = options.rootElement or @rootElement
     popover = this.create options
     if popover.get('targetObject.container')
