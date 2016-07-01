@@ -9,6 +9,8 @@ Ember.Widgets.PopoverLinkComponent = Ember.Component.extend
   popoverClassNames: []
   rootElement: '.ember-application'
   fade: yes
+  openOnLeftClick: true
+  openOnRightClick: false
   _popover: null
 
   willDestroyElement: ->
@@ -22,7 +24,7 @@ Ember.Widgets.PopoverLinkComponent = Ember.Component.extend
     contentViewClass
   .property 'contentViewClass'
 
-  click: (event) ->
+  _openPopover: ->
     return if @get('disabled')
 
     popover = @get('_popover')
@@ -43,5 +45,19 @@ Ember.Widgets.PopoverLinkComponent = Ember.Component.extend
       popover = popoverView.create()
       @set '_popover', popover
       popover.appendTo @get('rootElement')
+
+  click: ->
+    if not @get('openOnLeftClick')
+      return false
+
+    @_openPopover()
+    return false
+
+  contextMenu: ->
+    if not @get('openOnRightClick')
+      return false
+
+    @_openPopover()
+    return false
 
 Ember.Handlebars.helper('popover-link-component', Ember.Widgets.PopoverLinkComponent)

@@ -33,3 +33,55 @@ test 'Destroying a popover link destroys the associated popover', ->
 
   andThen ->
     ok isNotPresent('.popover'), "The popover is destroyed"
+
+test 'Popover links can be configured to be opened with left clicks', ->
+  expect 1
+
+  popoverLink = @subject
+    rootElement: "#ember-testing"
+    openOnLeftClick: true
+
+  @append()
+
+  click '.popover-link'
+  andThen ->
+    ok isPresent('.popover'), "The popover is created"
+
+test 'Popover links can be configured to not be opened with left clicks', ->
+  expect 1
+
+  popoverLink = @subject
+    rootElement: "#ember-testing"
+    openOnLeftClick: false
+
+  @append()
+
+  click '.popover-link'
+  andThen ->
+    ok isNotPresent('.popover'), "The popover is not created"
+
+test 'Popover links can be configured to be opened with right clicks', ->
+  expect 1
+
+  popoverLink = @subject
+    rootElement: "#ember-testing"
+    openOnRightClick: true
+
+  @append()
+
+  triggerEvent '.popover-link', 'contextmenu'
+  andThen ->
+    ok isPresent('.popover'), "The popover is created"
+
+test 'Popover links can be configured to not be opened with right clicks', ->
+  expect 1
+
+  popoverLink = @subject
+    rootElement: "#ember-testing"
+    openOnRightClick: false
+
+  @append()
+
+  triggerEvent '.popover-link', 'contextmenu'
+  andThen ->
+    ok isNotPresent('.popover'), "The popover is not created"
