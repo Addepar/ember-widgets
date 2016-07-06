@@ -85,3 +85,37 @@ test 'Popover links can be configured to not be opened with right clicks', ->
   triggerEvent '.popover-link', 'contextmenu'
   andThen ->
     ok isNotPresent('.popover'), "The popover is not created"
+
+test 'Popover links can be configured to hide other popovers when opening', ->
+  expect 2
+
+  $(document).on 'popover:hide', ->
+    ok true, 'The popover:hide event was triggered'
+
+  popoverLink = @subject
+    rootElement: "#ember-testing"
+    hideOthers: true
+
+  @append()
+  click '.popover-link'
+  andThen ->
+    ok isPresent('.popover'), "The new popover was not hidden"
+
+  $(document).off 'popover:hide'
+
+test 'Popover links can be configured to not hide other popovers when opening', ->
+    expect 1
+
+    $(document).on 'popover:hide', ->
+      ok false, 'The popover:hide event was not triggered'
+
+    popoverLink = @subject
+      rootElement: "#ember-testing"
+      hideOthers: false
+
+    @append()
+    click '.popover-link'
+    andThen ->
+      ok isPresent('.popover'), "The new popover was not hidden"
+
+    $(document).off 'popover:hide'

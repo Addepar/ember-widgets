@@ -11,6 +11,7 @@ Ember.Widgets.PopoverLinkComponent = Ember.Component.extend
   fade: yes
   openOnLeftClick: true
   openOnRightClick: false
+  hideOthers: false
   _popover: null
 
   willDestroyElement: ->
@@ -32,6 +33,9 @@ Ember.Widgets.PopoverLinkComponent = Ember.Component.extend
     if (popover?.get('_state') or popover?.get('state')) is 'inDOM'
       popover.hide()
     else
+      if @get('hideOthers')
+        Ember.Widgets.PopoverComponent.hideAll()
+
       popoverView = Ember.View.extend Ember.Widgets.PopoverMixin,
         layoutName: 'popover-link-popover'
         classNames: @get('popoverClassNames')
