@@ -400,6 +400,12 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
     )
   .property 'groupedContent.[]'
 
+  # If yes, the highlighted selection option is always visible. This may result
+  # in a 'jump': when there are duplicated options and mouse hovers over the
+  # second occurrence of the option, it will jump to the first occurrence (if the
+  # first occurrence is not visible at that point)
+  shouldEnsureVisible: yes
+
   # The option that is currently highlighted.
   highlighted: Ember.computed (key, value) ->
     content   = @get('selectableOptions') or Ember.A()
@@ -409,9 +415,9 @@ Ember.AddeparMixins.ResizeHandlerMixin, Ember.Widgets.KeyboardHelper,
       value = content.objectAt index
     else # setter
       index = content.indexOf value
-      @setHighlightedIndex index, yes
+      @setHighlightedIndex index, @get('shouldEnsureVisible')
     value
-  .property 'selectableOptions.[]', 'highlightedIndex'
+  .property 'selectableOptions.[]', 'highlightedIndex', 'shouldEnsureVisible'
 
   setFocus: ->
     activeElem = document.activeElement
