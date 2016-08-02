@@ -52,14 +52,14 @@ Ember.Widgets.PopoverLinkComponent = Ember.Component.extend
 
   click: ->
     if not @get('openOnLeftClick')
-      return false
+      return true
 
     @_openPopover()
     return false
 
   contextMenu: ->
     if not @get('openOnRightClick')
-      return false
+      return true
 
     @_openPopover()
     return false
