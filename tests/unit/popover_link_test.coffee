@@ -86,6 +86,46 @@ test 'Popover links can be configured to not be opened with right clicks', ->
   andThen ->
     ok isNotPresent('.popover'), "The popover is not created"
 
+test 'Popover links do not bubble left click events when configured to open with left clicks', ->
+  popoverLink = @subject
+    rootElement: "#ember-testing"
+    openOnLeftClick: true
+    _openPopover: Ember.K
+
+  @append()
+  bubbled = Ember.run popoverLink, 'click'
+  ok not bubbled, 'The event did not bubble'
+
+test 'Popover links bubble left click events when not configured to open with left clicks', ->
+  popoverLink = @subject
+    rootElement: "#ember-testing"
+    openOnLeftClick: false
+    _openPopover: Ember.K
+
+  @append()
+  bubbled = Ember.run popoverLink, 'click'
+  ok bubbled, 'The event bubbled'
+
+test 'Popover links do not bubble right click events when configured to open with right clicks', ->
+  popoverLink = @subject
+    rootElement: "#ember-testing"
+    openOnRightClick: true
+    _openPopover: Ember.K
+
+  @append()
+  bubbled = Ember.run popoverLink, 'contextMenu'
+  ok not bubbled, 'The event did not bubble'
+
+test 'Popover links bubble right click events when not configured to open with right clicks', ->
+  popoverLink = @subject
+    rootElement: "#ember-testing"
+    openOnRightClick: false
+    _openPopover: Ember.K
+
+  @append()
+  bubbled = Ember.run popoverLink, 'contextMenu'
+  ok bubbled, 'The event bubbled'
+
 test 'Popover links can be configured to hide other popovers when opening', ->
   expect 2
 
