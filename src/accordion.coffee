@@ -2,6 +2,7 @@ Ember.Widgets.AccordionComponent = Ember.Component.extend
   classNames: 'panel-group'
   activeIndex: 0
 
+
 Ember.Widgets.AccordionItem = Ember.View.extend
   defaultTemplate: Ember.Handlebars.compile('{{view.content}}')
   layoutName: 'accordion-group-layout'
@@ -13,7 +14,9 @@ Ember.Widgets.AccordionItem = Ember.View.extend
 
   isActiveDidChange: Ember.observer ->
     @set 'isActive', (@get('parentView.activeIndex') is @get('index'))
-    if @get('isActive') then @show() else @hide()
+    if @get('isActive')
+      @show()
+    else @hide()
   , 'parentView.activeIndex'
 
   didInsertElement: ->
