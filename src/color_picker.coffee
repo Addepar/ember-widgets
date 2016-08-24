@@ -77,6 +77,13 @@ Ember.Component.extend Ember.Widgets.ColorPickerMixin,
   ###
   isCustomColor: Ember.computed.notEmpty 'customColor'
 
+  ###*
+   * Determines whether the color is transparent so the cell renders the
+   * transparent style properly
+   * @type {Boolean}
+  ###
+  isColorTransparent: Ember.computed.equal 'selectedColorRGB', 'transparent'
+
   selectedColorRGB: Ember.computed ->
     selectedColor = @get('selectedColor')
     return @colorToHex(selectedColor)

@@ -85,6 +85,9 @@ test 'Custom color is set as selected color', ->
       'Custom color in dropdown should remain after reopening'
     equal colorPicker.get('selectedColor'), customColor,
       'Custom color is set correctly when clicking on preview cell'
+    # isCustomColor triggers active class on custom cell
+    ok colorPicker.get('isCustomColor'),
+      'Custom color cell is highlighted'
 
 test 'Test accepting custom color without hashtag', ->
   colorPicker = @subject()
@@ -145,3 +148,27 @@ test 'Submitting custom color form updates color and does not reload page', ->
     $(".color-picker-custom-form").submit()
     equal colorPicker.get('selectedColor'), customColor, "Custom color gets
       set correctly and page doesn't refresh"
+
+test 'Transparent color is set in preview cell', ->
+  colorPicker = @subject()
+  color = 'transparent'
+  @append()
+
+  selectColor(color)
+  andThen ->
+    # isColorTransparent toggles a class to make the cell show transparent icon
+    ok colorPicker.get('isColorTransparent'),
+      'Transparent color correctly identified in preview cell'
+
+test 'Correct cell is highlighted within color palette', ->
+  colorPicker = @subject()
+  color = '#01FF70'
+  @append()
+
+  selectColor(color)
+  openColorChooser()
+  andThen ->
+    # getSelectedColor checks for the cell with class .active,
+    # which is what highlights the cell
+    equal getSelectedColor(), color,
+      'Correct color cell is highlighted'
