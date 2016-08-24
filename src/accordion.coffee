@@ -14,9 +14,7 @@ Ember.Widgets.AccordionItem = Ember.View.extend
 
   isActiveDidChange: Ember.observer ->
     @set 'isActive', (@get('parentView.activeIndex') is @get('index'))
-    if @get('isActive')
-      @show()
-    else @hide()
+    if @get('isActive')@show() else @hide()
   , 'parentView.activeIndex'
 
   didInsertElement: ->
