@@ -108,7 +108,7 @@ _getSelectedColor = (app) ->
   if active.length
     rgbVal = active.css('background-color')
     [_, _, _, r, g, b, a, _] = /(.*?)rgb(a)?\((\d+), (\d+), (\d+)(, (\d+))?\)/.exec(rgbVal)
-    "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)
+    "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1).toUpperCase()
   else
     find('.color-picker-dropdown .input-sm').val()
 
