@@ -152,7 +152,7 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin, Ember.Widgets.TabbableM
       # disabled when we are in testing mode.
       @$().one $.support.transition.end, => Ember.run this, @destroy
     else
-      Ember.run this, @destroy
+      @destroy
 
   _appendBackdrop: ->
     parentLayer = @$().parent()
