@@ -11,6 +11,9 @@ href="http://emberjs.com/guides/components/sending-actions-from-components-to-yo
 send them.</a> One caveat is that we need to pass in the current
 controller as the target object to receive actions and to inherit the
 container.</p>
+      <p>Please note that you have to add at leaste the following CSS to your stylesheet. This is required
+because bootstrap uses inline style to add display:block when the modal is activated.</p>
+      <code>.modal { display: block !important; }</code>
     </div>
     <div class="col-md-6">
       <h3>Modal with content property</h3>
