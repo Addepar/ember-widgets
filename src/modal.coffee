@@ -37,11 +37,21 @@ Ember.Component.extend Ember.Widgets.StyleBindingsMixin, Ember.Widgets.TabbableM
   headerViewClass: Ember.View.extend
     templateName: 'modal_header'
 
+  headerViewClass: Ember.View.extend
+    templateName: 'modal_header'
+
   contentViewClass: Ember.View.extend
     template: Ember.Handlebars.compile("<p>{{content}}</p>")
 
   footerViewClass:  Ember.View.extend
     templateName: 'modal-footer'
+
+  _headerViewClass: Ember.computed ->
+    headerViewClass = @get 'headerViewClass'
+    if typeof headerViewClass is 'string'
+      Ember.get headerViewClass
+    else headerViewClass
+  .property 'headerViewClass'
 
   _headerViewClass: Ember.computed ->
     headerViewClass = @get 'headerViewClass'
