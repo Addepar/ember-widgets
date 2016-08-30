@@ -23,8 +23,6 @@ Ember.Widgets.ColorPickerMixin,
   ###
   colorRows: Ember.computed -> Ember.A()
 
-  isColorTransparent: Ember.computed.equal 'selectedColorRGB', 'transparent'
-
   setCustomColor: Ember.on 'init', Ember.observer ->
     selectedColor = @get 'selectedColor'
     selectedColor = @colorToHex(selectedColor)

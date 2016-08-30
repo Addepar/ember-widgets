@@ -1,6 +1,6 @@
 {
   "name": "ember-widgets",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "main": "Gruntfile.js",
   "scripts": {
     "postinstall": "grunt bower",
@@ -32,7 +32,7 @@
     "karma": "0.12",
     "karma-chrome-launcher": "~0.1.2",
     "karma-ember-preprocessor": "*",
-    "karma-qunit": "*",
+    "karma-qunit": "0.1.8",
     "karma-spec-reporter": "0.0.6",
     "grunt-karma": "0.8.0",
     "node-static": "*",

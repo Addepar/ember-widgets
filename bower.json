@@ -1,6 +1,6 @@
 {
   "name": "ember-widgets",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "main": [
     "./dist/js/ember-widgets.js",
     "./dist/css/ember-widgets.css",
@@ -38,7 +38,7 @@
     "sinon-qunit": "~1.0.0",
     "holder": "holderjs#1.9",
     "jquery-browser": "jquery.browser#~0.0.4",
-    "qunit": "~1.12.0"
+    "qunit": "~1.14.0"
   },
   "resolutions": {
     "ember": "~1.5.0"

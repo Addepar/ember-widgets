@@ -22,9 +22,14 @@ Ember.Widgets.ColorPickerMixin,
   ###
   color: null
 
+  ###*
+   * Determines whether the state of the cell is active if the picker selected
+   * color matches this cell's color
+   * @type {Boolean}
+  ###
   isActive: Ember.computed ->
-    @colorToHex(@get('controller.selectedColor')) is @colorToHex(@get('color'))
-  .property 'controller.selectedColor', 'color'
+    @get('selectedColor') is @get('color')
+  .property 'selectedColor', 'color'
 
   click: ->
     @sendAction 'setColor', @get 'color'

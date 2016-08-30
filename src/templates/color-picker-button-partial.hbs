@@ -1,8 +1,8 @@
 <button class="btn btn-default color-picker-dropdown-button"
-        {{action 'toggleDropdown'}}>
+  {{action 'toggleDropdown'}}>
   {{color-picker-cell
     color=selectedColor
-    classNames="isColorTransparent:color-picker-cell-transparent"
+    classNameBindings="isColorTransparent:color-picker-cell-transparent"
   }}
   <span class="pull-right fa fa-caret-down color-picker-dropdown-caret"></span>
 </button>
