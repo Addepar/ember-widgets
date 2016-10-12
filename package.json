@@ -3,7 +3,6 @@
   "version": "0.3.0",
   "main": "Gruntfile.js",
   "scripts": {
-    "postinstall": "grunt bower",
     "test": "grunt build_tests && grunt build_app && grunt karma:continuous"
   },
   "repository": {
