@@ -1,0 +1,33 @@
+{
+  "name": "lodash",
+  "version": "1.2.1",
+  "main": "./dist/lodash.compat.js",
+  "ignore": [
+    ".*",
+    "*.custom.*",
+    "*.d.ts",
+    "*.map",
+    "*.md",
+    "*.txt",
+    "build.js",
+    "index.js",
+    "component.json",
+    "package.json",
+    "build",
+    "doc",
+    "node_modules",
+    "perf",
+    "test",
+    "vendor"
+  ],
+  "homepage": "https://github.com/lodash/lodash",
+  "_release": "1.2.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.2.1",
+    "commit": "91d552ca29f530c916def0e4a8c68f54b2815e5a"
+  },
+  "_source": "https://github.com/lodash/lodash.git",
+  "_target": "~1.2.1",
+  "_originalSource": "lodash"
+}

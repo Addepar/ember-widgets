@@ -1,0 +1,23 @@
+{
+  "name": "lodash",
+  "version": "1.2.1",
+  "main": "./dist/lodash.compat.js",
+  "ignore": [
+    ".*",
+    "*.custom.*",
+    "*.d.ts",
+    "*.map",
+    "*.md",
+    "*.txt",
+    "build.js",
+    "index.js",
+    "component.json",
+    "package.json",
+    "build",
+    "doc",
+    "node_modules",
+    "perf",
+    "test",
+    "vendor"
+  ]
+}

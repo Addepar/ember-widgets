@@ -1,0 +1,107 @@
+<div class="col-md-10 col-md-offset-2 left-border main-content-container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Modal <small> Ember.Widgets.Modal</small></h2>
+      <p class="elevated">The modal is an absolutely positioned dialog
+component which overlays the page. Typically, modals are pre-rendered
+into the page, even before they are needed. Our approach appends the
+modal when it is required and removes it once it is no longer visible.
+We designed it such that actions are sent to the application the same way <a
+href="http://emberjs.com/guides/components/sending-actions-from-components-to-your-application/">components
+send them.</a> One caveat is that we need to pass in the current
+controller as the target object to receive actions and to inherit the
+container.</p>
+    </div>
+    <div class="col-md-6">
+      <h3>Modal with content property</h3>
+      <div class="example-container">
+        <button type="button" class="btn btn-primary" {{action 'showModal'}}>
+          Show Modal
+        </button>
+      </div>
+
+      <h4 class="bumper-30">Application_controller.coffee</h4>
+      <div class="highlight">
+<pre class="prettyprint lang-coffee">App.ApplicationController = Ember.Controller.extend
+  actions:
+    showModal: ->
+      ModalComponent.popup
+        targetObject: this
+        confirm: "modalConfirm"
+        cancel: "modalCancel"
+        content: "Isn't this one fine day?"
+
+    modalConfirm: -> console.log("Modal Confirm!")
+
+    modalCancel: -> console.log("Modal Cancel!")
+</pre>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <h3>Modal with contentViewClass</h3>
+      <div class="example-container">
+        <button type="button" class="btn btn-primary" {{action 'showModalWithCustomContent'}}>
+          Show Modal With Custom Content
+        </button>
+      </div>
+
+      <h4 class="bumper-30">Application_controller.coffee</h4>
+      <div class="highlight">
+<pre class="prettyprint lang-coffee">App.ApplicationController = Ember.Controller.extend
+  actions:
+    showModal: ->
+      ModalComponent.popup
+        targetObject: this
+        confirm: "modalConfirm"
+        cancel: "modalCancel"
+        content: { name: "Louis" }
+        contentViewClass: App.CustomModalContentView
+
+    modalConfirm: -> console.log("Modal Confirm!")
+
+    modalCancel: -> console.log("Modal Cancel!")
+</pre>
+      </div>
+
+      <h4 class="bumper-30">Custom_modal_content_view.coffee</h4>
+      <div class="highlight">
+<pre class="prettyprint lang-coffee">App.CustomModalContentView = Ember.View.extend
+  templateName: 'custom-modal-content'
+</pre>
+      </div>
+
+      <h4 class="bumper-30">Custom-modal-content.hbs</h4>
+      <div class="highlight">
+<pre class="prettyprint lang-html">Isn't this one fine day &#123;&#123;content.name&#125;&#125;?</pre>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <h3>Modal with custom size</h3>
+      <div class="example-container">
+        <button type="button" class="btn btn-primary" {{action 'showSmallModal'}}>
+          Show Modal
+        </button>
+      </div>
+
+      <h4 class="bumper-30">Application_controller.coffee</h4>
+      <div class="highlight">
+<pre class="prettyprint lang-coffee">App.ApplicationController = Ember.Controller.extend
+  actions:
+    showModal: ->
+      ModalComponent.popup
+        targetObject: this
+        confirm: "modalConfirm"
+        cancel: "modalCancel"
+        size: 'small'
+        content: "This is quite small isn't it?"
+
+    modalConfirm: -> console.log("Modal Confirm!")
+
+    modalCancel: -> console.log("Modal Cancel!")
+</pre>
+      </div>
+    </div>
+
+  </div>
+</div>
