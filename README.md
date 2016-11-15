@@ -1,6 +1,14 @@
-# Ember-widgets
+# Ember Widgets by Addepar [![Build Status](https://secure.travis-ci.org/Addepar/ember-widgets.svg?branch=master)](http://travis-ci.org/Addepar/ember-widgets)
 
-This README outlines the details of collaborating on this Ember addon.
+**THIS LIBRARY IS DEPRECATED**
+
+We will be releasing versions which may introduce breaking changes as we transition to a more modern
+set of Ember components.
+
+A collection of small widgets, easy to drop into place as Ember Components.
+
+## Demo and Documentation
+http://addepar.github.com/ember-widgets/
 
 ## Installation
 
