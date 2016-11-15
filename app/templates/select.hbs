@@ -2,11 +2,11 @@
   <a {{bind-attr class=":form-control :ember-select-choice buttonClass disabled:disabled
   hasFocus:ember-select-focus"}}>
     {{#if selection}}
-      {{view selectedItemView contentBinding=selection}}
-      <i {{bind-attr class=view.dropdownToggleIcon}}></i>
+      {{view selectedItemView contentBinding="selection"}}
+      <i {{bind-attr class="view.dropdownToggleIcon"}}></i>
     {{else}}
       <span>{{prompt}}</span>
-      <i {{bind-attr class=view.dropdownToggleIcon}}></i>
+      <i {{bind-attr class="view.dropdownToggleIcon"}}></i>
     {{/if}}
   </a>
 </div>
