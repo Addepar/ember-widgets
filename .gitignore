@@ -1,18 +1,27 @@
-node_modules/
-gh_pages/
 build/
-dependencies/compiled/*.*
-test/runner.html
+gh_pages/
+node_modules/
+vendor/
+.idea/
 .DS_Store
 .stage
 *.swo
 *.swp
 
-# Bower dependencies
-vendor/
+# See http://help.github.com/ignore-files/ for more about ignoring files.
 
-tests/**/*.js
+# compiled output
+/dist
+/tmp
 
+# dependencies
+/node_modules
+/bower_components
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage/*
+/libpeerconnection.log
 npm-debug.log
-
-tests/integration_test_helper.js
+testem.log
