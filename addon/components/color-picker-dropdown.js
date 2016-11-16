@@ -35,7 +35,7 @@ export default Ember.Component.extend(BodyEventListenerMixin, ColorPickerMixin, 
   colorRows: Ember.computed(function() {
     return Ember.A();
   }),
-  setCustomColor: Ember.on('init', Ember.observer(function() {
+  setCustomColorObserver: Ember.on('init', Ember.observer(function() {
     var selectedColor;
     selectedColor = this.get('selectedColor');
     selectedColor = this.colorToHex(selectedColor);

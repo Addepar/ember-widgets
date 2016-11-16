@@ -30,7 +30,7 @@ var ModalComponent = Ember.Component.extend(
   close: Ember.K,
   isDisabled: Ember.computed.not('isValid'),
   fadeEnabled: Ember.computed(function() {
-    if (Ember.Widgets && Ember.Widgets.DISABLE_ANIMATIONS) {
+    if (window.EMBER_WIDGETS_DISABLE_ANIMATIONS) {
       return false;
     }
     return this.get('fade');
@@ -139,7 +139,7 @@ var ModalComponent = Ember.Component.extend(
     // See force reflow at http://stackoverflow.com/questions/9016307/
     // force-reflow-in-css-transitions-in-bootstrap
     if (this.get('fade')) {
-      this.$()[0].offsetWidth;
+      this.$()[0].offsetWidth; // jshint ignore:line
     }
     // append backdrop
     if (this.get('backdrop')) {

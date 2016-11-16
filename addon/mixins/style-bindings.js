@@ -25,7 +25,9 @@ export default Ember.Mixin.create({
    lookup = {};
    styleBindings.forEach(function(binding) {
      var property, ref, style;
-     ref = binding.split(':'), property = ref[0], style = ref[1];
+     ref = binding.split(':');
+     property = ref[0];
+     style = ref[1];
      return lookup[style || property] = property;
    });
    styles = _.keys(lookup);

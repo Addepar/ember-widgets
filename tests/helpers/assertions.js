@@ -1,34 +1,25 @@
-
-var isPresent = function(app, selector, context) {
+export function isPresent(selector, context) {
   var $element;
-  $element = find(app, selector, context);
+  $element = find(selector, context);
   return $element.length > 0;
-};
+}
 
-var isNotPresent = function(app, selector, context) {
-  return !isPresent(app, selector, context);
-};
+export function isNotPresent(selector, context) {
+  return !isPresent(selector, context);
+}
 
-var isVisible = function(app, selector, context) {
+export function isVisible(selector, context) {
   var $element;
-  $element = find(app, selector, context);
-  return $element.is(':visible');
-};
+  $element = find(selector, context);
+  return $element !== false && $element.is(':visible');
+}
 
-var isFocused = function(app, selector, context) {
+export function isFocused(selector, context) {
   var $element;
-  $element = find(app, selector, context);
-  return $element.is(':focus');
-};
+  $element = find(selector, context);
+  return $element !== false && document.activeElement === $element[0];
+}
 
-var isHidden = function(app, selector, context) {
-  return !isVisible(app, selector, context);
-};
-
-export {
-  isPresent,
-  isNotPresent,
-  isVisible,
-  isFocused,
-  isHidden
-};
+export function isHidden(selector, context) {
+  return !isVisible(selector, context);
+}

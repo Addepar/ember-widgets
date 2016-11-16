@@ -10,7 +10,7 @@ export default SelectComponent.extend({
     class: 'ember-select-input',
     valueBinding: 'parentView.query',
     focusIn() {
-      this.set('parentView.showDropdown', true)
+      this.set('parentView.showDropdown', true);
     }
   }),
 

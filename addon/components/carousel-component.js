@@ -89,11 +89,11 @@ export default Ember.Component.extend({
       ref.off($.support.transition.end);
     }
     this.$nextItem = $(this.$('.item').get(nextIndex));
-    if (!Ember.Widgets || !Ember.Widgets.DISABLE_ANIMATIONS) {
+    if (!window.EMBER_WIDGETS_DISABLE_ANIMATIONS) {
       this.set('sliding', true);
       this.$nextItem.addClass(type);
       // force reflow
-      this.$nextItem[0].offsetWidth;
+      this.$nextItem[0].offsetWidth; // jshint ignore:line
       $active.addClass(direction);
       this.$nextItem.addClass(direction);
     }
@@ -113,7 +113,7 @@ export default Ember.Component.extend({
     });
   },
   _onTransitionEnd: function($el, callback) {
-    if (Ember.Widgets && Ember.Widgets.DISABLE_ANIMATIONS) {
+    if (window.EMBER_WIDGETS_DISABLE_ANIMATIONS) {
       return callback();
     } else {
       return $el.one($.support.transition.end, callback);

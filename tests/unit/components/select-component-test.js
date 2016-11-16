@@ -3,7 +3,7 @@ import { moduleForComponent, test } from 'ember-qunit';
 
 var select = null;
 
-moduleForComponent('select-component', '[Unit] SelectGroup component', {
+moduleForComponent('select-component', '[Unit] Select component', {
   unit: true,
   teardown: function() {
     Ember.run( function() {

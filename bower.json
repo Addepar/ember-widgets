@@ -14,13 +14,14 @@
     "loader.js": "ember-cli/loader.js#3.2.0",
     "qunit": "~1.17.1",
     "bootstrap": "~3.2.0",
-    "lodash": "~1.2.1",
+    "lodash": "~3.10.0",
     "jquery-ui": "~1.10.1"
   },
   "devDependencies": {
     "font-awesome": "~4.0.3",
     "jquery-browser": "jquery.browser#~0.0.4",
     "google-code-prettify": "~1.0.4",
-    "holder": "holderjs#1.9"
+    "holder": "holderjs#1.9",
+    "sinonjs": "~1.7.3"
   }
 }

@@ -1,9 +1,4 @@
-import Ember from 'ember';
-
-var _openColorChooser, _getSelectedColor,
-  _selectColor, _fillInCustomColor;
-
-_openColorChooser = function(app, element) {
+export function openColorChooser(element) {
   if (element == null) {
     element = 'body';
   }
@@ -14,34 +9,30 @@ _openColorChooser = function(app, element) {
       return click('.color-picker-dropdown-button', element);
     }
   });
-};
+}
 
-_getSelectedColor = function(app) {
-  var _, a, active, b, g, r, ref, rgbVal;
-  active = find(app, '.color-picker-dropdown .active');
+export function getSelectedColor() {
+  var active = find('.color-picker-dropdown .active');
   if (active.length) {
-    rgbVal = active.css('background-color');
-    ref = /(.*?)rgb(a)?\((\d+), (\d+), (\d+)(, (\d+))?\)/.exec(rgbVal), _ = ref[0], _ = ref[1], _ = ref[2], r = ref[3], g = ref[4], b = ref[5], a = ref[6], _ = ref[7];
-    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    return active[0].attributes.style.value.match(/#[A-F0-9]+/)[0];
   } else {
     return find('.color-picker-dropdown .input-sm').val();
   }
-};
+}
 
-_selectColor = function(app, colorInHex) {
-  var colorCellSelector;
-  _openColorChooser();
-  colorCellSelector = ".color-picker-cell[style*=" + colorInHex + "]";
-  return click(colorCellSelector, '.color-picker-dropdown');
-};
+export function selectColor(colorInHex) {
+  openColorChooser();
+  var colorCell;
 
-_fillInCustomColor = function(app, value) {
-  var textBox;
-  textBox = find('.color-picker-dropdown .input-sm');
-  return fillIn(textBox, value);
-};
+  $(".color-picker-cell").each(function(index, cell) {
+    if (cell.attributes.style.value.match(colorInHex)) {
+      colorCell = cell;
+    }
+  });
 
-Ember.Test.registerAsyncHelper('openColorChooser', _openColorChooser);
-Ember.Test.registerHelper('getSelectedColor', _getSelectedColor);
-Ember.Test.registerAsyncHelper('selectColor', _selectColor);
-Ember.Test.registerAsyncHelper('fillInCustomColor', _fillInCustomColor);
+  return click(colorCell);
+}
+
+export function fillInCustomColor(value) {
+  return fillIn('.color-picker-dropdown .input-sm', value);
+}

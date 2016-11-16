@@ -20,7 +20,7 @@ export default Ember.Mixin.create(
   visibility: 'hidden',
   debounceTime: 100,
   fadeEnabled: Ember.computed(function() {
-    if (Ember.Widgets && Ember.Widgets.DISABLE_ANIMATIONS) {
+    if (window.EMBER_WIDGETS_DISABLE_ANIMATIONS) {
       return false;
     }
     return this.get('fade');

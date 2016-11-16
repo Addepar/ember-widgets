@@ -68,6 +68,11 @@ export default Ember.Mixin.create(KeyboardHelper, {
     if (event.keyCode === this.KEY_CODES.ESCAPE && this.get('escToCancel')) {
       this.send('sendCancel');
       event.preventDefault();
+    } else if (event.keyCode === this.KEY_CODES.ENTER && this.get('enterToConfirm')) {
+      if (!this.get('isDisabled')) {
+        this.send('sendConfirm');
+        event.preventDefault();
+      }
     } else if (event.keyCode === this.KEY_CODES.TAB) {
       // tabbable objects list without close button
       tabbableObjects = this.$(":tabbable").not('.close');

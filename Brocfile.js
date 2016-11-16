@@ -11,6 +11,8 @@ var moduleExports = function(defaults) {
   app.import(app.bowerDirectory + '/jquery-ui/ui/jquery-ui.custom.js');
   app.import(app.bowerDirectory + '/bootstrap/dist/js/bootstrap.js');
   app.import(app.bowerDirectory + '/lodash/lodash.js');
+
+  app.import(app.bowerDirectory + '/sinonjs/sinon.js', { type: 'test' });
   /*
     This build file specifes the options for the dummy test app of this
     addon, located in `/tests/dummy`
@@ -21,4 +23,4 @@ var moduleExports = function(defaults) {
   return app.toTree();
 };
 
-module.exports = moduleExports()
+module.exports = moduleExports();
