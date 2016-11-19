@@ -1,7 +1,6 @@
-<div class="ember-select-container ember-select-multi dropdown-toggle js-dropdown-toggle"
-  {{bind-attr class="hasFocus:ember-select-focus"}}>
+<div {{bind-attr class=":ember-select-container :ember-select-multi :dropdown-toggle :js-dropdown-toggle hasFocus:ember-select-focus"}}>
   <ul {{bind-attr class=":ember-select-choices choicesFieldClass"}}>
-    {{each selections itemViewClass="view.selectionItemView"}}
+    {{each selections itemViewClass=view.selectionItemView}}
     <li class="ember-select-search-field">
       {{! Invisible span containing the placeholder/query text, used to set
           the width of its parent element. }}
