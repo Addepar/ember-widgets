@@ -4,6 +4,7 @@ import ListView from 'ember-list-view';
 import BodyEventListener from '../mixins/body-event-listener';
 import AddeparMixins from '../mysterious-dependency/ember-addepar-mixins/resize_handler';
 import KeyboardHelper from '../mixins/keyboard-helper';
+import DebouncedTextComponent from './debounced-text-component';
 
 import SelectTooltipOptionView from '../views/select-tooltip-option';
 import SelectOptionView from '../views/select-option';
@@ -234,7 +235,7 @@ export default Ember.Component.extend(
     return Ember.defineProperty(this, 'selectedLabel', Ember.computed.alias(path));
   }, 'selection', 'optionLabelPath')),
 
-  searchView: Ember.TextField.extend({
+  searchView: DebouncedTextComponent.extend({
     placeholder: Ember.computed.alias('parentView.placeholder'),
     valueBinding: 'parentView.query',
     // we want to focus on search input when dropdown is opened. We need to put
@@ -253,7 +254,16 @@ export default Ember.Component.extend(
       } else {
         return this.set('value', '');
       }
-    }, 'parentView.showDropdown')
+    }, 'parentView.showDropdown'),
+
+    /**
+      Delegates to parent view (The select component) to propagate this data up.
+
+      @override
+    */
+    propagateNewText: function(newText) {
+      this.get('parentView').send('valueChanged', newText);
+    },
   }),
   // This is a hack. ListView doesn't handle case when total height
   // is less than height properly
@@ -633,7 +643,10 @@ export default Ember.Component.extend(
         return;
       }
       return this.set('showDropdown', false);
-    }
+    },
 
+    valueChanged: function(newText) {
+      this.sendAction('valueChanged', newText);
+    }
   }
 });
