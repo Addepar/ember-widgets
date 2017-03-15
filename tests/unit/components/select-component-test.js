@@ -49,6 +49,46 @@ test('Test filtered content using array proxy', function(assert) {
   assert.equal(select.get('filteredContent')[1], 'reddit');
 });
 
+test('Test ', function(assert) {
+  assert.expect(12);
+
+  var data = [
+    {name: 'Sparrow', sound: 'Squawk'},
+    {name: 'Parrot', sound: 'Squawk'},
+    {name: 'Wolf', sound: 'bark'},
+    {name: 'Dog', sound: 'Bark'},
+    {name: 'Sea Lion', sound: 'Bark'}
+  ];
+  select = this.subject({
+    content: data,
+    optionLabelPath: 'name',
+    optionValuePath: 'name',
+    optionGroupPath: 'sound'
+  });
+
+  var expected = [
+    'Bark',
+    'Dog',
+    'Sea Lion',
+    'Squawk',
+    'Parrot',
+    'Sparrow',
+    'bark',
+    'Wolf'
+  ];
+
+  var actual = select.get('groupedContent');
+
+  assert.equal(expected.length, actual.length, 
+               "Unexpected groupedContent size");
+  for (var i = 0; i < expected.length; i++) {
+    assert.equal(expected[i], Ember.get(actual[i], 'name'));
+  }
+  assert.ok(actual[0].get('isGroupOption'), "Expected group option at index 0");
+  assert.ok(actual[3].get('isGroupOption'), "Expected group option at index 3");
+  assert.ok(actual[6].get('isGroupOption'), "Expected group option at index 6");
+});
+
 test('Test sorted filter content', function(assert) {
   assert.expect(3);
 
