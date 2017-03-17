@@ -100,6 +100,10 @@ export default Ember.Component.extend(
     }
     return 0;
   },
+  /**
+   * A flag to control data source. Sets this to true if you want to do server search.
+  **/
+  disableLocalSearch: false,
 
   // This augments the dropdown to provide a place for adding a select menu that
   // possibly says 'create item' or something along that line
@@ -400,6 +404,9 @@ export default Ember.Component.extend(
 
   // It matches the item label with the query. This can be overrideen for better
   matcher: function(searchText, item) {
+    if (this.get('disableLocalSearch')) {
+      return true;
+    }
     var escapedSearchText, label, regex, trimmedLabel, trimmedSearchText;
     if (!searchText) {
       return true;
