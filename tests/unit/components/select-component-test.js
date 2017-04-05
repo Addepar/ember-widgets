@@ -49,7 +49,7 @@ test('Test filtered content using array proxy', function(assert) {
   assert.equal(select.get('filteredContent')[1], 'reddit');
 });
 
-test('Test ', function(assert) {
+test('Option group path', function(assert) {
   assert.expect(12);
 
   var data = [
