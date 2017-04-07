@@ -31,7 +31,12 @@ emptyContentSelector = '.ember-select-empty-content';
 noResultSelector = '.ember-select-no-results';
 
 moduleForComponent('select-component', '[Integration] Select component', {
-  needs: ['template:select', 'template:select-item', 'template:select-item-layout'],
+  needs: [
+    'template:select',
+    'template:select-item',
+    'template:select-item-layout',
+    'template:select-list-view-partial'
+  ],
 
   setup: function() {
     app = startApp();
@@ -400,4 +405,42 @@ test('shouldEnsureVisible controls whether to ensure visibility', function() {
   select.set('highlighted', 'bar');
   equal(spy.callCount, 0, 'ensureVisible is not called if shouldEnsureVisible is false');
   return spy.restore();
+});
+
+test('Specified dropdownMenuClass is used when the dropdown is opened', function(assert) {
+  assert.expect(1);
+
+  var cssClassName = 'test-class';
+  select = this.subject({
+    content: ['dummy data'],
+    dropdownMenuClass: cssClassName
+  });
+  this.append();
+  var selectElement = select.$();
+  openDropdown(selectElement);
+  return andThen(function() {
+    var expectedClass = '.' + cssClassName;
+    return ok(isPresent(expectedClass, selectElement),
+      'The specified dropdownMenuClass is present');
+  });
+});
+
+test('Can specify a custom partial with listViewPartial', function(assert) {
+  assert.expect(1);
+
+  var compiledTemplate = Ember.Handlebars.
+    compile('<div class="dummy-class-for-partial-list"></div>{{partial "select-list-view-partial"}}');
+  this.container.register('template:custom-list-view-partial', compiledTemplate);
+  select = this.subject({
+    content: ['dummy data'],
+    listViewPartial: 'custom-list-view-partial'
+  });
+  this.append();
+  var selectElement = select.$();
+  openDropdown(selectElement);
+  return andThen(function() {
+    var dummyClassInPartialList = '.dummy-class-for-partial-list';
+    return ok(isPresent(dummyClassInPartialList, selectElement),
+      'The specified listViewPartial is rendered');
+  });
 });

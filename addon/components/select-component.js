@@ -59,6 +59,13 @@ export default Ember.Component.extend(
   tooltipItemViewClass: SelectTooltipOptionView,
   originalItemViewClass: SelectOptionView,
 
+  /**
+   * The name of the partial which contains the list view which is displayed when
+   * the user opens the drop-down.
+   * @type { string }
+  */
+  listViewPartial: 'select-list-view-partial',
+
   // a map of accepted keys to show dropdown when being pressed
   // these are keys to show dropdown when being pressed
   acceptedKeys: Ember.computed(function() {
