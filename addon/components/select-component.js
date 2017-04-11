@@ -293,7 +293,7 @@ export default Ember.Component.extend(
       return result.pushObjects(groups[key]);
     });
     return result;
-  }).property('preparedContent.[]', 'optionGroupPath', 'labels.[]'),
+  }).property('preparedContent', 'preparedContent.[]', 'optionGroupPath', 'labels.[]'),
 
   isLoading: false,
   isLoaded: Ember.computed.not('isLoading'),
