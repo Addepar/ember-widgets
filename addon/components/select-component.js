@@ -274,8 +274,9 @@ export default Ember.Component.extend(
   // Mountain View
   //   Addepar
   //   Google
-  // Need to specify preparedContent as a dependent property to force this property
-  // to recompute when we switch an empty DS.PromiseArray with a new one
+  // For an unknown reason, we need to specify preparedContent as well as preparedContent.[] as a dependent properties
+  // to force this property to recompute when we set content to an empty array and then immediately
+  // set it to a non-empty array. This mirrors the dependent property list of preparedContent
   // @see preparedContent
   groupedContent: Ember.computed(function() {
     var content, groups, path, result;

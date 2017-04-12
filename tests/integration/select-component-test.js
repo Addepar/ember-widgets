@@ -444,3 +444,24 @@ test('Can specify a custom partial with listViewPartial', function(assert) {
       'The specified listViewPartial is rendered');
   });
 });
+
+test('Displays options when content is changed to another empty array and then immediately assigned to a content array', function() {
+  expect(2);
+
+  var resultItemSelector = '.ember-select-result-item';
+  select = this.subject({
+    content: ['test content']
+  });
+  this.append();
+  var selectElement = select.$();
+  openDropdown(selectElement);
+  wait();
+  andThen(function() {
+    ok(isPresent(resultItemSelector, selectElement), 'Content is displayed');
+    select.set('content', []);
+    select.set('content', ['test content']);
+  });
+  return andThen(function() {
+    ok(isPresent(resultItemSelector, selectElement), 'Content is still displayed');
+  });
+});
