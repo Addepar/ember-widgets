@@ -13,6 +13,30 @@ moduleForComponent('select-component', '[Unit] Select component', {
   }
 });
 
+var animalData = function() {
+  return [
+    {name: 'Sparrow', sound: 'Squawk'},
+    {name: 'Crow', sound: 'Squawk'},
+    {name: 'Dog', sound: 'bark'},
+    {name: 'Wolf', sound: 'Bark'},
+    {name: 'Sea Lion', sound: 'Bark'}
+  ];
+};
+
+var contentEqual = function(assert, expected, actual, groupingIndices) {
+  assert.equal(expected.length, actual.length, 
+               "Unexpected groupedContent size");
+  for (var i = 0; i < expected.length; i++) {
+    assert.equal(expected[i], Ember.get(actual[i], 'name'));
+  }
+  groupingIndices.forEach(function(i) {
+    assert.ok(
+      Ember.get(actual[i], 'isGroupOption'), 
+      "Expected grouping option at index " + i
+    );
+  });
+};
+
 test('Test continuous queries in a row', function(assert) {
   assert.expect(5);
 
@@ -49,18 +73,11 @@ test('Test filtered content using array proxy', function(assert) {
   assert.equal(select.get('filteredContent')[1], 'reddit');
 });
 
-test('Option group path', function(assert) {
+test('Test groupedContent default sorting', function(assert) {
   assert.expect(12);
 
-  var data = [
-    {name: 'Sparrow', sound: 'Squawk'},
-    {name: 'Parrot', sound: 'Squawk'},
-    {name: 'Wolf', sound: 'bark'},
-    {name: 'Dog', sound: 'Bark'},
-    {name: 'Sea Lion', sound: 'Bark'}
-  ];
   select = this.subject({
-    content: data,
+    content: animalData(),
     optionLabelPath: 'name',
     optionValuePath: 'name',
     optionGroupPath: 'sound'
@@ -68,25 +85,59 @@ test('Option group path', function(assert) {
 
   var expected = [
     'Bark',
-    'Dog',
     'Sea Lion',
+    'Wolf',
     'Squawk',
-    'Parrot',
+    'Crow',
     'Sparrow',
     'bark',
+    'Dog'
+  ];
+
+  var actual = select.get('groupedContent');
+  contentEqual(assert, expected, actual, [0, 3, 6]);
+});
+
+test('Test groupedContent custom sorting', function(assert) {
+  assert.expect(12);
+
+  // Sort by first objects in sored members of the group
+  var sortFn = function(group1, group2) {
+    var firstGroup1Member = group1.members.sort()[0];
+    var firstGroup2Member = group2.members.sort()[0];
+
+    if (firstGroup1Member < firstGroup2Member) {
+      return -1;
+    }
+
+    if (firstGroup1Member > firstGroup2Member) {
+      return 1;
+    }
+
+    return 0;
+  };
+
+  select = this.subject({
+    content: animalData(),
+    optionLabelPath: 'name',
+    optionValuePath: 'name',
+    optionGroupPath: 'sound',
+    groupSortFunction: sortFn
+  });
+
+  var expected = [
+    'Squawk',
+    'Crow',
+    'Sparrow',
+    'bark',
+    'Dog',
+    'Bark',
+    'Sea Lion',
     'Wolf'
   ];
 
   var actual = select.get('groupedContent');
-
-  assert.equal(expected.length, actual.length, 
-               "Unexpected groupedContent size");
-  for (var i = 0; i < expected.length; i++) {
-    assert.equal(expected[i], Ember.get(actual[i], 'name'));
-  }
-  assert.ok(actual[0].get('isGroupOption'), "Expected group option at index 0");
-  assert.ok(actual[3].get('isGroupOption'), "Expected group option at index 3");
-  assert.ok(actual[6].get('isGroupOption'), "Expected group option at index 6");
+  contentEqual(assert, expected, actual, [0,3,5]);
 });
 
 test('Test sorted filter content', function(assert) {
