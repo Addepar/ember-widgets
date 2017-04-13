@@ -52,6 +52,53 @@ export default Ember.Component.extend(
   optionValuePath: '',
   optionGroupPath: '',
   optionDefaultPath: '',
+  /**
+   * Comparator for sorting two groups of options. By default, sorts
+   * by alphabetical ordering of the name of the group. Alternatively, you could
+   * imagine your options are something like
+   * [
+   *   { name: 'aardvark', sound: 'oink'},
+   *   { name: 'zebra', sound: 'oink'}
+   *   { name: 'mouse', sound: 'moo'}
+   * ]
+   *
+   * with optionGroupPath set to sound. By default, you would get
+   *
+   * moo
+   *   mouse
+   * oink
+   *   aardvark
+   *   zebra
+   *
+   * If instead you wanted to sort the groups by max alphaneumeric ranking of
+   * an option within the group, you could override this property to get
+   *
+   * oink
+   *   aardvark
+   *   zebra
+   * moo
+   *   mouse
+   *
+   * The function should be of the form (groupObj1, groupObj2) -> number
+   * where groupObj has the structure 
+   * {name: string, members: [your_content_type]}
+   * 
+   * It should implement the
+   * behavior of a compareFunction documented here: https://mzl.la/19buNlz
+   *
+   */
+  groupSortFunction: function(groupObj1, groupObj2) {
+    var name1 = Ember.get(groupObj1, 'name');
+    var name2 = Ember.get(groupObj2, 'name');
+
+    if (name1 < name2) {
+      return -1;
+    }
+    if (name1 > name2) {
+      return 1;
+    }
+    return 0;
+  },
 
   // This augments the dropdown to provide a place for adding a select menu that
   // possibly says 'create item' or something along that line
@@ -275,25 +322,31 @@ export default Ember.Component.extend(
   //   Addepar
   //   Google
   groupedContent: Ember.computed(function() {
-    var content, groups, path, result;
-    path = this.get('optionGroupPath');
-    content = this.get('preparedContent');
+    var path = this.get('optionGroupPath');
+    var content = this.get('preparedContent');
     if (!path) {
       return Ember.A(content);
     }
-    groups = _.groupBy(content, function(item) {
+    var groupedContent = _.groupBy(content, function(item) {
       return Ember.get(item, path);
     });
-    result = Ember.A();
-    _.keys(groups).sort().forEach(function(key) {
-      result.pushObject(Ember.Object.create({
-        isGroupOption: true,
-        name: key
-      }));
-      return result.pushObjects(groups[key]);
+    var groupObjs = _.map(groupedContent, function(members, name) {
+      return { name: name, members: Ember.A(members) };
+    });
+    var sortedGroupObjs = groupObjs.sort(this.get('groupSortFunction'));
+    var result = Ember.A();
+    sortedGroupObjs.forEach(function(groupObj) {
+      result.pushObject(
+        Ember.Object.create({
+          isGroupOption: true,
+          name: groupObj.name
+        })
+      );
+      result.pushObjects(groupObj.members);
     });
     return result;
-  }).property('preparedContent.[]', 'optionGroupPath', 'labels.[]'),
+  }).property('preparedContent.[]', 'optionGroupPath', 'labels.[]',
+    'groupSortFunction'),
 
   isLoading: false,
   isLoaded: Ember.computed.not('isLoading'),
