@@ -445,7 +445,7 @@ test('Can specify a custom partial with listViewPartial', function(assert) {
   });
 });
 
-test('Displays options when content is changed to another empty array and then immediately assigned to a content array', function() {
+test('Select handles a change in the content array properly', function() {
   expect(2);
 
   var resultItemSelector = '.ember-select-result-item';
@@ -455,7 +455,6 @@ test('Displays options when content is changed to another empty array and then i
   this.append();
   var selectElement = select.$();
   openDropdown(selectElement);
-  wait();
   andThen(function() {
     ok(isPresent(resultItemSelector, selectElement), 'Content is displayed');
     select.set('content', []);
