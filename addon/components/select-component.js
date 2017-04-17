@@ -80,9 +80,9 @@ export default Ember.Component.extend(
    *   mouse
    *
    * The function should be of the form (groupObj1, groupObj2) -> number
-   * where groupObj has the structure 
+   * where groupObj has the structure
    * {name: string, members: [your_content_type]}
-   * 
+   *
    * It should implement the
    * behavior of a compareFunction documented here: https://mzl.la/19buNlz
    *
@@ -321,6 +321,10 @@ export default Ember.Component.extend(
   // Mountain View
   //   Addepar
   //   Google
+  // For an unknown reason, we need to specify preparedContent as well as preparedContent.[] as a dependent properties
+  // to force this property to recompute when we set content to an empty array and then immediately
+  // set it to a non-empty array. This mirrors the dependent property list of preparedContent
+  // @see preparedContent
   groupedContent: Ember.computed(function() {
     var path = this.get('optionGroupPath');
     var content = this.get('preparedContent');
@@ -345,8 +349,7 @@ export default Ember.Component.extend(
       result.pushObjects(groupObj.members);
     });
     return result;
-  }).property('preparedContent.[]', 'optionGroupPath', 'labels.[]',
-    'groupSortFunction'),
+  }).property('preparedContent', 'preparedContent.[]', 'optionGroupPath', 'labels.[]', 'groupSortFunction'),
 
   isLoading: false,
   isLoaded: Ember.computed.not('isLoading'),
