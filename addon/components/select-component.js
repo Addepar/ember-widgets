@@ -4,6 +4,7 @@ import ListView from 'ember-list-view';
 import BodyEventListener from '../mixins/body-event-listener';
 import AddeparMixins from '../mysterious-dependency/ember-addepar-mixins/resize_handler';
 import KeyboardHelper from '../mixins/keyboard-helper';
+import DebouncedTextComponent from './debounced-text-component';
 
 import SelectTooltipOptionView from '../views/select-tooltip-option';
 import SelectOptionView from '../views/select-option';
@@ -99,6 +100,10 @@ export default Ember.Component.extend(
     }
     return 0;
   },
+  /**
+   * A flag to control data source. Sets this to true if you want to do server search.
+  **/
+  disableLocalSearch: false,
 
   // This augments the dropdown to provide a place for adding a select menu that
   // possibly says 'create item' or something along that line
@@ -234,7 +239,7 @@ export default Ember.Component.extend(
     return Ember.defineProperty(this, 'selectedLabel', Ember.computed.alias(path));
   }, 'selection', 'optionLabelPath')),
 
-  searchView: Ember.TextField.extend({
+  searchView: DebouncedTextComponent.extend({
     placeholder: Ember.computed.alias('parentView.placeholder'),
     valueBinding: 'parentView.query',
     // we want to focus on search input when dropdown is opened. We need to put
@@ -253,7 +258,16 @@ export default Ember.Component.extend(
       } else {
         return this.set('value', '');
       }
-    }, 'parentView.showDropdown')
+    }, 'parentView.showDropdown'),
+
+    /**
+      Delegates to parent view (The select component) to propagate this data up.
+
+      @override
+    */
+    propagateNewText: function(newText) {
+      this.get('parentView').send('valueChanged', newText);
+    },
   }),
   // This is a hack. ListView doesn't handle case when total height
   // is less than height properly
@@ -390,6 +404,9 @@ export default Ember.Component.extend(
 
   // It matches the item label with the query. This can be overrideen for better
   matcher: function(searchText, item) {
+    if (this.get('disableLocalSearch')) {
+      return true;
+    }
     var escapedSearchText, label, regex, trimmedLabel, trimmedSearchText;
     if (!searchText) {
       return true;
@@ -633,7 +650,10 @@ export default Ember.Component.extend(
         return;
       }
       return this.set('showDropdown', false);
-    }
+    },
 
+    valueChanged: function(newText) {
+      this.sendAction('valueChanged', newText);
+    }
   }
 });
