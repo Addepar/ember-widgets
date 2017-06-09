@@ -7,7 +7,7 @@ import { isFocused } from '../helpers/assertions';
 var modal, app;
 
 moduleForComponent('modal-component', "[Integration] Modal component", {
-  needs: ['template:modal', 'template:modal_header', 'template:modal-footer'],
+  needs: ['template:modal', 'template:modal-header', 'template:modal-footer', 'template:modal-content'],
 
   setup: function() {
     app = startApp();

@@ -37,10 +37,10 @@ var ModalComponent = Ember.Component.extend(
   }).property('fade'),
   _runFocusTabbable: null,
   headerViewClass: Ember.View.extend({
-    templateName: 'modal_header'
+    templateName: 'modal-header'
   }),
   contentViewClass: Ember.View.extend({
-    template: Ember.Handlebars.compile("<p>{{content}}</p>")
+    templateName: 'modal-content'
   }),
   footerViewClass: Ember.View.extend({
     templateName: 'modal-footer'

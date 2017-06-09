@@ -30,7 +30,15 @@ export default Ember.Component.extend({
     if (this.get('_disabled')) {
       return;
     }
-    this.set('checked', true);
-    return this.set('selectedValue', this.get('value'));
+    const value = this.get('value');
+    const selectedValue = this.get('selectedValue');
+
+    if (selectedValue !== value) {
+      Ember.run(() => {
+        this.set('checked', true);
+        this.set('selectedValue', value);
+      });
+      this.sendAction('onchange', value);
+    }
   }
 });
