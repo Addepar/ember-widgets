@@ -164,7 +164,9 @@ test('Popover links can be configured to hide other popovers when opening', func
   andThen(function() {
     return ok(isPresent('.popover'), "The new popover was not hidden");
   });
-  return $(document).off('popover:hide');
+  andThen(function() {
+    return $(document).off('popover:hide');
+  });
 });
 
 test('Popover links can be configured to not hide other popovers when opening', function() {

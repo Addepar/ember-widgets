@@ -6,6 +6,7 @@ var moduleExports = function(defaults) {
     // Add options here
   });
 
+  app.import(app.bowerDirectory + '/ember/ember-template-compiler.js');
   app.import(app.bowerDirectory + '/google-code-prettify/bin/prettify.min.css');
   app.import(app.bowerDirectory + '/google-code-prettify/bin/prettify.min.js');
   app.import(app.bowerDirectory + '/jquery-ui/ui/jquery-ui.custom.js');

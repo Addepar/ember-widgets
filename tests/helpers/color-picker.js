@@ -24,13 +24,15 @@ export function selectColor(colorInHex) {
   openColorChooser();
   var colorCell;
 
-  $(".color-picker-cell").each(function(index, cell) {
-    if (cell.attributes.style.value.match(colorInHex)) {
-      colorCell = cell;
-    }
-  });
+  andThen(function() {
+    $(".color-picker-cell").each(function(index, cell) {
+      if (cell.attributes.style.value.match(colorInHex)) {
+        colorCell = cell;
+      }
+    });
 
-  return click(colorCell);
+    return click(colorCell);
+  });
 }
 
 export function fillInCustomColor(value) {
