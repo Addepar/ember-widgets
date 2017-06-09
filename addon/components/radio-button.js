@@ -34,8 +34,10 @@ export default Ember.Component.extend({
     const selectedValue = this.get('selectedValue');
 
     if (selectedValue !== value) {
-      this.set('checked', true);
-      this.set('selectedValue', value);
+      Ember.run(() => {
+        this.set('checked', true);
+        this.set('selectedValue', value);
+      });
       this.sendAction('onchange', value);
     }
   }
