@@ -163,6 +163,7 @@ export default Ember.Component.extend(
     if ((this.get('_state') || this.get('state')) !== 'inDOM' || this.get('showDropdown') === false) {
       return;
     }
+    const highlightedIndex = this.get('highlightedIndex');
     // Render the dropdown in a hidden state to get the size
     this.$('.js-dropdown-menu').css('visibility', 'hidden');
 
@@ -194,7 +195,6 @@ export default Ember.Component.extend(
     this.$('.js-dropdown-menu').css('visibility', 'visible');
 
     // When the dropdown is opened or re-rendered, scroll to the highlighted option
-    const highlightedIndex = this.get('highlightedIndex');
     if (highlightedIndex !== -1 && this.get('shouldEnsureVisible')) {
       Ember.run.schedule('afterRender', () => this.ensureVisible(highlightedIndex));
     }
