@@ -63,3 +63,14 @@ export function findInSelect(element, itemText) {
     return click(item);
   });
 }
+
+/**
+ * Returns the selector for an option in the select dropdown
+ *
+ * @public
+ * @param {string} selection - The text displayed in an option in the select dropdown.
+ * @return {string} the selector for an option in the select dropdown
+ */
+export function getOptionSelector(selection) {
+  return `.ember-select-results .ember-select-result-item:contains(${selection})`;
+}

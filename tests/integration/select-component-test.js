@@ -17,7 +17,8 @@ import {
 } from '../helpers/keyboard';
 
 import {
-  openDropdown
+  openDropdown,
+  getOptionSelector
 } from '../helpers/select';
 
 
@@ -29,10 +30,6 @@ var emptyContentSelector, noResultSelector, select;
 emptyContentSelector = '.ember-select-empty-content';
 
 noResultSelector = '.ember-select-no-results';
-
-function getOptionSelector(selection) {
-  return `.ember-select-results .ember-select-result-item:contains(${selection})`;
-}
 
 moduleForComponent('select-component', '[Integration] Select component', {
   needs: [
@@ -469,31 +466,32 @@ test('Select handles a change in the content array properly', function() {
   });
 });
 
-test('Selected option is scrolled to when dropdown is opened', function(assert) {
+test('Selected option is visible when dropdown is opened', function(assert) {
   assert.expect(1);
 
   const selection = 'z-last-element';
+  // Set a low dropdown height to ensure that the last item is hidden
   select = this.subject({
     content: ['foo', 'bana$  na', 'bar ca', selection],
     selection,
     dropdownHeight: 30
   });
   this.append();
-  andThen(() => {
-    select.set('highlighted', selection);
-  });
+  // The highlighted property is set when the user hovers over the select field
+  // Lets programatically set it after rendering to emulate that behavior.
+  andThen(() => select.set('highlighted', selection));
   var selectElement = select.$();
   openDropdown(selectElement);
   andThen(() => {
-    assert.ok(isPresent(getOptionSelector(selection)),
-     'The last option is displayed');
+    assert.ok(isPresent(getOptionSelector(selection)), 'The last option is displayed');
   });
 });
 
-test('Selected option is not scrolled to when shouldEnsureVisible is false', function(assert) {
+test('Selected option is not visible when shouldEnsureVisible is false', function(assert) {
   assert.expect(2);
 
   const selection = 'z-last-element';
+  // Set a low dropdown height to ensure that the last item is hidden
   select = this.subject({
     content: ['foo', 'bana$  na', 'bar ca', selection],
     selection,
@@ -501,14 +499,13 @@ test('Selected option is not scrolled to when shouldEnsureVisible is false', fun
     dropdownHeight: 30
   });
   this.append();
-  andThen(() => {
-    select.set('highlighted', selection);
-  });
+  // The highlighted property is set when the user hovers over the select field
+  // Lets programatically set it after rendering to emulate that behavior.
+  andThen(() => select.set('highlighted', selection));
   var selectElement = select.$();
   openDropdown(selectElement);
   andThen(() => {
     assert.ok(isPresent('.dropdown-menu'),  'Dropdown menu is displayed');
-    assert.ok(isNotPresent(getOptionSelector(selection)),
-     'The last option is not displayed');
+    assert.ok(isNotPresent(getOptionSelector(selection)), 'The last option is not displayed');
   });
 });

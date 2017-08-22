@@ -196,9 +196,7 @@ export default Ember.Component.extend(
     // When the dropdown is opened or re-rendered, scroll to the highlighted option
     const highlightedIndex = this.get('highlightedIndex');
     if (highlightedIndex !== -1 && this.get('shouldEnsureVisible')) {
-      Ember.run.schedule('afterRender', () => {
-        this.ensureVisible(highlightedIndex);
-      });
+      Ember.run.schedule('afterRender', () => this.ensureVisible(highlightedIndex));
     }
   }, 'showDropdown'),
   onResizeEnd: function() {
