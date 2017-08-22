@@ -163,6 +163,7 @@ export default Ember.Component.extend(
     if ((this.get('_state') || this.get('state')) !== 'inDOM' || this.get('showDropdown') === false) {
       return;
     }
+    const highlightedIndex = this.get('highlightedIndex');
     // Render the dropdown in a hidden state to get the size
     this.$('.js-dropdown-menu').css('visibility', 'hidden');
 
@@ -191,7 +192,12 @@ export default Ember.Component.extend(
     dropupMenuTop = dropdownButtonOffset.top - dropdownMenuHeight - dropdownMargin;
     this.set('isDropup', dropupMenuTop > window.scrollY && dropdownMenuBottom > window.innerHeight);
     this.set('isDropdownMenuPulledRight', dropdownButtonOffset.left + dropdownMenuWidth + dropdownMargin > window.innerWidth);
-    return this.$('.js-dropdown-menu').css('visibility', 'visible');
+    this.$('.js-dropdown-menu').css('visibility', 'visible');
+
+    // When the dropdown is opened or re-rendered, scroll to the highlighted option
+    if (highlightedIndex !== -1 && this.get('shouldEnsureVisible')) {
+      Ember.run.schedule('afterRender', () => this.ensureVisible(highlightedIndex));
+    }
   }, 'showDropdown'),
   onResizeEnd: function() {
     // We need to put this on the run loop, because the resize event came from

@@ -17,7 +17,8 @@ import {
 } from '../helpers/keyboard';
 
 import {
-  openDropdown
+  openDropdown,
+  getOptionSelector
 } from '../helpers/select';
 
 
@@ -462,5 +463,49 @@ test('Select handles a change in the content array properly', function() {
   });
   return andThen(function() {
     ok(isPresent(resultItemSelector, selectElement), 'Content is still displayed');
+  });
+});
+
+test('Selected option is visible when dropdown is opened', function(assert) {
+  assert.expect(1);
+
+  const selection = 'z-last-element';
+  // Set a low dropdown height to ensure that the last item is hidden
+  select = this.subject({
+    content: ['foo', 'bana$  na', 'bar ca', selection],
+    selection,
+    dropdownHeight: 30
+  });
+  this.append();
+  // The highlighted property is set when the user hovers over the select field
+  // Lets programatically set it after rendering to emulate that behavior.
+  andThen(() => select.set('highlighted', selection));
+  var selectElement = select.$();
+  openDropdown(selectElement);
+  andThen(() => {
+    assert.ok(isPresent(getOptionSelector(selection)), 'The last option is displayed');
+  });
+});
+
+test('Selected option is not visible when shouldEnsureVisible is false', function(assert) {
+  assert.expect(2);
+
+  const selection = 'z-last-element';
+  // Set a low dropdown height to ensure that the last item is hidden
+  select = this.subject({
+    content: ['foo', 'bana$  na', 'bar ca', selection],
+    selection,
+    shouldEnsureVisible: false,
+    dropdownHeight: 30
+  });
+  this.append();
+  // The highlighted property is set when the user hovers over the select field
+  // Lets programatically set it after rendering to emulate that behavior.
+  andThen(() => select.set('highlighted', selection));
+  var selectElement = select.$();
+  openDropdown(selectElement);
+  andThen(() => {
+    assert.ok(isPresent('.dropdown-menu'),  'Dropdown menu is displayed');
+    assert.ok(isNotPresent(getOptionSelector(selection)), 'The last option is not displayed');
   });
 });
