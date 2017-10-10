@@ -462,10 +462,10 @@ export default Ember.Component.extend(
     // Update display name of selected option
     if (!Ember.isNone(selection)) {
       const selectedOption = 
-        selectableOptions.findBy(valuePath, selection[valuePath]);
-        
+        selectableOptions.findBy(valuePath, Ember.get(selection, valuePath));
+
       if (!Ember.isNone(selectedOption)) {
-        this.set(`selection.${labelPath}`, selectedOption[labelPath]);
+        this.set(`selection.${labelPath}`, Ember.get(selectedOption, labelPath));
       }
     }
   }, 'selectableOptions.[]', 'showDropdown'),
