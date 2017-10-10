@@ -447,7 +447,9 @@ export default Ember.Component.extend(
   }, 'content.[]'),
   selectableOptionsDidChange: Ember.observer(function() {
     const selectableOptions = this.get('selectableOptions');
-    const selectedValue = this.get('selection.value');
+    const selection = this.get('selection');
+    const labelPath = this.get('optionLabelPath');
+    const valuePath = this.get('optionValuePath');
     let highlighted;
     
     if (this.get('showDropdown')) {
@@ -458,9 +460,10 @@ export default Ember.Component.extend(
     }
 
     // Update display name of selected option
-    if (!Ember.isNone(selectedValue)) {
-      const selectedOption = selectableOptions.findBy('value', selectedValue);
-      this.set('selection.displayName', selectedOption.displayName);
+    if (!Ember.isNone(selection)) {
+      const selectedOption = 
+        selectableOptions.findBy(valuePath, selection[valuePath]);
+      this.set(`selection.${labelPath}`, selectedOption[labelPath]);
     }
   }, 'selectableOptions.[]', 'showDropdown'),
 
