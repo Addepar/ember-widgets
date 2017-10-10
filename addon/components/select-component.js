@@ -446,11 +446,26 @@ export default Ember.Component.extend(
     return this.set('selection', content.findProperty(defaultPath));
   }, 'content.[]'),
   selectableOptionsDidChange: Ember.observer(function() {
-    var highlighted;
+    const selectableOptions = this.get('selectableOptions');
+    const selection = this.get('selection');
+    const labelPath = this.get('optionLabelPath');
+    const valuePath = this.get('optionValuePath');
+    let highlighted;
+    
     if (this.get('showDropdown')) {
       highlighted = this.get('highlighted');
-      if (!this.get('selectableOptions').contains(highlighted)) {
+      if (!selectableOptions.contains(highlighted)) {
         return this.set('highlighted', this.get('selectableOptions.firstObject'));
+      }
+    }
+
+    // Update display name of selected option
+    if (!Ember.isNone(selection) && !Ember.isEmpty(labelPath) && !Ember.isEmpty(valuePath)) {
+      const selectedOption = 
+        selectableOptions.findBy(valuePath, Ember.get(selection, valuePath));
+
+      if (!Ember.isNone(selectedOption)) {
+        this.set(`selection.${labelPath}`, Ember.get(selectedOption, labelPath));
       }
     }
   }, 'selectableOptions.[]', 'showDropdown'),
