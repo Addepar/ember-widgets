@@ -463,7 +463,10 @@ export default Ember.Component.extend(
     if (!Ember.isNone(selection)) {
       const selectedOption = 
         selectableOptions.findBy(valuePath, selection[valuePath]);
-      this.set(`selection.${labelPath}`, selectedOption[labelPath]);
+        
+      if (!Ember.isNone(selectedOption)) {
+        this.set(`selection.${labelPath}`, selectedOption[labelPath]);
+      }
     }
   }, 'selectableOptions.[]', 'showDropdown'),
 
