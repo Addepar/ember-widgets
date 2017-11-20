@@ -5,13 +5,18 @@ export default SelectComponent.extend({
   layoutName: 'typeahead',
   searchFieldClass: 'form-control',
   disabled: false,
+  placeholder: '',
 
-  searchView: Ember.TextField.extend({
-    class: 'ember-select-input',
-    valueBinding: 'parentView.query',
-    focusIn() {
-      this.set('parentView.showDropdown', true);
-    }
+  searchView: Ember.computed('placeholder', function() {
+    const placeholder = this.get('placeholder');
+    return Ember.TextField.extend({
+      class: 'ember-select-input',
+      placeholder: placeholder,
+      valueBinding: 'parentView.query',
+      focusIn() {
+        this.set('parentView.showDropdown', true);
+      }
+    })
   }),
 
   userDidSelect(selection) {
