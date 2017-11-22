@@ -8,6 +8,7 @@ export default SelectComponent.extend({
 
   searchView: Ember.TextField.extend({
     class: 'ember-select-input',
+    placeholderBinding: 'parentView.placeholder',
     valueBinding: 'parentView.query',
     focusIn() {
       this.set('parentView.showDropdown', true);
