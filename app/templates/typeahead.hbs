@@ -11,5 +11,10 @@
       contentBinding="groupedContent"
       itemViewClassBinding="itemView"
     }}
+    {{#if showFooter}}
+      {{#if footerView}}
+        {{view footerView}}
+      {{/if}}
+    {{/if}}
   </div>
 {{/unless}}
