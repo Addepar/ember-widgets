@@ -15,6 +15,13 @@ export default SelectComponent.extend({
     }
   }),
 
+  /**
+   * An optional view to be displayed in the typeahead dropdown below the list
+   * of options
+   * @type {String}
+   */
+  footerView: null,
+
   userDidSelect(selection) {
     this._super(selection);
     this.set('query', this.get('selection'));
