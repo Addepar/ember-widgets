@@ -12,9 +12,6 @@ export default SelectComponent.extend({
     valueBinding: 'parentView.query',
     focusIn() {
       this.set('parentView.showDropdown', true);
-    },
-    focusOut() {
-      this.set('parentView.showDropdown', false);
     }
   }),
 
