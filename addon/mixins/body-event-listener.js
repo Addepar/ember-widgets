@@ -14,8 +14,8 @@ export default Ember.Mixin.create({
     return Ember.run.next(this, this._setupDocumentHandlers);
   },
   willDestroyElement: function() {
+    this._removeDocumentHandlers();
     this._super();
-    return this._removeDocumentHandlers();
   },
   _setupDocumentHandlers: function() {
     var _this = this;
@@ -44,7 +44,9 @@ export default Ember.Mixin.create({
     return $(this.get('bodyElementSelector')).on("click", this._clickHandler);
   },
   _removeDocumentHandlers: function() {
-    $(this.get('bodyElementSelector')).off("click", this._clickHandler);
+    if (this._clickHandler) {
+      $(this.get('bodyElementSelector')).off("click", this._clickHandler);
+    }
     return this._clickHandler = null;
   }
 });
