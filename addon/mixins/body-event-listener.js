@@ -44,7 +44,9 @@ export default Ember.Mixin.create({
     return $(this.get('bodyElementSelector')).on("click", this._clickHandler);
   },
   _removeDocumentHandlers: function() {
-    $(this.get('bodyElementSelector')).off("click", this._clickHandler);
+    if (this._clickHandler) {
+      $(this.get('bodyElementSelector')).off("click", this._clickHandler);
+    }
     return this._clickHandler = null;
   }
 });
