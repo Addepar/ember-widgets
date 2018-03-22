@@ -14,8 +14,8 @@ export default Ember.Mixin.create({
     return Ember.run.next(this, this._setupDocumentHandlers);
   },
   willDestroyElement: function() {
+    this._removeDocumentHandlers();
     this._super();
-    return this._removeDocumentHandlers();
   },
   _setupDocumentHandlers: function() {
     var _this = this;
