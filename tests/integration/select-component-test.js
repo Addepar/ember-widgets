@@ -509,3 +509,22 @@ test('Selected option is not visible when shouldEnsureVisible is false', functio
     assert.ok(isNotPresent(getOptionSelector(selection)), 'The last option is not displayed');
   });
 });
+
+test('Dropdown does not open on key event when select is disabled', function(assert) {
+  assert.expect(1);
+
+  select = this.subject({
+    content: ['foo', 'bar'],
+    selection: 'foo',
+    disabled: true
+  });
+  this.append();
+
+  var selectElement = select.$();
+  selectElement.focus();
+  pressDownArrow(selectElement);
+
+  andThen(() => {
+    assert.ok(isNotPresent('.ember-select-results', selectElement), 'The dropdown does not open');
+  });
+});
