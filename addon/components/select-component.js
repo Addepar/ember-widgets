@@ -513,7 +513,7 @@ export default Ember.Component.extend(
 
   keyDown: function(event) {
     var acceptedKeys, map, method, ref;
-    if (this.get('isDestroyed') || this.get('isDestroying')) {
+    if (this.get('disabled') || this.get('isDestroyed') || this.get('isDestroying')) {
       return;
     }
     this.setFocus();
