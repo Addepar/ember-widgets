@@ -173,6 +173,26 @@ test('Test userSelected action', function() {
   });
 });
 
+test('Test valueChanged action when dropdown is closed and query is cleared', function() {
+  expect(1);
+  select = this.subject({
+    content: ['bar', 'baz']
+  });
+  const spy = sinon.spy(select, 'sendAction');
+  this.append();
+
+  const selectElement = select.$();
+  const searchInput = find('input', selectElement);
+
+  openDropdown(selectElement);
+  fillIn(searchInput, 'bar');
+  pressEsc(selectElement);
+
+  andThen(() => {
+    ok(spy.calledWithExactly('valueChanged', ''), 'valueChanged is sent with empty string when query is cleared');
+  });
+});
+
 test('Test selection label', function() {
   var data;
   expect(2);
