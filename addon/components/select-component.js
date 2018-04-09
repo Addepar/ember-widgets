@@ -262,7 +262,8 @@ export default Ember.Component.extend(
         });
       // clear the query string when dropdown is hidden
       } else {
-        return this.set('value', '');
+        this.set('value', '');
+        this.get('parentView').send('valueChanged', '');
       }
     }, 'parentView.showDropdown'),
 
