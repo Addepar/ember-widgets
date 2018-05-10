@@ -2,18 +2,9 @@
 
 module.exports = function(environment) {
   var ENV = {
-    contentSecurityPolicy: {
-      'default-src': "'none'",
-      'script-src': "'self' 'unsafe-eval' localhost",
-      'font-src': "'self' 'unsafe-inline' data: fast.fonts.net",
-      'connect-src': "'self'",
-      'img-src': "'self'",
-      'style-src': "'self' 'unsafe-inline' fast.fonts.net",
-      'media-src': "'self'"
-    },
     modulePrefix: 'dummy',
     environment: environment,
-    baseURL: '/',
+    rootURL: '/',
     locationType: 'auto',
     EmberENV: {
       // jQuery 0.12 was released four days ago and ember doesn't know it exists
@@ -21,6 +12,10 @@ module.exports = function(environment) {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
         // e.g. 'with-controller': true
+      },
+      EXTEND_PROTOTYPES: {
+        // Prevent Ember Data from overriding Date.parse.
+        Date: false
       }
     },
 
@@ -40,7 +35,6 @@ module.exports = function(environment) {
 
   if (environment === 'test') {
     // Testem prefers this...
-    ENV.baseURL = '/';
     ENV.locationType = 'none';
 
     // keep test console output quieter
@@ -51,7 +45,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-
+    // here you can enable a production-specific feature
   }
 
   return ENV;

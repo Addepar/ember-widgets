@@ -23,21 +23,21 @@ moduleForComponent('modal-component', "[Integration] Modal component", {
   }
 });
 
-test('With DISABLE_ANIMATIONS=true, hide can be called several times', function() {
-  expect(1);
+test('With DISABLE_ANIMATIONS=true, hide can be called several times', function(assert) {
+  assert.expect(1);
   window.EMBER_WIDGETS_DISABLE_ANIMATIONS = true;
   modal = this.subject();
   this.append();
   return andThen(function() {
     modal.hide();
     modal.hide();
-    return ok(true, 'hide can be called multiple times when animations are disabled');
+    return assert.ok(true, 'hide can be called multiple times when animations are disabled');
   });
 });
 
-test('Test tab loop only inside modal', function() {
+test('Test tab loop only inside modal', function(assert) {
   var buttonCancel, buttonConfirm, modalComponent, validateFocus;
-  expect(3);
+  assert.expect(3);
   modal = this.subject();
   this.append();
   modalComponent = modal.$();
@@ -45,7 +45,7 @@ test('Test tab loop only inside modal', function() {
   buttonConfirm = find('.btn-confirm', modalComponent);
   buttonCancel = find('.btn-cancel', modalComponent);
   validateFocus = function(element, messageFocus) {
-    return ok(isFocused(element, modalComponent), messageFocus);
+    return assert.ok(isFocused(element, modalComponent), messageFocus);
   };
   validateFocus(buttonConfirm, 'Button Confirm should be focused');
   triggerEvent(buttonConfirm, null, 'keydown', {
@@ -62,9 +62,9 @@ test('Test tab loop only inside modal', function() {
   });
 });
 
-test('Test preserving the focus when clicking on non-focusable element', function() {
+test('Test preserving the focus when clicking on non-focusable element', function(assert) {
   var buttonCancel, buttonConfirm, modalBody, modalComponent, validateFocus;
-  expect(1);
+  assert.expect(1);
   modal = this.subject();
   this.append();
   modalComponent = modal.$();
@@ -72,7 +72,7 @@ test('Test preserving the focus when clicking on non-focusable element', functio
   buttonCancel = find('.btn-cancel', modalComponent);
   modalBody = find('.modal-body', modalComponent);
   validateFocus = function(element, messageFocus) {
-    return ok(isFocused(element, modalComponent), messageFocus);
+    return assert.ok(isFocused(element, modalComponent), messageFocus);
   };
   keyEvent(buttonConfirm, 'keydown', 9).then(function() {
     return buttonCancel.focus();
@@ -82,9 +82,9 @@ test('Test preserving the focus when clicking on non-focusable element', functio
   });
 });
 
-test('Test pressing Enter to confirm', function() {
+test('Test pressing Enter to confirm', function(assert) {
   var modalComponent, spy;
-  expect(1);
+  assert.expect(1);
   modal = this.subject({
     enterToConfirm: true
   });
@@ -93,6 +93,6 @@ test('Test pressing Enter to confirm', function() {
   modalComponent = modal.$();
   keyEvent(modalComponent, 'keydown', 13);
   return andThen(function() {
-    return ok(spy.calledWith('sendConfirm'), "sendConfirm gets called when hitting enter");
+    return assert.ok(spy.calledWith('sendConfirm'), "sendConfirm gets called when hitting enter");
   });
 });
