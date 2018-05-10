@@ -11,14 +11,17 @@
 </div>
 
 <div class="dropdown-menu js-dropdown-menu">
-  {{view listView
-    tagName="ul"
-    classNames="ember-select-results"
-    heightBinding="dropdownHeight"
-    rowHeightBinding="rowHeight"
-    contentBinding="groupedContent"
-    itemViewClassBinding="itemView"
-  }}
+  <ul class="ember-select-results" style={{collectionStyle}}>
+    {{#if showDropdown}}
+      {{#vertical-collection groupedContent
+        estimateHeight=rowHeight
+        staticHeight=true
+        idForFirstItem=highlightedIdentity
+      as |item|}}
+        {{view itemView content=item}}
+      {{/vertical-collection}}
+    {{/if}}
+  </ul>
   {{#if hasNoResults}}
     <span class="ember-select-no-results">No results match "{{query}}"</span>
   {{/if}}
