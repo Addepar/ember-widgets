@@ -29,8 +29,8 @@ moduleForComponent('popover-link-component', '[Integration] Popover link tests',
   }
 });
 
-test('Destroying a popover link destroys the associated popover', function() {
-  expect(2);
+test('Destroying a popover link destroys the associated popover', function(assert) {
+  assert.expect(2);
   popoverLink = this.subject({
     rootElement: "#ember-testing"
   });
@@ -38,7 +38,7 @@ test('Destroying a popover link destroys the associated popover', function() {
   click('.popover-link');
   andThen(function() {
     var popover;
-    ok(isPresent('.popover'), "The popover is created");
+    assert.ok(isPresent('.popover'), "The popover is created");
     popover = popoverLink.get('_popover');
     return Ember.run(function() {
       popoverLink.destroy();
@@ -46,12 +46,12 @@ test('Destroying a popover link destroys the associated popover', function() {
     });
   });
   return andThen(function() {
-    return ok(isNotPresent('.popover'), "The popover is destroyed");
+    return assert.ok(isNotPresent('.popover'), "The popover is destroyed");
   });
 });
 
-test('Popover links can be configured to be opened with left clicks', function() {
-  expect(1);
+test('Popover links can be configured to be opened with left clicks', function(assert) {
+  assert.expect(1);
   popoverLink = this.subject({
     rootElement: "#ember-testing",
     openOnLeftClick: true
@@ -59,12 +59,12 @@ test('Popover links can be configured to be opened with left clicks', function()
   this.append();
   click('.popover-link');
   return andThen(function() {
-    return ok(isPresent('.popover'), "The popover is created");
+    return assert.ok(isPresent('.popover'), "The popover is created");
   });
 });
 
-test('Popover links can be configured to not be opened with left clicks', function() {
-  expect(1);
+test('Popover links can be configured to not be opened with left clicks', function(assert) {
+  assert.expect(1);
   popoverLink = this.subject({
     rootElement: "#ember-testing",
     openOnLeftClick: false
@@ -72,12 +72,12 @@ test('Popover links can be configured to not be opened with left clicks', functi
   this.append();
   click('.popover-link');
   return andThen(function() {
-    return ok(isNotPresent('.popover'), "The popover is not created");
+    return assert.ok(isNotPresent('.popover'), "The popover is not created");
   });
 });
 
-test('Popover links can be configured to be opened with right clicks', function() {
-  expect(1);
+test('Popover links can be configured to be opened with right clicks', function(assert) {
+  assert.expect(1);
   popoverLink = this.subject({
     rootElement: "#ember-testing",
     openOnRightClick: true
@@ -85,12 +85,12 @@ test('Popover links can be configured to be opened with right clicks', function(
   this.append();
   triggerEvent('.popover-link', 'contextmenu');
   return andThen(function() {
-    return ok(isPresent('.popover'), "The popover is created");
+    return assert.ok(isPresent('.popover'), "The popover is created");
   });
 });
 
-test('Popover links can be configured to not be opened with right clicks', function() {
-  expect(1);
+test('Popover links can be configured to not be opened with right clicks', function(assert) {
+  assert.expect(1);
   popoverLink = this.subject({
     rootElement: "#ember-testing",
     openOnRightClick: false
@@ -98,11 +98,11 @@ test('Popover links can be configured to not be opened with right clicks', funct
   this.append();
   triggerEvent('.popover-link', 'contextmenu');
   return andThen(function() {
-    return ok(isNotPresent('.popover'), "The popover is not created");
+    return assert.ok(isNotPresent('.popover'), "The popover is not created");
   });
 });
 
-test('Popover links do not bubble left click events when configured to open with left clicks', function() {
+test('Popover links do not bubble left click events when configured to open with left clicks', function(assert) {
   var bubbled;
   popoverLink = this.subject({
     rootElement: "#ember-testing",
@@ -111,10 +111,10 @@ test('Popover links do not bubble left click events when configured to open with
   });
   this.append();
   bubbled = Ember.run(popoverLink, 'click');
-  return ok(!bubbled, 'The event did not bubble');
+  return assert.ok(!bubbled, 'The event did not bubble');
 });
 
-test('Popover links bubble left click events when not configured to open with left clicks', function() {
+test('Popover links bubble left click events when not configured to open with left clicks', function(assert) {
   var bubbled;
   popoverLink = this.subject({
     rootElement: "#ember-testing",
@@ -123,10 +123,10 @@ test('Popover links bubble left click events when not configured to open with le
   });
   this.append();
   bubbled = Ember.run(popoverLink, 'click');
-  return ok(bubbled, 'The event bubbled');
+  return assert.ok(bubbled, 'The event bubbled');
 });
 
-test('Popover links do not bubble right click events when configured to open with right clicks', function() {
+test('Popover links do not bubble right click events when configured to open with right clicks', function(assert) {
   var bubbled;
   popoverLink = this.subject({
     rootElement: "#ember-testing",
@@ -135,10 +135,10 @@ test('Popover links do not bubble right click events when configured to open wit
   });
   this.append();
   bubbled = Ember.run(popoverLink, 'contextMenu');
-  return ok(!bubbled, 'The event did not bubble');
+  return assert.ok(!bubbled, 'The event did not bubble');
 });
 
-test('Popover links bubble right click events when not configured to open with right clicks', function() {
+test('Popover links bubble right click events when not configured to open with right clicks', function(assert) {
   var bubbled;
   popoverLink = this.subject({
     rootElement: "#ember-testing",
@@ -147,13 +147,13 @@ test('Popover links bubble right click events when not configured to open with r
   });
   this.append();
   bubbled = Ember.run(popoverLink, 'contextMenu');
-  return ok(bubbled, 'The event bubbled');
+  return assert.ok(bubbled, 'The event bubbled');
 });
 
-test('Popover links can be configured to hide other popovers when opening', function() {
-  expect(2);
+test('Popover links can be configured to hide other popovers when opening', function(assert) {
+  assert.expect(2);
   $(document).on('popover:hide', function() {
-    return ok(true, 'The popover:hide event was triggered');
+    return assert.ok(true, 'The popover:hide event was triggered');
   });
   popoverLink = this.subject({
     rootElement: "#ember-testing",
@@ -162,17 +162,17 @@ test('Popover links can be configured to hide other popovers when opening', func
   this.append();
   click('.popover-link');
   andThen(function() {
-    return ok(isPresent('.popover'), "The new popover was not hidden");
+    return assert.ok(isPresent('.popover'), "The new popover was not hidden");
   });
   andThen(function() {
     return $(document).off('popover:hide');
   });
 });
 
-test('Popover links can be configured to not hide other popovers when opening', function() {
-  expect(1);
+test('Popover links can be configured to not hide other popovers when opening', function(assert) {
+  assert.expect(1);
   $(document).on('popover:hide', function() {
-    return ok(false, 'The popover:hide event was not triggered');
+    return assert.ok(false, 'The popover:hide event was not triggered');
   });
   popoverLink = this.subject({
     rootElement: "#ember-testing",
@@ -181,7 +181,7 @@ test('Popover links can be configured to not hide other popovers when opening', 
   this.append();
   click('.popover-link');
   andThen(function() {
-    return ok(isPresent('.popover'), "The new popover was not hidden");
+    return assert.ok(isPresent('.popover'), "The new popover was not hidden");
   });
   return $(document).off('popover:hide');
 });

@@ -22,14 +22,14 @@ moduleForComponent('carousel-component', '[Integration] Carousel component', {
   }
 });
 
-test('The action transitionEnded is sent after sliding', function() {
-  expect(1);
+test('The action transitionEnded is sent after sliding', function(assert) {
+  assert.expect(1);
   Ember.run((function(_this) {
     return function() {
       carousel = _this.factory().extend({
         actions: {
           transitionEnded: function() {
-            return ok(true, 'The action is sent after sliding');
+            return assert.ok(true, 'The action is sent after sliding');
           }
         }
       }).create({

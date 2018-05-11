@@ -44,60 +44,60 @@ moduleForComponent('color-picker', '[Integration] Color picker unit tests', {
   }
 });
 
-testHexConversion = function(colorPicker, color, hex) {
+testHexConversion = function(assert, colorPicker, color, hex) {
   Ember.run(function() {
     return colorPicker.set('selectedColor', color);
   });
-  return equal(colorPicker.get('selectedColorRGB'), hex);
+  return assert.equal(colorPicker.get('selectedColorRGB'), hex);
 };
 
-test('Color picker converts color to hex when color is undefined', function() {
-  expect(3);
+test('Color picker converts color to hex when color is undefined', function(assert) {
+  assert.expect(3);
   colorPicker = this.subject();
   return [void 0, null, 0].forEach(function(color) {
-    return testHexConversion(colorPicker, color, color);
+    return testHexConversion(assert, colorPicker, color, color);
   });
 });
 
-test('Color picker converts color to hex when color is capitalized hex', function() {
+test('Color picker converts color to hex when color is capitalized hex', function(assert) {
   colorPicker = this.subject();
-  return testHexConversion(colorPicker, "#AAAAAA", "#aaaaaa");
+  return testHexConversion(assert, colorPicker, "#AAAAAA", "#aaaaaa");
 });
 
-test('Color picker converts color to hex when color is transparent', function() {
+test('Color picker converts color to hex when color is transparent', function(assert) {
   colorPicker = this.subject();
-  return testHexConversion(colorPicker, "transparent", "transparent");
+  return testHexConversion(assert, colorPicker, "transparent", "transparent");
 });
 
-test('Color picker converts color to hex when color is rgb', function() {
+test('Color picker converts color to hex when color is rgb', function(assert) {
   colorPicker = this.subject();
-  return testHexConversion(colorPicker, "rgb(0, 0, 0)", "#000000");
+  return testHexConversion(assert, colorPicker, "rgb(0, 0, 0)", "#000000");
 });
 
-test('Color picker converts color to hex when color is rgba', function() {
+test('Color picker converts color to hex when color is rgba', function(assert) {
   colorPicker = this.subject();
-  return testHexConversion(colorPicker, "rgb(3, 2, 1, 1)", "#030201");
+  return testHexConversion(assert, colorPicker, "rgb(3, 2, 1, 1)", "#030201");
 });
 
-test('Color picker converts color to hex when color is rgba and transparent', function() {
+test('Color picker converts color to hex when color is rgba and transparent', function(assert) {
   colorPicker = this.subject();
-  testHexConversion(colorPicker, "rgb(3, 2, 1, 0)", "transparent");
-  return testHexConversion(colorPicker, "rgb(0, 0, 0, 0)", "transparent");
+  testHexConversion(assert, colorPicker, "rgb(3, 2, 1, 0)", "transparent");
+  return testHexConversion(assert, colorPicker, "rgb(0, 0, 0, 0)", "transparent");
 });
 
-test('Color picker converts color to hex when color is color name', function() {
+test('Color picker converts color to hex when color is color name', function(assert) {
   colorPicker = this.subject();
-  return testHexConversion(colorPicker, "aliceblue", "#f0f8ff");
+  return testHexConversion(assert, colorPicker, "aliceblue", "#f0f8ff");
 });
 
-test('Color picker converts color to hex when color is invalid', function() {
+test('Color picker converts color to hex when color is invalid', function(assert) {
   colorPicker = this.subject();
-  testHexConversion(colorPicker, "foo", void 0);
-  testHexConversion(colorPicker, "rgb(a, b, c)", void 0);
-  return testHexConversion(colorPicker, "rgb(1,2,3)", void 0);
+  testHexConversion(assert, colorPicker, "foo", void 0);
+  testHexConversion(assert, colorPicker, "rgb(a, b, c)", void 0);
+  return testHexConversion(assert, colorPicker, "rgb(1,2,3)", void 0);
 });
 
-test('Custom color is set as selected color', function() {
+test('Custom color is set as selected color', function(assert) {
   var customColor;
   colorPicker = this.subject();
   customColor = '#addec0';
@@ -107,13 +107,13 @@ test('Custom color is set as selected color', function() {
   click(getPreviewCellSelector());
   openColorChooser();
   return andThen(function() {
-    equal(getSelectedColor(), customColor, 'Custom color in dropdown should remain after reopening');
-    equal(colorPicker.get('selectedColor'), customColor, 'Custom color is set correctly when clicking on preview cell');
-    return ok(colorPicker.get('isCustomColor'), 'Custom color cell is highlighted');
+    assert.equal(getSelectedColor(), customColor, 'Custom color in dropdown should remain after reopening');
+    assert.equal(colorPicker.get('selectedColor'), customColor, 'Custom color is set correctly when clicking on preview cell');
+    return assert.ok(colorPicker.get('isCustomColor'), 'Custom color cell is highlighted');
   });
 });
 
-test('Test accepting custom color without hashtag', function() {
+test('Test accepting custom color without hashtag', function(assert) {
   var customColor, formattedCustomColor;
   colorPicker = this.subject();
   customColor = 'addec0';
@@ -124,11 +124,11 @@ test('Test accepting custom color without hashtag', function() {
   click(getPreviewCellSelector());
   openColorChooser();
   return andThen(function() {
-    return equal(colorPicker.get('selectedColor'), formattedCustomColor, 'Custom color can be entered without hashtag');
+    return assert.equal(colorPicker.get('selectedColor'), formattedCustomColor, 'Custom color can be entered without hashtag');
   });
 });
 
-test('Selecting a color should send an action', function() {
+test('Selecting a color should send an action', function(assert) {
   var color, customColor, spy;
   colorPicker = this.subject();
   customColor = '#addec0';
@@ -137,27 +137,27 @@ test('Selecting a color should send an action', function() {
   this.append();
   selectColor(color);
   andThen(function() {
-    return ok(spy.calledWithExactly('userSelected', color), 'Clicking color picker cell sends action');
+    return assert.ok(spy.calledWithExactly('userSelected', color), 'Clicking color picker cell sends action');
   });
   openColorChooser();
   fillInCustomColor(customColor);
   click(getPreviewCellSelector());
   return andThen(function() {
-    return ok(spy.calledWithExactly('userSelected', customColor), 'Clicking custom color sends action');
+    return assert.ok(spy.calledWithExactly('userSelected', customColor), 'Clicking custom color sends action');
   });
 });
 
-test('Click outside of the component should close the dropdown', function() {
+test('Click outside of the component should close the dropdown', function(assert) {
   colorPicker = this.subject();
   this.append();
   openColorChooser();
   return andThen(function() {
     $('body').trigger('click');
-    return ok(isNotPresent(getColorPickerDropdown()), 'The dropdown should disappear when clicking outside');
+    return assert.ok(isNotPresent(getColorPickerDropdown()), 'The dropdown should disappear when clicking outside');
   });
 });
 
-test('Submitting custom color form updates color and does not reload page', function() {
+test('Submitting custom color form updates color and does not reload page', function(assert) {
   var customColor;
   colorPicker = this.subject();
   customColor = "#abc123";
@@ -166,22 +166,22 @@ test('Submitting custom color form updates color and does not reload page', func
   fillInCustomColor(customColor);
   return andThen(function() {
     $(".color-picker-custom-form").submit();
-    return equal(colorPicker.get('selectedColor'), customColor, "Custom color gets set correctly and page doesn't refresh");
+    return assert.equal(colorPicker.get('selectedColor'), customColor, "Custom color gets set correctly and page doesn't refresh");
   });
 });
 
-test('Transparent color is set in preview cell', function() {
+test('Transparent color is set in preview cell', function(assert) {
   var color;
   colorPicker = this.subject();
   color = 'transparent';
   this.append();
   selectColor(color);
   return andThen(function() {
-    return ok(colorPicker.get('isColorTransparent'), 'Transparent color correctly identified in preview cell');
+    return assert.ok(colorPicker.get('isColorTransparent'), 'Transparent color correctly identified in preview cell');
   });
 });
 
-test('Correct cell is highlighted within color palette', function() {
+test('Correct cell is highlighted within color palette', function(assert) {
   var color;
   colorPicker = this.subject();
   color = '#01FF70';
@@ -189,6 +189,6 @@ test('Correct cell is highlighted within color palette', function() {
   selectColor(color);
   openColorChooser();
   return andThen(function() {
-    return equal(getSelectedColor(), color, 'Correct color cell is highlighted');
+    return assert.equal(getSelectedColor(), color, 'Correct color cell is highlighted');
   });
 });

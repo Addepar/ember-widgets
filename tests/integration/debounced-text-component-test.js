@@ -18,10 +18,10 @@ moduleForComponent('debounced-text-component', '[Integration] Debounced Text Com
   }
 });
 
-test('Test debounced text', function() {
+test('Test debounced text', function(assert) {
   var spy;
 
-  expect(1);
+  assert.expect(1);
 
   debouncedComponent = this.subject();
   spy = sinon.spy(debouncedComponent, "sendAction");
@@ -31,7 +31,7 @@ test('Test debounced text', function() {
   wait();
 
   andThen(function() {
-    ok(spy.calledWithExactly('valueChanged', 'foo'),
+    assert.ok(spy.calledWithExactly('valueChanged', 'foo'),
       'valueChanged action is fired when value changed');
   });
 });
