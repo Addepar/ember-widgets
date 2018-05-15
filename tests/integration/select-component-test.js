@@ -36,7 +36,8 @@ moduleForComponent('select-component', '[Integration] Select component', {
     'template:select',
     'template:select-item',
     'template:select-item-layout',
-    'template:select-list-view-partial'
+    'template:select-list-view-partial',
+    'component:vertical-collection'
   ],
 
   setup: function() {

@@ -1,27 +1,32 @@
 <div>
-  {{view searchView classBinding="searchFieldClass" disabled=disabled}}
+  {{view searchView
+    classBinding="searchFieldClass"
+    disabled=disabled
+    selectComponent=this}}
 </div>
-{{#unless hasNoResults}}
-  <div class="dropdown-menu">
-    <ul class="ember-typeahead-results" style={{collectionStyle}}>
-      {{#vertical-collection groupedContent
-        estimateHeight=rowHeight
-        staticHeight=true
-        idForFirstItem=highlightedIdentity
-      as |item|}}
-        {{view itemView
-          content=item
-          highlighted=highlighted
-          labelPath=optionLabelPath
-          selection=selection
-          showDropdown=showDropdown
-          titleOnOptions=titleOnOptions
-          selectComponent=this
-        }}
-      {{/vertical-collection}}
-    </ul>
-    {{#if footerView}}
-      {{view footerView}}
-    {{/if}}
-  </div>
-{{/unless}}
+{{#if showDropdown}}
+  {{#unless hasNoResults}}
+    <div class="dropdown-menu">
+      <ul class="ember-typeahead-results" style={{collectionStyle}}>
+        {{#vertical-collection groupedContent
+          estimateHeight=rowHeight
+          staticHeight=true
+          idForFirstItem=highlightedIdentity
+        as |item|}}
+          {{view itemView
+            content=item
+            highlighted=highlighted
+            labelPath=optionLabelPath
+            selection=selection
+            showDropdown=showDropdown
+            titleOnOptions=titleOnOptions
+            selectComponent=this
+          }}
+        {{/vertical-collection}}
+      </ul>
+      {{#if footerView}}
+        {{view footerView selectComponent=this}}
+      {{/if}}
+    </div>
+  {{/unless}}
+{{/if}}

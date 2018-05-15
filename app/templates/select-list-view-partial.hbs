@@ -4,6 +4,14 @@
     staticHeight=true
     idForFirstItem=highlightedIdentity
   as |item|}}
-    {{view itemView content=item}}
+    {{view itemView
+      content=item
+      highlighted=highlighted
+      labelPath=optionLabelPath
+      selection=selection
+      showDropdown=showDropdown
+      titleOnOptions=titleOnOptions
+      selectComponent=this
+    }}
   {{/vertical-collection}}
 </ul>

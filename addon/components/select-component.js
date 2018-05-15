@@ -220,8 +220,8 @@ export default Ember.Component.extend(
   selectedItemView: Ember.computed(function() {
     return this.get('itemView').extend({
       tagName: 'span',
-      labelPath: Ember.computed.alias('controller.optionLabelPath'),
-      context: Ember.computed.alias('controller.selection'),
+      labelPath: Ember.computed.alias('selectComponent.optionLabelPath'),
+      context: Ember.computed.alias('selectComponent.selection'),
       /**
       * Note: This view is an extension of the view used to display
       * each option in the dropdown list.
@@ -245,15 +245,15 @@ export default Ember.Component.extend(
   }, 'selection', 'optionLabelPath')),
 
   searchView: DebouncedTextComponent.extend({
-    placeholder: Ember.computed.alias('parentView.placeholder'),
-    valueBinding: 'parentView.query',
+    placeholder: Ember.computed.alias('selectComponent.placeholder'),
+    valueBinding: 'selectComponent.query',
     // we want to focus on search input when dropdown is opened. We need to put
     // this in a run loop to wait for the event that triggers the showDropdown
     // to finishes before trying to focus the input. Otherwise, focus when be
     // "stolen" from us.
     showDropdownDidChange: Ember.observer(function() {
       // when closing, don't need to focus the now-hidden search box
-      if (this.get('parentView.showDropdown')) {
+      if (this.get('selectComponent.showDropdown')) {
         return Ember.run.schedule('afterRender', this, function() {
           if ((this.get('_state') || this.get('state')) === 'inDOM') {
             return this.$().focus();
@@ -262,9 +262,9 @@ export default Ember.Component.extend(
       // clear the query string when dropdown is hidden
       } else {
         this.set('value', '');
-        this.get('parentView').send('valueChanged', '');
+        this.get('selectComponent').send('valueChanged', '');
       }
-    }, 'parentView.showDropdown'),
+    }, 'selectComponent.showDropdown'),
 
     /**
       Delegates to parent view (The select component) to propagate this data up.
@@ -272,7 +272,7 @@ export default Ember.Component.extend(
       @override
     */
     propagateNewText: function(newText) {
-      this.get('parentView').send('valueChanged', newText);
+      this.get('selectComponent').send('valueChanged', newText);
     },
   }),
 

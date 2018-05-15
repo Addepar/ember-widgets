@@ -59,15 +59,15 @@ export default SelectComponent.extend({
 
   searchView: Ember.TextField.extend({
     "class": 'ember-select-input',
-    valueBinding: 'parentView.query',
+    valueBinding: 'selectComponent.query',
     placeholder: Ember.computed(function() {
-      if (this.get('parentView.selections.length')) {
-        return this.get('parentView.persistentPlaceholder');
+      if (this.get('selectComponent.selections.length')) {
+        return this.get('selectComponent.persistentPlaceholder');
       }
-      return this.get('parentView.placeholder') || this.get('parentView.persistentPlaceholder');
-    }).property('parentView.placeholder', 'parentView.persistentPlaceholder', 'parentView.selections.length'),
+      return this.get('selectComponent.placeholder') || this.get('selectComponent.persistentPlaceholder');
+    }).property('selectComponent.placeholder', 'selectComponent.persistentPlaceholder', 'selectComponent.selections.length'),
     click: function() {
-      return this.set('parentView.showDropdown', true);
+      return this.set('selectComponent.showDropdown', true);
     }
   }),
 

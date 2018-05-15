@@ -40,7 +40,6 @@ export default Ember.Mixin.create(
       return this.get('contentViewClass');
     }
     return Ember.View.extend({
-      content: Ember.computed.alias('parentView.content'),
       templateName: 'view-parent-view-content'
     });
   }).property('contentViewClass'),
