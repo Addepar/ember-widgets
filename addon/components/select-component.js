@@ -5,6 +5,7 @@ import BodyEventListener from '../mixins/body-event-listener';
 import AddeparMixins from '../mysterious-dependency/ember-addepar-mixins/resize_handler';
 import KeyboardHelper from '../mixins/keyboard-helper';
 import DebouncedTextComponent from './debounced-text-component';
+import _ from 'lodash';
 
 import SelectTooltipOptionView from '../views/select-tooltip-option';
 import SelectOptionView from '../views/select-option';
