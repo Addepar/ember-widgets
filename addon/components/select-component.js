@@ -5,7 +5,6 @@ import BodyEventListener from '../mixins/body-event-listener';
 import AddeparMixins from '../mysterious-dependency/ember-addepar-mixins/resize_handler';
 import KeyboardHelper from '../mixins/keyboard-helper';
 import DebouncedTextComponent from './debounced-text-component';
-import _ from 'lodash';
 
 import SelectTooltipOptionView from '../views/select-tooltip-option';
 import SelectOptionView from '../views/select-option';
@@ -389,7 +388,7 @@ export default Ember.Component.extend(
         if (typeof content.findProperty === 'function') {
           selection = content.findProperty(valuePath, value);
         } else {
-          selection = _.find(content, valuePath, value);
+          selection = _.find(content, _.matchesProperty(valuePath, value));
         }
       }
       this.set('selection', selection);
