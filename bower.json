@@ -9,7 +9,7 @@
     "loader.js": "ember-cli/loader.js#3.2.0",
     "qunit": "~1.17.1",
     "bootstrap": "~3.2.0",
-    "lodash": "~3.10.0",
+    "lodash": "~4.17.10",
     "jquery-ui": "~1.10.1"
   },
   "devDependencies": {

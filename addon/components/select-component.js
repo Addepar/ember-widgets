@@ -388,7 +388,7 @@ export default Ember.Component.extend(
         if (typeof content.findProperty === 'function') {
           selection = content.findProperty(valuePath, value);
         } else {
-          selection = _.find(content, valuePath, value);
+          selection = _.find(content, _.matchesProperty(valuePath, value));
         }
       }
       this.set('selection', selection);
