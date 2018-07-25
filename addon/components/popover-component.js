@@ -17,20 +17,29 @@ PopoverComponent.reopenClass({
   */
 
   popup: function(options, hideOthers) {
-    var popover, rootElement;
     if (hideOthers == null) {
       hideOthers = true;
     }
     if (hideOthers) {
       this.hideAll();
     }
-    rootElement = options.rootElement || this.rootElement;
-    popover = this.create(options);
-    if (popover.get('targetObject.container')) {
-      popover.set('container', popover.get('targetObject.container'));
+
+    let rootElement = options.rootElement || this.rootElement;
+    let { container } = options;
+
+    if (!container) {
+      throw new Error(`.popup() expects an option of {container}`);
     }
-    popover.appendTo(rootElement);
-    return popover;
+
+    let destinationElement = document.querySelector(rootElement);
+
+    if (!destinationElement) {
+      throw new Error('.popup() expected the selector provided as {rootElement} to return a node currently on the page');
+    }
+
+    let popoverService = container.lookup('service:popover');
+
+    popoverService.open(destinationElement, this, options);
   }
 });
 

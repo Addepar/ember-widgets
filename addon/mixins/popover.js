@@ -58,17 +58,22 @@ export default Ember.Mixin.create(
     return this.hide();
   },
   hide: function() {
-    var _this = this;
-    if (this.get('isDestroyed')) {
+    if (this.isDestroyed) {
       return;
     }
     this.set('isShowing', false);
+
     if (this.get('fadeEnabled')) {
-      return this.$().one($.support.transition.end, function() {
-        return Ember.run(_this, _this.destroy);
+      this.$().one($.support.transition.end, () => {
+        Ember.run(() => {
+          if (this.isDestroyed) {
+            return;
+          }
+          this.closePopover();
+        });
       });
     } else {
-      return Ember.run(this, this.destroy);
+      this.closePopover();
     }
   },
   /*
