@@ -2449,9 +2449,11 @@ ember-disable-proxy-controllers@^1.0.0:
   dependencies:
     ember-cli-babel "^5.0.0"
 
-ember-list-view@0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/ember-list-view/-/ember-list-view-0.0.5.tgz#433c7ca23daba466fe67ef8c76ddb2be3be185f6"
+ember-legacy-views@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/ember-legacy-views/-/ember-legacy-views-0.2.0.tgz#e8e358be10fbb27cc9a057d7264ed9f3071052be"
+  dependencies:
+    ember-cli-babel "^5.0.0"
 
 ember-load-initializers@^1.0.0:
   version "1.1.0"
