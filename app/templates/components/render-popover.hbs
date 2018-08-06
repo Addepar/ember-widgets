@@ -1,5 +1,5 @@
 {{#each popover.popovers as |p|}}
   {{#ember-wormhole destinationElement=p.destinationElement}}
-    {{view 'popover-container' viewClass=p.ComponentClass options=p.options}}
+    {{view 'popover-container' childViews=p.childViews}}
   {{/ember-wormhole}}
 {{/each}}
