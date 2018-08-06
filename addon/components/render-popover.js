@@ -1,4 +1,4 @@
-import Ember from "ember";
+import Ember from 'ember';
 
 export default Ember.Component.extend({
   popover: Ember.inject.service(),
@@ -6,6 +6,6 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
 
-    this.get("popover").registerPopoverRendered();
+    this.get('popover').registerPopoverRendered();
   }
 });

@@ -1,4 +1,4 @@
-import Ember from "ember";
+import Ember from 'ember';
 
 export default Ember.Service.extend({
   init() {
@@ -9,7 +9,7 @@ export default Ember.Service.extend({
   open(destinationElement, ComponentClass, options) {
     if (!this._popoverDidRender) {
       throw new Error(
-        "{{render-popover}} must be included in a template for popovers to open. " +
+        '{{render-popover}} must be included in a template for popovers to open. ' +
           "Unit-integration tests don't include application.hbs; you must add {{render-popover}} to this.render()."
       );
     }
