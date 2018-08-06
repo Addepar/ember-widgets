@@ -98,18 +98,24 @@ export default Ember.Component.extend({
       this.$nextItem.addClass(direction);
     }
     // Bootstrap has this method for listening on end of transition
-    return this._onTransitionEnd(this.$nextItem, function() {
-      _this.$nextItem.off($.support.transition.end);
+    return this._onTransitionEnd(this.$nextItem, () => {
+      this.$nextItem.off($.support.transition.end);
       // This code is async and ember-testing requires us to wrap any code with
         // asynchronous side-effects in an Ember.run
-      Ember.run(_this, function() {
+      Ember.run(() => {
         this.set('activeIndex', nextIndex);
         this.$nextItem.removeClass([type, direction].join(' ')).addClass('active');
         $active.removeClass(['active', direction].join(' '));
         this.set('sliding', false);
-        return this.send('transitionEnded');
+        this.send('transitionEnded');
+
+        Ember.run.schedule('afterRender', () => {
+          // Have any vertical-collection based select
+          // refresh its contents now that the list is visible
+          window.dispatchEvent(new Event('resize'));
+        });
       });
-      return _this.$nextItem = null;
+      this.$nextItem = null;
     });
   },
   _onTransitionEnd: function($el, callback) {

@@ -4,20 +4,10 @@
 
 /* Variables
 -------------------------------------------------- */
-// Note: Important that this is synchronized with the list-view rowHeight
+// Note: Important that this is synchronized with the in-JS vertical-collection rowHeight
 @rowHeight: 26px;
 @input-border-focus: #4d90fe;
 @input-border: #cccccc;
-
-/* List View - Note: Required for list-view to work
--------------------------------------------------- */
-.ember-list-view {
-  overflow: auto;
-  position: relative;
-}
-.ember-list-item-view {
-  position: absolute;
-}
 
 /* Ember Select
 -------------------------------------------------- */
@@ -306,7 +296,6 @@
   overflow-y: auto;
 
   .ember-select-result-item {
-    position: absolute;
     display: block;
     white-space: nowrap;
     width: 100%;
@@ -359,6 +348,7 @@
 
   .dropdown-menu {
     // This causes stress
+    width: 200px;
     min-width: 200px;
     max-width: 600px;
     padding: 0;

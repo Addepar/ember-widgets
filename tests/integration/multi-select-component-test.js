@@ -35,7 +35,7 @@ var content = [
 var multiSelect, app;
 
 moduleForComponent('multi-select-component', '[Integration] Multi select component', {
-  needs: ['template:multi-select', 'template:multi-select-item', 'template:select-item-layout', 'template:select-item'],
+  needs: ['template:multi-select', 'template:multi-select-item', 'template:select-item-layout', 'template:select-item', 'component:vertical-collection'],
 
   setup: function() {
     app = startApp();

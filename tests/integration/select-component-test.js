@@ -36,7 +36,8 @@ moduleForComponent('select-component', '[Integration] Select component', {
     'template:select',
     'template:select-item',
     'template:select-item-layout',
-    'template:select-list-view-partial'
+    'template:select-list-view-partial',
+    'component:vertical-collection'
   ],
 
   setup: function() {
@@ -504,6 +505,28 @@ test('Selected option is visible when dropdown is opened', function(assert) {
   openDropdown(selectElement);
   andThen(() => {
     assert.ok(isPresent(getOptionSelector(selection)), 'The last option is displayed');
+  });
+});
+
+test('Selected object option is visible when dropdown is opened', function(assert) {
+  assert.expect(1);
+
+  const selection = {key: 'z-last-element'};
+  // Set a low dropdown height to ensure that the last item is hidden
+  select = this.subject({
+    content: [{key: 'foo'}, {key: 'bana$  na'}, {key: 'bar ca'}, selection],
+    selection,
+    optionLabelPath: 'key',
+    dropdownHeight: 30
+  });
+  this.append();
+  // The highlighted property is set when the user hovers over the select field
+  // Lets programatically set it after rendering to emulate that behavior.
+  andThen(() => select.set('highlighted', selection));
+  var selectElement = select.$();
+  openDropdown(selectElement);
+  andThen(() => {
+    assert.ok(isPresent(getOptionSelector(selection.key)), 'The last option is displayed');
   });
 });
 

@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import ListView from 'ember-list-view';
 
 import BodyEventListener from '../mixins/body-event-listener';
 import AddeparMixins from '../mysterious-dependency/ember-addepar-mixins/resize_handler';
@@ -112,7 +111,7 @@ export default Ember.Component.extend(
   originalItemViewClass: SelectOptionView,
 
   /**
-   * The name of the partial which contains the list view which is displayed when
+   * The name of the partial which is displayed when
    * the user opens the drop-down.
    * @type { string }
   */
@@ -145,7 +144,7 @@ export default Ember.Component.extend(
     } else {
       return this.get('originalItemViewClass');
     }
-  }).property('showTooltip'),
+  }).property('showTooltip', 'tooltipItemViewClass', 'originalItemViewClass'),
   emptyContentView: null,
 
   // This doesn't clean correctly if `optionLabelPath` changes
@@ -221,8 +220,8 @@ export default Ember.Component.extend(
   selectedItemView: Ember.computed(function() {
     return this.get('itemView').extend({
       tagName: 'span',
-      labelPath: Ember.computed.alias('controller.optionLabelPath'),
-      context: Ember.computed.alias('controller.selection'),
+      labelPath: Ember.computed.alias('selectComponent.optionLabelPath'),
+      context: Ember.computed.alias('selectComponent.selection'),
       /**
       * Note: This view is an extension of the view used to display
       * each option in the dropdown list.
@@ -246,15 +245,15 @@ export default Ember.Component.extend(
   }, 'selection', 'optionLabelPath')),
 
   searchView: DebouncedTextComponent.extend({
-    placeholder: Ember.computed.alias('parentView.placeholder'),
-    valueBinding: 'parentView.query',
+    placeholder: Ember.computed.alias('selectComponent.placeholder'),
+    valueBinding: 'selectComponent.query',
     // we want to focus on search input when dropdown is opened. We need to put
     // this in a run loop to wait for the event that triggers the showDropdown
     // to finishes before trying to focus the input. Otherwise, focus when be
     // "stolen" from us.
     showDropdownDidChange: Ember.observer(function() {
       // when closing, don't need to focus the now-hidden search box
-      if (this.get('parentView.showDropdown')) {
+      if (this.get('selectComponent.showDropdown')) {
         return Ember.run.schedule('afterRender', this, function() {
           if ((this.get('_state') || this.get('state')) === 'inDOM') {
             return this.$().focus();
@@ -263,9 +262,9 @@ export default Ember.Component.extend(
       // clear the query string when dropdown is hidden
       } else {
         this.set('value', '');
-        this.get('parentView').send('valueChanged', '');
+        this.get('selectComponent').send('valueChanged', '');
       }
-    }, 'parentView.showDropdown'),
+    }, 'selectComponent.showDropdown'),
 
     /**
       Delegates to parent view (The select component) to propagate this data up.
@@ -273,18 +272,15 @@ export default Ember.Component.extend(
       @override
     */
     propagateNewText: function(newText) {
-      this.get('parentView').send('valueChanged', newText);
+      this.get('selectComponent').send('valueChanged', newText);
     },
   }),
-  // This is a hack. ListView doesn't handle case when total height
-  // is less than height properly
-  listView: ListView.extend({
-    style: Ember.computed(function() {
-      var height;
-      height = Math.min(this.get('height'), this.get('totalHeight'));
-      return "height: " + height + "px";
-    }).property('height', 'totalHeight')
-  }),
+
+  collectionStyle: Ember.computed(function() {
+    let calculatedHeight = this.get('groupedContent.length') * this.get('rowHeight');
+    let height = Math.min(this.get('dropdownHeight'), calculatedHeight);
+    return Ember.String.htmlSafe(`height:${height}px;`);
+  }).property('dropdownHeight', 'groupedContent.length', 'rowHeight'),
 
   // the list of content that is filtered down based on the query entered
   // in the textbox
@@ -610,24 +606,20 @@ export default Ember.Component.extend(
   },
 
   ensureVisible: function(index) {
-    var $listView, endIndex, item, listView, newIndex, numRows, startIndex;
-    $listView = this.$('.ember-list-view');
-    listView = Ember.View.views[$listView.attr('id')];
-    if (!listView) {
-      return;
+    var item = this.get('selectableOptions').objectAt(index);
+    var newIndex = this.get('groupedContent').indexOf(item);
+
+    /* Should correspond with https://github.com/html-next/vertical-collection/blob/c04c9d969b43bdf990af242262bbef60c9e2e875/addon/-private/ember-internals/identity.js */
+
+    var identity;
+    var type = typeof item;
+
+    if (type === 'string' || type === 'number') {
+      identity = item;
+    } else {
+      identity = Ember.guidFor(item);
     }
-    startIndex = listView._startingIndex();
-    numRows = listView._childViewCount() - 1;
-    endIndex = startIndex + numRows;
-    item = this.get('selectableOptions').objectAt(index);
-    newIndex = this.get('groupedContent').indexOf(item);
-    if (index === 0) {
-      return $listView.scrollTop(0);
-    } else if (newIndex < startIndex) {
-      return $listView.scrollTop(newIndex * this.get('rowHeight'));
-    } else if (newIndex >= endIndex) {
-      return $listView.scrollTop((newIndex - numRows + 1.5) * this.get('rowHeight'));
-    }
+    this.set('highlightedIdentity', identity);
   },
 
   // TODO Refactor other parts to use this method to set selection
