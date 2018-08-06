@@ -14,7 +14,7 @@ PopoverComponent.reopenClass({
    * @param {Object} options All options used for PopoverComponent.
    * @param {boolean} [hideOthers=true] Indicates if other popover should be hidden when a new one
    *    is shown. By default, it's set to true.
-  */
+   */
 
   popup: function(options, hideOthers) {
     if (hideOthers == null) {
@@ -34,7 +34,9 @@ PopoverComponent.reopenClass({
     let destinationElement = document.querySelector(rootElement);
 
     if (!destinationElement) {
-      throw new Error('.popup() expected the selector provided as {rootElement} to return a node currently on the page');
+      throw new Error(
+        '.popup() expected the selector provided as {rootElement} to return a node currently on the page'
+      );
     }
 
     let popoverService = container.lookup('service:popover');

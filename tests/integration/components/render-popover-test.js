@@ -1,25 +1,38 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('render-popover', 'Integration | Component | render popover', {
-  integration: true
-});
+import PopoverComponent from 'ember-widgets/components/popover-component';
 
-test('it renders', function(assert) {
+moduleForComponent(
+  'render-popover',
+  'Integration | Component | render popover',
+  {
+    integration: true
+  }
+);
 
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+test('it renders popovers', function(assert) {
+  let TestPopoverComponent = PopoverComponent.extend({
+    // From the dummy app
+    layoutName: 'ember-widgets/popover'
+  });
 
   this.render(hbs`{{render-popover}}`);
 
-  assert.equal(this.$().text().trim(), '');
+  assert.ok(
+    document.querySelector('div.main-content-container') === null,
+    'The popup is not rendered yet'
+  );
 
-  // Template block usage:
-  this.render(hbs`
-    {{#render-popover}}
-      template block text
-    {{/render-popover}}
-  `);
+  Ember.run(() => {
+    TestPopoverComponent.popup({
+      container: this.container
+    });
+  });
 
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.ok(
+    // Grab some random content from the template to make sure the popup was rendered
+    document.querySelector('div.main-content-container'),
+    'The popup is now rendered'
+  );
 });
