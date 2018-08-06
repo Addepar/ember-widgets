@@ -8,10 +8,10 @@ export default SelectComponent.extend({
 
   searchView: Ember.TextField.extend({
     class: 'ember-select-input',
-    placeholderBinding: 'parentView.placeholder',
-    valueBinding: 'parentView.query',
+    placeholderBinding: 'selectComponent.placeholder',
+    valueBinding: 'selectComponent.query',
     focusIn() {
-      this.set('parentView.showDropdown', true);
+      this.set('selectComponent.showDropdown', true);
     }
   }),
 
@@ -24,6 +24,6 @@ export default SelectComponent.extend({
 
   userDidSelect(selection) {
     this._super(selection);
-    this.set('query', this.get('selection'));
+    this.set('query', selection);
   }
 });

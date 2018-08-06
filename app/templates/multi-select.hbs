@@ -1,24 +1,47 @@
 <div {{bind-attr class=":ember-select-container :ember-select-multi :dropdown-toggle :js-dropdown-toggle hasFocus:ember-select-focus"}}>
   <ul {{bind-attr class=":ember-select-choices choicesFieldClass"}}>
-    {{each selections itemViewClass=view.selectionItemView}}
+    {{#each selections as |item|}}
+      {{view selectionItemView
+        content=item
+        labelPath=optionLabelPath
+        selectComponent=this
+      }}
+    {{/each}}
     <li class="ember-select-search-field">
       {{! Invisible span containing the placeholder/query text, used to set
           the width of its parent element. }}
       <span class="invisible-placeholder">{{invisiblePlaceholderText}}</span>
-      {{view searchView}}
+      {{view searchView selectComponent=this}}
     </li>
   </ul>
 </div>
 
 <div class="dropdown-menu js-dropdown-menu">
-  {{view listView
-    tagName="ul"
-    classNames="ember-select-results"
-    heightBinding="dropdownHeight"
-    rowHeightBinding="rowHeight"
-    contentBinding="groupedContent"
-    itemViewClassBinding="itemView"
-  }}
+  <ul class="ember-select-results" style={{collectionStyle}}>
+    {{!
+      This if statement is a bit of a hack. The visibility of this DOM is
+      managed by jQuery via the js-dropdown-menu class. This template should
+      be refactored to use Ember state for the dropdown instead of imperative
+      jQuery soup.
+    }}
+    {{#if showDropdown}}
+      {{#vertical-collection groupedContent
+        estimateHeight=rowHeight
+        staticHeight=true
+        idForFirstItem=highlightedIdentity
+      as |item|}}
+        {{view itemView
+          content=item
+          highlighted=highlighted
+          labelPath=optionLabelPath
+          selection=selection
+          showDropdown=showDropdown
+          titleOnOptions=titleOnOptions
+          selectComponent=this
+        }}
+      {{/vertical-collection}}
+    {{/if}}
+  </ul>
   {{#if hasNoResults}}
     <span class="ember-select-no-results">No results match "{{query}}"</span>
   {{/if}}
