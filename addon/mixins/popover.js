@@ -3,10 +3,7 @@ import Ember from 'ember';
 import StyleBindingsMixin from './style-bindings';
 import BodyEventListener from './body-event-listener';
 
-export default Ember.Mixin.create(
-  StyleBindingsMixin,
-  BodyEventListener,
-{
+export default Ember.Mixin.create(StyleBindingsMixin, BodyEventListener, {
   layoutName: 'popover',
   classNames: ['popover'],
   classNameBindings: ['isShowing:in', 'fadeEnabled:fade', 'placement'],
@@ -57,17 +54,22 @@ export default Ember.Mixin.create(
     return this.hide();
   },
   hide: function() {
-    var _this = this;
-    if (this.get('isDestroyed')) {
+    if (this.isDestroyed) {
       return;
     }
     this.set('isShowing', false);
+
     if (this.get('fadeEnabled')) {
-      return this.$().one($.support.transition.end, function() {
-        return Ember.run(_this, _this.destroy);
+      this.$().one($.support.transition.end, () => {
+        Ember.run(() => {
+          if (this.isDestroyed) {
+            return;
+          }
+          this.closePopover ? this.closePopover() : this.destroy();
+        });
       });
     } else {
-      return Ember.run(this, this.destroy);
+      this.closePopover ? this.closePopover() : Ember.run(this, this.destroy);
     }
   },
   /*
@@ -94,7 +96,7 @@ export default Ember.Mixin.create(
         left: 0
       };
     }
-    frames = win.parent.document.getElementsByTagName("iframe");
+    frames = win.parent.document.getElementsByTagName('iframe');
     found = false;
     for (_i = 0, _len = frames.length; _i < _len; _i++) {
       frame = frames[_i];
@@ -190,11 +192,11 @@ export default Ember.Mixin.create(
       case 'left':
       case 'right':
         top = pos.top + pos.height / 2 - this.get('top') - arrowSize / 2;
-        return this.set('arrowStyle', "margin-top:" + top + "px;");
+        return this.set('arrowStyle', 'margin-top:' + top + 'px;');
       case 'top':
       case 'bottom':
         left = pos.left + pos.width / 2 - this.get('left') - arrowSize / 2;
-        return this.set('arrowStyle', "margin-left:" + left + "px;");
+        return this.set('arrowStyle', 'margin-left:' + left + 'px;');
     }
   },
   correctIfOffscreen: function() {
@@ -227,7 +229,11 @@ export default Ember.Mixin.create(
   debounceSnapToPosition: Ember.computed(function() {
     var _this = this;
     return function() {
-      return Ember.run.debounce(_this, _this.snapToPosition, _this.get('debounceTime'));
+      return Ember.run.debounce(
+        _this,
+        _this.snapToPosition,
+        _this.get('debounceTime')
+      );
     };
   }),
   _setupDocumentHandlers: function() {

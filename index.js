@@ -2,5 +2,10 @@
 'use strict';
 
 module.exports = {
-  name: 'ember-widgets'
+  name: 'ember-widgets',
+  options: {
+    babel: {
+      plugins: ['transform-object-rest-spread']
+    }
+  }
 };
