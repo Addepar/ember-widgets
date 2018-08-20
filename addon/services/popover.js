@@ -18,17 +18,20 @@ export default Ember.Service.extend({
       destinationElement
     };
 
-    options.closePopover = () => {
+    let closePopover = () => {
       this.popovers.removeObject(popoverSpec);
     };
 
     popoverSpec.childViews = [
       ComponentClass.create({
-        ...options
+        ...options,
+        closePopover
       })
     ];
 
     this.popovers.pushObject(popoverSpec);
+
+    return closePopover;
   },
 
   registerPopoverRendered() {

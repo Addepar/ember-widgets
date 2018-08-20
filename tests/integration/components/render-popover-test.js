@@ -22,19 +22,24 @@ test('it renders popovers', function(assert) {
 
   assert.ok(
     document.querySelector('[data-test-popover-content]') === null,
-    'The popup is not rendered yet'
+    'The popover is not rendered yet'
   );
 
-  Ember.run(() => {
-    TestPopoverComponent.popup({
-      container: this.container
-    });
-  });
+  let close = Ember.run(() => TestPopoverComponent.popup({
+    container: this.container
+  }));
 
   assert.ok(
     // Grab some random content from the template to make sure the popup was rendered
     document.querySelector('[data-test-popover-content]'),
-    'The popup is now rendered'
+    'The popover is now rendered'
+  );
+
+  close();
+
+  assert.ok(
+    document.querySelector('[data-test-popover-content]') === null,
+    'The popover is closed'
   );
 });
 
@@ -115,15 +120,20 @@ test('it renders modals', function(assert) {
     'The modal is not rendered yet'
   );
 
-  Ember.run(() => {
-    TestModalComponent.popup({
-      container: this.container
-    });
-  });
+  let close = Ember.run(() => TestModalComponent.popup({
+    container: this.container
+  }));
 
   assert.ok(
     document.querySelector('[data-test-popover-content]'),
     'The modal is now rendered'
+  );
+
+  close();
+
+  assert.ok(
+    document.querySelector('[data-test-popover-content]') === null,
+    'The modal is closed'
   );
 });
 

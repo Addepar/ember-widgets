@@ -41,7 +41,7 @@ PopoverComponent.reopenClass({
 
     let popoverService = container.lookup('service:popover');
 
-    popoverService.open(destinationElement, this, options);
+    return popoverService.open(destinationElement, this, options);
   }
 });
 
