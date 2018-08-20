@@ -6,7 +6,7 @@ var PopoverComponent = Ember.Component.extend(PopoverMixin);
 
 PopoverComponent.reopenClass({
   rootElement: '.ember-application',
-  hideAll: function() {
+  hideAll() {
     return $(document).trigger('popover:hide');
   },
   /**
@@ -16,7 +16,7 @@ PopoverComponent.reopenClass({
    *    is shown. By default, it's set to true.
    */
 
-  popup: function(options, hideOthers) {
+  popup(options, hideOthers) {
     if (hideOthers == null) {
       hideOthers = true;
     }
