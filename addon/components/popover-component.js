@@ -28,14 +28,14 @@ PopoverComponent.reopenClass({
     let { container } = options;
 
     if (!container) {
-      throw new Error(`.popup() expects an option of {container}`);
+      throw new Error(`<Subclass of PopoverComponent>.popup() expects an option of {container}`);
     }
 
     let destinationElement = document.querySelector(rootElement);
 
     if (!destinationElement) {
       throw new Error(
-        '.popup() expected the selector provided as {rootElement} to return a node currently on the page'
+        '<Subclass of PopoverComponent>.popup() expected the selector provided as {rootElement} to return a node currently on the page'
       );
     }
 
