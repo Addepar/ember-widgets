@@ -444,12 +444,15 @@ export default Ember.Component.extend(
   }, 'content.[]'),
   selectableOptionsDidChange: Ember.observer(function() {
     var highlighted;
-    if (this.get('showDropdown')) {
-      highlighted = this.get('highlighted');
-      if (!this.get('selectableOptions').contains(highlighted)) {
-        return this.set('highlighted', this.get('selectableOptions.firstObject'));
-      }
-    }
+    Ember.run.schedule('afterRender', () => {
+      if (this.isDestroyed) { return; }
+      if (this.get('showDropdown')) {
+        highlighted = this.get('highlighted');
+        if (!this.get('selectableOptions').contains(highlighted)) {
+          return this.set('highlighted', this.get('selectableOptions.firstObject'));
+        }
+      }  
+    })
   }, 'selectableOptions.[]', 'showDropdown'),
 
   /*
