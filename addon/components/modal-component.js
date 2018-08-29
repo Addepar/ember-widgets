@@ -182,28 +182,33 @@ var ModalComponent = Ember.Component.extend(
     }
   },
   hide: function() {
-    if (this.isDestroying) {
+    if (this.isDestroying || this.isDestroyed) {
       return;
     }
-    this.set('isShowing', false);
-    // bootstrap modal removes this class from the body when the modal closes
-    // to transfer scroll behavior back to the app
-    $(document.body).removeClass('modal-open');
-    if (this._backdrop) {
-      this._backdrop.removeClass('in');
-    }
-    if (this.get('fadeEnabled')) {
-      // destroy modal after backdroop faded out. We need to wrap this in a
-      // run-loop otherwise ember-testing will complain about auto run being
-      // disabled when we are in testing mode.
-      return this.$().one($.support.transition.end, (function(_this) {
-        return function() {
-          return Ember.run(_this, _this.destroy);
-        };
-      })(this));
-    } else {
-      return Ember.run(this, this.destroy);
-    }
+    Ember.run.join(() => {
+      this.set('isShowing', false);
+      // bootstrap modal removes this class from the body when the modal closes
+      // to transfer scroll behavior back to the app
+      $(document.body).removeClass('modal-open');
+      if (this._backdrop) {
+        this._backdrop.removeClass('in');
+      }
+      if (this.get('fadeEnabled')) {
+        // destroy modal after backdroop faded out. We need to wrap this in a
+        // run-loop otherwise ember-testing will complain about auto run being
+        // disabled when we are in testing mode.
+        this.$().one($.support.transition.end, () => {
+          Ember.run(() => {
+            if (this.isDestroyed) {
+              return;
+            }
+            this.closePopover ? this.closePopover() : this.destroy();
+          });
+        });
+      } else {
+        this.closePopover ? this.closePopover() : this.destroy();
+      }
+    });
   },
   _appendBackdrop: function() {
     var modalPaneBackdrop, parentLayer;
@@ -242,22 +247,33 @@ var ModalComponent = Ember.Component.extend(
 ModalComponent.reopenClass({
   rootElement: '.ember-application',
   poppedModal: null,
-  hideAll: function() {
+  hideAll() {
     return $(document).trigger('modal:hide');
   },
-  popup: function(options) {
-    var modal, rootElement;
+  popup(options) {
     if (options == null) {
       options = {};
     }
     this.hideAll();
-    rootElement = options.rootElement || this.rootElement;
-    modal = this.create(options);
-    if (modal.get('targetObject.container')) {
-      modal.set('container', modal.get('targetObject.container'));
+
+    let rootElement = options.rootElement || this.rootElement;
+    let { container } = options;
+
+    if (!container) {
+      throw new Error(`<Subclass of ModalComponent>.popup() expects an option of {container}`);
     }
-    modal.appendTo(rootElement);
-    return modal;
+
+    let destinationElement = document.querySelector(rootElement);
+
+    if (!destinationElement) {
+      throw new Error(
+        '<Subclass of ModalComponent>.popup() expected the selector provided as {rootElement} to return a node currently on the page'
+      );
+    }
+
+    let popoverService = container.lookup('service:popover');
+
+    return popoverService.open(destinationElement, this, options);
   }
 });
 

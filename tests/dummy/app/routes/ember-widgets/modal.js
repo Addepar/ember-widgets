@@ -4,16 +4,16 @@ import ModalComponent from 'ember-widgets/components/modal-component';
 
 export default Ember.Route.extend({
   actions: {
-    showModal: function() {
-      return ModalComponent.popup({
+    showModal() {
+      ModalComponent.popup({
         targetObject: this,
         confirm: "modalConfirm",
         cancel: "modalCancel",
         content: "Isn't this one fine day?"
       });
     },
-    showSmallModal: function() {
-      return ModalComponent.popup({
+    showSmallModal() {
+      ModalComponent.popup({
         targetObject: this,
         confirm: "modalConfirm",
         cancel: "modalCancel",
@@ -21,8 +21,8 @@ export default Ember.Route.extend({
         content: "This is quite small isn't it? You can also use 'large'."
       });
     },
-    showModalWithCustomContent: function() {
-      return ModalComponent.popup({
+    showModalWithCustomContent() {
+      ModalComponent.popup({
         targetObject: this,
         confirm: "modalConfirm",
         cancel: "modalCancel",
@@ -32,11 +32,11 @@ export default Ember.Route.extend({
         contentViewClass: CustomModalContentView
       });
     },
-    modalConfirm: function() {
-      return console.log("Modal Confirm!");
+    modalConfirm() {
+      console.log("Modal Confirm!");
     },
-    modalCancel: function() {
-      return console.log("Modal Cancel!");
+    modalCancel() {
+      console.log("Modal Cancel!");
     }
   }
 });

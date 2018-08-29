@@ -57,20 +57,23 @@ export default Ember.Mixin.create(StyleBindingsMixin, BodyEventListener, {
     if (this.isDestroyed) {
       return;
     }
-    this.set('isShowing', false);
 
-    if (this.get('fadeEnabled')) {
-      this.$().one($.support.transition.end, () => {
-        Ember.run(() => {
-          if (this.isDestroyed) {
-            return;
-          }
-          this.closePopover ? this.closePopover() : this.destroy();
+    Ember.run.join(() => {
+      this.set('isShowing', false);
+
+      if (this.get('fadeEnabled')) {
+        this.$().one($.support.transition.end, () => {
+          Ember.run(() => {
+            if (this.isDestroyed) {
+              return;
+            }
+            this.closePopover ? this.closePopover() : this.destroy();
+          });
         });
-      });
-    } else {
-      this.closePopover ? this.closePopover() : Ember.run(this, this.destroy);
-    }
+      } else {
+        this.closePopover ? this.closePopover() : this.destroy();
+      }
+    });
   },
   /*
   Calculate the offset of the given iframe relative to the top window.
@@ -240,8 +243,8 @@ export default Ember.Mixin.create(StyleBindingsMixin, BodyEventListener, {
     var _this = this;
     this._super();
     if (!this._hideHandler) {
-      this._hideHandler = function() {
-        return _this.hide();
+      this._hideHandler = () => {
+        this.hide();
       };
       $(document).on('popover:hide', this._hideHandler);
     }

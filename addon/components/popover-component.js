@@ -6,7 +6,7 @@ var PopoverComponent = Ember.Component.extend(PopoverMixin);
 
 PopoverComponent.reopenClass({
   rootElement: '.ember-application',
-  hideAll: function() {
+  hideAll() {
     return $(document).trigger('popover:hide');
   },
   /**
@@ -16,7 +16,7 @@ PopoverComponent.reopenClass({
    *    is shown. By default, it's set to true.
    */
 
-  popup: function(options, hideOthers) {
+  popup(options, hideOthers) {
     if (hideOthers == null) {
       hideOthers = true;
     }
@@ -28,20 +28,20 @@ PopoverComponent.reopenClass({
     let { container } = options;
 
     if (!container) {
-      throw new Error(`.popup() expects an option of {container}`);
+      throw new Error(`<Subclass of PopoverComponent>.popup() expects an option of {container}`);
     }
 
     let destinationElement = document.querySelector(rootElement);
 
     if (!destinationElement) {
       throw new Error(
-        '.popup() expected the selector provided as {rootElement} to return a node currently on the page'
+        '<Subclass of PopoverComponent>.popup() expected the selector provided as {rootElement} to return a node currently on the page'
       );
     }
 
     let popoverService = container.lookup('service:popover');
 
-    popoverService.open(destinationElement, this, options);
+    return popoverService.open(destinationElement, this, options);
   }
 });
 
