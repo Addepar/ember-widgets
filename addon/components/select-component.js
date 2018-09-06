@@ -357,12 +357,14 @@ export default Ember.Component.extend(
     var sortedGroupObjs = groupObjs.sort(this.get('groupSortFunction'));
     var result = Ember.A();
     sortedGroupObjs.forEach(function(groupObj) {
-      result.pushObject(
-        Ember.Object.create({
-          isGroupOption: true,
-          name: groupObj.name
-        })
-      );
+      if (groupObj.name) {
+        result.pushObject(
+          Ember.Object.create({
+            isGroupOption: true,
+            name: groupObj.name
+          })
+        );
+      }
       result.pushObjects(groupObj.members);
     });
     return result;
