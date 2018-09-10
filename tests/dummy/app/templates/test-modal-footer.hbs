@@ -1,0 +1,9 @@
+<div data-test-modal-footer>
+    {{#if footerText}}
+        <span data-test-footer-text>
+            Footer text: {{footerText}}.
+        </span>
+    {{/if}}
+    <button {{action 'modalFooterAction'}}
+            data-test-modal-footer-button>modal footer</button>
+</div>
