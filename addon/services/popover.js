@@ -11,10 +11,10 @@ export default Ember.Service.extend({
 
   openModal(componentName, options={}) {
     let ComponentClass = this.container.lookupFactory(`component:${componentName}`);
-    assert(!!ComponentClass,
-           `[ember-widget#openModal] cannot find component class for name "${componentName}"`);
-    assert(ModalComponent.prototype.isPrototypeOf(ComponentClass.prototype),
-          `[ember-widgets#openModal] The Component Class for "${componentName}" does not extend ModalComponent`);
+    assert(`[ember-widget#openModal] cannot find component class for name "${componentName}"`,
+            !!ComponentClass,);
+    assert(`[ember-widgets#openModal] The Component Class for "${componentName}" does not extend ModalComponent`,
+            ModalComponent.prototype.isPrototypeOf(ComponentClass.prototype),);
 
     let rootElementSelector = options.rootElement;
     delete options.rootElement;
@@ -41,9 +41,9 @@ export default Ember.Service.extend({
 
   _getDestinationElement(ComponentClass, rootElement) {
     let selector = ComponentClass.rootElement || rootElement;
-    assert(!!selector, `[ember-widgets] No selector found when attempting to openModal`);
+    assert(`[ember-widgets] No selector found when attempting to openModal`, !!selector);
     let el = document.querySelector(selector);
-    assert(!!el, `[ember-widgets] No rootElement found for selector "${selector}`);
+    assert(`[ember-widgets] No rootElement found for selector "${selector}`, !!el);
     return el;
   },
 
