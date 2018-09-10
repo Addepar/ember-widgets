@@ -18,6 +18,12 @@ function waitUntil(cb) {
   });
 }
 
+function waitFor(ms) {
+  return new Promise(resolve => {
+    window.setTimeout(resolve, ms);
+  });
+}
+
 moduleForComponent(
   'render-popover',
   'Integration | Component | render popover',
@@ -294,6 +300,117 @@ test('it handles actions in a modal', function(assert) {
     'Action was fired'
   );
 });
+
+test('it handles actions in a modal\'s header/content/footer views', function(assert) {
+  let actionsFired = {};
+
+  let modalViewClasses = ['header','content','footer'];
+
+  let TestModalComponent = ModalComponent.extend({
+    headerViewClass: Ember.View.extend({
+      // From the dummy app
+      templateName: 'test-modal-header',
+    }),
+    contentViewClass: Ember.View.extend({
+      templateName: 'test-modal-content',
+    }),
+    footerViewClass: Ember.View.extend({
+      // From the dummy app
+      templateName: 'test-modal-footer'
+    }),
+    actions: {
+      modalHeaderAction() {
+        actionsFired.header = true;
+      },
+      modalFooterAction() {
+        actionsFired.footer = true;
+      },
+      modalContentAction() {
+        actionsFired.content = true;
+      }
+    }
+  });
+
+  this.render(hbs`{{render-popover}}`);
+
+  Ember.run(() => {
+    TestModalComponent.popup({
+      container: this.container
+    });
+  });
+
+  modalViewClasses.forEach(name => {
+    assert.ok($(`[data-test-modal-${name}-button]`).length > 0,
+                `renders modal ${name} view`);
+  });
+
+  // return new Ember.RSVP.Promise((resolve) => {});
+
+  assert.ok(
+    !actionsFired.header && !actionsFired.content && !actionsFired.footer,
+    'precond - no action has fired'
+  );
+
+  modalViewClasses.forEach(name => {
+    $(document.querySelector(`[data-test-modal-${name}-button]`)).click();
+    assert.ok(actionsFired[name], `${name} action fired`);
+  });
+});
+
+test('it handles actions when footer disabled button state changes', function(assert) {
+  let actionsFired = {};
+
+  let modalViewClasses = ['header','content','footer'];
+
+  let TestModalComponent = ModalComponent.extend({
+    headerViewClass: Ember.View.extend({
+      templateName: 'test-modal-header',
+    }),
+    contentViewClass: Ember.View.extend({
+      templateName: 'test-modal-content',
+    }),
+    footerViewClass: Ember.View.extend({
+      templateName: 'test-modal-footer',
+    }),
+    footerText: null, // When present, this is rendered in the test-modal-footer
+    actions: {
+      modalHeaderAction() {
+        actionsFired.header = true;
+        this.set('footerText','Some footer text');
+      },
+      modalFooterAction() {
+        actionsFired.footer = true;
+      },
+    }
+  });
+
+  this.render(hbs`{{render-popover}}`);
+
+  
+  Ember.run(() => {
+    TestModalComponent.popup({
+      container: this.container
+    });
+  });
+
+  return waitFor(0).then(() => {
+    assert.ok(!actionsFired.header, 'precond - no header action');
+    assert.ok(!document.querySelector('[data-test-footer-text]'), 'precond - no footer text');
+
+    $(document.querySelector('[data-test-modal-header-button]')).click();
+    return waitFor(50);
+  }).then(() => {
+
+    assert.ok(actionsFired.header, 'clicked header button');
+    assert.ok(!!document.querySelector('[data-test-footer-text]'), 'shows footer text');
+
+    $(document.querySelector('[data-test-modal-footer-button]')).click();
+    return waitFor(50);
+  }).then(() => {
+    assert.ok(actionsFired.footer, 'fired footer action');
+  })
+});
+
 
 test('it handles event delegation in a popover', function(assert) {
   let hasHandledClick = false;
