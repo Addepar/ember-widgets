@@ -133,10 +133,11 @@ var ModalComponent = Ember.Component.extend(
   init(...args) {
     this._super(...args);
     let opts = this.get('_propertyOptions');
-    Ember.assert(!!opts, `ember-widgets modal must be initialized with _propertyOptions`);
+    let isNewApi = this.get('__renderPopoverNewAPI');
+    Ember.assert(`[ember-widgets] modal must be initialized with _propertyOptions`, !isNewApi || !!opts);
     this._setupProperties(opts);
   },
-  didInsertElement: function() {
+  didInsertElement() {
     this._super();
     // Make sure that after the modal is rendered, set focus to the first
     // tabbable element
