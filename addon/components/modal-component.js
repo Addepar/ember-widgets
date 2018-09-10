@@ -1,4 +1,4 @@
-import Ember from 'ember';
+  import Ember from 'ember';
 
 import StyleBindingsMixin from '../mixins/style-bindings';
 import TabbableModal from '../mixins/tabbable-modal';
@@ -129,7 +129,15 @@ var ModalComponent = Ember.Component.extend(
       return this.hide();
     }
   },
-  didInsertElement: function() {
+
+  init(...args) {
+    this._super(...args);
+    let opts = this.get('_propertyOptions');
+    let isNewApi = this.get('__renderPopoverNewAPI');
+    Ember.assert(`[ember-widgets] modal must be initialized with _propertyOptions`, !isNewApi || !!opts);
+    this._setupProperties(opts);
+  },
+  didInsertElement() {
     this._super();
     // Make sure that after the modal is rendered, set focus to the first
     // tabbable element
@@ -241,6 +249,27 @@ var ModalComponent = Ember.Component.extend(
     this._hideHandler = null;
     $(document).off('keyup', this.get('keyHandler'));
     return this.$().off($.support.transition.end);
+  },
+  _setupProperties(props={}) {
+    let boundPropKeys = [];
+    let bareProps = {};
+    let BINDING_RE = /Binding$/;
+    Object.keys(props).forEach(key => {
+      if (BINDING_RE.test(key)) {
+        boundPropKeys.push(key);
+      } else {
+        bareProps[key] = props[key];
+      }
+    });
+    boundPropKeys.forEach(boundKey => {
+      let barePropName = boundKey.replace(BINDING_RE, '');
+
+      // "install" binding
+      this[barePropName] = Ember.computed.alias(props[boundKey]);
+    });
+
+    // set non-bound props
+    this.setProperties(bareProps);
   }
 });
 
