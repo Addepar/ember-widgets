@@ -1,4 +1,4 @@
-  import Ember from 'ember';
+import Ember from 'ember';
 
 import StyleBindingsMixin from '../mixins/style-bindings';
 import TabbableModal from '../mixins/tabbable-modal';
