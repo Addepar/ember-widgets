@@ -8,8 +8,9 @@ function makeComponent(context, componentName, BaseClass, options={}) {
   return componentSpec;
 }
 
-function openPopover(context, componentSpec, options={}) {
-  return openModal(context, componentSpec, options);
+function openPopover(context, componentSpec, options={}, hideAll=true) {
+  let { componentName } = componentSpec;
+  return Ember.run(() => context.container.lookup('service:popover').openPopover(componentName, options, hideAll));
 }
 
 function openModal(context, componentSpec, options={}) {

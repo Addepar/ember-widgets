@@ -67,7 +67,7 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
   
     this.render(hbs`{{render-popover}}`);
   
-    openModal(this, componentSpec);
+    openPopover(this, componentSpec);
   
     assert.ok(
       document.querySelector('[data-test-popover-content]'),
@@ -92,6 +92,63 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
       );
     });
   });
+
+  test('it closes other popovers when hideAll is true', function(assert) {
+    this.container.register('template:test-popover-1', hbs`<div data-test-popover-1>popover 1</div>`);
+    this.container.register('template:test-popover-2', hbs`<div data-test-popover-2>popover 2</div>`);
+
+    let component1 = makeComponent(this, 'test-popover-1', PopoverComponent, { layoutName: 'test-popover-1' });
+    let component2 = makeComponent(this, 'test-popover-2', PopoverComponent, { layoutName: 'test-popover-2' });
+
+    this.render(hbs`{{render-popover}}`);
+
+    openPopover(this, component1);
+
+    return new Promise(resolve => {
+      // Wait for document event listeners to be installed
+      window.setTimeout(() => { resolve(); }, 50);
+    }).then(() => {
+      assert.ok(!!document.querySelector('[data-test-popover-1]'), 'renders popover 1');
+      assert.ok(!document.querySelector('[data-test-popover-2]'), 'no render of popover 2');
+
+      openPopover(this, component2, {}, true);
+    }).then(() => {
+      // Wait for an animation
+      return waitUntil(() => document.querySelector('[data-test-popover-1]') === null);
+    }).then(() => {
+      assert.ok(!document.querySelector('[data-test-popover-1]'), 'no render of popover 1');
+      assert.ok(!!document.querySelector('[data-test-popover-2]'), 'renders popover 2');
+    });
+  });
+
+  test('it does not close other popovers when hideAll is false', function(assert) {
+    this.container.register('template:test-popover-1', hbs`<div data-test-popover-1>popover 1</div>`);
+    this.container.register('template:test-popover-2', hbs`<div data-test-popover-2>popover 2</div>`);
+
+    let component1 = makeComponent(this, 'test-popover-1', PopoverComponent, { layoutName: 'test-popover-1' });
+    let component2 = makeComponent(this, 'test-popover-2', PopoverComponent, { layoutName: 'test-popover-2' });
+
+    this.render(hbs`{{render-popover}}`);
+
+    openPopover(this, component1);
+
+    return new Promise(resolve => {
+      // Wait for document event listeners to be installed
+      window.setTimeout(() => { resolve(); }, 50);
+    }).then(() => {
+      assert.ok(!!document.querySelector('[data-test-popover-1]'), 'renders popover 1');
+      assert.ok(!document.querySelector('[data-test-popover-2]'), 'no render of popover 2');
+
+      openPopover(this, component2, {}, false);
+    }).then(() => {
+      // Give animation a chance to settle, if present
+      return new Promise(resolve => window.setTimeout(resolve, 50));
+    }).then(() => {
+      assert.ok(!!document.querySelector('[data-test-popover-1]'), 'still renders popover 1');
+      assert.ok(!!document.querySelector('[data-test-popover-2]'), 'renders popover 2');
+    });
+  });
+
   
   test('it handles actions in a popover', function(assert) {
     let hasActionFired = false;
@@ -106,7 +163,7 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
   
     this.render(hbs`{{render-popover}}`);
   
-    openModal(this, componentSpec);
+    openPopover(this, componentSpec);
   
     assert.notOk(
       hasActionFired,
@@ -132,7 +189,7 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
   
     this.render(hbs`{{render-popover}}`);
   
-    openModal(this, componentSpec);
+    openPopover(this, componentSpec);
   
     assert.notOk(
       hasHandledClick,
@@ -227,12 +284,8 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
   test('it closes other modals when opening', function(assert) {
     this.container.register('template:test-modal-1', hbs`<h1 data-test-modal-1>modal 1</h1>`);
     this.container.register('template:test-modal-2', hbs`<h1 data-test-modal-2>modal 2</h1>`);
-    let component1 = makeComponent(this, 'test-modal-1', ModalComponent, {
-      layoutName: 'test-modal-1'
-    });
-    let component2 = makeComponent(this, 'test-modal-2', ModalComponent, {
-      layoutName: 'test-modal-2'
-    });
+    let component1 = makeComponent(this, 'test-modal-1', ModalComponent, { layoutName: 'test-modal-1' });
+    let component2 = makeComponent(this, 'test-modal-2', ModalComponent, { layoutName: 'test-modal-2' });
   
     this.render(hbs`{{render-popover}}`);
   
@@ -252,7 +305,7 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
     }).then(() => {
       assert.ok(!document.querySelector('[data-test-modal-1]'), 'no render of modal 1');
       assert.ok(!!document.querySelector('[data-test-modal-2]'), 'renders modal 2');
-    })
+    });
   });
   
   test('it handles actions in a modal', function(assert) {
