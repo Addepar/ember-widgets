@@ -37,6 +37,22 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
       'The popover is now rendered'
     );
   });
+
+  test('properties can be passed to the popover', function(assert) {
+    this.container.register('template:test-popover-1', hbs`
+      <div data-test-popover-1><span data-test-popover-1-foo>{{foo}}</span></div>
+    `);
+    let componentSpec = makeComponent(this, 'test-popover', PopoverComponent, {
+      layoutName: 'test-popover-1'
+    });
+  
+    this.render(hbs`{{render-popover}}`);
+  
+    openPopover(this, componentSpec, { foo: 'BAR' });
+  
+    assert.ok(!!document.querySelector('[data-test-popover-1]'), 'renders popover');
+    assert.ok(document.querySelector('[data-test-popover-1-foo]').innerHTML.includes('BAR'), 'renders foo property');
+  });
   
   test('it programatically closes popovers', function(assert) {
     let componentSpec = makeComponent(this, 'test-popover', PopoverComponent, {
@@ -435,7 +451,6 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
     return wait().then(() => {
       assert.equal(document.querySelector('[data-test-footer-foo-value]').innerHTML, 'baz');
       assert.equal(document.querySelector('[data-test-footer-bar-value]').innerHTML, 'baz');
-      debugger;
       assert.equal(document.querySelector('[data-test-footer-bar-input] input').value, 'baz');
       assert.equal(document.querySelector('[data-test-footer-bar-input] input').value, 'baz');
 
@@ -457,9 +472,11 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
     });
   });
   
-  // The following tests fail when run through the old `ComponentClass.popup` method.
+  // The following tests fail when run through the old `ComponentClass.popup` method with Ember 1.13.
   // They should be skipped when run that way. They will only pass via the new API: `this.popoverService.openModal(...)`
   if (!skipDeprecatedAPIFailingTests) {
+
+    // This exposes an issue in the old API where the view will re-render with the wrong action target.
     test('it handles actions when footer disabled button state changes', function(assert) {
       let actionsFired = {};
     
@@ -499,6 +516,48 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
       }).then(() => {
         assert.ok(actionsFired.footer, 'fired footer action');
       })
+    });
+    
+    // This exposes an issue in the old API where the popover view will re-render and close itself when it should
+    // stay open
+    test('property bindings can be passed to the popover', function(assert) {
+      this.container.register('template:test-popover-1', hbs`
+        <div data-test-popover-1>
+          <span data-test-popover-1-foo>{{foo}}</span>
+          <span data-test-popover-1-bar>{{bar}}</span>
+          <span data-test-popover-1-foo-input>{{input value=foo}}</span>
+          <span data-test-popover-1-bar-input>{{input value=bar}}</span>
+  
+        </div>
+      `);
+      let componentSpec = makeComponent(this, 'test-popover', PopoverComponent, { layoutName: 'test-popover-1' });
+    
+      this.render(hbs`{{render-popover}}`);
+    
+      openPopover(this, componentSpec, { fooBinding: 'bar', bar: 'baz' });
+    
+      
+      return wait().then(() => {
+        assert.ok(!!document.querySelector('[data-test-popover-1]'), 'renders popover');
+        assert.equal(document.querySelector('[data-test-popover-1-foo]').innerHTML, 'baz', 'foo property');
+        assert.equal(document.querySelector('[data-test-popover-1-bar]').innerHTML, 'baz', 'bar property');
+        assert.equal(document.querySelector('[data-test-popover-1-foo-input] input').value, 'baz', 'foo input');
+        assert.equal(document.querySelector('[data-test-popover-1-bar-input] input').value, 'baz', 'bar input');
+  
+        return fillIn('[data-test-popover-1-foo-input] input', 'baz-via-foo');
+      }).then(() => {
+        assert.equal(document.querySelector('[data-test-popover-1-foo]').innerHTML, 'baz-via-foo', 'foo property');
+        assert.equal(document.querySelector('[data-test-popover-1-bar]').innerHTML, 'baz-via-foo', 'bar property');
+        assert.equal(document.querySelector('[data-test-popover-1-foo-input] input').value, 'baz-via-foo', 'foo input');
+        assert.equal(document.querySelector('[data-test-popover-1-bar-input] input').value, 'baz-via-foo', 'bar input');
+  
+        return fillIn('[data-test-popover-1-bar-input] input', 'baz-via-bar');
+      }).then(() => {
+        assert.equal(document.querySelector('[data-test-popover-1-foo]').innerHTML, 'baz-via-bar', 'foo property');
+        assert.equal(document.querySelector('[data-test-popover-1-bar]').innerHTML, 'baz-via-bar', 'bar property');
+        assert.equal(document.querySelector('[data-test-popover-1-foo-input] input').value, 'baz-via-bar', 'foo input');
+        assert.equal(document.querySelector('[data-test-popover-1-bar-input] input').value, 'baz-via-bar', 'bar input');
+      });
     });  
   }
 }
