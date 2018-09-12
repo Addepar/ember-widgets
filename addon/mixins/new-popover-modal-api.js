@@ -1,15 +1,16 @@
+let BINDING_RE = /Binding$/;
+
 export default Ember.Mixin.create({
   init(...args) {
     this._super(...args);
     let opts = this.get('_propertyOptions');
-    let isNewApi = this.get('__renderPopoverNewAPI');
-    Ember.assert(`[ember-widgets] popover or modal must be initialized with _propertyOptions`, !isNewApi || !!opts);
+    Ember.assert(`[ember-widgets] popover or modal must be initialized with _propertyOptions`,
+                 !this.get('__renderPopoverNewAPI') || !!opts);
     this._setupProperties(opts);
   },
   _setupProperties(props={}) {
     let boundPropKeys = [];
     let bareProps = {};
-    let BINDING_RE = /Binding$/;
     Object.keys(props).forEach(key => {
       if (BINDING_RE.test(key)) {
         boundPropKeys.push(key);

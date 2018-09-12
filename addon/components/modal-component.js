@@ -253,7 +253,7 @@ ModalComponent.reopenClass({
     return $(document).trigger('modal:hide');
   },
 
-  // TODO Deprecate this old API
+  // TODO Remove this old API
   popup(options) {
     if (options == null) {
       options = {};
