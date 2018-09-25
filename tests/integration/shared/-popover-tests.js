@@ -471,11 +471,18 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
       assert.equal(document.querySelector('[data-test-footer-bar-input] input').value, 'baz-via-bar');
     });
   });
-  
+
+  test('classNames can be passed to the modal', function(assert) {
+    let componentSpec = makeComponent(this, 'test-modal', ModalComponent, { classNames: ['foo'] });
+    this.render(hbs`{{render-popover}}`);
+    openModal(this, componentSpec);
+
+    assert.ok(!!document.querySelector('.modal.foo'), 'renders "modal" class and "foo" class');
+  });  
+
   // The following tests fail when run through the old `ComponentClass.popup` method with Ember 1.13.
   // They should be skipped when run that way. They will only pass via the new API: `this.popoverService.openModal(...)`
   if (!skipDeprecatedAPIFailingTests) {
-
     // This exposes an issue in the old API where the view will re-render with the wrong action target.
     test('it handles actions when footer disabled button state changes', function(assert) {
       let actionsFired = {};
