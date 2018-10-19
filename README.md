@@ -1,4 +1,4 @@
-# Ember Widgets by Addepar [![Build Status](https://secure.travis-ci.org/Addepar/ember-widgets.svg?branch=master)](http://travis-ci.org/Addepar/ember-widgets)
+# Ember Widgets by Addepar [![Build Status](https://secure.travis-ci.org/Addepar/ember-widgets.svg?branch=master)](https://travis-ci.org/Addepar/ember-widgets)
 
 **THIS LIBRARY IS DEPRECATED**
 
@@ -8,7 +8,7 @@ set of Ember components.
 A collection of small widgets, easy to drop into place as Ember Components.
 
 ## Demo and Documentation
-http://addepar.github.com/ember-widgets/
+https://opensource.addepar.com/ember-widgets/
 
 ## Installation
 
@@ -30,4 +30,4 @@ http://addepar.github.com/ember-widgets/
 
 * `ember build`
 
-For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
+For more information on using ember-cli, visit [https://www.ember-cli.com/](https://www.ember-cli.com/).
