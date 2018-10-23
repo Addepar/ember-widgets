@@ -5,6 +5,7 @@ export default SelectComponent.extend({
   layoutName: 'typeahead',
   searchFieldClass: 'form-control',
   disabled: false,
+  listViewPartial: 'typeahead-list-view-partial',
 
   searchView: Ember.TextField.extend({
     class: 'ember-select-input',
