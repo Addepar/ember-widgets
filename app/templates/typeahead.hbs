@@ -4,7 +4,7 @@
     disabled=disabled
     selectComponent=this}}
 </div>
-<div {{bind-attr class=":dropdown-menu :js-dropdown-menu dropdownMenuClass isDropdownMenuPulledRight:pull-right"}}>
+<div class="dropdown-menu js-dropdown-menu {{dropdownMenuClass}} {{if isDropdownMenuPulledRight 'pull-right'}}">
   {{#if showDropdown}}
     {{partial listViewPartial}}
   {{/if}}
