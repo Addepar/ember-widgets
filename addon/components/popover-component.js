@@ -1,8 +1,9 @@
 import Ember from 'ember';
 
 import PopoverMixin from '../mixins/popover';
+import NewPopoverModalAPIMixin from '../mixins/new-popover-modal-api';
 
-var PopoverComponent = Ember.Component.extend(PopoverMixin);
+var PopoverComponent = Ember.Component.extend(PopoverMixin, NewPopoverModalAPIMixin);
 
 PopoverComponent.reopenClass({
   rootElement: '.ember-application',

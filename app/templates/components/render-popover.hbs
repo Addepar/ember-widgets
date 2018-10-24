@@ -1,5 +1,11 @@
 {{#each popover.popovers as |p|}}
   {{#ember-wormhole destinationElement=p.destinationElement}}
-    {{view 'popover-container' childViews=p.childViews}}
+  <div> {{! Need a stable element in the wormhole to ensure rendered components are removed in Ember 1.12}}
+    {{#if p.componentName}}
+      {{component p.componentName _propertyOptions=p.propertyOptions __renderPopoverNewAPI=true}}
+    {{else}}
+      {{view 'popover-container' childViews=p.childViews}}
+    {{/if}}
+  </div>
   {{/ember-wormhole}}
 {{/each}}

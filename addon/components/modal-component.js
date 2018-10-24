@@ -2,10 +2,12 @@ import Ember from 'ember';
 
 import StyleBindingsMixin from '../mixins/style-bindings';
 import TabbableModal from '../mixins/tabbable-modal';
+import NewPopoverModalAPIMixin from '../mixins/new-popover-modal-api';
 
 var ModalComponent = Ember.Component.extend(
   StyleBindingsMixin,
   TabbableModal,
+  NewPopoverModalAPIMixin,
 {
   layoutName: 'modal',
   classNames: ['modal'],
@@ -129,7 +131,7 @@ var ModalComponent = Ember.Component.extend(
       return this.hide();
     }
   },
-  didInsertElement: function() {
+  didInsertElement() {
     this._super();
     // Make sure that after the modal is rendered, set focus to the first
     // tabbable element
@@ -250,6 +252,8 @@ ModalComponent.reopenClass({
   hideAll() {
     return $(document).trigger('modal:hide');
   },
+
+  // TODO Remove this old API
   popup(options) {
     if (options == null) {
       options = {};
