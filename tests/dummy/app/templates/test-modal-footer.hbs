@@ -1,0 +1,25 @@
+<div data-test-modal-footer>
+    {{#if footerText}}
+       {{! This is present to test an edge case when using the old popover API
+           that causes an issue where the target of actions in this template are incorrectly
+           retargeted to the enclosing ember-wormhole component when this template is re-rendered (e.g.,
+           by changing a property that causes this footerText to rerender).
+       }}
+        <span data-test-footer-text>
+            Footer text: {{footerText}}.
+        </span>
+    {{/if}}
+    {{#if fooBindingTest}}
+      {{! This is here to test the case where a modal is opened
+          with properties named xxxBinding, e.g.
+            (old api) ModalComponent.popup({fooBinding: 'bar', bar: 'baz'})
+            (new api) popoverService.openModal('component-name', {fooBinding: 'bar', 'bar: 'baz'})
+      }}
+      <span data-test-footer-foo-value>{{foo}}</span>
+      <span data-test-footer-bar-value>{{bar}}</span>
+      <span data-test-footer-foo-input>{{input value=foo}}</span>
+      <span data-test-footer-bar-input>{{input value=bar}}</span>
+    {{/if}}
+    <button {{action 'modalFooterAction'}}
+            data-test-modal-footer-button>modal footer</button>
+</div>
