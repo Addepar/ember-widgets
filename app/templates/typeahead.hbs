@@ -4,29 +4,8 @@
     disabled=disabled
     selectComponent=this}}
 </div>
-{{#if showDropdown}}
-  {{#unless hasNoResults}}
-    <div class="dropdown-menu">
-      <ul class="ember-typeahead-results" style={{collectionStyle}}>
-        {{#vertical-collection groupedContent
-          estimateHeight=rowHeight
-          staticHeight=true
-          idForFirstItem=highlightedIdentity
-        as |item|}}
-          {{view itemView
-            content=item
-            highlighted=highlighted
-            labelPath=optionLabelPath
-            selection=selection
-            showDropdown=showDropdown
-            titleOnOptions=titleOnOptions
-            selectComponent=this
-          }}
-        {{/vertical-collection}}
-      </ul>
-      {{#if footerView}}
-        {{view footerView selectComponent=this}}
-      {{/if}}
-    </div>
-  {{/unless}}
-{{/if}}
+<div class="dropdown-menu js-dropdown-menu {{dropdownMenuClass}} {{if isDropdownMenuPulledRight 'pull-right'}}">
+  {{#if showDropdown}}
+    {{partial listViewPartial}}
+  {{/if}}
+</div>
