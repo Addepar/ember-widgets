@@ -444,12 +444,18 @@ export default Ember.Component.extend(
     }
     return this.set('selection', content.findProperty(defaultPath));
   }, 'content.[]'),
+
   selectableOptionsDidChange: Ember.observer(function() {
-    var highlighted;
+    /*
+     * If the dropdown is visible and the selected option is no longer
+     * contained in the list of selectableOptions, then force the first
+     * selectableOption to be highlighted.
+     */
     if (this.get('showDropdown')) {
-      highlighted = this.get('highlighted');
-      if (!this.get('selectableOptions').contains(highlighted)) {
-        return this.set('highlighted', this.get('selectableOptions.firstObject'));
+      let highlighted = this.get('highlighted');
+      let selectableOptions = this.get('selectableOptions');
+      if (!selectableOptions.contains(highlighted)) {
+        this.set('highlighted', selectableOptions.get('firstObject'));
       }
     }
   }, 'selectableOptions.[]', 'showDropdown'),
@@ -482,17 +488,21 @@ export default Ember.Component.extend(
 
   // The option that is currently highlighted.
   highlighted: Ember.computed(function(key, value) {
-    var content, index;
-    content = this.get('selectableOptions') || Ember.A();
-    value = value || Ember.A();
+    let content = this.get('selectableOptions') || Ember.A();
+
     if (arguments.length === 1) {
-      index = this.get('highlightedIndex');
-      value = content.objectAt(index);
-    } else {
-      index = content.indexOf(value);
-      this.setHighlightedIndex(index, this.get('shouldEnsureVisible'));
+      // Getter
+      return content.objectAt(this.get('highlightedIndex'));
     }
-    return value;
+    
+    // Setter
+    let index = value ? content.indexOf(value) : -1;
+    this.setHighlightedIndex(
+      index,
+      this.get('shouldEnsureVisible')
+    );
+    return value || [];
+
   }).property('selectableOptions.[]', 'highlightedIndex', 'shouldEnsureVisible'),
 
   setFocus: function() {
