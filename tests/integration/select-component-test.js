@@ -149,6 +149,81 @@ test('Test keyboard interaction', function(assert) {
   });
 });
 
+test('Test query highlighting', function(assert) {
+  select = this.subject({
+    content: ['aaa', 'bar', 'barca', 'baz']
+  });
+  this.append();
+  let selectComponent = select.$();
+  selectComponent.focus();
+
+  andThen(() => {
+    pressEnter(selectComponent);
+  });
+
+  andThen(() => {
+    assert.ok(
+      isVisible('.ember-select-results', selectComponent),
+      'Dropdown list should appear after pressing Enter'
+    );
+    let resultItems = find('.ember-select-result-item', selectComponent);
+    assert.ok(
+      resultItems[0].classList.contains('highlighted'),
+      'First option should be highlighted'
+    );
+    assert.equal(
+      resultItems.length,
+      4,
+      'All options visible'
+    );
+    assert.equal(
+      resultItems[0].innerText,
+      'aaa',
+      'First option should be the first content'
+    );
+  });
+
+  fillIn($('input', selectComponent)[0], 'b');
+
+  andThen(() => {
+    let resultItems = find('.ember-select-result-item', selectComponent);
+    assert.ok(
+      resultItems[0].classList.contains('highlighted'),
+      'First option should be highlighted'
+    );
+    assert.equal(
+      resultItems.length,
+      3,
+      'Matching options visible'
+    );
+    assert.equal(
+      resultItems[0].innerText,
+      'bar',
+      'First option should be the first matching content'
+    );
+
+    select.set('content', ['a1', 'b1', 'b2']);
+  });
+
+  andThen(() => {
+    let resultItems = find('.ember-select-result-item', selectComponent);
+    assert.ok(
+      resultItems[0].classList.contains('highlighted'),
+      'First option should be highlighted'
+    );
+    assert.equal(
+      resultItems.length,
+      2,
+      'Matching options visible'
+    );
+    assert.equal(
+      resultItems[0].innerText,
+      'b1',
+      'First option should be the first matching content'
+    );
+  });
+});
+
 test('Test userSelected action', function(assert) {
   var selectElement, spy;
   assert.expect(3);
