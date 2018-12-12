@@ -1,12 +1,12 @@
 <div {{bind-attr class=":modal-dialog sizeClass"}} tabindex="-1">
   <div class="modal-content">
-    <div class="modal-header">
+    <div class="modal-header {{headerClass}}">
       {{view _headerViewClass}}
     </div>
-    <div class="modal-body">
+    <div class="modal-body {{bodyClass}}">
       {{view _contentViewClass}}
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer {{footerClass}}">
       {{view _footerViewClass}}
     </div>
   </div>
