@@ -20,9 +20,10 @@
   dependencies:
     "@glimmer/di" "^0.2.0"
 
-"@html-next/vertical-collection@1.0.0-beta.10":
-  version "1.0.0-beta.10"
-  resolved "https://registry.yarnpkg.com/@html-next/vertical-collection/-/vertical-collection-1.0.0-beta.10.tgz#2090dc4bbc423fa30e8a152a1a8364ff5b6fc398"
+"@html-next/vertical-collection@1.0.0-beta.12":
+  version "1.0.0-beta.12"
+  resolved "https://registry.yarnpkg.com/@html-next/vertical-collection/-/vertical-collection-1.0.0-beta.12.tgz#c5cbed1a7cc9bfe8d4e82474bbb8d265882bc6f9"
+  integrity sha512-DAMomcdVH7dxxSmDvI99QRcsl2kV+RKRjbickfyPMN4EcSBQZkAQfkXdJbktk2iW+OuoNHMAlkBV2atwT3OBsw==
   dependencies:
     babel-plugin-transform-es2015-block-scoping "^6.24.1"
     babel6-plugin-strip-class-callcheck "^6.0.0"
