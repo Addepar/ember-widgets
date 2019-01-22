@@ -40,7 +40,7 @@ export default Ember.Component.extend(
   // Align dropdown-menu to the right of the button
   isDropdownMenuPulledRight: false,
   // Change the icon when necessary
-  dropdownToggleIcon: 'fa fa-caret-down',
+  dropdownToggleIcon: 'fas fa-caret-down',
   // Change the button class when necessary
   buttonClass: 'btn btn-default',
   dropdownMenuClass: '',
@@ -494,7 +494,7 @@ export default Ember.Component.extend(
       // Getter
       return content.objectAt(this.get('highlightedIndex'));
     }
-    
+
     // Setter
     let index = value ? content.indexOf(value) : -1;
     this.setHighlightedIndex(
