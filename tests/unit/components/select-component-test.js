@@ -311,3 +311,39 @@ test('optionValuePath with nested valuePath', function(assert) {
   });
   assert.equal(obj2, select.get('selection'), 'The right selection is retrieved');
 });
+
+test('selection, based on value, should be updated after content is set', function(assert) {
+  select = this.subject({
+    optionValuePath: 'valueProp',
+    value: 'initial'
+  });
+
+  assert.equal(undefined, select.get('selection'), 'precond - selection is undefined');
+
+  let selectionFromContent = { valueProp: 'initial' };
+  Ember.run(function() {
+    select.set('content', [
+      selectionFromContent
+    ]);
+  });
+
+  assert.equal(selectionFromContent, select.get('selection'), 'selection was updated after content was set');
+});
+
+test('value, based on selection, should be updated after content is set', function(assert) {
+  let selection = { valueProp: 'initial' };
+  select = this.subject({
+    optionValuePath: 'valueProp',
+    selection
+  });
+
+  assert.equal('initial', select.get('value'), 'precond - value is undefined');
+
+  Ember.run(function() {
+    select.set('content', [
+      selection
+    ]);
+  });
+
+  assert.equal(selection.valueProp, select.get('value'), 'value was updated after content was set');
+});
