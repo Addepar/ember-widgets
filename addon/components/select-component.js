@@ -52,6 +52,17 @@ export default Ember.Component.extend(
   optionValuePath: '',
   optionGroupPath: '',
   optionDefaultPath: '',
+
+  _hasInitialized: false,
+
+
+  init() {
+    this._super(...arguments);
+    this._scheduledUpdateSelectionFromNewContentCount = 0;
+    this._hasInitialized = true;
+    this._updateSelectionFromNewContent();
+  },
+
   /**
    * Comparator for sorting two groups of options. By default, sorts
    * by alphabetical ordering of the name of the group. Alternatively, you could
@@ -376,36 +387,55 @@ export default Ember.Component.extend(
   contentIsEmpty: Ember.computed.empty('content'),
   hasNoResults: Ember.computed.and('isLoaded', 'filteredContentIsEmpty'),
 
-  value: Ember.computed(function(key, value) {
-    var selection, valuePath, content;
-    if (arguments.length === 2) {
-      valuePath = this.get('optionValuePath');
-      selection = value;
-      content = this.get('content');
-      if (valuePath && content) {
-        if (typeof content.findProperty === 'function') {
-          selection = content.findProperty(valuePath, value);
-        } else {
-          selection = _.find(content, _.matchesProperty(valuePath, value));
-        }
-      }
-      this.set('selection', selection);
+  getSelectionFromValue: function(value) {
+    let optionValuePath = this.get('optionValuePath');
+
+    if (!optionValuePath) {
       return value;
     } else {
-      valuePath = this.get('optionValuePath');
-      selection = this.get('selection');
-      if (valuePath) {
-        return Ember.get(selection, valuePath);
+      let content = this.get('content');
+      if (content === undefined || content === null) {
+        return value; // Legacy behavior
+      }
+      if (typeof content.findProperty === 'function') {
+        return content.findProperty(optionValuePath, value);
       } else {
-        return selection;
+        return _.find(content, _.matchesProperty(optionValuePath, value));
       }
     }
-  }).property('selection'),
-
-  didInsertElement: function() {
-    this._super();
-    return this.setDefaultSelection();
   },
+
+  getValueFromSelection: function(selection) {
+    let optionValuePath = this.get('optionValuePath');
+
+    if (selection === undefined) {
+      return selection;
+    }
+
+    if (optionValuePath === undefined) {
+      return selection;
+    }
+
+    return Ember.get(selection, optionValuePath);
+  },
+
+  /*
+   * The dependency keys here from from the internals of
+   * getValueFromSelection.
+   */
+  value: Ember.computed('selection', 'optionValuePath', function(key, value) {
+    if (arguments.length > 1) {
+      // Setter
+      if (this._hasInitialized) {
+        this.set('selection', this.getSelectionFromValue(value));
+      }
+      return value;
+    } else {
+      // Getter
+      let selection = this.get('selection');
+      return this.getValueFromSelection(selection);
+    }
+  }),
 
   // It matches the item label with the query. This can be overrideen for better
   matcher: function(searchText, item) {
@@ -429,21 +459,47 @@ export default Ember.Component.extend(
     return regex.test(trimmedLabel);
   },
 
-  // TODO(Peter): This needs to be rethought
-  setDefaultSelection: Ember.observer(function() {
-    var content, defaultPath;
+  _scheduleUpdateSelectionFromNewContent: Ember.observer('content.[]', function() {
+    this._scheduledUpdateSelectionFromNewContentCount++;
+    Ember.run.schedule('actions', this, this._flushUpdateSelectionFromNewContent);
+  }),
 
-    // do not set default selection if selection is defined
+  _flushUpdateSelectionFromNewContent: function() {
+    this._scheduledUpdateSelectionFromNewContentCount--;
+    if (this._scheduledUpdateSelectionFromNewContentCount === 0) {
+      this._updateSelectionFromNewContent();
+    }
+  },
+
+  _updateSelectionFromNewContent: function() {
+    // This obsever may fire before all args are present. In those cases do
+    // not bother. Instead it will be called during didInsertElement.
+    if (!this._hasInitialized) {
+      return;
+    }
+
+    // If there is a selection, do nothing
     if (this.get('selection')) {
       return;
     }
-    content = this.get('content');
-    defaultPath = this.get('optionDefaultPath');
-    if (!(content && defaultPath)) {
+
+    // No selection but there is a value
+    let value = this.get('value');
+    if (this.get('value') !== undefined) {
+      this.set('selection', this.getSelectionFromValue(value));
       return;
     }
-    return this.set('selection', content.findProperty(defaultPath));
-  }, 'content.[]'),
+
+    // There is no selection or value, so pick a default if
+    // possible.
+    let content = this.get('content');
+    let optionDefaultPath = this.get('optionDefaultPath');
+    if (content && optionDefaultPath) {
+      this.set('selection', content.findProperty(optionDefaultPath));
+      return;
+    }
+
+  },
 
   selectableOptionsDidChange: Ember.observer(function() {
     /*
