@@ -151,8 +151,8 @@ test('Click outside of the component should close the dropdown', function(assert
   colorPicker = this.subject();
   this.append();
   openColorChooser();
+  click($('body').get(0));
   return andThen(function() {
-    $('body').trigger('click');
     return assert.ok(isNotPresent(getColorPickerDropdown()), 'The dropdown should disappear when clicking outside');
   });
 });

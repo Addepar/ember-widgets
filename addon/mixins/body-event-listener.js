@@ -24,24 +24,19 @@ export default Ember.Mixin.create({
     }
 
     this._clickHandler = function(event) {
-      return Ember.run(function() {
+      Ember.run(function() {
         if ((_this.get('_state') || _this.get('state')) === 'inDOM' && Ember.isEmpty(_this.$().has($(event.target)))) {
-          // check if event.target still exists in DOM
-          var checkContain = $.contains(document.body, event.target);
-          var isBodyElement = event.target === document.body;
-          if (checkContain || isBodyElement) {
-            // bodyClick starts taking parameter "event" to make room to control
-            // some special cases where there is a component added to the body
-            // instead of the app (such as bootstrap date-picker).
-            // If it is the case, we can check for the event target to prevent
-            // the popover from being closed.
-            return _this.bodyClick(event);
-          }
+          // bodyClick starts taking parameter "event" to make room to control
+          // some special cases where there is a component added to the body
+          // instead of the app (such as bootstrap date-picker).
+          // If it is the case, we can check for the event target to prevent
+          // the popover from being closed.
+          _this.bodyClick(event);
         }
       });
     };
 
-    return $(this.get('bodyElementSelector')).on("click", this._clickHandler);
+    $(this.get('bodyElementSelector')).on("click", this._clickHandler);
   },
   _removeDocumentHandlers: function() {
     if (this._clickHandler) {
