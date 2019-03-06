@@ -41,11 +41,11 @@ export default Ember.Mixin.create({
       });
     };
 
-    return $(this.get('bodyElementSelector')).on("click", this._clickHandler);
+    $(this.get('bodyElementSelector')).on("mousedown", this._clickHandler);
   },
   _removeDocumentHandlers: function() {
     if (this._clickHandler) {
-      $(this.get('bodyElementSelector')).off("click", this._clickHandler);
+      $(this.get('bodyElementSelector')).off("mousedown", this._clickHandler);
     }
     return this._clickHandler = null;
   }
