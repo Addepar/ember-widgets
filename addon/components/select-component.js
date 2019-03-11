@@ -35,6 +35,8 @@ export default Ember.Component.extend(
   titleOnOptions: false,
   // If isSelect is true, we will not show the search box
   isSelect: false,
+  // If isGroupHeaderCollapsible is true, and there is a optionGroupPath, the group header is collapsible
+  isGroupHeaderCollapsible: false,
   // Align dropdown-menu above the button
   isDropup: false,
   // Align dropdown-menu to the right of the button
@@ -345,6 +347,8 @@ export default Ember.Component.extend(
   groupedContent: Ember.computed(function() {
     var path = this.get('optionGroupPath');
     var content = this.get('preparedContent');
+    // Only allow grouped headers to be collapsed if isGroupHeaderCollapsible is true
+    var collapsedHeaders = this.get('isGroupHeaderCollapsible') ? this.get('collapsedGroupHeaders') : Ember.A();
     if (!path) {
       return Ember.A(content);
     }
@@ -356,19 +360,31 @@ export default Ember.Component.extend(
     });
     var sortedGroupObjs = groupObjs.sort(this.get('groupSortFunction'));
     var result = Ember.A();
+    // If grouped header is in collapsedHeaders list, hide the child options by removing the child members from the
+    // backing object
+    // In order to hide items from the list, the object has to be removed from the backing object due to the use of
+    // vertical-collection's occlusion. If CSS were to be used to hide list items, there would not be a method to
+    // schedule vertical-collection's re-measure and re-render.
     sortedGroupObjs.forEach(function(groupObj) {
+      var isGroupHeaderCollapsed = collapsedHeaders.includes(groupObj.name);
       if (groupObj.name) {
         result.pushObject(
           Ember.Object.create({
             isGroupOption: true,
+            isGroupHeaderCollapsed: isGroupHeaderCollapsed,
             name: groupObj.name
           })
         );
       }
-      result.pushObjects(groupObj.members);
+      if (!isGroupHeaderCollapsed) {
+        result.pushObjects(groupObj.members);
+      }
     });
     return result;
-  }).property('preparedContent', 'preparedContent.[]', 'optionGroupPath', 'labels.[]', 'groupSortFunction'),
+  }).property('preparedContent', 'preparedContent.[]', 'optionGroupPath', 'labels.[]', 'groupSortFunction', 'isGroupHeaderCollapsible', 'collapsedGroupHeaders.[]'),
+
+  // Array that contains the names of all grouped headers that are collapsed
+  collapsedGroupHeaders: Ember.A(),
 
   isLoading: false,
   isLoaded: Ember.computed.not('isLoading'),
@@ -654,6 +670,15 @@ export default Ember.Component.extend(
         return;
       }
       return this.toggleProperty('showDropdown');
+    },
+
+    toggleGroupHeader: function(groupHeaderName) {
+      if (this.get('collapsedGroupHeaders').includes(groupHeaderName)) {
+        this.get('collapsedGroupHeaders').removeObject(groupHeaderName);
+      }
+      else {
+        this.get('collapsedGroupHeaders').pushObject(groupHeaderName);
+      }
     },
 
     hideDropdown: function() {

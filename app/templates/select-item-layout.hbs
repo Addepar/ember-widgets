@@ -1,5 +1,7 @@
 {{#if view.content.isGroupOption}}
-  {{view.content.name}}
+  <div {{action "toggleGroupHeader" view.content.name}} class="{{if view.isGroupHeaderCollapsible 'collapsible-group-header'}}">
+    <i class={{if view.isGroupHeaderCollapsible (if view.content.isGroupHeaderCollapsed view.collapsedGroupHeaderIcon view.expandedGroupHeaderIcon)}}></i> {{view.content.name}}
+  </div>
 {{else}}
   {{#if view.titleOnOptions}}
     <span {{bind-attr title=view.label}}>

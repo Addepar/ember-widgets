@@ -105,4 +105,62 @@
       </div>
     </div>
   </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3>Select with Collapsible Group Headers</h3>
+      <div class="example-container">
+        {{select-component
+          content=model
+          prompt="Select a Country"
+          optionLabelPath="name"
+          optionValuePath="code"
+          optionGroupPath="continent"
+          isGroupHeaderCollapsible=true
+          selection=selection
+          placeholder="Search"
+        }}
+      </div>
+
+      <h4 class="bumper-30">Application.hbs</h4>
+      <div class="highlight">
+<pre class="prettyprint lang-html">&#123;&#123;select-component
+  content=model
+  prompt="Select a Country"
+  optionLabelPath="name"
+  optionValuePath="code"
+  optionGroupPath="continent"
+  isGroupHeaderCollapsible=true
+  selection=selection
+  placeholder="Search"
+&#125;&#125;</pre>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <h3>Multi-Select with Collapsible Group Headers</h3>
+      <div class="example-container">
+        {{multi-select-component
+          content=model
+          optionLabelPath="name"
+          optionValuePath="code"
+          optionGroupPath="continent"
+          isGroupHeaderCollapsible=true
+          classNames="multi-select-example"
+          placeholder="Select a country..."
+        }}
+      </div>
+
+      <h4 class="bumper-30">Application.hbs</h4>
+      <div class="highlight">
+<pre class="prettyprint lang-html">&#123;&#123;multi-select-component
+  content=model
+  optionLabelPath="name"
+  optionValuePath="code"
+  optionGroupPath="continent"
+  isGroupHeaderCollapsible=true
+  classNames="multi-select-example"
+  placeholder="Select a country..."
+&#125;&#125;</pre>
+      </div>
+    </div>
+  </div>
 </div>
