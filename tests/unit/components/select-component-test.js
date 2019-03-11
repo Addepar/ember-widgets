@@ -311,3 +311,54 @@ test('optionValuePath with nested valuePath', function(assert) {
   });
   assert.equal(obj2, select.get('selection'), 'The right selection is retrieved');
 });
+
+test('Test groupedContent, headers collapsed', function(assert) {
+  assert.expect(9);
+
+  select = this.subject({
+    content: animalData(),
+    optionLabelPath: 'name',
+    optionValuePath: 'name',
+    optionGroupPath: 'sound',
+    isGroupHeaderCollapsible: true
+  });
+
+  var expected = [
+    'Bark',
+    'Sea Lion',
+    'Wolf',
+    'Squawk',
+    'bark',
+  ];
+
+  select.set('collapsedGroupHeaders', Ember.A(['Squawk', 'bark']));
+
+  var actual = select.get('groupedContent');
+  contentEqual(assert, expected, actual, [0, 3, 4]);
+});
+
+test('Test groupedContent, all headers expanded', function(assert) {
+  assert.expect(12);
+
+  select = this.subject({
+    content: animalData(),
+    optionLabelPath: 'name',
+    optionValuePath: 'name',
+    optionGroupPath: 'sound',
+    isGroupHeaderCollapsible: true
+  });
+
+  var expected = [
+    'Bark',
+    'Sea Lion',
+    'Wolf',
+    'Squawk',
+    'Crow',
+    'Sparrow',
+    'bark',
+    'Dog'
+  ];
+
+  var actual = select.get('groupedContent');
+  contentEqual(assert, expected, actual, [0, 3, 6]);
+});

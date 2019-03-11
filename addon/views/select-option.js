@@ -9,6 +9,8 @@ export default Ember.View.extend({
   layoutName: 'select-item-layout',
   classNames: 'ember-select-result-item',
   classNameBindings: Ember.A(['content.isGroupOption:ember-select-group', 'isHighlighted:highlighted']),
+  collapsedGroupHeaderIcon: 'fas fa-caret-right',
+  expandedGroupHeaderIcon: 'fas fa-caret-down',
   isHighlighted: Ember.computed(function() {
     return this.get('highlighted') === this.get('content');
   }).property('highlighted', 'content'),
