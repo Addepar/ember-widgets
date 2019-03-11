@@ -381,7 +381,7 @@ export default Ember.Component.extend(
       }
     });
     return result;
-  }).property('preparedContent', 'preparedContent.[]', 'optionGroupPath', 'labels.[]', 'groupSortFunction', 'collapsedGroupHeaders.[]'),
+  }).property('preparedContent', 'preparedContent.[]', 'optionGroupPath', 'labels.[]', 'groupSortFunction', 'isGroupHeaderCollapsible', 'collapsedGroupHeaders.[]'),
 
   // Array that contains the names of all grouped headers that are collapsed
   collapsedGroupHeaders: Ember.A(),
