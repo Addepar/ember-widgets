@@ -504,6 +504,41 @@ test('shouldEnsureVisible controls whether to ensure visibility', function(asser
   return spy.restore();
 });
 
+test('Can specify a custom view with tabView', function(assert) {
+  assert.expect(3);
+
+  let tabView = Ember.View.extend({
+    layout: Ember.Handlebars.compile("<div class='tab-view'>List of tabs</div>")
+  });
+
+  select = this.subject({
+    content: ['dummy data'],
+  });
+  this.append();
+  let selectElement = select.$();
+
+  openDropdown(selectElement);
+  andThen(function() {
+    return assert.ok(isNotPresent('.tab-view', selectElement), 'Tab view not displayed before specified');
+  });
+  andThen(function() {
+    return Ember.run(function() {
+      return select.set('tabView', tabView);
+    });
+  });
+  andThen(function() {
+    return assert.ok(isPresent('.tab-view', selectElement), 'Tab view displayed');
+  });
+  andThen(function() {
+    return Ember.run(function() {
+      return select.set('tabView', null);
+    });
+  });
+  return andThen(function() {
+    return assert.ok(isNotPresent('.tab-view', selectElement), 'Tab view no longer displayed');
+  });
+});
+
 test('Specified dropdownMenuClass is used when the dropdown is opened', function(assert) {
   assert.expect(1);
 
