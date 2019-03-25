@@ -109,6 +109,8 @@ export default Ember.Component.extend(
   // This augments the dropdown to provide a place for adding a select menu that
   // possibly says 'create item' or something along that line
   selectMenuView: null,
+  // This provides a place for adding tabs to further divide the select list results
+  tabView: null,
   tooltipItemViewClass: SelectTooltipOptionView,
   originalItemViewClass: SelectOptionView,
 

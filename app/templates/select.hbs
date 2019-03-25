@@ -16,6 +16,9 @@
       {{view searchView selectComponent=this}}
     </div>
   {{/unless}}
+  {{#if tabView}}
+    {{view tabView selectComponent=this}}
+  {{/if}}
   {{#if showDropdown}}
     {{partial listViewPartial}}
     {{#if isLoading}}
