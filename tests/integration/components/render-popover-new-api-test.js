@@ -18,6 +18,15 @@ function openModal(context, componentSpec, options={}) {
   return Ember.run(() => context.container.lookup('service:popover').openModal(componentName, options));
 }
 
+function openPopoverModal(context, componentName, options={}) {
+  return Ember.run(() => {
+    let popoverService = context.container.lookup('service:popover');
+    let { popoverSpec, close } = popoverService.buildPopoverSpec(componentName, document.body, options);
+    popoverService.openPopoverSpec(popoverSpec);
+    return close;
+  });
+}
+
 moduleForComponent(
   'render-popover',
   'Integration | Component | render popover (new API)',
@@ -33,4 +42,4 @@ moduleForComponent(
   }
 );
 
-runPopoverTests(test, {makeComponent, openPopover, openModal});
+runPopoverTests(test, {makeComponent, openPopover, openModal, openPopoverModal});

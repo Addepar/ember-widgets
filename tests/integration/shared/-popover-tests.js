@@ -1,5 +1,6 @@
 import PopoverComponent from 'ember-widgets/components/popover-component';
 import ModalComponent from 'ember-widgets/components/modal-component';
+import PopoverModalBase from 'ember-widgets/components/popover-modal-base';
 import wait from 'ember-test-helpers/wait';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -17,7 +18,7 @@ function waitUntil(cb) {
   });
 }
 
-export default function runPopoverTests(test, {makeComponent, openPopover, openModal, skipDeprecatedAPIFailingTests}) {
+export default function runPopoverTests(test, {makeComponent, openPopover, openModal, openPopoverModal, skipDeprecatedAPIFailingTests}) {
   test('it renders popovers', function(assert) {
     let componentSpec = makeComponent(this, 'test-popover', PopoverComponent, {
       layoutName: 'ember-widgets/-test-popover-content'
@@ -478,7 +479,7 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
     openModal(this, componentSpec);
 
     assert.ok(!!document.querySelector('.modal.foo'), 'renders "modal" class and "foo" class');
-  });  
+  });
 
   // The following tests fail when run through the old `ComponentClass.popup` method with Ember 1.13.
   // They should be skipped when run that way. They will only pass via the new API: `this.popoverService.openModal(...)`
@@ -566,5 +567,21 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
         assert.equal(document.querySelector('[data-test-popover-1-bar-input] input').value, 'baz-via-bar', 'bar input');
       });
     });  
+  }
+
+  if (openPopoverModal) {
+
+    test('properties can be passed the popover modal base', function(assert) {
+      let message = 'Oh my, oh my, not good at all.';
+      makeComponent(this, 'test-alert', PopoverModalBase, {
+        layout: hbs`<span data-test-message>{{this.message}}</span>`
+      })
+
+      this.render(hbs`{{render-popover}}`);
+      openPopoverModal(this, 'test-alert', {message});
+
+      assert.equal(document.querySelector('[data-test-message]').textContent, message, 'message is rendered');
+    });
+
   }
 }
