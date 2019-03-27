@@ -307,17 +307,15 @@ export default Ember.Component.extend(
     } else {
       observableString = 'content.[]';
     }
+    let listItemFilter = this.get('_listItemFilter');
     ContentProxy = Ember.ObjectProxy.extend({
       _select: null,
       content: Ember.computed.alias('_select.content'),
       query: Ember.computed.alias('_select.query'),
       filteredContent: Ember.computed(function() {
-        var query, selectComponent;
-        selectComponent = this.get('_select');
-        query = this.get('query');
-        return (this.get('content') || []).filter(function(item) {
-          return selectComponent.matcher(query, item);
-        });
+        let query = this.get('query');
+        let content = this.get('content');
+        return content ? content.filter(item => listItemFilter(query, item)) : Ember.A();
       }).property(observableString, 'query'),
       sortedFilteredContent: Ember.computed(function() {
         return _.sortBy(this.get('filteredContent'), function(item){
@@ -329,7 +327,7 @@ export default Ember.Component.extend(
     return ContentProxy.create({
       _select: this
     });
-  }).property('optionLabelPath'),
+  }).property('optionLabelPath', '_listItemFilter'),
 
   filteredContent: Ember.computed.alias('contentProxy.filteredContent'),
 
@@ -446,6 +444,21 @@ export default Ember.Component.extend(
     regex = new RegExp(escapedSearchText, 'i');
     return regex.test(trimmedLabel);
   },
+
+  // Returns a function that applies both the matcher (for filtering items using textbox) and customFilter function
+  // to refine the list of items in the select
+  _listItemFilter: Ember.computed(function() {
+    let matcher = this.get('matcher');
+    let customFilter = this.get('customFilter');
+    let filter = (query, item) => matcher.call(this, query, item);
+    if (customFilter) {
+      return (query, item) => customFilter(item) && filter(query, item);
+    }
+    return filter;
+  }).property('matcher', 'customFilter'),
+
+  // Function that can be overridden with `listItem` param that adds an additional filter to be applied to each list item.
+  customFilter: null,
 
   // TODO(Peter): This needs to be rethought
   setDefaultSelection: Ember.observer(function() {

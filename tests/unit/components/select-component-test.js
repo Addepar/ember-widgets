@@ -198,6 +198,37 @@ test('Test query matching', function(assert) {
   assert.equal(select.get('filteredContent').length, 1, 'duplicated spaces in the source string should be removed before matching');
 });
 
+test('Test filteredContent matching with customFilter', function(assert) {
+  assert.expect(5);
+  select = this.subject({
+    content: ['foo', 'bana$  na', 'bar ca', 'baz'],
+  });
+  assert.equal(select.get('filteredContent').length, 4, 'using default customFilter should return the full list of options');
+  select.set('customFilter', item => item.includes('ba'));
+  assert.equal(select.get('filteredContent').length, 3, 'only list items matching the customFilter function are shown');
+  select.set('customFilter', () => false);
+  assert.equal(select.get('filteredContent').length, 0, 'customFilter with falsy value should not return any options');
+  select.set('customFilter', null );
+  assert.equal(select.get('filteredContent').length, 4, 'customFilter with null value should return all options');
+  select.set('customFilter', () => true );
+  assert.equal(select.get('filteredContent').length, 4, 'customFilter with truthy value should return all options');
+});
+
+test('Test filteredContent matching with search query and customFilter', function(assert) {
+  assert.expect(3);
+  select = this.subject({
+    content: ['foo', 'bana$  na', 'bar ca', 'baz'],
+  });
+  select.set('query', null);
+  assert.equal(select.get('filteredContent').length, 4, 'using default customFilter and null query should return the full list of options');
+  select.set('query', 'baz');
+  select.set('customFilter', item => item.includes('ba'));
+  assert.equal(select.get('filteredContent').length, 1, 'only list items matching the customFilter function and query are shown');
+  select.set('query', null);
+  select.set('customFilter', item => item );
+  assert.equal(select.get('filteredContent').length, 4, 'customFilter based on truthy item and null query should return all options');
+});
+
 test('optionValuePath with POJOs', function(assert) {
   assert.expect(1);
 
