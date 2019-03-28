@@ -29,22 +29,13 @@ export default Ember.Service.extend({
     delete options.rootElement;
     let destinationElement = this._getDestinationElement(ComponentClass, rootElementSelector);
 
-    let closePopover = () => {
-      this.popovers.removeObject(popoverSpec);
-    };
-    let popoverSpec = {
-      componentName,
-      destinationElement,
-      propertyOptions: {
-        ...options, closePopover
-      }
-    };
+    let { popoverSpec, close } = this.buildPopoverSpec(componentName, destinationElement, options);
 
     if (hideAll) {
       this._hideAllPopovers();
     }
-    this.popovers.pushObject(popoverSpec);
-    return closePopover;
+    this.openPopoverSpec(popoverSpec);
+    return close;
   },
 
   openModal(componentName, options={}) {
@@ -60,20 +51,50 @@ export default Ember.Service.extend({
     delete options.rootElement;
     let destinationElement = this._getDestinationElement(ComponentClass, rootElementSelector);
 
-    let closePopover = () => {
+    let { popoverSpec, close } = this.buildPopoverSpec(componentName, destinationElement, options);
+
+    this._hideAllModals();
+    this.openPopoverSpec(popoverSpec);
+    return close;
+  },
+
+  /*
+   * A popoverSpec is an object describing (specifying) a component to be
+   * rendered by the `{{render-popover}}` component. In
+   * `app/templates/components/render-popover.hbs` these objects are iterated
+   * and rendered using the component helper.
+   *
+   * A popoverSpec also has a `closePopover` method added to the `propertyOptions`
+   * for that spec. This function allows a popover/modal/etc to close itself.
+   */
+  buildPopoverSpec(componentName, destinationElement, options) {
+    let close = () => {
       this.popovers.removeObject(popoverSpec);
     };
     let popoverSpec = {
       componentName,
       destinationElement,
       propertyOptions: {
-        ...options, closePopover
+        ...options, closePopover: close
       }
     };
 
-    this._hideAllModals();
+    return { popoverSpec, close };
+  },
+
+  /*
+   * It is likely you should reach for `openPopover` or `openModal` before
+   * using this method. Those methods perform special additional behaviors
+   * around hiding currently open items of their type.
+   *
+   * This is a lower level method which permits developers to open any popover
+   * spec. You might use this if you want to use the popover infrastructure but
+   * also want to avoid the behaviors of the `openPopover` and `openModal`
+   * systems.
+   */
+  openPopoverSpec(popoverSpec) {
+    assert(`[ember-widgets#openPopoverSpec] {{render-popover}} must be included in a template for popovers to open`, !!this._popoverDidRender);
     this.popovers.pushObject(popoverSpec);
-    return closePopover;
   },
 
   _hideAllModals() {
