@@ -110,7 +110,7 @@ export default Ember.Component.extend(
   // possibly says 'create item' or something along that line
   selectMenuView: null,
   // This provides a place for adding tabs to further divide the select list results
-  tabView: null,
+  tabComponentName: null,
   tooltipItemViewClass: SelectTooltipOptionView,
   originalItemViewClass: SelectOptionView,
 
