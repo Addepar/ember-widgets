@@ -20,20 +20,20 @@
   dependencies:
     "@glimmer/di" "^0.2.0"
 
-"@html-next/vertical-collection@1.0.0-beta.12":
-  version "1.0.0-beta.12"
-  resolved "https://registry.yarnpkg.com/@html-next/vertical-collection/-/vertical-collection-1.0.0-beta.12.tgz#c5cbed1a7cc9bfe8d4e82474bbb8d265882bc6f9"
-  integrity sha512-DAMomcdVH7dxxSmDvI99QRcsl2kV+RKRjbickfyPMN4EcSBQZkAQfkXdJbktk2iW+OuoNHMAlkBV2atwT3OBsw==
+"@html-next/vertical-collection@1.0.0-beta.13":
+  version "1.0.0-beta.13"
+  resolved "https://registry.yarnpkg.com/@html-next/vertical-collection/-/vertical-collection-1.0.0-beta.13.tgz#0cd7fbe813fef8c7daea3c46a3d4167cbd8db682"
+  integrity sha512-YFs+toYLFSCiZSv1kkb3IPvrcVJHVX6q7vkzP0qb2Rvd0s61YqgpPDqtZ8sVViip0Lu3kw+Hs9fysjpAFqJDzQ==
   dependencies:
     babel-plugin-transform-es2015-block-scoping "^6.24.1"
     babel6-plugin-strip-class-callcheck "^6.0.0"
     broccoli-funnel "^2.0.1"
-    broccoli-merge-trees "^2.0.0"
+    broccoli-merge-trees "^3.0.1"
     broccoli-rollup "^2.0.0"
     ember-cli-babel "^6.6.0"
-    ember-cli-htmlbars "^2.0.3"
+    ember-cli-htmlbars "^3.0.0"
     ember-cli-version-checker "^2.1.0"
-    ember-compatibility-helpers "^0.1.2"
+    ember-compatibility-helpers "^1.0.0"
     ember-raf-scheduler "0.1.0"
 
 "@types/acorn@^4.0.3":
@@ -547,6 +547,13 @@ babel-plugin-dead-code-elimination@^1.0.2:
 babel-plugin-debug-macros@^0.1.10, babel-plugin-debug-macros@^0.1.11:
   version "0.1.11"
   resolved "https://registry.yarnpkg.com/babel-plugin-debug-macros/-/babel-plugin-debug-macros-0.1.11.tgz#6c562bf561fccd406ce14ab04f42c218cf956605"
+  dependencies:
+    semver "^5.3.0"
+
+babel-plugin-debug-macros@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-debug-macros/-/babel-plugin-debug-macros-0.2.0.tgz#0120ac20ce06ccc57bf493b667cf24b85c28da7a"
+  integrity sha512-Wpmw4TbhR3Eq2t3W51eBAQSdKlr+uAyF0GI4GtPfMCD12Y4cIdpKC9l0RjNTH/P9isFypSqqewMPm7//fnZlNA==
   dependencies:
     semver "^5.3.0"
 
@@ -1373,6 +1380,14 @@ broccoli-merge-trees@^2.0.0:
     broccoli-plugin "^1.3.0"
     merge-trees "^1.0.1"
 
+broccoli-merge-trees@^3.0.1:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/broccoli-merge-trees/-/broccoli-merge-trees-3.0.2.tgz#f33b451994225522b5c9bcf27d59decfd8ba537d"
+  integrity sha512-ZyPAwrOdlCddduFbsMyyFzJUrvW6b04pMvDiAQZrCwghlvgowJDY+EfoXn+eR1RRA5nmGHJ+B68T63VnpRiT1A==
+  dependencies:
+    broccoli-plugin "^1.3.0"
+    merge-trees "^2.0.0"
+
 broccoli-middleware@^1.0.0:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/broccoli-middleware/-/broccoli-middleware-1.2.1.tgz#a21f255f8bfe5a21c2f0fbf2417addd9d24c9436"
@@ -1644,6 +1659,11 @@ clean-css@^3.4.5:
   dependencies:
     commander "2.8.x"
     source-map "0.4.x"
+
+clean-up-path@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/clean-up-path/-/clean-up-path-1.0.0.tgz#de9e8196519912e749c9eaf67c13d64fac72a3e5"
+  integrity sha512-PHGlEF0Z6976qQyN6gM7kKH6EH0RdfZcc8V+QhFe36eRxV0SMH5OUBZG7Bxa9YcreNzyNbK63cGiZxdSZgosRw==
 
 cli-cursor@^1.0.1:
   version "1.0.2"
@@ -2215,7 +2235,17 @@ ember-cli-htmlbars@^2.0.1:
     json-stable-stringify "^1.0.0"
     strip-bom "^3.0.0"
 
-ember-cli-htmlbars@^2.0.3, ember-cli-htmlbars@~2.0.3:
+ember-cli-htmlbars@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/ember-cli-htmlbars/-/ember-cli-htmlbars-3.0.1.tgz#01e21f0fd05e0a6489154f26614b1041769e3e58"
+  integrity sha512-pyyB2s52vKTXDC5svU3IjU7GRLg2+5O81o9Ui0ZSiBS14US/bZl46H2dwcdSJAK+T+Za36ZkQM9eh1rNwOxfoA==
+  dependencies:
+    broccoli-persistent-filter "^1.4.3"
+    hash-for-dep "^1.2.3"
+    json-stable-stringify "^1.0.0"
+    strip-bom "^3.0.0"
+
+ember-cli-htmlbars@~2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/ember-cli-htmlbars/-/ember-cli-htmlbars-2.0.3.tgz#e116e1500dba12f29c94b05b9ec90f52cb8bb042"
   dependencies:
@@ -2343,6 +2373,14 @@ ember-cli-version-checker@^2.0.0, ember-cli-version-checker@^2.1.0, ember-cli-ve
     resolve "^1.3.3"
     semver "^5.3.0"
 
+ember-cli-version-checker@^2.1.1:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-version-checker/-/ember-cli-version-checker-2.2.0.tgz#47771b731fe0962705e27c8199a9e3825709f3b3"
+  integrity sha512-G+KtYIVlSOWGcNaTFHk76xR4GdzDLzAS4uxZUKdASuFX0KJE43C6DaqL+y3VTpUFLI2FIkAS6HZ4I1YBi+S3hg==
+  dependencies:
+    resolve "^1.3.3"
+    semver "^5.3.0"
+
 ember-cli@~2.16.2:
   version "2.16.2"
   resolved "https://registry.yarnpkg.com/ember-cli/-/ember-cli-2.16.2.tgz#53b922073a8e6f34255a6e0dcb1794a91ba3e1b7"
@@ -2432,12 +2470,13 @@ ember-cli@~2.16.2:
     walk-sync "^0.3.0"
     yam "0.0.22"
 
-ember-compatibility-helpers@^0.1.2:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/ember-compatibility-helpers/-/ember-compatibility-helpers-0.1.3.tgz#039a57e9f1a401efda0023c1e3650bd01cfd7087"
+ember-compatibility-helpers@^1.0.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/ember-compatibility-helpers/-/ember-compatibility-helpers-1.2.0.tgz#feee16c5e9ef1b1f1e53903b241740ad4b01097e"
+  integrity sha512-pUW4MzJdcaQtwGsErYmitFRs0rlCYBAnunVzlFFUBr4xhjlCjgHJo0b53gFnhTgenNM3d3/NqLarzRhDTjXRTg==
   dependencies:
-    babel-plugin-debug-macros "^0.1.11"
-    ember-cli-version-checker "^2.0.0"
+    babel-plugin-debug-macros "^0.2.0"
+    ember-cli-version-checker "^2.1.1"
     semver "^5.4.1"
 
 ember-disable-prototype-extensions@^1.1.2:
@@ -3060,6 +3099,17 @@ fs-tree-diff@^0.5.2, fs-tree-diff@^0.5.3, fs-tree-diff@^0.5.4, fs-tree-diff@^0.5
     path-posix "^1.0.0"
     symlink-or-copy "^1.1.8"
 
+fs-updater@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/fs-updater/-/fs-updater-1.0.4.tgz#2329980f99ae9176e9a0e84f7637538a182ce63b"
+  integrity sha512-0pJX4mJF/qLsNEwTct8CdnnRdagfb+LmjRPJ8sO+nCnAZLW0cTmz4rTgU25n+RvTuWSITiLKrGVJceJPBIPlKg==
+  dependencies:
+    can-symlink "^1.0.0"
+    clean-up-path "^1.0.0"
+    heimdalljs "^0.2.5"
+    heimdalljs-logger "^0.1.9"
+    rimraf "^2.6.2"
+
 fs.realpath@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
@@ -3147,6 +3197,18 @@ glob@^5.0.10, glob@^5.0.15:
 glob@^7.0.4, glob@^7.0.5:
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.2.tgz#c19c9df9a028702d678612384a6552404c636d15"
+  dependencies:
+    fs.realpath "^1.0.0"
+    inflight "^1.0.4"
+    inherits "2"
+    minimatch "^3.0.4"
+    once "^1.3.0"
+    path-is-absolute "^1.0.0"
+
+glob@^7.1.3:
+  version "7.1.3"
+  resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.3.tgz#3960832d3f1574108342dafd3a67b332c0969df1"
+  integrity sha512-vcfuiIxogLV4DlGBHIUOwI0IbrJ8HWPc4MU7HzviGeNho/UJDfi6B5p3sHeWIQ0KGIU0Jpxi5ZHxemQfLkkAwQ==
   dependencies:
     fs.realpath "^1.0.0"
     inflight "^1.0.4"
@@ -3323,9 +3385,24 @@ heimdalljs-logger@^0.1.7:
     debug "^2.2.0"
     heimdalljs "^0.2.0"
 
+heimdalljs-logger@^0.1.9:
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/heimdalljs-logger/-/heimdalljs-logger-0.1.10.tgz#90cad58aabb1590a3c7e640ddc6a4cd3a43faaf7"
+  integrity sha512-pO++cJbhIufVI/fmB/u2Yty3KJD0TqNPecehFae0/eps0hkZ3b4Zc/PezUMOpYuHFQbA7FxHZxa305EhmjLj4g==
+  dependencies:
+    debug "^2.2.0"
+    heimdalljs "^0.2.6"
+
 heimdalljs@^0.2.0, heimdalljs@^0.2.1, heimdalljs@^0.2.3:
   version "0.2.5"
   resolved "https://registry.yarnpkg.com/heimdalljs/-/heimdalljs-0.2.5.tgz#6aa54308eee793b642cff9cf94781445f37730ac"
+  dependencies:
+    rsvp "~3.2.1"
+
+heimdalljs@^0.2.5, heimdalljs@^0.2.6:
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/heimdalljs/-/heimdalljs-0.2.6.tgz#b0eebabc412813aeb9542f9cc622cb58dbdcd9fe"
+  integrity sha512-o9bd30+5vLBvBtzCPwwGqpry2+n0Hi6H1+qwt6y+0kwRHGGF8TFIhJPmnuM0xO97zaKrDZMwO/V56fAnn8m/tA==
   dependencies:
     rsvp "~3.2.1"
 
@@ -4388,6 +4465,14 @@ merge-trees@^1.0.1:
     rimraf "^2.4.3"
     symlink-or-copy "^1.0.0"
 
+merge-trees@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/merge-trees/-/merge-trees-2.0.0.tgz#a560d796e566c5d9b2c40472a2967cca48d85161"
+  integrity sha512-5xBbmqYBalWqmhYm51XlohhkmVOua3VAUrrWh8t9iOkaLpS6ifqm/UVuUjQCeDVJ9Vx3g2l6ihfkbLSTeKsHbw==
+  dependencies:
+    fs-updater "^1.0.4"
+    heimdalljs "^0.2.5"
+
 merge@^1.1.3:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/merge/-/merge-1.2.0.tgz#7531e39d4949c281a66b8c5a6e0265e8b05894da"
@@ -5368,6 +5453,13 @@ rimraf@^2.2.8, rimraf@^2.3.2, rimraf@^2.3.4, rimraf@^2.4.3, rimraf@^2.4.4, rimra
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.2.tgz#2ed8150d24a16ea8651e6d6ef0f47c4158ce7a36"
   dependencies:
     glob "^7.0.5"
+
+rimraf@^2.6.2:
+  version "2.6.3"
+  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.3.tgz#b2d104fe0d8fb27cf9e0a1cda8262dd3833c6cab"
+  integrity sha512-mwqeW5XsA2qAejG46gYdENaxXjx9onRNCfn7L0duuP4hCuTIi/QO7PDK07KJfp1d+izWPrzEJDcSqBa0OZQriA==
+  dependencies:
+    glob "^7.1.3"
 
 rimraf@~2.2.6:
   version "2.2.8"
