@@ -1,5 +1,5 @@
-{{#if view.isEditing}}
-  {{view view.innerTextField}}
+{{#if isEditing}}
+  {{view innerTextField}}
 {{else}}
-  <span {{action editLabel target="view"}}>{{view.displayName}}</span>
+  <span {{action editLabel}}>{{displayName}}</span>
 {{/if}}
