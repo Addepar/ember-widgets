@@ -393,3 +393,20 @@ test('Test groupedContent, all headers expanded', function(assert) {
   var actual = select.get('groupedContent');
   contentEqual(assert, expected, actual, [0, 3, 6]);
 });
+
+test('Test count of items under group header is correct', function(assert) {
+  assert.expect(1);
+
+  select = this.subject({
+    content: animalData(),
+    optionLabelPath: 'name',
+    optionValuePath: 'name',
+    optionGroupPath: 'sound',
+    isGroupHeaderCollapsible: true
+  });
+
+  select.set('collapsedGroupHeaders', Ember.A(['Squawk', 'bark']));
+
+  var actual = select.get('groupedContent');
+  assert.deepEqual(actual.map(item => Ember.get(item, 'numMembers')), [2, undefined, undefined, 2, 1]);
+});

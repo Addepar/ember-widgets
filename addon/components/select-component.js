@@ -372,7 +372,8 @@ export default Ember.Component.extend(
           Ember.Object.create({
             isGroupOption: true,
             isGroupHeaderCollapsed: isGroupHeaderCollapsed,
-            name: groupObj.name
+            name: groupObj.name,
+            numMembers: groupObj.members.length
           })
         );
       }
