@@ -47,7 +47,7 @@ moduleForComponent('select-component', '[Integration] Select component', {
 
   teardown: function() {
     Ember.run(function() {
-      return select.destroy();
+      select.destroy();
     });
     Ember.run(app, 'destroy');
     select = null;
@@ -65,7 +65,7 @@ test('Test continuous queries in a row', function(assert) {
   assert.equal(select.get('filteredContent')[2], 'baz');
   select.set('query', 'bar');
   assert.equal(select.get('filteredContent')[0], 'bar');
-  return assert.equal(select.get('filteredContent')[1], 'barca');
+  assert.equal(select.get('filteredContent')[1], 'barca');
 });
 
 test('Test filtered content using array proxy', function(assert) {
@@ -79,7 +79,7 @@ test('Test filtered content using array proxy', function(assert) {
   });
   select.set('query', 're');
   assert.equal(select.get('filteredContent')[0], 'red');
-  return assert.equal(select.get('filteredContent')[1], 'reddit');
+  assert.equal(select.get('filteredContent')[1], 'reddit');
 });
 
 test('Test sorted filter content', function(assert) {
@@ -90,7 +90,7 @@ test('Test sorted filter content', function(assert) {
   select.set('query', 'r');
   assert.equal(select.get('sortedFilteredContent')[0], 'green');
   assert.equal(select.get('sortedFilteredContent')[1], 'red');
-  return assert.equal(select.get('sortedFilteredContent')[2], 'reddit');
+  assert.equal(select.get('sortedFilteredContent')[2], 'reddit');
 });
 
 test('Test keyboard interaction', function(assert) {
@@ -115,20 +115,20 @@ test('Test keyboard interaction', function(assert) {
   selectComponent.focus();
   pressEnter(selectComponent);
   andThen(function() {
-    return validateDropdownVisible('Dropdown list should appear after pressing Enter');
+    validateDropdownVisible('Dropdown list should appear after pressing Enter');
   });
   pressDownArrow(selectComponent);
   andThen(function() {
     var resultItems;
     resultItems = find('.ember-select-result-item', selectComponent);
-    return assert.ok($(resultItems[1]).hasClass('highlighted'), 'The second option should be highlighted');
+    assert.ok($(resultItems[1]).hasClass('highlighted'), 'The second option should be highlighted');
   });
   pressUpArrow(selectComponent);
   andThen(function() {
     var resultItems;
     resultItems = find('.ember-select-result-item', selectComponent);
     assert.ok($(resultItems[0]).hasClass('highlighted'), 'The first option should be highlighted');
-    return selectedText = $(resultItems[0]).text();
+    selectedText = $(resultItems[0]).text();
   });
   pressEnter(selectComponent);
   andThen(function() {
@@ -137,16 +137,16 @@ test('Test keyboard interaction', function(assert) {
     validateDropdownHidden('Dropdown list should be hidden after selecting an option');
     resultItems = find('.ember-select-result-item', selectComponent);
     currentText = $(resultItems[0]).text();
-    return assert.equal(selectedText, find('.ember-select-result-item:eq(0)', selectComponent).text(), 'The selected item is not the one was Enter pressed');
+    assert.equal(selectedText, find('.ember-select-result-item:eq(0)', selectComponent).text(), 'The selected item is not the one was Enter pressed');
   });
   keyEvent(selectComponent, 'keydown', 97);
   andThen(function() {
-    return validateDropdownVisible('Dropdown list should appear after pressing a letter');
+    validateDropdownVisible('Dropdown list should appear after pressing a letter');
   });
   pressEsc(selectComponent);
   return andThen(function() {
     validateDropdownHidden('Dropdown list should be hidden after pressing ESC');
-    return validateFocus('Select component should be focused after pressing ESC');
+    validateFocus('Select component should be focused after pressing ESC');
   });
 });
 
@@ -206,7 +206,7 @@ test('Test query highlighting', function(assert) {
     select.set('content', ['a1', 'b1', 'b2']);
   });
 
-  andThen(() => {
+  return andThen(() => {
     let resultItems = find('.ember-select-result-item', selectComponent);
     assert.ok(
       resultItems[0].classList.contains('highlighted'),
@@ -237,16 +237,16 @@ test('Test userSelected action', function(assert) {
   openDropdown(selectElement);
   andThen(function() {
     assert.ok(!spy.calledWith('userSelected'), 'userSelected action should not be fired when first open the dropdown');
-    return spy.reset();
+    spy.reset();
   });
   click('li:eq(0)', '.ember-select-results');
   andThen(function() {
     assert.ok(spy.calledWithExactly('userSelected', 'bar'), 'userSelected action is fired when select one item in the dropdown');
-    return spy.reset();
+    spy.reset();
   });
   click('.ember-select-result-item', '.dropdown-toggle');
-  return andThen(function() {
-    return assert.ok(!spy.calledWith('userSelected'), 'userSelected action should not be fired when click on the dropdown containing highlighted item');
+  andThen(function() {
+    assert.ok(!spy.calledWith('userSelected'), 'userSelected action should not be fired when click on the dropdown containing highlighted item');
   });
 });
 
@@ -265,7 +265,7 @@ test('Test valueChanged action when dropdown is closed and query is cleared', fu
   fillIn(searchInput, 'bar');
   pressEsc(selectElement);
 
-  andThen(() => {
+  return andThen(() => {
     assert.ok(spy.calledWithExactly('valueChanged', ''), 'valueChanged is sent with empty string when query is cleared');
   });
 });
@@ -287,7 +287,7 @@ test('Test selection label', function(assert) {
   });
   assert.equal(select.get('selectedLabel'), 'reddit');
   select.set('selection.name', 'blues');
-  return assert.equal(select.get('selectedLabel'), 'blues');
+  assert.equal(select.get('selectedLabel'), 'blues');
 });
 
 test('Test query matching', function(assert) {
@@ -310,7 +310,7 @@ test('Test query matching', function(assert) {
   select.set('query', 'bana[  na');
   assert.equal(select.get('filteredContent').length, 0, 'special characters should be considered when matching');
   select.set('query', 'bana$ n');
-  return assert.equal(select.get('filteredContent').length, 1, 'duplicated spaces in the source string should be removed before matching');
+  assert.equal(select.get('filteredContent').length, 1, 'duplicated spaces in the source string should be removed before matching');
 });
 
 test("Show empty content view if content is empty", function(assert) {
@@ -331,23 +331,23 @@ test("Show empty content view if content is empty", function(assert) {
   andThen(function() {
     assert.ok(isPresent(emptyContentSelector, selectElement), 'Empty content block displayed');
     assert.ok(isNotPresent('.empty-content-view', selectElement), 'Empty content view not displayed before specified');
-    return assert.ok(isNotPresent(noResultSelector, selectElement), '"No result" message not displayed');
+    assert.ok(isNotPresent(noResultSelector, selectElement), '"No result" message not displayed');
   });
   andThen(function() {
-    return Ember.run(function() {
-      return select.set('emptyContentView', EmptyContentView);
+    Ember.run(function() {
+      select.set('emptyContentView', EmptyContentView);
     });
   });
   andThen(function() {
-    return assert.ok(isPresent('.empty-content-view', selectElement), 'Empty content view displayed');
+    assert.ok(isPresent('.empty-content-view', selectElement), 'Empty content view displayed');
   });
   andThen(function() {
-    return Ember.run(function() {
-      return select.set('emptyContentView', null);
+    Ember.run(function() {
+      select.set('emptyContentView', null);
     });
   });
   return andThen(function() {
-    return assert.ok(isNotPresent('.empty-content-view', selectElement), 'Empty content view no longer displayed');
+    assert.ok(isNotPresent('.empty-content-view', selectElement), 'Empty content view no longer displayed');
   });
 });
 
@@ -397,8 +397,9 @@ test('optionValuePath with POJOs', function(assert) {
   Ember.run(function() {
     select.set('value', 2);
   });
-  wait();
-  assert.equal(obj2, select.get('selection'), 'The right selection is retrieved');
+  return wait().then(() => {
+    assert.equal(obj2, select.get('selection'), 'The right selection is retrieved');
+  });
 });
 
 test('optionValuePath with Ember Objects', function(assert) {
@@ -424,9 +425,9 @@ test('optionValuePath with Ember Objects', function(assert) {
   });
   this.append();
   Ember.run(function() {
-    return select.set('value', 2);
+    select.set('value', 2);
   });
-  return assert.equal(obj2, select.get('selection'), 'The right selection is retrieved');
+  assert.equal(obj2, select.get('selection'), 'The right selection is retrieved');
 });
 
 test('optionValuePath with ArrayProxy', function(assert) {
@@ -455,9 +456,9 @@ test('optionValuePath with ArrayProxy', function(assert) {
   });
   this.append();
   Ember.run(function() {
-    return select.set('value', 2);
+    select.set('value', 2);
   });
-  return assert.equal(obj2, select.get('selection'), 'The right selection is retrieved');
+  assert.equal(obj2, select.get('selection'), 'The right selection is retrieved');
 });
 
 test('optionValuePath with nested valuePath', function(assert) {
@@ -483,9 +484,9 @@ test('optionValuePath with nested valuePath', function(assert) {
   });
   this.append();
   Ember.run(function() {
-    return select.set('value', 2);
+    select.set('value', 2);
   });
-  return assert.equal(obj2, select.get('selection'), 'The right selection is retrieved');
+  assert.equal(obj2, select.get('selection'), 'The right selection is retrieved');
 });
 
 test('shouldEnsureVisible controls whether to ensure visibility', function(assert) {
@@ -502,7 +503,7 @@ test('shouldEnsureVisible controls whether to ensure visibility', function(asser
   spy = sinon.spy(select, 'ensureVisible');
   select.set('highlighted', 'bar');
   assert.equal(spy.callCount, 0, 'ensureVisible is not called if shouldEnsureVisible is false');
-  return spy.restore();
+  spy.restore();
 });
 
 test('Can specify a custom component with tabComponentName', function(assert) {
@@ -529,7 +530,7 @@ test('Can specify a custom component with tabComponentName', function(assert) {
       return select.set('tabComponentName', tabComponentName);
     });
   });
-  andThen(function() {
+  return andThen(function() {
     return assert.ok(isPresent('.tab-component', selectElement), 'Tab component displayed');
   });
 });
@@ -608,7 +609,7 @@ test('Selected option is visible when dropdown is opened', function(assert) {
   andThen(() => select.set('highlighted', selection));
   var selectElement = select.$();
   openDropdown(selectElement);
-  andThen(() => {
+  return andThen(() => {
     assert.ok(isPresent(getOptionSelector(selection)), 'The last option is displayed');
   });
 });
@@ -625,12 +626,12 @@ test('Selected object option is visible when dropdown is opened', function(asser
     dropdownHeight: 30
   });
   this.append();
+  var selectElement = select.$();
   // The highlighted property is set when the user hovers over the select field
   // Lets programatically set it after rendering to emulate that behavior.
   andThen(() => select.set('highlighted', selection));
-  var selectElement = select.$();
   openDropdown(selectElement);
-  andThen(() => {
+  return andThen(() => {
     assert.ok(isPresent(getOptionSelector(selection.key)), 'The last option is displayed');
   });
 });
@@ -652,7 +653,7 @@ test('Selected option is not visible when shouldEnsureVisible is false', functio
   andThen(() => select.set('highlighted', selection));
   var selectElement = select.$();
   openDropdown(selectElement);
-  andThen(() => {
+  return andThen(() => {
     assert.ok(isPresent('.dropdown-menu'),  'Dropdown menu is displayed');
     assert.ok(isNotPresent(getOptionSelector(selection)), 'The last option is not displayed');
   });
@@ -672,7 +673,7 @@ test('Dropdown does not open on key event when select is disabled', function(ass
   selectElement.focus();
   pressDownArrow(selectElement);
 
-  andThen(() => {
+  return andThen(() => {
     assert.ok(isNotPresent('.ember-select-results', selectElement), 'The dropdown does not open');
   });
 });
@@ -723,7 +724,7 @@ test('Collapsed group can be expanded, collapsed', function(assert) {
     click('li:contains(Bark) div');
   });
 
-  andThen(() => {
+  return andThen(() => {
     assert.deepEqual(
       renderedItems(selectElement),
       ['Bark', 'Squawk', 'bark', 'Dog'],
