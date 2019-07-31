@@ -13,7 +13,6 @@ module.exports = function(defaults) {
   app.import(app.bowerDirectory + '/google-code-prettify/bin/prettify.min.js');
   app.import(app.bowerDirectory + '/jquery-ui/ui/jquery-ui.custom.js');
   app.import(app.bowerDirectory + '/bootstrap/dist/js/bootstrap.js');
-  app.import(app.bowerDirectory + '/lodash/lodash.js');
 
   app.import(app.bowerDirectory + '/sinonjs/sinon.js', { type: 'test' });
 
