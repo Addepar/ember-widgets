@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { keys, values } from 'lodash-es';
 
 export default Ember.Mixin.create({
   concatenatedProperties: ['styleBindings'],
@@ -30,8 +31,8 @@ export default Ember.Mixin.create({
      style = ref[1];
      return lookup[style || property] = property;
    });
-   styles = _.keys(lookup);
-   properties = _.values(lookup);
+   styles = keys(lookup);
+   properties = values(lookup);
    // create computed property
    styleComputed = Ember.computed((function(_this) {
      return function() {

@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { find, groupBy, map, matchesProperty, sortBy, union } from 'lodash-es';
 
 import BodyEventListener from '../mixins/body-event-listener';
 import AddeparMixins from '../mysterious-dependency/ember-addepar-mixins/resize_handler';
@@ -128,7 +129,7 @@ export default Ember.Component.extend(
     mappedKeys = Ember.Map.create();
     // create a set of accepted keys from 'A'..'Z', 'a'..'z', '0'..'9'
     // and some special keys Enter, Spacebar, Up, Down
-    keySet = _.union([this.KEY_CODES.ENTER, this.KEY_CODES.SPACEBAR], [this.KEY_CODES.DOWN, this.KEY_CODES.UP], (function() {
+    keySet = union([this.KEY_CODES.ENTER, this.KEY_CODES.SPACEBAR], [this.KEY_CODES.DOWN, this.KEY_CODES.UP], (function() {
       results = [];
       for (i = 65; i <= 90; i++){ results.push(i); }
       return results;
@@ -318,7 +319,7 @@ export default Ember.Component.extend(
         return content ? content.filter(item => listItemFilter(query, item)) : Ember.A();
       }).property(observableString, 'query'),
       sortedFilteredContent: Ember.computed(function() {
-        return _.sortBy(this.get('filteredContent'), function(item){
+        return sortBy(this.get('filteredContent'), function(item){
           var ref;
           return (ref = Ember.get(item, optionLabelPath)) != null ? ref.toLowerCase() : void 0;
         });
@@ -352,10 +353,10 @@ export default Ember.Component.extend(
     if (!path) {
       return Ember.A(content);
     }
-    var groupedContent = _.groupBy(content, function(item) {
+    var groupedContent = groupBy(content, function(item) {
       return Ember.get(item, path);
     });
-    var groupObjs = _.map(groupedContent, function(members, name) {
+    var groupObjs = map(groupedContent, function(members, name) {
       return { name: name, members: Ember.A(members) };
     });
     var sortedGroupObjs = groupObjs.sort(this.get('groupSortFunction'));
@@ -403,7 +404,7 @@ export default Ember.Component.extend(
         if (typeof content.findProperty === 'function') {
           selection = content.findProperty(valuePath, value);
         } else {
-          selection = _.find(content, _.matchesProperty(valuePath, value));
+          selection = find(content, matchesProperty(valuePath, value));
         }
       }
       this.set('selection', selection);
