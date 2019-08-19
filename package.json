@@ -36,7 +36,7 @@
     "ember-addon"
   ],
   "dependencies": {
-    "@html-next/vertical-collection": "1.0.0-beta.13",
+    "@html-next/vertical-collection": "1.0.0-beta.14",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "ember-auto-import": "^1.5.2",
     "ember-cli-babel": "^6.6.0",
