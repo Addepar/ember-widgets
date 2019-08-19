@@ -225,7 +225,8 @@ export default Ember.Mixin.create(StyleBindingsMixin, BodyEventListener, {
     var _this = this;
     return function(event) {
       if (event.keyCode === 27 && _this.get('escToCancel')) {
-        return _this.hide();
+        _this.hide();
+        return false;
       }
     };
   }),
