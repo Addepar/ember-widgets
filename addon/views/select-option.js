@@ -14,7 +14,7 @@ export default Ember.View.extend({
   isHighlighted: Ember.computed(function() {
     return this.get('highlighted') === this.get('content');
   }).property('highlighted', 'content'),
-  labelPathDidChange: Ember.on('init', Ember.observer(function() {
+  labelPathDidChange: Ember.on('init', Ember.observer('content', 'labelPath', function() {
     var labelPath, path;
     labelPath = this.get('labelPath');
 
@@ -26,7 +26,7 @@ export default Ember.View.extend({
     // 'context.#{labelPath}'
     Ember.defineProperty(this, 'label', Ember.computed.alias(path));
     return this.notifyPropertyChange('label');
-  }, 'content', 'labelPath')),
+  })),
   processDropDownShown: function() {
     return this.get('selectComponent').send('hideDropdown');
   },

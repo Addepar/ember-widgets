@@ -162,7 +162,7 @@ export default Ember.Component.extend(
     }
     return this._super();
   },
-  updateDropdownLayout: Ember.observer(function() {
+  updateDropdownLayout: Ember.observer('showDropdown', function() {
     var dropdownButton, dropdownButtonHeight, dropdownButtonOffset, dropdownMargin, dropdownMenu, dropdownMenuBottom, dropdownMenuHeight, dropdownMenuOffset, dropdownMenuWidth, dropupMenuTop;
     if ((this.get('_state') || this.get('state')) !== 'inDOM' || this.get('showDropdown') === false) {
       return;
@@ -202,7 +202,7 @@ export default Ember.Component.extend(
     if (highlightedIndex !== -1 && this.get('shouldEnsureVisible')) {
       Ember.run.schedule('afterRender', () => this.ensureVisible(highlightedIndex));
     }
-  }, 'showDropdown'),
+  }),
   onResizeEnd: function() {
     // We need to put this on the run loop, because the resize event came from
     // the window. Otherwise, we get a warning when used in the tests. You have
@@ -242,12 +242,12 @@ export default Ember.Component.extend(
     });
   }).property('itemView'),
 
-  optionLabelPathChanges: Ember.on('init', Ember.observer(function() {
+  optionLabelPathChanges: Ember.on('init', Ember.observer('selection', 'optionLabelPath', function() {
     var labelPath, path;
     labelPath = this.get('optionLabelPath');
     path = labelPath ? "selection." + labelPath : 'selection';
     return Ember.defineProperty(this, 'selectedLabel', Ember.computed.alias(path));
-  }, 'selection', 'optionLabelPath')),
+  })),
 
   searchView: DebouncedTextComponent.extend({
     placeholder: Ember.computed.alias('selectComponent.placeholder'),
@@ -256,7 +256,7 @@ export default Ember.Component.extend(
     // this in a run loop to wait for the event that triggers the showDropdown
     // to finishes before trying to focus the input. Otherwise, focus when be
     // "stolen" from us.
-    showDropdownDidChange: Ember.observer(function() {
+    showDropdownDidChange: Ember.observer('selectComponent.showDropdown', function() {
       // when closing, don't need to focus the now-hidden search box
       if (this.get('selectComponent.showDropdown')) {
         return Ember.run.schedule('afterRender', this, function() {
@@ -269,7 +269,7 @@ export default Ember.Component.extend(
         this.set('value', '');
         this.get('selectComponent').send('valueChanged', '');
       }
-    }, 'selectComponent.showDropdown'),
+    }),
 
     /**
       Delegates to parent view (The select component) to propagate this data up.
@@ -463,7 +463,7 @@ export default Ember.Component.extend(
   customFilter: null,
 
   // TODO(Peter): This needs to be rethought
-  setDefaultSelection: Ember.observer(function() {
+  setDefaultSelection: Ember.observer('content.[]', function() {
     var content, defaultPath;
 
     // do not set default selection if selection is defined
@@ -476,9 +476,9 @@ export default Ember.Component.extend(
       return;
     }
     return this.set('selection', content.findProperty(defaultPath));
-  }, 'content.[]'),
+  }),
 
-  selectableOptionsDidChange: Ember.observer(function() {
+  selectableOptionsDidChange: Ember.observer('selectableOptions.[]', 'showDropdown', function() {
     /*
      * If the dropdown is visible and the selected option is no longer
      * contained in the list of selectableOptions, then force the first
@@ -491,7 +491,7 @@ export default Ember.Component.extend(
         this.set('highlighted', selectableOptions.get('firstObject'));
       }
     }
-  }, 'selectableOptions.[]', 'showDropdown'),
+  }),
 
   /*
    * SELECTION RELATED
