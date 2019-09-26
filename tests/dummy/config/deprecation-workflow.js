@@ -1,5 +1,6 @@
 self.deprecationWorkflow = self.deprecationWorkflow || {};
 self.deprecationWorkflow.config = {
+  throwOnUnhandled: true,
   workflow: [
     { handler: "silence", matchMessage: "Global lookup of Ember from a Handlebars template is deprecated." },
     { handler: "silence", matchId: "ember-views.collection-view-deprecated" },
