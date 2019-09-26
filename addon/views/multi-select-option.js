@@ -6,13 +6,13 @@ export default Ember.View.extend({
   classNames: 'ember-select-search-choice',
   didInsertElement: function() {
     this._super();
-    return this.labelPathDidChange();
+    this.labelPathDidChange();
   },
-  labelPathDidChange: Ember.observer(function() {
+  labelPathDidChange: Ember.observer('content', 'labelPath', function() {
     var labelPath, path;
     labelPath = this.get('labelPath');
     path = labelPath ? "content." + labelPath : 'content';
     Ember.defineProperty(this, 'label', Ember.computed.alias(path));
-    return this.notifyPropertyChange('label');
-  }, 'content', 'labelPath')
+    this.notifyPropertyChange('label');
+  })
 });

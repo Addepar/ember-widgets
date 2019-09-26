@@ -394,9 +394,9 @@ export default Ember.Component.extend(
   contentIsEmpty: Ember.computed.empty('content'),
   hasNoResults: Ember.computed.and('isLoaded', 'filteredContentIsEmpty'),
 
-  value: Ember.computed(function(key, value) {
-    var selection, valuePath, content;
-    if (arguments.length === 2) {
+  value: Ember.computed('selection', {
+    set(key, value) {
+      var selection, valuePath, content;
       valuePath = this.get('optionValuePath');
       selection = value;
       content = this.get('content');
@@ -409,7 +409,10 @@ export default Ember.Component.extend(
       }
       this.set('selection', selection);
       return value;
-    } else {
+
+    },
+    get() {
+      var selection, valuePath;
       valuePath = this.get('optionValuePath');
       selection = this.get('selection');
       if (valuePath) {
@@ -418,7 +421,7 @@ export default Ember.Component.extend(
         return selection;
       }
     }
-  }).property('selection'),
+  }),
 
   didInsertElement: function() {
     this._super();
@@ -520,23 +523,22 @@ export default Ember.Component.extend(
   shouldEnsureVisible: true,
 
   // The option that is currently highlighted.
-  highlighted: Ember.computed(function(key, value) {
-    let content = this.get('selectableOptions') || Ember.A();
+  highlighted: Ember.computed('selectableOptions.[]', 'highlightedIndex', 'shouldEnsureVisible', {
+    set(key, value) {
+      let content = this.get('selectableOptions') || Ember.A();
+      let index = value ? content.indexOf(value) : -1;
+      this.setHighlightedIndex(
+        index,
+        this.get('shouldEnsureVisible')
+      );
+      return value || [];
 
-    if (arguments.length === 1) {
-      // Getter
+    },
+    get() {
+      let content = this.get('selectableOptions') || Ember.A();
       return content.objectAt(this.get('highlightedIndex'));
     }
-
-    // Setter
-    let index = value ? content.indexOf(value) : -1;
-    this.setHighlightedIndex(
-      index,
-      this.get('shouldEnsureVisible')
-    );
-    return value || [];
-
-  }).property('selectableOptions.[]', 'highlightedIndex', 'shouldEnsureVisible'),
+  }),
 
   setFocus: function() {
     var activeElem, selectComponent;
