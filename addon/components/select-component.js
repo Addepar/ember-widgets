@@ -401,8 +401,8 @@ export default Ember.Component.extend(
       selection = value;
       content = this.get('content');
       if (valuePath && content) {
-        if (typeof content.findProperty === 'function') {
-          selection = content.findProperty(valuePath, value);
+        if (typeof content.findBy === 'function') {
+          selection = content.findBy(valuePath, value);
         } else {
           selection = find(content, matchesProperty(valuePath, value));
         }
@@ -478,7 +478,7 @@ export default Ember.Component.extend(
     if (!(content && defaultPath)) {
       return;
     }
-    return this.set('selection', content.findProperty(defaultPath));
+    return this.set('selection', content.findBy(defaultPath));
   }),
 
   selectableOptionsDidChange: Ember.observer('selectableOptions.[]', 'showDropdown', function() {
