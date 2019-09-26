@@ -34,7 +34,7 @@ test('Destroying a popover link destroys the associated popover', function(asser
   popoverLink = this.subject({
     rootElement: "#ember-testing"
   });
-  this.append();
+  this.render();
   click('.popover-link');
   andThen(function() {
     var popover;
@@ -56,7 +56,7 @@ test('Popover links can be configured to be opened with left clicks', function(a
     rootElement: "#ember-testing",
     openOnLeftClick: true
   });
-  this.append();
+  this.render();
   click('.popover-link');
   return andThen(function() {
     return assert.ok(isPresent('.popover'), "The popover is created");
@@ -69,7 +69,7 @@ test('Popover links can be configured to not be opened with left clicks', functi
     rootElement: "#ember-testing",
     openOnLeftClick: false
   });
-  this.append();
+  this.render();
   click('.popover-link');
   return andThen(function() {
     return assert.ok(isNotPresent('.popover'), "The popover is not created");
@@ -82,7 +82,7 @@ test('Popover links can be configured to be opened with right clicks', function(
     rootElement: "#ember-testing",
     openOnRightClick: true
   });
-  this.append();
+  this.render();
   triggerEvent('.popover-link', 'contextmenu');
   return andThen(function() {
     return assert.ok(isPresent('.popover'), "The popover is created");
@@ -95,7 +95,7 @@ test('Popover links can be configured to not be opened with right clicks', funct
     rootElement: "#ember-testing",
     openOnRightClick: false
   });
-  this.append();
+  this.render();
   triggerEvent('.popover-link', 'contextmenu');
   return andThen(function() {
     return assert.ok(isNotPresent('.popover'), "The popover is not created");
@@ -109,7 +109,7 @@ test('Popover links do not bubble left click events when configured to open with
     openOnLeftClick: true,
     _openPopover: Ember.K
   });
-  this.append();
+  this.render();
   bubbled = Ember.run(popoverLink, 'click');
   return assert.ok(!bubbled, 'The event did not bubble');
 });
@@ -121,7 +121,7 @@ test('Popover links bubble left click events when not configured to open with le
     openOnLeftClick: false,
     _openPopover: Ember.K
   });
-  this.append();
+  this.render();
   bubbled = Ember.run(popoverLink, 'click');
   return assert.ok(bubbled, 'The event bubbled');
 });
@@ -133,7 +133,7 @@ test('Popover links do not bubble right click events when configured to open wit
     openOnRightClick: true,
     _openPopover: Ember.K
   });
-  this.append();
+  this.render();
   bubbled = Ember.run(popoverLink, 'contextMenu');
   return assert.ok(!bubbled, 'The event did not bubble');
 });
@@ -145,7 +145,7 @@ test('Popover links bubble right click events when not configured to open with r
     openOnRightClick: false,
     _openPopover: Ember.K
   });
-  this.append();
+  this.render();
   bubbled = Ember.run(popoverLink, 'contextMenu');
   return assert.ok(bubbled, 'The event bubbled');
 });
@@ -159,7 +159,7 @@ test('Popover links can be configured to hide other popovers when opening', func
     rootElement: "#ember-testing",
     hideOthers: true
   });
-  this.append();
+  this.render();
   click('.popover-link');
   andThen(function() {
     return assert.ok(isPresent('.popover'), "The new popover was not hidden");
@@ -178,7 +178,7 @@ test('Popover links can be configured to not hide other popovers when opening', 
     rootElement: "#ember-testing",
     hideOthers: false
   });
-  this.append();
+  this.render();
   click('.popover-link');
   andThen(function() {
     return assert.ok(isPresent('.popover'), "The new popover was not hidden");

@@ -100,7 +100,7 @@ test('Test keyboard interaction', function(assert) {
   select = this.subject({
     content: ['foo', 'bar', 'barca', 'baz']
   });
-  this.append();
+  this.render();
   selectComponent = select.$();
   validateDropdownVisible = function(messageVisible) {
     return assert.ok(isVisible('.ember-select-results', selectComponent), messageVisible);
@@ -154,7 +154,7 @@ test('Test query highlighting', function(assert) {
   select = this.subject({
     content: ['aaa', 'bar', 'barca', 'baz']
   });
-  this.append();
+  this.render();
   let selectComponent = select.$();
   selectComponent.focus();
 
@@ -232,7 +232,7 @@ test('Test userSelected action', function(assert) {
     content: ['bar', 'baz']
   });
   spy = sinon.spy(select, "sendAction");
-  this.append();
+  this.render();
   selectElement = select.$();
   openDropdown(selectElement);
   andThen(function() {
@@ -256,7 +256,7 @@ test('Test valueChanged action when dropdown is closed and query is cleared', fu
     content: ['bar', 'baz']
   });
   const spy = sinon.spy(select, 'sendAction');
-  this.append();
+  this.render();
 
   const selectElement = select.$();
   const searchInput = find('input', selectElement);
@@ -325,7 +325,7 @@ test("Show empty content view if content is empty", function(assert) {
     optionValuePath: 'code',
     classNames: 'select-class-name'
   });
-  this.append();
+  this.render();
   selectElement = select.$();
   openDropdown(selectElement);
   andThen(function() {
@@ -367,7 +367,7 @@ test("Show no-result message if has content but filtered content is empty", func
     optionLabelPath: 'name',
     classNames: 'select-class-name'
   });
-  this.append();
+  this.render();
   selectElement = select.$();
   openDropdown(selectElement);
   return andThen(function() {
@@ -393,7 +393,7 @@ test('optionValuePath with POJOs', function(assert) {
     optionLabelPath: 'name',
     optionValuePath: 'value'
   });
-  this.append();
+  this.render();
   Ember.run(function() {
     select.set('value', 2);
   });
@@ -423,7 +423,7 @@ test('optionValuePath with Ember Objects', function(assert) {
     optionLabelPath: 'name',
     optionValuePath: 'value'
   });
-  this.append();
+  this.render();
   Ember.run(function() {
     select.set('value', 2);
   });
@@ -454,7 +454,7 @@ test('optionValuePath with ArrayProxy', function(assert) {
     optionLabelPath: 'name',
     optionValuePath: 'value'
   });
-  this.append();
+  this.render();
   Ember.run(function() {
     select.set('value', 2);
   });
@@ -482,7 +482,7 @@ test('optionValuePath with nested valuePath', function(assert) {
     optionLabelPath: 'name',
     optionValuePath: 'value.subvalue'
   });
-  this.append();
+  this.render();
   Ember.run(function() {
     select.set('value', 2);
   });
@@ -518,7 +518,7 @@ test('Can specify a custom component with tabComponentName', function(assert) {
   select = this.subject({
     content: ['dummy data'],
   });
-  this.append();
+  this.render();
   let selectElement = select.$();
 
   openDropdown(selectElement);
@@ -543,7 +543,7 @@ test('Specified dropdownMenuClass is used when the dropdown is opened', function
     content: ['dummy data'],
     dropdownMenuClass: cssClassName
   });
-  this.append();
+  this.render();
   var selectElement = select.$();
   openDropdown(selectElement);
   return andThen(function() {
@@ -563,7 +563,7 @@ test('Can specify a custom partial with listViewPartial', function(assert) {
     content: ['dummy data'],
     listViewPartial: 'custom-list-view-partial'
   });
-  this.append();
+  this.render();
   var selectElement = select.$();
   openDropdown(selectElement);
   return andThen(function() {
@@ -580,7 +580,7 @@ test('Select handles a change in the content array properly', function(assert) {
   select = this.subject({
     content: ['test content']
   });
-  this.append();
+  this.render();
   var selectElement = select.$();
   openDropdown(selectElement);
   andThen(function() {
@@ -603,7 +603,7 @@ test('Selected option is visible when dropdown is opened', function(assert) {
     selection,
     dropdownHeight: 30
   });
-  this.append();
+  this.render();
   // The highlighted property is set when the user hovers over the select field
   // Lets programatically set it after rendering to emulate that behavior.
   andThen(() => select.set('highlighted', selection));
@@ -625,7 +625,7 @@ test('Selected object option is visible when dropdown is opened', function(asser
     optionLabelPath: 'key',
     dropdownHeight: 30
   });
-  this.append();
+  this.render();
   var selectElement = select.$();
   // The highlighted property is set when the user hovers over the select field
   // Lets programatically set it after rendering to emulate that behavior.
@@ -647,7 +647,7 @@ test('Selected option is not visible when shouldEnsureVisible is false', functio
     shouldEnsureVisible: false,
     dropdownHeight: 30
   });
-  this.append();
+  this.render();
   // The highlighted property is set when the user hovers over the select field
   // Lets programatically set it after rendering to emulate that behavior.
   andThen(() => select.set('highlighted', selection));
@@ -667,7 +667,7 @@ test('Dropdown does not open on key event when select is disabled', function(ass
     selection: 'foo',
     disabled: true
   });
-  this.append();
+  this.render();
 
   var selectElement = select.$();
   selectElement.focus();
@@ -701,7 +701,7 @@ test('Collapsed group can be expanded, collapsed', function(assert) {
     isGroupHeaderCollapsible: true,
     collapsedGroupHeaders: Ember.A(['Squawk', 'bark'])
   });
-  this.append();
+  this.render();
 
   var selectElement = select.$();
   openDropdown(selectElement);
