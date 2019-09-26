@@ -90,7 +90,7 @@ test('Test keyboard and mouse interaction', function(assert) {
   multiSelect = this.subject({
     content: ['foo', 'bar', 'barca', 'baz']
   });
-  this.append();
+  this.render();
   multiSelectComponent = multiSelect.$();
   highlightedComponent = find('.ember-select-multi', multiSelectComponent);
   textField = find('.ember-text-field', multiSelectComponent);
@@ -182,7 +182,7 @@ test("Can add item via click", function(assert) {
     optionValuePath: 'code',
     classNames: 'some-class-name'
   });
-  this.append();
+  this.render();
   $multiSelect = find('.some-class-name');
   return selectInMultiChosen($multiSelect, 'Alice').then(function() {
     $multiSelect = find('.some-class-name');
@@ -200,7 +200,7 @@ test("Invalid item cannot be selected", function(assert) {
     optionValuePath: 'code',
     classNames: 'some-class-name'
   });
-  this.append();
+  this.render();
   $multiSelect = find('.some-class-name');
   userDidSelectStub = sinon.stub(multiSelect, 'userDidSelect');
   return item = findInMultiChosen($multiSelect, 'textThatWontMatch').then(function(item) {
@@ -224,7 +224,7 @@ test("Valid item can be selected via enter", function(assert) {
     optionValuePath: 'code',
     classNames: 'some-class-name'
   });
-  this.append();
+  this.render();
   $multiSelect = find('.some-class-name');
   userDidSelectStub = sinon.stub(multiSelect, 'userDidSelect');
   return item = findInMultiChosen($multiSelect, 'Alice').then(function(item) {
