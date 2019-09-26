@@ -42,9 +42,11 @@ export default Ember.Mixin.create(StyleBindingsMixin, BodyEventListener, {
   }).property('contentViewClass'),
   didInsertElement: function() {
     this._super();
-    this.snapToPosition();
-    this.set('visibility', 'visible');
-    return this.set('isShowing', true);
+    Ember.run.schedule('afterRender', this, () => {
+      this.snapToPosition();
+      this.set('visibility', 'visible');
+      this.set('isShowing', true);
+    });
   },
   willDestroyElement: function() {
     this.$().off($.support.transition.end);
