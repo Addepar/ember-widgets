@@ -35,7 +35,7 @@ export default Ember.Component.extend(BodyEventListenerMixin, ColorPickerMixin, 
   colorRows: Ember.computed(function() {
     return Ember.A();
   }),
-  setCustomColorObserver: Ember.on('init', Ember.observer(function() {
+  setCustomColorObserver: Ember.on('init', Ember.observer('selectedColor', 'colorRows', function() {
     var selectedColor;
     selectedColor = this.get('selectedColor');
     selectedColor = this.colorToHex(selectedColor);
@@ -45,7 +45,7 @@ export default Ember.Component.extend(BodyEventListenerMixin, ColorPickerMixin, 
       return this.set('customColor', '');
     }
     return this.set('customColor', selectedColor);
-  }, 'selectedColor', 'colorRows')),
+  })),
   /**
    * This is the formatted string of the input color, for which a hashtag "#"
    * is automatically added if it is not present.

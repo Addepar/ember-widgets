@@ -100,7 +100,7 @@ export default SelectComponent.extend({
 
   // uses single select's "selection" value - adds it to selections and
   // then clears the selection value so that it can be re-selected
-  selectionDidChange: Ember.observer(function() {
+  selectionDidChange: Ember.observer('selection', 'selections.[]', function() {
     var selection, selections;
     selections = this.get('selections');
     selection = this.get('selection');
@@ -111,7 +111,7 @@ export default SelectComponent.extend({
     if (!Ember.isEmpty(selection) && !selections.contains(selection)) {
       return selections.pushObject(selection);
     }
-  }, 'selection', 'selections.[]'),
+  }),
   focusTextField: function() {
     var ref;
     return (ref = this.$('.ember-text-field')) != null ? ref.focus() : void 0;
