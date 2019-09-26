@@ -9,7 +9,6 @@ self.deprecationWorkflow.config = {
     { handler: "silence", matchId: "ember-views.container-view" },
     { handler: "silence", matchMessage: "Setting `childViews` on a Container is deprecated." },
     { handler: "silence", matchId: "ember-test-helpers.test-module-for-component.test-type" },
-    // { handler: "silence", matchMessage: "Using the same function as getter and setter is deprecated." },
     { handler: "silence", matchMessage: "Using deprecated `template` property on a View." }
   ]
 };

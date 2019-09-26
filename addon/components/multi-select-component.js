@@ -22,9 +22,9 @@ export default SelectComponent.extend({
   // the input field, which is always visible. This helps reducing one tab
   // step to navigate back to the previous component
   tabindex: -1,
-  values: Ember.computed('selections.[]', function(key, value) {
-    var selections, valuePath;
-    if (arguments.length === 2) {
+  values: Ember.computed('selections.[]', {
+    set(key, value) {
+      var selections, valuePath;
       if (!value) {
         return;
       }
@@ -33,7 +33,9 @@ export default SelectComponent.extend({
         return value.contains(Ember.get(item, valuePath));
       })));
       return value;
-    } else {
+    },
+    get() {
+      var selections, valuePath;
       valuePath = this.get('optionValuePath');
       selections = this.get('selections');
       if (valuePath) {
