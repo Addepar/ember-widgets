@@ -1,8 +1,7 @@
 import Ember from 'ember';
-import Resolver from 'ember/resolver';
+import Resolver from 'ember-resolver';
 import loadInitializers from 'ember-load-initializers';
 import config from './config/environment';
-import CarouselItem from 'ember-widgets/views/carousel-item';
 
 var App;
 
@@ -13,9 +12,6 @@ App = Ember.Application.extend({
   podModulePrefix: config.podModulePrefix,
   Resolver: Resolver
 });
-
-// Legacy view-as-component weirdness. Don't ever ever ever do this.
-Ember.Handlebars.helper('carousel-item', CarouselItem);
 
 loadInitializers(App, config.modulePrefix);
 

@@ -22,9 +22,9 @@ export default SelectComponent.extend({
   // the input field, which is always visible. This helps reducing one tab
   // step to navigate back to the previous component
   tabindex: -1,
-  values: Ember.computed(function(key, value) {
-    var selections, valuePath;
-    if (arguments.length === 2) {
+  values: Ember.computed('selections.[]', {
+    set(key, value) {
+      var selections, valuePath;
       if (!value) {
         return;
       }
@@ -33,7 +33,9 @@ export default SelectComponent.extend({
         return value.contains(Ember.get(item, valuePath));
       })));
       return value;
-    } else {
+    },
+    get() {
+      var selections, valuePath;
       valuePath = this.get('optionValuePath');
       selections = this.get('selections');
       if (valuePath) {
@@ -42,7 +44,7 @@ export default SelectComponent.extend({
         return selections;
       }
     }
-  }).property('selections.[]'),
+  }),
   selectionItemView: MultiSelectOptionView,
 
   // Invisible span used to make sure there is a good amount of room for either
@@ -98,7 +100,7 @@ export default SelectComponent.extend({
 
   // uses single select's "selection" value - adds it to selections and
   // then clears the selection value so that it can be re-selected
-  selectionDidChange: Ember.observer(function() {
+  selectionDidChange: Ember.observer('selection', 'selections.[]', function() {
     var selection, selections;
     selections = this.get('selections');
     selection = this.get('selection');
@@ -109,7 +111,7 @@ export default SelectComponent.extend({
     if (!Ember.isEmpty(selection) && !selections.contains(selection)) {
       return selections.pushObject(selection);
     }
-  }, 'selection', 'selections.[]'),
+  }),
   focusTextField: function() {
     var ref;
     return (ref = this.$('.ember-text-field')) != null ? ref.focus() : void 0;

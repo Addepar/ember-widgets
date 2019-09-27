@@ -27,7 +27,7 @@ test('With DISABLE_ANIMATIONS=true, hide can be called several times', function(
   assert.expect(1);
   window.EMBER_WIDGETS_DISABLE_ANIMATIONS = true;
   modal = this.subject();
-  this.append();
+  this.render();
   return andThen(function() {
     modal.hide();
     modal.hide();
@@ -39,7 +39,7 @@ test('Test tab loop only inside modal', function(assert) {
   var buttonCancel, buttonConfirm, modalComponent, validateFocus;
   assert.expect(3);
   modal = this.subject();
-  this.append();
+  this.render();
   modalComponent = modal.$();
   modal.set('enforceModality', true);
   buttonConfirm = find('.btn-confirm', modalComponent);
@@ -66,7 +66,7 @@ test('Test preserving the focus when clicking on non-focusable element', functio
   var buttonCancel, buttonConfirm, modalBody, modalComponent, validateFocus;
   assert.expect(1);
   modal = this.subject();
-  this.append();
+  this.render();
   modalComponent = modal.$();
   buttonConfirm = find('.btn-confirm', modalComponent);
   buttonCancel = find('.btn-cancel', modalComponent);
@@ -89,7 +89,7 @@ test('Test pressing Enter to confirm', function(assert) {
     enterToConfirm: true
   });
   spy = sinon.spy(modal, "send");
-  this.append();
+  this.render();
   modalComponent = modal.$();
   keyEvent(modalComponent, 'keydown', 13);
   return andThen(function() {

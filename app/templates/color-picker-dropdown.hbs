@@ -1,5 +1,5 @@
 <div class="dropdown open">
-  <div {{bind-attr class=":dropdown-menu :color-picker-dropdown dropdownClass"}}
+  <div class="dropdown-menu color-picker-dropdown {{dropdownClass}}"
     role="menu" aria-labelledby="dLabel">
     {{#each row in colorRows}}
       <div class="color-row clearfix">
@@ -14,11 +14,11 @@
       <hr>
     {{/each}}
       <form {{action "setCustomColor" on="submit"}}
-      {{bind-attr class=":color-picker-custom-form isCustomColorValid:valid:invalid"}}>
+      class="color-picker-custom-form {{if isCustomColorValid 'valid' 'invalid'}}">
         <div class="input-group">
-          <span {{bind-attr class=":input-group-addon
-            :color-picker-custom-preview isCustomColor:active"
-            style="customColorCSS"}} {{action "setCustomColor"}}>
+          <span class="input-group-addon
+            color-picker-custom-preview {{if isCustomColor 'active'}}"
+            style={{customColorCSS}} {{action "setCustomColor"}}>
           </span>
           {{input valueBinding="customColor"
             class="form-control input-sm"

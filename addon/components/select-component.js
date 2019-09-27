@@ -162,7 +162,7 @@ export default Ember.Component.extend(
     }
     return this._super();
   },
-  updateDropdownLayout: Ember.observer(function() {
+  updateDropdownLayout: Ember.observer('showDropdown', function() {
     var dropdownButton, dropdownButtonHeight, dropdownButtonOffset, dropdownMargin, dropdownMenu, dropdownMenuBottom, dropdownMenuHeight, dropdownMenuOffset, dropdownMenuWidth, dropupMenuTop;
     if ((this.get('_state') || this.get('state')) !== 'inDOM' || this.get('showDropdown') === false) {
       return;
@@ -202,7 +202,7 @@ export default Ember.Component.extend(
     if (highlightedIndex !== -1 && this.get('shouldEnsureVisible')) {
       Ember.run.schedule('afterRender', () => this.ensureVisible(highlightedIndex));
     }
-  }, 'showDropdown'),
+  }),
   onResizeEnd: function() {
     // We need to put this on the run loop, because the resize event came from
     // the window. Otherwise, we get a warning when used in the tests. You have
@@ -242,12 +242,12 @@ export default Ember.Component.extend(
     });
   }).property('itemView'),
 
-  optionLabelPathChanges: Ember.on('init', Ember.observer(function() {
+  optionLabelPathChanges: Ember.on('init', Ember.observer('selection', 'optionLabelPath', function() {
     var labelPath, path;
     labelPath = this.get('optionLabelPath');
     path = labelPath ? "selection." + labelPath : 'selection';
     return Ember.defineProperty(this, 'selectedLabel', Ember.computed.alias(path));
-  }, 'selection', 'optionLabelPath')),
+  })),
 
   searchView: DebouncedTextComponent.extend({
     placeholder: Ember.computed.alias('selectComponent.placeholder'),
@@ -256,7 +256,7 @@ export default Ember.Component.extend(
     // this in a run loop to wait for the event that triggers the showDropdown
     // to finishes before trying to focus the input. Otherwise, focus when be
     // "stolen" from us.
-    showDropdownDidChange: Ember.observer(function() {
+    showDropdownDidChange: Ember.observer('selectComponent.showDropdown', function() {
       // when closing, don't need to focus the now-hidden search box
       if (this.get('selectComponent.showDropdown')) {
         return Ember.run.schedule('afterRender', this, function() {
@@ -269,7 +269,7 @@ export default Ember.Component.extend(
         this.set('value', '');
         this.get('selectComponent').send('valueChanged', '');
       }
-    }, 'selectComponent.showDropdown'),
+    }),
 
     /**
       Delegates to parent view (The select component) to propagate this data up.
@@ -394,22 +394,25 @@ export default Ember.Component.extend(
   contentIsEmpty: Ember.computed.empty('content'),
   hasNoResults: Ember.computed.and('isLoaded', 'filteredContentIsEmpty'),
 
-  value: Ember.computed(function(key, value) {
-    var selection, valuePath, content;
-    if (arguments.length === 2) {
+  value: Ember.computed('selection', {
+    set(key, value) {
+      var selection, valuePath, content;
       valuePath = this.get('optionValuePath');
       selection = value;
       content = this.get('content');
       if (valuePath && content) {
-        if (typeof content.findProperty === 'function') {
-          selection = content.findProperty(valuePath, value);
+        if (typeof content.findBy === 'function') {
+          selection = content.findBy(valuePath, value);
         } else {
           selection = find(content, matchesProperty(valuePath, value));
         }
       }
       this.set('selection', selection);
       return value;
-    } else {
+
+    },
+    get() {
+      var selection, valuePath;
       valuePath = this.get('optionValuePath');
       selection = this.get('selection');
       if (valuePath) {
@@ -418,7 +421,7 @@ export default Ember.Component.extend(
         return selection;
       }
     }
-  }).property('selection'),
+  }),
 
   didInsertElement: function() {
     this._super();
@@ -463,7 +466,7 @@ export default Ember.Component.extend(
   customFilter: null,
 
   // TODO(Peter): This needs to be rethought
-  setDefaultSelection: Ember.observer(function() {
+  setDefaultSelection: Ember.observer('content.[]', function() {
     var content, defaultPath;
 
     // do not set default selection if selection is defined
@@ -475,10 +478,10 @@ export default Ember.Component.extend(
     if (!(content && defaultPath)) {
       return;
     }
-    return this.set('selection', content.findProperty(defaultPath));
-  }, 'content.[]'),
+    return this.set('selection', content.findBy(defaultPath));
+  }),
 
-  selectableOptionsDidChange: Ember.observer(function() {
+  selectableOptionsDidChange: Ember.observer('selectableOptions.[]', 'showDropdown', function() {
     /*
      * If the dropdown is visible and the selected option is no longer
      * contained in the list of selectableOptions, then force the first
@@ -491,7 +494,7 @@ export default Ember.Component.extend(
         this.set('highlighted', selectableOptions.get('firstObject'));
       }
     }
-  }, 'selectableOptions.[]', 'showDropdown'),
+  }),
 
   /*
    * SELECTION RELATED
@@ -520,23 +523,22 @@ export default Ember.Component.extend(
   shouldEnsureVisible: true,
 
   // The option that is currently highlighted.
-  highlighted: Ember.computed(function(key, value) {
-    let content = this.get('selectableOptions') || Ember.A();
+  highlighted: Ember.computed('selectableOptions.[]', 'highlightedIndex', 'shouldEnsureVisible', {
+    set(key, value) {
+      let content = this.get('selectableOptions') || Ember.A();
+      let index = value ? content.indexOf(value) : -1;
+      this.setHighlightedIndex(
+        index,
+        this.get('shouldEnsureVisible')
+      );
+      return value || [];
 
-    if (arguments.length === 1) {
-      // Getter
+    },
+    get() {
+      let content = this.get('selectableOptions') || Ember.A();
       return content.objectAt(this.get('highlightedIndex'));
     }
-
-    // Setter
-    let index = value ? content.indexOf(value) : -1;
-    this.setHighlightedIndex(
-      index,
-      this.get('shouldEnsureVisible')
-    );
-    return value || [];
-
-  }).property('selectableOptions.[]', 'highlightedIndex', 'shouldEnsureVisible'),
+  }),
 
   setFocus: function() {
     var activeElem, selectComponent;

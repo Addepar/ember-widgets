@@ -1,5 +1,5 @@
-<div {{bind-attr class=":ember-select-container :ember-select-multi :dropdown-toggle :js-dropdown-toggle hasFocus:ember-select-focus"}}>
-  <ul {{bind-attr class=":ember-select-choices choicesFieldClass"}}>
+<div class="ember-select-container ember-select-multi dropdown-toggle js-dropdown-toggle {{if hasFocus 'ember-select-focus'}}">
+  <ul class="ember-select-choices {{choicesFieldClass}}">
     {{#each selections as |item|}}
       {{view selectionItemView
         content=item

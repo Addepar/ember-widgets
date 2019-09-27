@@ -1,37 +1,24 @@
-import Ember from 'ember';
+import hbs from 'htmlbars-inline-precompile';
 import { moduleForComponent, test } from 'ember-qunit';
-import startApp from '../helpers/start-app';
-
-var debouncedComponent, app;
+import wait from 'ember-test-helpers/wait';
 
 moduleForComponent('debounced-text-component', '[Integration] Debounced Text Component', {
-  setup: function() {
-    app = startApp();
-    window.EMBER_WIDGETS_DISABLE_ANIMATIONS = true;
-  },
-  teardown: function() {
-    Ember.run(function() {
-      debouncedComponent.destroy();
-    });
-    Ember.run(app, 'destroy');
-    window.EMBER_WIDGETS_DISABLE_ANIMATIONS = false;
-  }
+  integration: true,
 });
 
 test('Test debounced text', function(assert) {
-  var spy;
-
   assert.expect(1);
 
-  debouncedComponent = this.subject();
-  spy = sinon.spy(debouncedComponent, "sendAction");
-
-  debouncedComponent.onValueChanged('fo');
-  debouncedComponent.onValueChanged('foo');
-  wait();
-
-  andThen(function() {
-    assert.ok(spy.calledWithExactly('valueChanged', 'foo'),
-      'valueChanged action is fired when value changed');
+  this.on('valueChanged', (newText) => {
+    assert.equal(newText, 'foo',
+      'valueChanged action is fired once when value changed');
   });
+
+  this.render(hbs`{{debounced-text-component valueChanged='valueChanged'}}`);
+
+  this.$('input').val('fo');
+  this.$('input').change();
+  this.$('input').val('foo');
+  this.$('input').change();
+  return wait();
 });

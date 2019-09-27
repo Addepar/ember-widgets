@@ -101,7 +101,7 @@ test('Custom color is set as selected color', function(assert) {
   var customColor;
   colorPicker = this.subject();
   customColor = '#addec0';
-  this.append();
+  this.render();
   openColorChooser();
   fillInCustomColor(customColor);
   click(getPreviewCellSelector());
@@ -118,7 +118,7 @@ test('Test accepting custom color without hashtag', function(assert) {
   colorPicker = this.subject();
   customColor = 'addec0';
   formattedCustomColor = '#addec0';
-  this.append();
+  this.render();
   openColorChooser();
   fillInCustomColor(customColor);
   click(getPreviewCellSelector());
@@ -134,7 +134,7 @@ test('Selecting a color should send an action', function(assert) {
   customColor = '#addec0';
   color = '#01FF70';
   spy = sinon.spy(colorPicker, 'sendAction');
-  this.append();
+  this.render();
   selectColor(color);
   andThen(function() {
     return assert.ok(spy.calledWithExactly('userSelected', color), 'Clicking color picker cell sends action');
@@ -149,7 +149,7 @@ test('Selecting a color should send an action', function(assert) {
 
 test('Click outside of the component should close the dropdown', function(assert) {
   colorPicker = this.subject();
-  this.append();
+  this.render();
   openColorChooser();
   return andThen(function() {
     $('body').trigger('click');
@@ -161,7 +161,7 @@ test('Submitting custom color form updates color and does not reload page', func
   var customColor;
   colorPicker = this.subject();
   customColor = "#abc123";
-  this.append();
+  this.render();
   openColorChooser();
   fillInCustomColor(customColor);
   return andThen(function() {
@@ -174,7 +174,7 @@ test('Transparent color is set in preview cell', function(assert) {
   var color;
   colorPicker = this.subject();
   color = 'transparent';
-  this.append();
+  this.render();
   selectColor(color);
   return andThen(function() {
     return assert.ok(colorPicker.get('isColorTransparent'), 'Transparent color correctly identified in preview cell');
@@ -185,7 +185,7 @@ test('Correct cell is highlighted within color palette', function(assert) {
   var color;
   colorPicker = this.subject();
   color = '#01FF70';
-  this.append();
+  this.render();
   selectColor(color);
   openColorChooser();
   return andThen(function() {
