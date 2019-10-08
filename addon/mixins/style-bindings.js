@@ -42,7 +42,7 @@ export default Ember.Mixin.create({
        });
        styleString = styleTokens.join('');
        if (styleString.length !== 0) {
-         return styleString;
+         return Ember.String.htmlSafe(styleString);
        }
      };
    })(this));

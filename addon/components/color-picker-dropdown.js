@@ -64,7 +64,7 @@ export default Ember.Component.extend(BodyEventListenerMixin, ColorPickerMixin, 
     return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(this.get('formattedCustomColor'));
   }).property('formattedCustomColor'),
   customColorCSS: Ember.computed(function() {
-    return "background-color: " + (this.get('formattedCustomColor'));
+    return Ember.String.htmlSafe("background-color: " + (this.get('formattedCustomColor')));
   }).property('formattedCustomColor'),
   userDidSelect: function(selection) {
     return this.sendAction('userSelected', selection);

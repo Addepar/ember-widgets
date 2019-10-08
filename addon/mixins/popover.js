@@ -183,11 +183,11 @@ export default Ember.Mixin.create(StyleBindingsMixin, BodyEventListener, {
     }
     this.correctIfOffscreen();
     if (!Ember.isEmpty($target)) {
-      return this.positionArrow();
+      this.positionArrow();
     }
   },
   positionArrow: function() {
-    var $target, arrowSize, left, pos, top;
+    var $target, arrowSize, left, pos, top, arrowStyle;
     $target = $(this.get('targetElement'));
     pos = this.getOffset($target);
     pos.width = $target[0].offsetWidth;
@@ -197,12 +197,13 @@ export default Ember.Mixin.create(StyleBindingsMixin, BodyEventListener, {
       case 'left':
       case 'right':
         top = pos.top + pos.height / 2 - this.get('top') - arrowSize / 2;
-        return this.set('arrowStyle', 'margin-top:' + top + 'px;');
+        arrowStyle = 'margin-top:' + top + 'px;';
       case 'top':
       case 'bottom':
         left = pos.left + pos.width / 2 - this.get('left') - arrowSize / 2;
-        return this.set('arrowStyle', 'margin-left:' + left + 'px;');
+        arrowStyle = 'margin-left:' + left + 'px;';
     }
+    this.set('arrowStyle', Ember.String.htmlSafe(arrowStyle));
   },
   correctIfOffscreen: function() {
     var actualHeight, actualWidth, bodyHeight, bodyWidth;
