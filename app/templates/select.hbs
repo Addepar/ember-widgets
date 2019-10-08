@@ -1,6 +1,6 @@
 <div class="ember-select-container dropdown-toggle js-dropdown-toggle" {{action "toggleDropdown"}}>
-  <a class="form-control ember-select-choice {{buttonClass}} {{if disabled 'disabled'}}
-  {{if hasFocus 'ember-select-focus'}}">
+  <a class="form-control ember-select-choice {{buttonClass}} {{if disabled 'disabled'}}">
+  {{if hasFocus 'ember-select-focus'}}
     {{#if selection}}
       {{view selectedItemView content=selection selectComponent=this}}
       <i class={{view.dropdownToggleIcon}}></i>
