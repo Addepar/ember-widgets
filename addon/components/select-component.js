@@ -675,11 +675,15 @@ export default Ember.Component.extend(
   },
 
   focusIn: function() {
-    return this.set('hasFocus', true);
+    Ember.run.schedule('actions', () => {
+      this.set('hasFocus', true);
+    });
   },
 
   focusOut: function() {
-    return this.set('hasFocus', false);
+    Ember.run.schedule('actions', () => {
+      this.set('hasFocus', false);
+    });
   },
 
   actions: {
