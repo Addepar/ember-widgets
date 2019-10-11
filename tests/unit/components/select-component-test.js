@@ -24,18 +24,94 @@ var animalData = function() {
 };
 
 var contentEqual = function(assert, expected, actual, groupingIndices) {
-  assert.equal(expected.length, actual.length, 
+  assert.equal(expected.length, actual.length,
                "Unexpected groupedContent size");
   for (var i = 0; i < expected.length; i++) {
     assert.equal(expected[i], Ember.get(actual[i], 'name'));
   }
   groupingIndices.forEach(function(i) {
     assert.ok(
-      Ember.get(actual[i], 'isGroupOption'), 
+      Ember.get(actual[i], 'isGroupOption'),
       "Expected grouping option at index " + i
     );
   });
 };
+
+test('Test continuous queries in a row', function(assert) {
+  assert.expect(5);
+  select = this.subject({
+    content: ['foo', 'bar', 'barca', 'baz']
+  });
+  select.set('query', 'ba');
+  assert.equal(select.get('filteredContent')[0], 'bar');
+  assert.equal(select.get('filteredContent')[1], 'barca');
+  assert.equal(select.get('filteredContent')[2], 'baz');
+  select.set('query', 'bar');
+  assert.equal(select.get('filteredContent')[0], 'bar');
+  assert.equal(select.get('filteredContent')[1], 'barca');
+});
+
+test('Test filtered content using array proxy', function(assert) {
+  var data;
+  assert.expect(2);
+  data = Ember.ArrayProxy.create({
+    content: Ember.A(['red', 'reddit', 'green', 'blue'])
+  });
+  select = this.subject({
+    content: data
+  });
+  select.set('query', 're');
+  assert.equal(select.get('filteredContent')[0], 'red');
+  assert.equal(select.get('filteredContent')[1], 'reddit');
+});
+
+test('Test sorted filter content', function(assert) {
+  assert.expect(3);
+  select = this.subject({
+    content: ['reddit', 'red', 'green', 'blue']
+  });
+  select.set('query', 'r');
+  assert.equal(select.get('sortedFilteredContent')[0], 'green');
+  assert.equal(select.get('sortedFilteredContent')[1], 'red');
+  assert.equal(select.get('sortedFilteredContent')[2], 'reddit');
+});
+
+test('shouldEnsureVisible controls whether to ensure visibility', function(assert) {
+  var spy;
+  assert.expect(2);
+  select = this.subject({
+    content: ['foo'],
+    ensureVisible: function() {
+      assert.ok(true, 'ensureVisible is called if shouldEnsureVisible is true');
+    }
+  });
+  select.set('highlighted', 'foo');
+  select.set('shouldEnsureVisible', false);
+  spy = sinon.spy(select, 'ensureVisible');
+  select.set('highlighted', 'bar');
+  assert.equal(spy.callCount, 0, 'ensureVisible is not called if shouldEnsureVisible is false');
+  spy.restore();
+});
+
+test('Test selection label', function(assert) {
+  var data;
+  assert.expect(2);
+  data = [
+    {
+      name: 'reddit'
+    }, {
+      name: 'red'
+    }
+  ];
+  select = this.subject({
+    content: data,
+    selection: data[0],
+    optionLabelPath: 'name'
+  });
+  assert.equal(select.get('selectedLabel'), 'reddit');
+  select.set('selection.name', 'blues');
+  assert.equal(select.get('selectedLabel'), 'blues');
+});
 
 test('Test continuous queries in a row', function(assert) {
   assert.expect(5);
@@ -57,6 +133,29 @@ test('Test continuous queries in a row', function(assert) {
   filteredContent = select.get('filteredContent');
   assert.equal(filteredContent[0], 'bar');
   assert.equal(filteredContent[1], 'barca');
+});
+
+test('Test query matching', function(assert) {
+  assert.expect(8);
+  select = this.subject({
+    content: ['foo', 'bana$  na', 'bar ca', 'baz']
+  });
+  select.set('query', null);
+  assert.equal(select.get('filteredContent').length, 4, 'null queries should return the full list of options');
+  select.set('query', '   ');
+  assert.equal(select.get('filteredContent').length, 4, 'queries containing all spaces should return the full list of options');
+  select.set('query', ' a ');
+  assert.equal(select.get('filteredContent').length, 3, 'queries containing spaces at two ends should be trimmed');
+  select.set('query', 'bar  ca');
+  assert.equal(select.get('filteredContent').length, 1, 'queries containing duplicated spaces should be removed');
+  select.set('query', 'barca');
+  assert.equal(select.get('filteredContent').length, 0, 'correct spaces should be considered when matching');
+  select.set('query', 'bana$');
+  assert.equal(select.get('filteredContent').length, 1, 'special characters should be considered when matching');
+  select.set('query', 'bana[  na');
+  assert.equal(select.get('filteredContent').length, 0, 'special characters should be considered when matching');
+  select.set('query', 'bana$ n');
+  assert.equal(select.get('filteredContent').length, 1, 'duplicated spaces in the source string should be removed before matching');
 });
 
 test('Test filtered content using array proxy', function(assert) {
