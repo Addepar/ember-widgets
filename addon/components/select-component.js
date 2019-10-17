@@ -674,16 +674,16 @@ export default Ember.Component.extend(
     return this.sendAction('userSelected', selection);
   },
 
-  focusIn: function() {
-    Ember.run.schedule('actions', () => {
+  focusIn: function(event) {
+    if (event.target.tagName === 'INPUT') {
       this.set('hasFocus', true);
-    });
+    }
   },
 
-  focusOut: function() {
-    Ember.run.schedule('actions', () => {
+  focusOut: function(event) {
+    if (event.target.tagName === 'INPUT') {
       this.set('hasFocus', false);
-    });
+    }
   },
 
   actions: {
