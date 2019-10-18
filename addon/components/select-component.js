@@ -541,7 +541,7 @@ export default Ember.Component.extend(
   }),
 
   setFocus: function(targetElement = document.activeElement) {
-    let selectComponent = this.$()[0];
+    let selectComponent = this.element;
     if (selectComponent.contains(targetElement) || selectComponent === targetElement) {
       this.set('hasFocus', true);
     } else {
