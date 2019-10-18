@@ -675,15 +675,11 @@ export default Ember.Component.extend(
   },
 
   focusIn: function(event) {
-    if (event.target.tagName === 'INPUT') {
-      this.set('hasFocus', true);
-    }
+    this.set('hasFocus', true);
   },
 
   focusOut: function(event) {
-    if (event.target.tagName === 'INPUT') {
-      this.set('hasFocus', false);
-    }
+    this.set('hasFocus', false);
   },
 
   actions: {
