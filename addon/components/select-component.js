@@ -540,14 +540,12 @@ export default Ember.Component.extend(
     }
   }),
 
-  setFocus: function() {
-    var activeElem, selectComponent;
-    activeElem = document.activeElement;
-    selectComponent = this.$()[0];
-    if (selectComponent.contains(activeElem) || selectComponent === activeElem) {
-      return this.set('hasFocus', true);
+  setFocus: function(targetElement = document.activeElement) {
+    let selectComponent = this.$()[0];
+    if (selectComponent.contains(targetElement) || selectComponent === targetElement) {
+      this.set('hasFocus', true);
     } else {
-      return this.set('hasFocus', false);
+      this.set('hasFocus', false);
     }
   },
 
@@ -675,11 +673,11 @@ export default Ember.Component.extend(
   },
 
   focusIn: function(event) {
-    this.set('hasFocus', true);
+    this.setFocus(event.target);
   },
 
   focusOut: function(event) {
-    this.set('hasFocus', false);
+    this.setFocus(event.target);
   },
 
   actions: {
