@@ -54,6 +54,9 @@ export default Ember.Mixin.create(StyleBindingsMixin, BodyEventListener, {
       this.set('isShowing', true);
 
       Ember.run.schedule('afterRender', () => {
+        if (this.isDestroying) {
+          return;
+        }
         this.didRenderPopover();
       });
     });
