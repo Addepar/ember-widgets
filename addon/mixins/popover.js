@@ -40,12 +40,25 @@ export default Ember.Mixin.create(StyleBindingsMixin, BodyEventListener, {
       templateName: 'view-parent-view-content'
     });
   }).property('contentViewClass'),
+
+  /**
+    Called when the popover has been initially rendered and properly positioned.
+  */
+  didRenderPopover: () => {},
+
   didInsertElement: function() {
     this._super();
-    Ember.run.schedule('afterRender', this, () => {
+    Ember.run.schedule('afterRender', () => {
       this.snapToPosition();
       this.set('visibility', 'visible');
       this.set('isShowing', true);
+
+      Ember.run.schedule('afterRender', () => {
+        if (this.isDestroying) {
+          return;
+        }
+        this.didRenderPopover();
+      });
     });
   },
   willDestroyElement: function() {

@@ -23,16 +23,16 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
     let componentSpec = makeComponent(this, 'test-popover', PopoverComponent, {
       layoutName: 'ember-widgets/-test-popover-content'
     });
-  
+
     this.render(hbs`{{render-popover}}`);
-  
+
     assert.ok(
       document.querySelector('[data-test-popover-content]') === null,
       'The popover is not rendered yet'
     );
-  
+
     openPopover(this, componentSpec);
-  
+
     assert.ok(
       document.querySelector('[data-test-popover-content]'),
       'The popover is now rendered'
@@ -46,51 +46,51 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
     let componentSpec = makeComponent(this, 'test-popover', PopoverComponent, {
       layoutName: 'test-popover-1'
     });
-  
+
     this.render(hbs`{{render-popover}}`);
-  
+
     openPopover(this, componentSpec, { foo: 'BAR' });
-  
+
     assert.ok(!!document.querySelector('[data-test-popover-1]'), 'renders popover');
     assert.ok(document.querySelector('[data-test-popover-1-foo]').innerHTML.includes('BAR'), 'renders foo property');
   });
-  
+
   test('it programatically closes popovers', function(assert) {
     let componentSpec = makeComponent(this, 'test-popover', PopoverComponent, {
       layoutName: 'ember-widgets/-test-popover-content'
     });
-  
+
     this.render(hbs`{{render-popover}}`);
-  
+
     let close =  openPopover(this, componentSpec);
-  
+
     assert.ok(
       document.querySelector('[data-test-popover-content]'),
       'The popover is now rendered'
     );
-  
+
     Ember.run(() => { close(); });
-  
+
     assert.ok(
       document.querySelector('[data-test-popover-content]') === null,
       'The popover is closed'
     );
   });
-  
+
   test('it closes popovers from an event', function(assert) {
     let componentSpec = makeComponent(this, 'test-popover', PopoverComponent, {
       layoutName: 'ember-widgets/-test-popover-content'
     });
-  
+
     this.render(hbs`{{render-popover}}`);
-  
+
     openPopover(this, componentSpec);
-  
+
     assert.ok(
       document.querySelector('[data-test-popover-content]'),
       'The popover is now rendered'
     );
-  
+
     return new Promise(resolve => {
       // The document event handlers are installed in a run.next, so
       // schedule this test/assertion for after that. Additionally,
@@ -166,7 +166,7 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
     });
   });
 
-  
+
   test('it handles actions in a popover', function(assert) {
     let hasActionFired = false;
     let componentSpec = makeComponent(this, 'test-popover', PopoverComponent, {
@@ -177,24 +177,24 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
         }
       }
     });
-  
+
     this.render(hbs`{{render-popover}}`);
-  
+
     openPopover(this, componentSpec);
-  
+
     assert.notOk(
       hasActionFired,
       'precond - action has not fired'
     );
-  
+
     $(document.querySelector('[data-test-fire-action]')).click();
-  
+
     assert.ok(
       hasActionFired,
       'Action was fired'
     );
   });
-  
+
   test('it handles event delegation in a popover', function(assert) {
     let hasHandledClick = false;
     let componentSpec = makeComponent(this, 'test-popover', PopoverComponent, {
@@ -203,82 +203,82 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
         hasHandledClick = true;
       }
     });
-  
+
     this.render(hbs`{{render-popover}}`);
-  
+
     openPopover(this, componentSpec);
-  
+
     assert.notOk(
       hasHandledClick,
       'precond - click event had not been handled'
     );
-  
+
     $(document.querySelector('[data-test-popover-content]')).click();
-  
+
     assert.ok(
       hasHandledClick,
       'Click event handled'
     );
   });
-  
+
   test('it renders modals', function(assert) {
     let componentSpec = makeComponent(this, 'test-modal', ModalComponent, {
       layoutName: 'ember-widgets/-test-popover-content',
     });
-  
+
     this.render(hbs`{{render-popover}}`);
-  
+
     assert.ok(
       document.querySelector('[data-test-popover-content]') === null,
       'The modal is not rendered yet'
     );
-  
+
     openModal(this, componentSpec);
-  
+
     assert.ok(
       document.querySelector('[data-test-popover-content]'),
       'The modal is now rendered'
     );
   });
-  
+
   test('it programatically closes modals', function(assert) {
     let componentSpec = makeComponent(this, 'test-modal', ModalComponent, {
       layoutName: 'ember-widgets/-test-popover-content',
     });
-  
+
     this.render(hbs`{{render-popover}}`);
-  
+
     let close = openModal(this, componentSpec);
-  
+
     assert.ok(
       document.querySelector('[data-test-popover-content]'),
       'The modal is now rendered'
     );
-  
+
     Ember.run(() => {
       close();
     });
-  
+
     assert.ok(
       document.querySelector('[data-test-popover-content]') === null,
       'The modal is closed'
     );
   });
-  
+
   test('it closes modals from an event', function(assert) {
     let componentSpec = makeComponent(this, 'test-modal', ModalComponent, {
       layoutName: 'ember-widgets/-test-popover-content',
     });
-  
+
     this.render(hbs`{{render-popover}}`);
-  
+
     openModal(this, componentSpec);
-  
+
     assert.ok(
       document.querySelector('[data-test-popover-content]'),
       'The modal is now rendered'
     );
-  
+
     return new Promise(resolve => {
       // The document event handlers are installed in a run.next, so
       // schedule this test/assertion for after that. Additionally,
@@ -303,9 +303,9 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
     this.container.register('template:test-modal-2', hbs`<h1 data-test-modal-2>modal 2</h1>`);
     let component1 = makeComponent(this, 'test-modal-1', ModalComponent, { layoutName: 'test-modal-1' });
     let component2 = makeComponent(this, 'test-modal-2', ModalComponent, { layoutName: 'test-modal-2' });
-  
+
     this.render(hbs`{{render-popover}}`);
-  
+
     openModal(this, component1);
 
     return new Promise(resolve => {
@@ -324,7 +324,7 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
       assert.ok(!!document.querySelector('[data-test-modal-2]'), 'renders modal 2');
     });
   });
-  
+
   test('it handles actions in a modal', function(assert) {
     let hasActionFired = false;
     let componentSpec = makeComponent(this, 'test-modal', ModalComponent, {
@@ -335,29 +335,29 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
         }
       }
     });
-  
+
     this.render(hbs`{{render-popover}}`);
-  
+
     openModal(this, componentSpec);
-  
+
     assert.notOk(
       hasActionFired,
       'precond - action has not fired'
     );
-  
+
     $(document.querySelector('[data-test-fire-action]')).click();
-  
+
     assert.ok(
       hasActionFired,
       'Action was fired'
     );
   });
-  
+
   test('it handles actions in a modal\'s header/content/footer views', function(assert) {
     let actionsFired = {};
-  
+
     let modalViewClasses = ['header','content','footer'];
-  
+
     let componentSpec = makeComponent(this, 'test-modal', ModalComponent, {
       headerViewClass: Ember.View.extend({ templateName: 'test-modal-header' }),
       contentViewClass: Ember.View.extend({ templateName: 'test-modal-content' }),
@@ -374,21 +374,21 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
         }
       }
     });
-  
+
     this.render(hbs`{{render-popover}}`);
-  
+
     openModal(this, componentSpec);
-  
+
     modalViewClasses.forEach(name => {
       assert.ok($(`[data-test-modal-${name}-button]`).length > 0,
                   `renders modal ${name} view`);
     });
-  
+
     assert.ok(
       !actionsFired.header && !actionsFired.content && !actionsFired.footer,
       'precond - no action has fired'
     );
-  
+
     modalViewClasses.forEach(name => {
       $(document.querySelector(`[data-test-modal-${name}-button]`)).click();
       assert.ok(actionsFired[name], `${name} action fired`);
@@ -397,25 +397,25 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
 
   test('it handles event delegation in a modal', function(assert) {
     let hasHandledClick = false;
-  
+
     let componentSpec = makeComponent(this, 'test-modal', ModalComponent, {
       layoutName: 'ember-widgets/-test-popover-content',
       click() {
         hasHandledClick = true;
       }
     });
-  
+
     this.render(hbs`{{render-popover}}`);
-  
+
     openModal(this, componentSpec);
-  
+
     assert.notOk(
       hasHandledClick,
       'precond - click event had not been handled'
     );
-  
+
     $(document.querySelector('[data-test-popover-content]')).click();
-  
+
     assert.ok(
       hasHandledClick,
       'Click event handled'
@@ -429,7 +429,7 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
         templateName: 'test-modal-footer'
       })
     })
-    
+
     this.render(hbs`{{render-popover}}`);
     openModal(this, componentSpec);
 
@@ -438,7 +438,7 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
 
   test('property bindings can be passed to the modal', function(assert) {
     let componentSpec = makeComponent(this, 'test-modal', ModalComponent);
-    
+
     this.render(hbs`{{render-popover}}`);
     openModal(this, componentSpec, {
       fooBindingTest: true,
@@ -487,7 +487,7 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
     // This exposes an issue in the old API where the view will re-render with the wrong action target.
     test('it handles actions when footer disabled button state changes', function(assert) {
       let actionsFired = {};
-    
+
       let componentSpec = makeComponent(this, 'test-modal', ModalComponent, {
         headerViewClass: Ember.View.extend({ templateName: 'test-modal-header' }),
         contentViewClass: Ember.View.extend({ templateName: 'test-modal-content' }),
@@ -503,29 +503,29 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
           },
         }
       });
-    
+
       this.render(hbs`{{render-popover}}`);
-    
+
       openModal(this, componentSpec);
-    
+
       return wait().then(() => {
         assert.ok(!actionsFired.header, 'precond - no header action');
         assert.ok(!document.querySelector('[data-test-footer-text]'), 'precond - no footer text');
-    
+
         $(document.querySelector('[data-test-modal-header-button]')).click();
         return wait();
       }).then(() => {
-    
+
         assert.ok(actionsFired.header, 'clicked header button');
         assert.ok(!!document.querySelector('[data-test-footer-text]'), 'shows footer text');
-    
+
         $(document.querySelector('[data-test-modal-footer-button]')).click();
         return wait();
       }).then(() => {
         assert.ok(actionsFired.footer, 'fired footer action');
       })
     });
-    
+
     // This exposes an issue in the old API where the popover view will re-render and close itself when it should
     // stay open
     test('property bindings can be passed to the popover', function(assert) {
@@ -535,30 +535,30 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
           <span data-test-popover-1-bar>{{bar}}</span>
           <span data-test-popover-1-foo-input>{{input value=foo}}</span>
           <span data-test-popover-1-bar-input>{{input value=bar}}</span>
-  
+
         </div>
       `);
       let componentSpec = makeComponent(this, 'test-popover', PopoverComponent, { layoutName: 'test-popover-1' });
-    
+
       this.render(hbs`{{render-popover}}`);
-    
+
       openPopover(this, componentSpec, { fooBinding: 'bar', bar: 'baz' });
-    
-      
+
+
       return wait().then(() => {
         assert.ok(!!document.querySelector('[data-test-popover-1]'), 'renders popover');
         assert.equal(document.querySelector('[data-test-popover-1-foo]').innerHTML, 'baz', 'foo property');
         assert.equal(document.querySelector('[data-test-popover-1-bar]').innerHTML, 'baz', 'bar property');
         assert.equal(document.querySelector('[data-test-popover-1-foo-input] input').value, 'baz', 'foo input');
         assert.equal(document.querySelector('[data-test-popover-1-bar-input] input').value, 'baz', 'bar input');
-  
+
         return fillIn('[data-test-popover-1-foo-input] input', 'baz-via-foo');
       }).then(() => {
         assert.equal(document.querySelector('[data-test-popover-1-foo]').innerHTML, 'baz-via-foo', 'foo property');
         assert.equal(document.querySelector('[data-test-popover-1-bar]').innerHTML, 'baz-via-foo', 'bar property');
         assert.equal(document.querySelector('[data-test-popover-1-foo-input] input').value, 'baz-via-foo', 'foo input');
         assert.equal(document.querySelector('[data-test-popover-1-bar-input] input').value, 'baz-via-foo', 'bar input');
-  
+
         return fillIn('[data-test-popover-1-bar-input] input', 'baz-via-bar');
       }).then(() => {
         assert.equal(document.querySelector('[data-test-popover-1-foo]').innerHTML, 'baz-via-bar', 'foo property');
@@ -566,8 +566,31 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
         assert.equal(document.querySelector('[data-test-popover-1-foo-input] input').value, 'baz-via-bar', 'foo input');
         assert.equal(document.querySelector('[data-test-popover-1-bar-input] input').value, 'baz-via-bar', 'bar input');
       });
-    });  
+    });
   }
+
+  test('The didRenderPopover hook is called once the popover is properly rendered and positioned', function(assert) {
+    assert.expect(2);
+
+    let componentSpec = makeComponent(this, 'test-popover', PopoverComponent, {
+      didRenderPopover: () => {
+        assert.ok(
+          document.querySelector('[data-test-popover-content]'),
+          'The popover is now rendered'
+        );
+      },
+      layoutName: 'ember-widgets/-test-popover-content'
+    });
+
+    this.render(hbs`{{render-popover}}`);
+
+    assert.ok(
+      document.querySelector('[data-test-popover-content]') === null,
+      'The popover is not rendered yet'
+    );
+
+    openPopover(this, componentSpec);
+  });
 
   if (openPopoverModal) {
 
