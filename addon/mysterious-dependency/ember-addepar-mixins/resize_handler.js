@@ -21,6 +21,11 @@ AddeparMixins.ResizeHandlerMixin = Ember.Mixin.create({
     };
   }),
   handleWindowResize: function(event) {
+    // Ignore bubbled "resize" events. These can come from other jquery
+    // libraries, eg jquery-ui's "resizable" widget
+    if (event.target !== window) {
+      return;
+    }
     if (!this.get('resizing')) {
       this.set('resizing', true);
       if (typeof this.onResizeStart === "function") {
