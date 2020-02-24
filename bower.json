@@ -16,6 +16,6 @@
     "jquery-browser": "jquery.browser#~0.0.4",
     "google-code-prettify": "~1.0.4",
     "holder": "holderjs#1.9",
-    "sinonjs": "~1.7.3"
+    "sinonjs": "~1.14.1"
   }
 }
