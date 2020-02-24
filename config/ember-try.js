@@ -28,6 +28,7 @@ module.exports = {
         }
       }
     },
+    /*
     {
       name: 'ember-lts-2.8',
       bower: {
@@ -52,6 +53,7 @@ module.exports = {
         }
       }
     },
+    */
     {
       name: 'ember-default',
       npm: {
