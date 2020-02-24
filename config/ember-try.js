@@ -15,6 +15,7 @@ module.exports = {
         }
       }
     },
+    /*
     {
       name: 'ember-2.0',
       bower: {
@@ -28,7 +29,6 @@ module.exports = {
         }
       }
     },
-    /*
     {
       name: 'ember-lts-2.8',
       bower: {
