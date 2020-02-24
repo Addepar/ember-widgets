@@ -31,6 +31,7 @@ var ModalComponent = Ember.Component.extend(
   cancel: Ember.K,
   close: Ember.K,
   isDisabled: Ember.computed.not('isValid'),
+  isConfirmPrimaryBtn: true,
   fadeEnabled: Ember.computed(function() {
     if (window.EMBER_WIDGETS_DISABLE_ANIMATIONS) {
       return false;

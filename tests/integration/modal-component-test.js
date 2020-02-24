@@ -96,3 +96,26 @@ test('Test pressing Enter to confirm', function(assert) {
     return assert.ok(spy.calledWith('sendConfirm'), "sendConfirm gets called when hitting enter");
   });
 });
+
+test('Test confirm button has default class of btn-primary', function(assert) {
+  var buttonConfirm, modalComponent;
+  assert.expect(2);
+  modal = this.subject();
+  this.render();
+  modalComponent = modal.$();
+  buttonConfirm = find('.btn-confirm', modalComponent);
+  assert.ok(buttonConfirm.hasClass('btn-primary'), 'By default the confirm button has class of btn-primary');
+  assert.ok(!buttonConfirm.hasClass('btn-default'), 'By default the confirm button does not have class of btn-default');
+});
+
+test('Test confirm button can be set to not have default class of btn-primary', function(assert) {
+  var buttonConfirm, modalComponent;
+  assert.expect(2);
+  modal = this.subject();
+  modal.set('isConfirmPrimaryBtn', false);
+  this.render();
+  modalComponent = modal.$();
+  buttonConfirm = find('.btn-confirm', modalComponent);
+  assert.ok(!buttonConfirm.hasClass('btn-primary'), 'When isConfirmPrimaryBtn is set to false the confirm button does not have class of btn-primary');
+  assert.ok(buttonConfirm.hasClass('btn-default'), 'When isConfirmPrimaryBtn is set to false the confirm button  has class of btn-default');
+});
