@@ -31,3 +31,7 @@ https://opensource.addepar.com/ember-widgets/
 * `ember build`
 
 For more information on using ember-cli, visit [https://www.ember-cli.com/](https://www.ember-cli.com/).
+
+## Publishing
+
+This library is not published to NPM.
