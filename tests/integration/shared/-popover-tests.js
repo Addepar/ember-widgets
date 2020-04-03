@@ -265,12 +265,12 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
     );
   });
 
-  test('it closes modals from an event', function(assert) {
+  test('it closes modals from an event', async function(assert) {
     let componentSpec = makeComponent(this, 'test-modal', ModalComponent, {
       layoutName: 'ember-widgets/-test-popover-content',
     });
 
-    this.render(hbs`{{render-popover}}`);
+    await this.render(hbs`{{render-popover}}`);
 
     openModal(this, componentSpec);
 
@@ -279,7 +279,7 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
       'The modal is now rendered'
     );
 
-    return new Promise(resolve => {
+    await new Promise(resolve => {
       // The document event handlers are installed in a run.next, so
       // schedule this test/assertion for after that. Additionally,
       // wait for the background fade animation.
@@ -287,15 +287,15 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
         $(document).trigger('modal:hide');
         resolve();
       }, 50);
-    }).then(() => {
-      // Wait for an animation
-      return waitUntil(() => document.querySelector('[data-test-popover-content]') === null);
-    }).then(() => {
-      assert.ok(
-        true,
-        'The modal is closed'
-      );
     });
+
+    // Wait for an animation
+    await waitUntil(() => document.querySelector('[data-test-popover-content]') === null);
+
+    assert.ok(
+      true,
+      'The modal is closed'
+    );
   });
 
   test('it closes other modals when opening', function(assert) {
