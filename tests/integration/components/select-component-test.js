@@ -106,6 +106,8 @@ test('it renders collapsed, but opens to display grouped options', async functio
 });
 
 test('It displays the specified component when componentNameForGroupTooltip is provided', async function(assert) {
+  this.container.register('template:components/some-component', hbs`<span data-test-some-component>{{groupItem.name}}</span>`);
+
   this.set('content', [
     {name: 'Sparrow', sound: 'Squawk'},
     {name: 'Crow', sound: 'Squawk'},
@@ -126,10 +128,16 @@ test('It displays the specified component when componentNameForGroupTooltip is p
       optionGroupPath='sound'
       isGroupHeaderCollapsible=true
       collapsedGroupHeaders=collapsedGroupHeaders
-      componentNameForGroupTooltip='radio-button'
+      componentNameForGroupTooltip='some-component'
   }}`);
 
   await click(this.helpers.selectChoiceElement);
 
-  assert.ok(isVisible('[data-test-radio-button]'));
+  let tooltipElements = this.$('[data-test-some-component]');
+  assert.equal(tooltipElements.length, 3, 'the passed tooltip is rendered for each group header');
+  assert.deepEqual(
+    tooltipElements.toArray().map(e => e.textContent),
+    ['Bark', 'Squawk', 'bark'],
+    'the groupItem argument is passed'
+  );
 });
