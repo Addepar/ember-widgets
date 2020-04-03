@@ -1,6 +1,9 @@
 {{#if view.content.isGroupOption}}
   <div {{action "toggleGroupHeader" view.content.name target=view.selectComponent}} class="{{if view.isGroupHeaderCollapsible 'collapsible-group-header'}}">
     <i class={{if view.isGroupHeaderCollapsible (if view.content.isGroupHeaderCollapsed view.collapsedGroupHeaderIcon view.expandedGroupHeaderIcon)}}></i> {{view.content.name}}
+    {{#if view.selectComponent.componentNameForGroupTooltip}}
+      {{component view.selectComponent.componentNameForGroupTooltip groupItem=view.content}}
+    {{/if}}
   </div>
 {{else}}
   {{#if view.titleOnOptions}}
