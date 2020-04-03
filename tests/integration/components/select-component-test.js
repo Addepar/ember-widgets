@@ -2,6 +2,7 @@ import hbs from 'htmlbars-inline-precompile';
 import { moduleForComponent, test } from 'ember-qunit';
 import wait from 'ember-test-helpers/wait';
 import { click } from '@ember/test-helpers';
+import {isVisible} from "../../helpers/assertions";
 
 class SelectPageObject {
   constructor(elementLookup) {
@@ -102,4 +103,33 @@ test('it renders collapsed, but opens to display grouped options', async functio
     ['Bark', 'Squawk', 'bark', 'Dog'],
     'rendered content collapses Bark group'
   );
+});
+
+test('It displays the specified component when componentNameForGroupTooltip is provided', async function(assert) {
+  this.set('content', [
+    {name: 'Sparrow', sound: 'Squawk'},
+    {name: 'Crow', sound: 'Squawk'},
+    {name: 'Dog', sound: 'bark'},
+    {name: 'Wolf', sound: 'Bark'},
+    {name: 'Sea Lion', sound: 'Bark'}
+  ]);
+
+  this.set('collapsedGroupHeaders', Ember.A([
+    'Squawk', 'bark'
+  ]));
+
+  await this.render(hbs`
+  {{select-component
+      content=content
+      optionLabelPath='name'
+      optionValuePath='name'
+      optionGroupPath='sound'
+      isGroupHeaderCollapsible=true
+      collapsedGroupHeaders=collapsedGroupHeaders
+      componentNameForGroupTooltip='radio-button'
+  }}`);
+
+  await click(this.helpers.selectChoiceElement);
+
+  assert.ok(isVisible('[data-test-radio-button]'));
 });
