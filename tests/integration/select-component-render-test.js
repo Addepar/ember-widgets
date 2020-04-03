@@ -32,7 +32,7 @@ emptyContentSelector = '.ember-select-empty-content';
 
 noResultSelector = '.ember-select-no-results';
 
-moduleForComponent('select-component', '[Integration] Select component', {
+moduleForComponent('select-component', '[Integration] Select component render', {
   needs: [
     'template:select',
     'template:select-item',
@@ -576,60 +576,5 @@ test('Dropdown does not open on key event when select is disabled', function(ass
 
   andThen(() => {
     assert.ok(isNotPresent('.ember-select-results', selectElement), 'The dropdown does not open');
-  });
-});
-
-test('Collapsed group can be expanded, collapsed', function(assert) {
-  function data() {
-    return [
-      {name: 'Sparrow', sound: 'Squawk'},
-      {name: 'Crow', sound: 'Squawk'},
-      {name: 'Dog', sound: 'bark'},
-      {name: 'Wolf', sound: 'Bark'},
-      {name: 'Sea Lion', sound: 'Bark'}
-    ];
-  }
-  function renderedItems(selectElement) {
-    var resultItems = find('.ember-select-result-item', selectElement);
-    return resultItems.toArray().map(i => i.textContent.trim())
-  }
-
-  select = this.subject({
-    content: data(),
-    optionLabelPath: 'name',
-    optionValuePath: 'name',
-    optionGroupPath: 'sound',
-    isGroupHeaderCollapsible: true,
-    collapsedGroupHeaders: Ember.A(['Squawk', 'bark'])
-  });
-  this.render();
-
-  var selectElement = select.$();
-  openDropdown(selectElement);
-
-  andThen(() => {
-    assert.deepEqual(
-      renderedItems(selectElement),
-      ['Bark', 'Sea Lion', 'Wolf', 'Squawk', 'bark'],
-      'precond - rendered content includes groups'
-    );
-    click('li:contains(bark) div');
-  });
-
-  andThen(() => {
-    assert.deepEqual(
-      renderedItems(selectElement),
-      ['Bark', 'Sea Lion', 'Wolf', 'Squawk', 'bark', 'Dog'],
-      'bark expanded to render Dog'
-    );
-    click('li:contains(Bark) div');
-  });
-
-  andThen(() => {
-    assert.deepEqual(
-      renderedItems(selectElement),
-      ['Bark', 'Squawk', 'bark', 'Dog'],
-      'Bark collapsed, hiding Sea Lion and Wolf'
-    );
   });
 });
