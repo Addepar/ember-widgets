@@ -1,8 +1,6 @@
 import hbs from 'htmlbars-inline-precompile';
 import { moduleForComponent, test } from 'ember-qunit';
-import wait from 'ember-test-helpers/wait';
 import { click } from '@ember/test-helpers';
-import {isVisible} from "../../helpers/assertions";
 
 class SelectPageObject {
   constructor(elementLookup) {
@@ -116,18 +114,12 @@ test('It displays the specified component when componentNameForGroupTooltip is p
     {name: 'Sea Lion', sound: 'Bark'}
   ]);
 
-  this.set('collapsedGroupHeaders', Ember.A([
-    'Squawk', 'bark'
-  ]));
-
   await this.render(hbs`
   {{select-component
       content=content
       optionLabelPath='name'
       optionValuePath='name'
       optionGroupPath='sound'
-      isGroupHeaderCollapsible=true
-      collapsedGroupHeaders=collapsedGroupHeaders
       componentNameForGroupTooltip='some-component'
   }}`);
 
