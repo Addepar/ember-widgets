@@ -16,6 +16,7 @@ export default Ember.Component.extend({
   classNames: ['carousel', 'slide'],
   classNameBindings: Ember.A(['sliding']),
   activeIndex: 0,
+  collectionViewClass: Ember.CollectionView,
   carouselIndicatorClass: CarouselIndicatorView,
   $nextItem: null,
   didInsertElement: function() {
