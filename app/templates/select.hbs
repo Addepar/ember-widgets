@@ -23,17 +23,14 @@
     {{partial listViewPartial}}
     {{#if isLoading}}
       <span class="ember-select-loading">Loading...</span>
-    {{/if}}
-    {{#if contentIsEmpty}}
+    {{else if contentIsEmpty}}
       <div class="ember-select-empty-content">
         {{#if emptyContentView}}
           {{view emptyContentView selectComponent=this}}
         {{/if}}
       </div>
-    {{else}}
-      {{#if hasNoResults}}
+    {{else if hasNoResults}}
         <span class="ember-select-no-results">No results match "{{query}}"</span>
-      {{/if}}
     {{/if}}
   {{/if}}
   {{#if selectMenuView}}

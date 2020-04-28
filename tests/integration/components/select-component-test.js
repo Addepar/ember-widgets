@@ -22,8 +22,13 @@ class SelectPageObject {
   get selectOptionElements() {
     return this.$('.ember-select-result-item').toArray();
   }
+
   get selectOptionTextContents() {
     return this.selectOptionElements.map(e => e.textContent.trim());
+  }
+
+  inputSearchText(text) {
+    return this.$('.ember-select-search > input').text(text);
   }
 }
 
@@ -132,4 +137,25 @@ test('It displays the specified component when componentNameForGroupTooltip is p
     ['Bark', 'Squawk', 'bark'],
     'the groupItem argument is passed'
   );
+});
+
+test('It does not display loading text and empty content component at the same time', async function(assert) {
+  this.container.register('template:components/some-component', hbs`<span data-test-some-component>No results</span>`);
+
+  this.set('content', [
+    'foo', 'bar', 'bar', 'baz'
+  ]);
+
+  await this.render(hbs`
+  {{select-component
+      content=content
+      emptyContentView='some-component'
+  }}`);
+
+  await this.helpers.inputSearchText('no match');
+
+  let loadingIsVisible = this.$('.ember-select-loading').isVisible();
+  let noResultsIsVisible = this.$('.ember-select-empty-content').isVisible();
+
+  assert.ok(loadingIsVisible ^ noResultsIsVisible, 'Either loading or no results should be visible, but not both');
 });
