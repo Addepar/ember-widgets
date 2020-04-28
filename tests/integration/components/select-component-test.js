@@ -154,8 +154,8 @@ test('It does not display loading text and empty content component at the same t
 
   await this.helpers.inputSearchText('no match');
 
-  let loadingIsVisible = this.$('.ember-select-loading').isVisible();
-  let noResultsIsVisible = this.$('.ember-select-empty-content').isVisible();
+  let loadingIsVisible = this.$('.ember-select-loading').length;
+  let noResultsIsVisible = this.$('.ember-select-empty-content').length;
 
   assert.ok(loadingIsVisible ^ noResultsIsVisible, 'Either loading or no results should be visible, but not both');
 });
