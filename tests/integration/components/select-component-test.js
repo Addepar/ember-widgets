@@ -1,6 +1,7 @@
 import hbs from 'htmlbars-inline-precompile';
 import { moduleForComponent, test } from 'ember-qunit';
-import { click } from '@ember/test-helpers';
+import { click, fillIn } from '@ember/test-helpers';
+import Ember from 'ember';
 
 class SelectPageObject {
   constructor(elementLookup) {
@@ -15,6 +16,18 @@ class SelectPageObject {
     return this.$('.ember-select-choice')[0];
   }
 
+  get contentLoadingElement() {
+    return this.$('.ember-select-loading')[0];
+  }
+
+  get contentEmptyElement() {
+    return this.$('.ember-select-empty-content')[0];
+  }
+
+  get noResultsElement() {
+    return this.$('.ember-select-no-results')[0];
+  }
+
   selectOptionElementContaining(content) {
     return this.$(`li:contains(${content}) div`)[0];
   }
@@ -22,8 +35,13 @@ class SelectPageObject {
   get selectOptionElements() {
     return this.$('.ember-select-result-item').toArray();
   }
+
   get selectOptionTextContents() {
     return this.selectOptionElements.map(e => e.textContent.trim());
+  }
+
+  async inputSearchText(text) {
+    await fillIn(this.$('.ember-select-search > input')[0], text);
   }
 }
 
@@ -133,3 +151,62 @@ test('It displays the specified component when componentNameForGroupTooltip is p
     'the groupItem argument is passed'
   );
 });
+
+test(
+  'It does not display loading text and does show empty content component when content is empty and loaded',
+  async function(assert) {
+    this.container.register('view:some-view', Ember.View.extend({ templateName: 'some-view' }));
+    this.container.register('template:some-view', hbs`<span data-test-some-component>No results</span>`);
+
+    this.set('content', []);
+
+    await this.render(hbs`
+    {{select-component
+        content=content
+        emptyContentView='some-view'
+    }}`);
+
+    await click(this.helpers.selectChoiceElement);
+
+    assert.ok(!this.helpers.contentLoadingElement, 'Loading ui is not present');
+    assert.ok(!!this.helpers.contentEmptyElement, 'Empty content is present');
+    assert.ok(
+      !!this.helpers.contentEmptyElement.querySelector('[data-test-some-component]'),
+      'Empty content view is present'
+    );
+    assert.ok(!this.helpers.noResultsElement, 'No results message is not present');
+  }
+);
+
+test(
+  'It does not display loading text and does show no results message when content is non-empty and loaded',
+  async function(assert) {
+    this.set('content', ['foo']);
+
+    await this.render(hbs`
+    {{select-component content=content}}`);
+
+    await click(this.helpers.selectChoiceElement);
+    await this.helpers.inputSearchText('no match');
+
+    assert.ok(!this.helpers.contentLoadingElement, 'Loading ui is not present');
+    assert.ok(!this.helpers.contentEmptyElement, 'Empty content is not present');
+    assert.ok(!!this.helpers.noResultsElement, 'No results message is present');
+  }
+);
+
+test(
+  'It does display loading text and does not show empty content component or no results message when loading',
+  async function(assert) {
+    await this.render(hbs`
+    {{select-component
+        isLoading=true
+    }}`);
+
+    await click(this.helpers.selectChoiceElement);
+
+    assert.ok(!!this.helpers.contentLoadingElement, 'Loading ui is present');
+    assert.ok(!this.helpers.contentEmptyElement, 'Empty content is not present');
+    assert.ok(!this.helpers.noResultsElement, 'No results message is not present');
+  }
+);
