@@ -4,7 +4,9 @@
     {{#if p.componentName}}
       {{component p.componentName _propertyOptions=p.propertyOptions __renderPopoverNewAPI=true}}
     {{else}}
-      {{view 'popover-container' childViews=p.childViews}}
+      {{#each p.childViews as |childView|}}
+        {{view childView}}
+      {{/each}}
     {{/if}}
   </div>
   {{/ember-wormhole}}

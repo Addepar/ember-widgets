@@ -131,7 +131,7 @@ export default Ember.Service.extend({
     };
 
     popoverSpec.childViews = [
-      ComponentClass.create({
+      ComponentClass.extend({
         ...options,
         closePopover
       })

@@ -4,7 +4,6 @@ self.deprecationWorkflow.config = {
   workflow: [
     { handler: "silence", matchMessage: "Global lookup of Ember from a Handlebars template is deprecated." },
     { handler: "silence", matchId: "ember-views.dispatching-modify-property" },
-    { handler: "silence", matchMessage: "Setting `childViews` on a Container is deprecated." },
     { handler: "silence", matchMessage: "Using deprecated `template` property on a View." }
   ]
 };
