@@ -3,7 +3,7 @@
 
 const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
-module.exports = function(defaults) {
+module.exports = function (defaults) {
   let app = new EmberAddon(defaults, {
     // Add options here
   });
@@ -13,6 +13,7 @@ module.exports = function(defaults) {
   app.import(app.bowerDirectory + '/google-code-prettify/bin/prettify.min.js');
   app.import(app.bowerDirectory + '/jquery-ui/ui/jquery-ui.custom.js');
   app.import(app.bowerDirectory + '/bootstrap/dist/js/bootstrap.js');
+  app.import(app.bowerDirectory + '/bootstrap/dist/css/bootstrap.min.css');
 
   app.import(app.bowerDirectory + '/sinonjs/sinon.js', { type: 'test' });
 
