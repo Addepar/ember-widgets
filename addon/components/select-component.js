@@ -425,7 +425,7 @@ export default Ember.Component.extend(
 
   didInsertElement: function() {
     this._super();
-    return this.setDefaultSelection();
+    this.setDefaultSelection();
   },
 
   // It matches the item label with the query. This can be overrideen for better
@@ -478,7 +478,7 @@ export default Ember.Component.extend(
     if (!(content && defaultPath)) {
       return;
     }
-    return this.set('selection', content.findBy(defaultPath));
+    this.set('selection', content.findBy(defaultPath));
   }),
 
   selectableOptionsDidChange: Ember.observer('selectableOptions.[]', 'showDropdown', function() {
@@ -545,9 +545,9 @@ export default Ember.Component.extend(
     activeElem = document.activeElement;
     selectComponent = this.$()[0];
     if (selectComponent.contains(activeElem) || selectComponent === activeElem) {
-      return this.set('hasFocus', true);
+      this.set('hasFocus', true);
     } else {
-      return this.set('hasFocus', false);
+      this.set('hasFocus', false);
     }
   },
 
@@ -675,11 +675,11 @@ export default Ember.Component.extend(
   },
 
   focusIn: function() {
-    return this.set('hasFocus', true);
+    this.set('hasFocus', true);
   },
 
   focusOut: function() {
-    return this.set('hasFocus', false);
+    this.set('hasFocus', false);
   },
 
   actions: {
@@ -688,7 +688,7 @@ export default Ember.Component.extend(
       if (this.get('disabled')) {
         return;
       }
-      return this.toggleProperty('showDropdown');
+      this.toggleProperty('showDropdown');
     },
 
     toggleGroupHeader: function(groupHeaderName) {
@@ -704,7 +704,7 @@ export default Ember.Component.extend(
       if (this.get('isDestroyed') || this.get('isDestroying')) {
         return;
       }
-      return this.set('showDropdown', false);
+      this.set('showDropdown', false);
     },
 
     valueChanged: function(newText) {

@@ -46,7 +46,7 @@ moduleForComponent('color-picker', '[Integration] Color picker unit tests', {
 
 testHexConversion = function(assert, colorPicker, color, hex) {
   Ember.run(function() {
-    return colorPicker.set('selectedColor', color);
+    colorPicker.set('selectedColor', color);
   });
   return assert.equal(colorPicker.get('selectedColorRGB'), hex);
 };

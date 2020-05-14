@@ -35,13 +35,6 @@ export default Ember.View.extend({
     return this.labelPathDidChange();
   },
 
-  // TODO(Peter): This is a hack. Some computed don't fire properly if
-  // they are dependent on the context. e.g. isHighlighted may not update
-  // if it is dependent on the context. This seems to fix the issue
-  updateContext: function(context) {
-    this._super(context);
-    return this.set('content', context);
-  },
   click: function() {
     let selection = this.get('content');
     if (get(selection, 'isGroupOption')) {
@@ -61,6 +54,6 @@ export default Ember.View.extend({
     if (this.get('content.isGroupOption')) {
       return;
     }
-    return this.set('highlighted', this.get('content'));
+    this.set('highlighted', this.get('content'));
   }
 });

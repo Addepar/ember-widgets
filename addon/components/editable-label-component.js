@@ -20,10 +20,10 @@ export default Ember.Component.extend({
     },
     blur: function() {
       this.set('parentView.isEditing', false);
-      return this.set('parentView.value', this.get('value'));
+      this.set('parentView.value', this.get('value'));
     }
   }),
   editLabel: function() {
-    return this.set('isEditing', true);
+    this.set('isEditing', true);
   }
 });

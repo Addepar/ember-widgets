@@ -154,7 +154,7 @@ var ModalComponent = Ember.Component.extend(
       if (this.isDestroying) {
         return;
       }
-      return this.set('isShowing', true);
+      this.set('isShowing', true);
     });
     // bootstrap modal adds this class to the body when the modal opens to
     // transfer scroll behavior to the modal

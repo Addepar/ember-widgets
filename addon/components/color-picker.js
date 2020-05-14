@@ -68,14 +68,14 @@ export default Ember.Component.extend(ColorPickerMixin, {
 
     userSelected: function(selection) {
       this.sendAction('userSelected', selection);
-      return this.set('isDropdownOpen', false);
+      this.set('isDropdownOpen', false);
     },
     /**
      * Hide the color picker dropdown
     */
 
     hideDropdown: function() {
-      return this.set('isDropdownOpen', false);
+      this.set('isDropdownOpen', false);
     },
     /**
      * Set the selected color and update the custom color accordingly
@@ -87,9 +87,9 @@ export default Ember.Component.extend(ColorPickerMixin, {
     setSelectedColor: function(color, isCustomColor) {
       this.set('selectedColor', color);
       if (isCustomColor) {
-        return this.set('customColor', color);
+        this.set('customColor', color);
       } else {
-        return this.set('customColor', '');
+        this.set('customColor', '');
       }
     }
   }

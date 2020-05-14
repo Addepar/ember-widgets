@@ -21,9 +21,9 @@ export default Ember.Component.extend({
     var selectedValue;
     selectedValue = this.get('selectedValue');
     if (!Ember.isEmpty(selectedValue) && this.get('value') === selectedValue) {
-      return this.set('checked', true);
+      this.set('checked', true);
     } else {
-      return this.set('checked', false);
+      this.set('checked', false);
     }
   }, 'selectedValue')),
   click: function() {
