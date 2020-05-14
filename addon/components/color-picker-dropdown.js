@@ -42,9 +42,9 @@ export default Ember.Component.extend(BodyEventListenerMixin, ColorPickerMixin, 
     if (this.get('colorRows').find(function(row) {
       return __indexOf.call(row.invoke('toLowerCase'), selectedColor) >= 0;
     })) {
-      return this.set('customColor', '');
+      this.set('customColor', '');
     }
-    return this.set('customColor', selectedColor);
+    this.set('customColor', selectedColor);
   })),
   /**
    * This is the formatted string of the input color, for which a hashtag "#"

@@ -507,7 +507,7 @@ test('Selected option is visible when dropdown is opened', function(assert) {
   this.render();
   // The highlighted property is set when the user hovers over the select field
   // Lets programatically set it after rendering to emulate that behavior.
-  andThen(() => select.set('highlighted', selection));
+  andThen(() => { select.set('highlighted', selection); });
   var selectElement = select.$();
   openDropdown(selectElement);
   andThen(() => {
@@ -530,7 +530,7 @@ test('Selected object option is visible when dropdown is opened', function(asser
   var selectElement = select.$();
   // The highlighted property is set when the user hovers over the select field
   // Lets programatically set it after rendering to emulate that behavior.
-  andThen(() => select.set('highlighted', selection));
+  andThen(() => { select.set('highlighted', selection); });
   openDropdown(selectElement);
   andThen(() => {
     assert.ok(isPresent(getOptionSelector(selection.key)), 'The last option is displayed');
@@ -551,7 +551,7 @@ test('Selected option is not visible when shouldEnsureVisible is false', functio
   this.render();
   // The highlighted property is set when the user hovers over the select field
   // Lets programatically set it after rendering to emulate that behavior.
-  andThen(() => select.set('highlighted', selection));
+  andThen(() => { select.set('highlighted', selection); });
   var selectElement = select.$();
   openDropdown(selectElement);
   andThen(() => {

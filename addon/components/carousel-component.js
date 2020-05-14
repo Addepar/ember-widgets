@@ -25,7 +25,7 @@ export default Ember.Component.extend({
     // figure out how many carousel items are there. This allows us to generate
     // the correct number of carousel indicator
     if (!this.get('content')) {
-      return this.set('content', Ember.A(new Array(this.$('.item').length)));
+      this.set('content', Ember.A(new Array(this.$('.item').length)));
     }
   },
   willDestroyElement: function() {

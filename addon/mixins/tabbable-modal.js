@@ -33,7 +33,7 @@ export default Ember.Mixin.create(KeyboardHelper, {
         }
       }
       focusElement.focus();
-      return this.set('currentFocus', focusElement);
+      this.set('currentFocus', focusElement);
     }
   },
   _checkContainingElement: function(containers, element) {
@@ -49,7 +49,7 @@ export default Ember.Mixin.create(KeyboardHelper, {
   mouseDown: function(event) {
     this._super(event);
     if (this._checkContainingElement(this.$(':tabbable'), event.target)) {
-      return this.set('currentFocus', event.target);
+      this.set('currentFocus', event.target);
     } else {
       // if we click on a non-tabbable element, we should just set the focus back
       // to the modal and reset the tab loop

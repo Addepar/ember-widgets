@@ -69,7 +69,7 @@ export default SelectComponent.extend({
       return this.get('selectComponent.placeholder') || this.get('selectComponent.persistentPlaceholder');
     }).property('selectComponent.placeholder', 'selectComponent.persistentPlaceholder', 'selectComponent.selections.length'),
     click: function() {
-      return this.set('selectComponent.showDropdown', true);
+      this.set('selectComponent.showDropdown', true);
     }
   }),
 
@@ -128,7 +128,7 @@ export default SelectComponent.extend({
       this.set('selections', Ember.A([]));
     }
     if (!this.get('values')) {
-      return this.set('values', Ember.A([]));
+      this.set('values', Ember.A([]));
     }
   },
   deletePressed: function(event) {

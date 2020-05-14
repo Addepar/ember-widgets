@@ -234,7 +234,7 @@ export default Ember.Mixin.create(StyleBindingsMixin, BodyEventListener, {
       this.set('top', bodyHeight - actualHeight - this.get('marginTop'));
     }
     if (this.get('top') < 0) {
-      return this.set('top', this.get('marginTop'));
+      this.set('top', this.get('marginTop'));
     }
   },
   keyHandler: Ember.computed(function() {
