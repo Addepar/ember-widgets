@@ -40,7 +40,7 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
   });
 
   test('properties can be passed to the popover', function(assert) {
-    this.container.register('template:test-popover-1', hbs`
+    this.register('template:test-popover-1', hbs`
       <div data-test-popover-1><span data-test-popover-1-foo>{{foo}}</span></div>
     `);
     let componentSpec = makeComponent(this, 'test-popover', PopoverComponent, {
@@ -111,8 +111,8 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
   });
 
   test('it closes other popovers when hideAll is true', function(assert) {
-    this.container.register('template:test-popover-1', hbs`<div data-test-popover-1>popover 1</div>`);
-    this.container.register('template:test-popover-2', hbs`<div data-test-popover-2>popover 2</div>`);
+    this.register('template:test-popover-1', hbs`<div data-test-popover-1>popover 1</div>`);
+    this.register('template:test-popover-2', hbs`<div data-test-popover-2>popover 2</div>`);
 
     let component1 = makeComponent(this, 'test-popover-1', PopoverComponent, { layoutName: 'test-popover-1' });
     let component2 = makeComponent(this, 'test-popover-2', PopoverComponent, { layoutName: 'test-popover-2' });
@@ -139,8 +139,8 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
   });
 
   test('it does not close other popovers when hideAll is false', function(assert) {
-    this.container.register('template:test-popover-1', hbs`<div data-test-popover-1>popover 1</div>`);
-    this.container.register('template:test-popover-2', hbs`<div data-test-popover-2>popover 2</div>`);
+    this.register('template:test-popover-1', hbs`<div data-test-popover-1>popover 1</div>`);
+    this.register('template:test-popover-2', hbs`<div data-test-popover-2>popover 2</div>`);
 
     let component1 = makeComponent(this, 'test-popover-1', PopoverComponent, { layoutName: 'test-popover-1' });
     let component2 = makeComponent(this, 'test-popover-2', PopoverComponent, { layoutName: 'test-popover-2' });
@@ -299,8 +299,8 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
   });
 
   test('it closes other modals when opening', function(assert) {
-    this.container.register('template:test-modal-1', hbs`<h1 data-test-modal-1>modal 1</h1>`);
-    this.container.register('template:test-modal-2', hbs`<h1 data-test-modal-2>modal 2</h1>`);
+    this.register('template:test-modal-1', hbs`<h1 data-test-modal-1>modal 1</h1>`);
+    this.register('template:test-modal-2', hbs`<h1 data-test-modal-2>modal 2</h1>`);
     let component1 = makeComponent(this, 'test-modal-1', ModalComponent, { layoutName: 'test-modal-1' });
     let component2 = makeComponent(this, 'test-modal-2', ModalComponent, { layoutName: 'test-modal-2' });
 
@@ -529,7 +529,7 @@ export default function runPopoverTests(test, {makeComponent, openPopover, openM
     // This exposes an issue in the old API where the popover view will re-render and close itself when it should
     // stay open
     test('property bindings can be passed to the popover', function(assert) {
-      this.container.register('template:test-popover-1', hbs`
+      this.register('template:test-popover-1', hbs`
         <div data-test-popover-1>
           <span data-test-popover-1-foo>{{foo}}</span>
           <span data-test-popover-1-bar>{{bar}}</span>

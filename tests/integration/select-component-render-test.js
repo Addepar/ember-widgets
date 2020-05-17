@@ -459,7 +459,7 @@ test('Can specify a custom partial with listViewPartial', function(assert) {
 
   var compiledTemplate = Ember.Handlebars.
     compile('<div class="dummy-class-for-partial-list"></div>{{partial "select-list-view-partial"}}');
-  this.container.register('template:custom-list-view-partial', compiledTemplate);
+  this.register('template:custom-list-view-partial', compiledTemplate);
   select = this.subject({
     content: ['dummy data'],
     listViewPartial: 'custom-list-view-partial'
