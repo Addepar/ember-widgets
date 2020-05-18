@@ -8,10 +8,13 @@ module.exports = {
         dependencies: {
           'ember': '1.13.13'
         }
-      },
-      npm: {
-        devDependencies: {
-          'ember-source': null
+      }
+    },
+    {
+      name: 'ember-2.4',
+      bower: {
+        dependencies: {
+          'ember': '2.4.6'
         }
       }
     },
