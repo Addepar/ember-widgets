@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { getOwner, setOwner } from '@ember/application';
 import PopoverMixin from '../mixins/popover';
 import PopoverComponent from './popover-component';
 
@@ -49,13 +50,13 @@ export default Ember.Component.extend({
         classNames: this.get('popoverClassNames'),
         controller: this,
         targetElement: this.get('element'),
-        container: this.get('container'),
         placement: Ember.computed.alias('controller.placement'),
         title: Ember.computed.alias('controller.title'),
         contentViewClass: this.get('_contentViewClass'),
         fade: this.get('fade')
       });
       popover = popoverView.create();
+      setOwner(popover, getOwner(this));
       this.set('_popover', popover);
       return popover.appendTo(this.get('rootElement'));
     }
