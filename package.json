@@ -41,6 +41,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "ember-auto-import": "^1.5.2",
     "ember-cli-babel": "^6.6.0",
+    "ember-getowner-polyfill": "^3.0.2",
     "ember-wormhole": "0.5.4",
     "lodash-es": "^4.17.15"
   },

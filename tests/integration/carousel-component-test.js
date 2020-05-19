@@ -32,9 +32,7 @@ test('The action transitionEnded is sent after sliding', function(assert) {
             return assert.ok(true, 'The action is sent after sliding');
           }
         }
-      }).create({
-        container: _this.container
-      });
+      }).create();
       return carousel.appendTo('#ember-testing');
     };
   })(this));

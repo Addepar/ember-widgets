@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { getOwner } from '@ember/application';
 import { assert } from '@ember/debug';
 import ModalComponent from 'ember-widgets/components/modal-component';
 import PopoverComponent from 'ember-widgets/components/popover-component';
@@ -19,7 +20,7 @@ export default Ember.Service.extend({
   openPopover(componentName, options={}, hideAll=true) {
     assert(`[ember-widgets#openPopover] {{render-popover}} must be included in a template for popovers to open`, !!this._popoverDidRender);
 
-    let ComponentClass = this.container.lookupFactory(`component:${componentName}`);
+    let ComponentClass = getOwner(this).factoryFor(`component:${componentName}`).class;
     assert(`[ember-widget#openPopover] cannot find component class for name "${componentName}"`,
             !!ComponentClass,);
     assert(`[ember-widgets#PopoverComponent] The Component Class for "${componentName}" does not extend PopoverComponent`,
@@ -41,7 +42,7 @@ export default Ember.Service.extend({
   openModal(componentName, options={}) {
     assert(`[ember-widgets#openModal] {{render-popover}} must be included in a template for popovers to open`, !!this._popoverDidRender);
 
-    let ComponentClass = this.container.lookupFactory(`component:${componentName}`);
+    let ComponentClass = getOwner(this).factoryFor(`component:${componentName}`).class;
     assert(`[ember-widget#openModal] cannot find component class for name "${componentName}"`,
             !!ComponentClass,);
     assert(`[ember-widgets#openModal] The Component Class for "${componentName}" does not extend ModalComponent`,

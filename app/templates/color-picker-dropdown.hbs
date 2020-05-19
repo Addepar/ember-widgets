@@ -1,9 +1,9 @@
 <div class="dropdown open">
   <div class="dropdown-menu color-picker-dropdown {{dropdownClass}}"
     role="menu" aria-labelledby="dLabel">
-    {{#each row in colorRows}}
+    {{#each colorRows as |row|}}
       <div class="color-row clearfix">
-        {{#each color in row}}
+        {{#each row as |color|}}
           {{color-picker-cell
             color=color
             selectedColor=selectedColor

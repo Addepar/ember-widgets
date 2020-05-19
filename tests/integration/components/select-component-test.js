@@ -122,7 +122,7 @@ test('it renders collapsed, but opens to display grouped options', async functio
 });
 
 test('It displays the specified component when componentNameForGroupTooltip is provided', async function(assert) {
-  this.container.register('template:components/some-component', hbs`<span data-test-some-component>{{groupItem.name}}</span>`);
+  this.register('template:components/some-component', hbs`<span data-test-some-component>{{groupItem.name}}</span>`);
 
   this.set('content', [
     {name: 'Sparrow', sound: 'Squawk'},
@@ -155,8 +155,8 @@ test('It displays the specified component when componentNameForGroupTooltip is p
 test(
   'It does not display loading text and does show empty content component when content is empty and loaded',
   async function(assert) {
-    this.container.register('view:some-view', Ember.View.extend({ templateName: 'some-view' }));
-    this.container.register('template:some-view', hbs`<span data-test-some-component>No results</span>`);
+    this.register('view:some-view', Ember.View.extend({ templateName: 'some-view' }));
+    this.register('template:some-view', hbs`<span data-test-some-component>No results</span>`);
 
     this.set('content', []);
 
