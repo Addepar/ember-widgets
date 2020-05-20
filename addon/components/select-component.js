@@ -320,8 +320,12 @@ export default Ember.Component.extend(
       }).property(observableString, 'query'),
       sortedFilteredContent: Ember.computed(function() {
         return sortBy(this.get('filteredContent'), function(item){
-          var ref;
-          return (ref = Ember.get(item, optionLabelPath)) != null ? ref.toLowerCase() : void 0;
+          let ref = Ember.get(item, optionLabelPath);
+          if (typeof ref === 'number') {
+            return ref;
+          }  else if (typeof ref === 'string') {
+            return ref.toLowerCase();
+          }
         });
       }).property('filteredContent.[]')
     });
